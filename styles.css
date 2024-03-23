@@ -189,7 +189,8 @@ footer {
     height: 600px;
 }
 
-@media (max-width: 699px) {
+/* If used in a small window or a small device like iPad or smartphone */
+@media only screen and (((max-device-width: 1024px) and (orientation:portrait)) or ((max-device-height: 896px) and (orientation:landscape)) or (max-width: 700px)) {
     .flexbox {
         flex-direction: column;
     }
@@ -248,3 +249,6 @@ footer {
         font-size: 2.5vw;
     }
 }
+
+/* For print outs: 
+@media print {} */ 
