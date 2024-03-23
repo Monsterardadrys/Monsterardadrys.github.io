@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Food intolerance guide</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+    <header>
+        <h1>Food intolerance guide</h1>
+        <ul>
+            <li><a href=fiber.html>Fibers</a></li>
+            <li><a href=fat.html>Fats</a></li>
+            <li><a href=protein.html>Protein</a></li>
+            <li><a href=fodmaps.html>FODMAPs</a></li>
+        </ul>
+    </header>
+
+    <div class="flexbox" id="flexbox">
+        <div class="leftSection" id="leftSection">
+            <p>Choose foods suspected of causing a negative reaction to see what they have in common.</p>
+
+            <button class="button" id="rootsButton">Roots</button>
+            <div class="roots" id="roots">
+                <ul>
+                    <li data-values="fiber carbs"><label><input type="checkbox" value="Carrot" id="carrot">
+                            Carrot</label></li>
+                    <li data-values="fiber carbs"><label><input type="checkbox" value="Parsnip" id="parsnip">
+                            Parsnip</label></li>
+                    <li data-values="fiber carbs"><label><input type="checkbox" value="Sweet Potato" id="sweetpotato">
+                            Sweet
+                            Potato</label>
+                    </li>
+                </ul>
+            </div>
+
+            <button class="button" id="veggiesButton">Vegetables</button>
+            <div class="veggies" id="veggies">
+                <ul>
+                    <li data-values="fiber fodmaps"><label><input type="checkbox" value="Cabbage" id="cabbage"> Cabbage</label>
+                    </li>
+                    <li data-values="fiber"><label><input type="checkbox" value="Kale" id="kale"> Kale</label></li>
+                    <li data-values="fiber fodmaps"><label><input type="checkbox" value="Onion" id="onion">
+                            Onion</label></li>
+                    <li data-values="fiber histamine"><label><input type="checkbox" value="Tomato" id="tomato">
+                                Tomato</label></li>
+                </ul>
+            </div>
+
+            <button class="button" id="fruitsButton">Fruits & Berries</button>
+            <div class="fruits" id="fruits">
+                <ul>
+                    <li data-values="fiber carbs fodmaps"><label><input type="checkbox" value="Apples" id="apples">
+                            Apples</label></li>
+                    <li data-values="fiber"><label><input type="checkbox" value="Blueberry" id="blueberry">
+                            Blueberry</label></li>
+                    <li data-values="fiber histamine"><label><input type="checkbox" value="Strawberry" id="strawberry">
+                            Strawberry</label></li>
+                </ul>
+            </div>
+
+            <button class="button" id="nutsButton">Nuts & Seeds</button>
+            <div class="nuts" id="nutsAndSeeds">
+                <ul>
+                    <li data-values="fiber fat carbs protein fodmaps"><label><input type="checkbox" value="Almond"
+                                id="almond">
+                            Almond</label></li>
+                    <li data-values="fiber"><label><input type="checkbox" value="Chiaseeds" id="chiaseeds">
+                            Chiaseeds</label></li>
+                    <li data-values="fiber"><label><input type="checkbox" value="Sunflower Seeds" id="sunflowerseeds">
+                            Sunflowerseeds</label></li>
+                </ul>
+            </div>
+
+            <button class="button" id="grainsButton">Grains</button>
+            <div class="grains" id="grains">
+                <ul>
+                    <li data-values="fiber carbs protein"><label><input type="checkbox" value="Oats" id="oats">
+                            Oats</label></li>
+                    <li data-values="fiber carbs protein fodmaps"><label><input type="checkbox" value="Wheat" id="wheat">
+                            Wheat</label></li>
+                    <li data-values="fiber carbs protein"><label><input type="checkbox" value="Quinoa" id="quinoa">
+                            Quinoa</label></li>
+                </ul>
+            </div>
+
+            <button class="button" id="animalsButton">Animal foods</button>
+            <div class="animals" id="animals">
+                <ul>
+                    <li data-values="protein"><label><input type="checkbox" value="Shrimp" id="shrimp"> Shrimp</label>
+                    </li>
+                    <li data-values="protein"><label><input type="checkbox" value="Egg White" id="eggwhite"> Egg
+                            White</label></li>
+                    <li data-values="fat"><label><input type="checkbox" value="Egg Yolk" id="eggyolk"> Egg Yolk</label>
+                    </li>
+                </ul>
+            </div>
+
+            <button class="button" id="spicesButton">Spices</button>
+            <div class="spices" id="spices">
+                <ul>
+                    <li data-values="reflux histamine"><label><input type="checkbox" value="Chili" id="chili"> Chili</label></li>
+                    <li data-values="fodmaps"><label><input type="checkbox" value="Garlic" id="garlic"> Garlic</label>
+                    </li>
+                    <li data-values="fiber"><label><input type="checkbox" value="Turmeric" id="turmeric">
+                            Turmeric</label></li>
+                </ul>
+            </div>
+
+            <p>Click on a category to show lists of foods</p>
+        </div>
+
+        <div class="rightSection" id="rightSection">
+            <div id="chosenFoods">
+                <h2>Chosen foods:</h2>
+                <p id="chosenText">No items selected</p>
+            </div>
+
+            <div id="showSummary"><button class="button2" id="showSummaryButton" name="Show Summary">Show
+                    Summary</button></div>
+
+            <div class="summary" id="summary" style="display:none">
+                <h2>Summary:</h2>
+                <p id="summaryText">No items selected</p>
+                <p>Find more info in the menu at the top.</p>
+            </div>
+
+            <div id="restart"><button class="button2" id="restartButton" name="Restart">Restart</button></div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+<footer>
+    <p>Did you find this webpage useful? Did you find any errors or have ideas for improvement?</p>
+    <p>Send me an email: Andreas@foodintoleranceguide.com</p>
+    <p>Uppsala, Sweden, 2024</p>
+</footer>
+
+</html>
