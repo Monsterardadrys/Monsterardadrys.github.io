@@ -200,16 +200,21 @@ function getPercentages() {
 }
 
 showAnalysisButton.addEventListener("click", function () {
-    /* old
     if (selectedFoods.length > 0) {
-        countFoodValues();
-        if (firstCount != 0) {
-            getPercentages();
+        if(foodValuesCount[firstIndex-1] === "fodmaps") {
+            popup.textContent = "The number one commonality of these foods is FODMAPs which can cause mild or moderate gastrointestinal discomfort for anyone if the intake is high enough. For sensitive individuals, like people with Irritable bowel syndrome (IBS), moderate symtoms can occur at a relatively low intake. With high daly intake the gastrointestinal symtoms can become severe, causing acute diarrhea and mind numbing abdominal pain. Common foods high in FODMAPS are among others: Garlic, Onions, Pasta, Plain white bread, beans and peas. Follow the link in the main menu to read more.";
+        } 
+        else if(foodValuesCount[firstIndex-1] === "fiber") {
+            popup.textContent = "The number one commonality of these foods is Fiber which can cause mild or moderate gas and bloating for anyone if the intake is high enough. High fiber intake during dehydration can contribute to constipation and if the dehydration is not corrected the constipation can cause severe gastrointestinal discomfort and lowered apetite, which in the worst case scenario will worsen the dehydration. For sensitive individuals, like people with gut-microbial dysbiosis, gastrointestinal discomfort can occur at a relatively low intake. Common foods high in Fiber are among others: Flax seeds, Chia seeds, Wheat/Oat bran, Whole grain pasta/bread/rice, beans and peas. Follow the link in the main menu to read more.";
+        } 
+        else{
+          popup.textContent = "Wohoo!";  
         }
-        else {
-            summaryText.textContent = "Select foods to see a summary.";
-        }
-    }*/
+        
+    }
+    else{
+        popup.textContent = "Select foods to see a deeper summary and analysis of the foods.";
+    }
     popup.classList.toggle("show");
 });
 
