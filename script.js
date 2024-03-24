@@ -217,7 +217,7 @@ restartButton.addEventListener("click", function () {
     clearCheckboxes();
     // Clear list of selected foods, food values and display of chosen foods. 
     resetAllValues();
-    chosenText.textContent = "No items selected";
+    chosenText.textContent = "Click on a category to show lists of foods";
 
     // Hide all food categories
     summaryText.textContent = "Select foods to see a summary.";

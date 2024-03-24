@@ -1,3 +1,21 @@
+<!-- 
+    This is an ongoing project of Andreas Rydström since march of 2024. You can find me on GitHub by username Monsterardadrys. 
+
+    To add more food groups 
+    Make a new <div class="foodBox"> with a button and a div with same class and id as the text in the button. 
+    In styles.css add the new foodgroup by class name and give it display:none; as initial value. 
+    In script.js add adventListener for the group button and add the group to hide by the reset-button. 
+
+    To add more foods 
+    Inside the div with the same class/id as the text in the corresponding button: 
+    - add a checkbox and a label for each food. 
+    - Every label needs data-values (foodValues in script.js) which will be used for the analysis. 
+
+    To add a new food value 
+    Add it in the label data-values-attribute for selected foods 
+    In script.js add it to the functions countFoodValues() and resetFoodValues() 
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,8 +39,14 @@
     </header>
 
     <div class="neck" id="neck">
-        <p>Choose foods suspected of causing a negative reaction to see what they have in common.</p>
-        <p>Click on a category to show lists of foods</p>       
+        <h2>A faster way to navigate food intolerances.</h2>
+        <p>1. Get started by choosing some or all the foods suspected of causing a negative reaction to see what they have in common.</p>
+        <p>2. You get a quick summary of what common factors the foods share.</p>
+        <p>3. In the end you get a deeper analysis of what could be causing the negative reactions to the foods.</p>
+        <div id="chosenFoods">
+            <h2>Chosen foods:</h2>
+            <p id="chosenText">Click on a category to show lists of foods</p>
+        </div>   
     </div>
 
     <div class="topSection" id="topSection">
@@ -158,11 +182,6 @@
     </div>
 
     <div class="bottomSection" id="bottomSection">
-        <div id="chosenFoods">
-            <h2>Chosen foods:</h2>
-            <p id="chosenText">No items selected</p>
-        </div>
-
         <div class="summary" id="summary">
             <h2>Summary:</h2>
             <p id="summaryText">Select foods to see a summary.</p>
@@ -187,8 +206,9 @@
 </body>
 
 <footer>
-    <p>Did you find this webpage useful? Did you find any errors or have ideas for improvement?</p>
-    <p>Send me an email: Andreas@foodintoleranceguide.com</p>
+    <p>Did you find this webpage useful?</p>
+    <p>Did you find any errors or have ideas for improvement?</p>
+    <p>Email: info@foodintoleranceguide.com</p>
     <p>Uppsala, Sweden, 2024</p>
 </footer>
 
