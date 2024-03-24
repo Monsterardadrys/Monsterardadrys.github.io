@@ -9,6 +9,8 @@ const checkboxes = document.querySelectorAll("input[type='checkbox']");
 let selectedFoods = [];
 let foodValues = [];
 
+let popup = document.getElementById("popupText");
+
 let foodValuesCount = [];
 let firstIndex = -1;
 let firstCount = 0;
@@ -95,12 +97,17 @@ checkboxes.forEach(function (checkbox) {
             selectedFoods.forEach(function (element) {
                 chosenText.textContent += `${element}, `;
             })
-            const values = checkbox.parentElement.parentNode.dataset.values.split(" ");
+            const values = checkbox.parentNode.dataset.values.split(" ");
             values.forEach(function (value) {
                 foodValues[value]++;
             })
             countFoodValues();
-            getPercentages();
+            if (firstCount != 0) {
+                getPercentages();
+            }
+            else {
+                summaryText.textContent = "Select foods to see a summary.";
+            }
         }
         // When a checkbox gets unchecked and the list includes the food
         else if ((!checkbox.checked) && (selectedFoods.includes(checkbox.value))) {
@@ -115,12 +122,17 @@ checkboxes.forEach(function (checkbox) {
                 chosenText.textContent += `${element}, `;
             })
             // Reduces the corresponding values in foodValues
-            const values = checkbox.parentElement.parentNode.dataset.values.split(" ");
+            const values = checkbox.parentNode.dataset.values.split(" ");
             values.forEach(function (value) {
                 foodValues[value]--;
             })
-            // Hides summary
-            summary.setAttribute("style", "display:none");
+            countFoodValues();
+            if (firstCount != 0) {
+                getPercentages();
+            }
+            else {
+                summaryText.textContent = "Select foods to see a summary.";
+            }
         }
     })
 });
@@ -180,23 +192,25 @@ function getPercentages() {
         summaryText.textContent = `You have chosen ${selectedFoods.length} foods from the list and ${firstPercent}% of them have ${foodValuesCount[firstIndex - 1]} in common.`;
     }
     else if (thirdCount === 0) {
-        summaryText.textContent = `You have chosen ${selectedFoods.length} foods from the list and their commonalitys are: ${firstPercent}% have ${foodValuesCount[firstIndex - 1]} and ${secondPercent}% have ${foodValuesCount[secondIndex - 1]}.`;
+        summaryText.textContent = `You have chosen ${selectedFoods.length} foods from the list and their commonalitys are: ${firstPercent}% have ${foodValuesCount[firstIndex - 1]} and ${secondPercent}% have ${foodValuesCount[secondIndex - 1]} in common.`;
     }
     else {
-        summaryText.textContent = `You have chosen ${selectedFoods.length} foods from the list and their commonalitys are: ${firstPercent}% have ${foodValuesCount[firstIndex - 1]}, ${secondPercent}% have ${foodValuesCount[secondIndex - 1]} and ${thirdPercent}% have ${foodValuesCount[thirdIndex - 1]}.`;
+        summaryText.textContent = `You have chosen ${selectedFoods.length} foods from the list and their commonalitys are: ${firstPercent}% have ${foodValuesCount[firstIndex - 1]}, ${secondPercent}% have ${foodValuesCount[secondIndex - 1]} and ${thirdPercent}% have ${foodValuesCount[thirdIndex - 1]} in common.`;
     }
 }
 
-showSummaryButton.addEventListener("click", function () {
-    if (selectedFoods.length === 0) {
-        summaryText.textContent = `Select foods to see a summary.`;
-    }
-    else {
+showAnalysisButton.addEventListener("click", function () {
+    /* old
+    if (selectedFoods.length > 0) {
         countFoodValues();
-        getPercentages();
-    }
-
-    summary.setAttribute("style", "display:block");
+        if (firstCount != 0) {
+            getPercentages();
+        }
+        else {
+            summaryText.textContent = "Select foods to see a summary.";
+        }
+    }*/
+    popup.classList.toggle("show");
 });
 
 restartButton.addEventListener("click", function () {
@@ -205,8 +219,8 @@ restartButton.addEventListener("click", function () {
     resetAllValues();
     chosenText.textContent = "No items selected";
 
-    // Hide summary and all food categories
-    summary.setAttribute("style", "display:none");
+    // Hide all food categories
+    summaryText.textContent = "Select foods to see a summary.";
     roots.setAttribute("style", "display:none;");
     veggies.setAttribute("style", "display:none;");
     fruits.setAttribute("style", "display:none;");
@@ -240,5 +254,5 @@ function resetFoodValues() {
     foodValues.fat = 0;
     foodValues.protein = 0;
     foodValues.fodmaps = 0;
-    foodValues.histamine = 0; 
+    foodValues.histamine = 0;
 }
