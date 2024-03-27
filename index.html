@@ -26,12 +26,14 @@
     <title>Food intolerance guide</title>
 
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
 
 <body>
     <header>
         <h1>Food intolerance guide</h1>
+        <a class="backToMain" href=index.html>Main</a>
         <ul>
             <li><a href=macros.html>Macros</a></li>
             <li><a href=fodmaps.html>FODMAPs</a></li>
@@ -39,6 +41,19 @@
     </header>
 
     <div class="neck" id="neck">
+
+        <div class="disclaimerPopup" id="disclaimerPopup">
+            <div class="disclaimerText"> 
+                <a href="#close" title="Close" class="closePopup">OK</a>
+                <p>By entering this website you agree that the author of this website can not be held responsible for any health issues that could occur by using the information on the website.</p>
+                <p>You understand that: </p>
+                <p>- This website is still under construction and therefore the information on it could be inaccurate.</p>
+                <p>- It is meant to be a tool for health care professionals</p>
+                <p>- It is <em>NOT</em> meant to replace the diagnostics and advice of a health care professional</p>
+            
+            </div>
+        </div>
+
         <h2>A faster way to navigate food intolerances.</h2>
         <p>1. Get started by choosing foods suspected of causing a negative reaction.</p>
         <p>2. Further down you get a summary of what common factors the foods share.</p>
@@ -46,7 +61,12 @@
         <div id="chosenFoods">
             <h2>Chosen foods:</h2>
             <p id="chosenText">Click on a category to show lists of foods</p>
-        </div>   
+        </div>
+        <div class="searchContainer" id="searchContainer">
+            <input type="text" id="search" class="search" placeholder="Filter food list...">
+            <button class="searchButton" id="searchButton">Search</button>
+            <button class="showAllButton" id="showAllButton">Show All</button>
+        </div>
     </div>
 
     <div class="topSection" id="topSection">

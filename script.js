@@ -1,13 +1,18 @@
-/* 
-* Ändra till att ha vald mat på högersidan och uppdatera så fort man klickar på något. 
-* Byt från checkboxar till knappar. Om man klickar på någon vald mat så ska den återgå 
-* till listan till vänster. 
-*/
 
+let searchField = document.getElementById('search');
 let summary = document.getElementById("summary");
+
 const checkboxes = document.querySelectorAll("input[type='checkbox']");
 let selectedFoods = [];
 let foodValues = [];
+
+let rootsButton = document.getElementById("rootsButton");
+let veggiesButton = document.getElementById("veggiesButton");
+let fruitsButton = document.getElementById("fruitsButton");
+let nutsButton = document.getElementById("nutsButton");
+let grainsButton = document.getElementById("grainsButton");
+let animalsButton = document.getElementById("animalsButton");
+let spicesButton = document.getElementById("spicesButton");
 
 let popup = document.getElementById("popupText");
 
@@ -24,6 +29,14 @@ resetFoodValues();
 let firstPercent = 0;
 let secondPercent = 0;
 let thirdPercent = 0;
+
+// Open disclaimer 
+function openPopup() {
+    window.location.hash = 'disclaimerPopup';
+}
+
+window.onload = openPopup;
+
 
 rootsButton.addEventListener("click", function () {
     if (roots.getAttribute("style") === "display:block;") {
@@ -87,6 +100,48 @@ spicesButton.addEventListener("click", function () {
         spices.setAttribute("style", "display:block;");
     }
 });
+
+searchButton.addEventListener("click", function () {
+    let filter = searchField.value.toUpperCase();
+    let found = false;
+
+    showAllCategories();
+
+    for (let i = 0; i < checkboxes.length; i++) {
+        let txtValue = checkboxes[i].value.toUpperCase();
+
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            found = true;
+            checkboxes[i].style.display = "";
+            checkboxes[i].parentElement.style.display = "";
+        } else {
+            checkboxes[i].style.display = "none";
+            checkboxes[i].parentElement.style.display = "none";
+        }
+    }
+
+    if (found === false) {
+        // reset foodlist
+        for (let i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].style.display = "";
+            checkboxes[i].parentElement.style.display = "";
+        }
+    }
+
+    // clear field
+    searchField.value = null;
+});
+
+showAllButton.addEventListener("click", function () {
+
+    for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].style.display = "";
+        checkboxes[i].parentElement.style.display = "";
+    }
+
+    showAllCategories();
+});
+
 
 checkboxes.forEach(function (checkbox) {
     checkbox.addEventListener("click", function () {
@@ -201,18 +256,17 @@ function getPercentages() {
 
 showAnalysisButton.addEventListener("click", function () {
     if (selectedFoods.length > 0) {
-        if(foodValuesCount[firstIndex-1] === "fodmaps") {
+        if (foodValuesCount[firstIndex - 1] === "fodmaps") {
             popup.textContent = "The number one commonality of these foods is FODMAPs which can cause mild or moderate gastrointestinal discomfort for anyone if the intake is high enough. For sensitive individuals, like people with Irritable bowel syndrome (IBS), moderate symtoms can occur at a relatively low intake. With high daly intake the gastrointestinal symtoms can become severe, causing acute diarrhea and mind numbing abdominal pain. Common foods high in FODMAPS are among others: Garlic, Onions, Pasta, Plain white bread, beans and peas. Follow the link in the main menu to read more.";
-        } 
-        else if(foodValuesCount[firstIndex-1] === "fiber") {
-            popup.textContent = "The number one commonality of these foods is Fiber which can cause mild or moderate gas and bloating for anyone if the intake is high enough. High fiber intake during dehydration can contribute to constipation and if the dehydration is not corrected the constipation can cause severe gastrointestinal discomfort and lowered apetite, which in the worst case scenario will worsen the dehydration. For sensitive individuals, like people with gut-microbial dysbiosis, gastrointestinal discomfort can occur at a relatively low intake. Common foods high in Fiber are among others: Flax seeds, Chia seeds, Wheat/Oat bran, Whole grain pasta/bread/rice, beans and peas. Follow the link in the main menu to read more.";
-        } 
-        else{
-          popup.textContent = "Wohoo!";  
         }
-        
+        else if (foodValuesCount[firstIndex - 1] === "fiber") {
+            popup.textContent = "The number one commonality of these foods is Fiber which can cause mild or moderate gas and bloating for anyone if the intake is high enough. High fiber intake during dehydration can contribute to constipation and if the dehydration is not corrected the constipation can cause severe gastrointestinal discomfort and lowered apetite, which in the worst case scenario will worsen the dehydration. For sensitive individuals, like people with gut-microbial dysbiosis, gastrointestinal discomfort can occur at a relatively low intake. Common foods high in Fiber are among others: Flax seeds, Chia seeds, Wheat/Oat bran, Whole grain pasta/bread/rice, beans and peas. Follow the link in the main menu to read more.";
+        }
+        else {
+            popup.textContent = "Wohoo!";
+        }
     }
-    else{
+    else {
         popup.textContent = "Select foods to see a deeper summary and analysis of the foods.";
     }
     popup.classList.toggle("show");
@@ -220,12 +274,24 @@ showAnalysisButton.addEventListener("click", function () {
 
 restartButton.addEventListener("click", function () {
     clearCheckboxes();
+
+    // Clear search
+    searchField.value = null;
+    for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].style.display = "";
+        checkboxes[i].parentElement.style.display = "";
+    }
+
     // Clear list of selected foods, food values and display of chosen foods. 
     resetAllValues();
     chosenText.textContent = "Click on a category to show lists of foods";
 
     // Hide all food categories
     summaryText.textContent = "Select foods to see a summary.";
+    hideAllCategories();
+});
+
+function hideAllCategories() {
     roots.setAttribute("style", "display:none;");
     veggies.setAttribute("style", "display:none;");
     fruits.setAttribute("style", "display:none;");
@@ -233,7 +299,17 @@ restartButton.addEventListener("click", function () {
     grains.setAttribute("style", "display:none;");
     animals.setAttribute("style", "display:none");
     spices.setAttribute("style", "display:none");
-});
+}
+
+function showAllCategories() {
+    roots.setAttribute("style", "display:block;");
+    veggies.setAttribute("style", "display:block;");
+    fruits.setAttribute("style", "display:block;");
+    nutsAndSeeds.setAttribute("style", "display:block;");
+    grains.setAttribute("style", "display:block;");
+    animals.setAttribute("style", "display:block;");
+    spices.setAttribute("style", "display:block;");
+}
 
 function clearCheckboxes() {
     checkboxes.forEach(function (checkbox) {

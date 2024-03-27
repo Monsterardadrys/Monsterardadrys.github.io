@@ -1,6 +1,6 @@
 html {
     background-image: url("bilder/mixed-vegetables-2-ai-craiyon.png");
-    background-size:cover; 
+    background-size: cover;
     background-attachment: fixed;
     font-family: 'Source Sans Pro', sans-serif;
 }
@@ -38,7 +38,7 @@ header {
 .backToMain {
     color: white;
     display: block;
-    width:100px;
+    width: 100px;
     margin: 8px;
     padding: 8px 16px;
     font-size: 25px;
@@ -46,7 +46,7 @@ header {
     border-radius: 15px;
 }
 
-.backToMain:hover{
+.backToMain:hover {
     cursor: pointer;
     background-color: white;
     color: black;
@@ -79,14 +79,90 @@ header li a:hover {
 }
 
 .neck {
-    margin:20px;
+    display: block;
+    margin: 20px;
     text-align: center;
+}
+
+/* Disclaimer popup */
+.disclaimerPopup {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99999;
+    opacity: 0; 
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
+
+.disclaimerPopup:target {
+    opacity: 1;
+    background-color: rgba(155, 155, 155, 0.5);
+    pointer-events: auto;
+}
+
+.disclaimerText {
+    background-color: rgba(255, 255, 255, 1);
+    width: 70vw;
+    height: 70%;
+    position: relative;
+    margin: 5% auto;
+    padding: 5px 20px 13px 20px;
+    border-radius: 10px;
+}
+
+.disclaimerText p{
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.closePopup {
+    background: #606061;
+    color: #FFFFFF;
+    font-size: 34px;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 50px;
+    position: absolute;
+    right: 45%;
+    text-align: center;
+    top: 85%;
+    width: 72px;
+    border-radius: 22px;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
+}
+
+.closePopup:hover {
+    background: #33641a;
+}
+
+.searchContainer {
+    float: right;
+}
+
+.searchContainer input {
+    padding: 5px;
+    margin-top: 10px;
+    font-size: 20px;
+    border: none;
+}
+
+.searchContainer button {
+    padding: 5px 10px;
+    margin-top: -10px;
+    margin-right: 10px;
+    font-size: 20px;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
 }
 
 .topSection {
     display: flex;
     flex-wrap: wrap;
-    padding: 25px;
+    margin: 75px;
 }
 
 .foodBox {
@@ -121,13 +197,13 @@ header li a:hover {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 600;
     width: fit-content;
-    line-height: 1.1; 
+    line-height: 1.1;
     display: grid;
-    grid-template-columns: 2rem auto; 
+    grid-template-columns: 2rem auto;
 }
 
 .checkboxStyle:hover {
-    background-color:rgba(55, 55, 55, 0.201);
+    background-color: rgba(55, 55, 55, 0.201);
     cursor: pointer;
 }
 
@@ -197,6 +273,7 @@ input[type="checkbox"]:checked:before {
 
 .bottomSection {
     text-align: center;
+    margin-top: -50px;
     margin-bottom: 50px;
     padding: 25px;
     flex: 30%;
@@ -233,7 +310,7 @@ footer {
     text-align: center;
     padding: 20px;
     margin-left: -10px;
-    margin-right: -10px; 
+    margin-right: -10px;
     margin-bottom: -10px;
     font-style: Italic;
     height: 500px;
@@ -250,11 +327,20 @@ footer {
     }
 
     p {
+        font-size: 2.6vw;
+    }
+
+    .searchContainer input {
+        font-size: 3vw;
+    }
+
+    .searchContainer button {
         font-size: 3vw;
     }
 
     .topSection {
-        margin: 2vw;
+        margin: 6vw;
+        margin-top: 12vw;
         padding: 2vw;
         margin-bottom: -2vw;
     }
