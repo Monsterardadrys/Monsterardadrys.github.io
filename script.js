@@ -92,6 +92,15 @@ animalsButton.addEventListener("click", function () {
     }
 });
 
+dairyButton.addEventListener("click", function () {
+    if (dairy.getAttribute("style") === "display:block;") {
+        dairy.setAttribute("style", "display:none;");
+    }
+    else {
+        dairy.setAttribute("style", "display:block;");
+    }
+});
+
 spicesButton.addEventListener("click", function () {
     if (spices.getAttribute("style") === "display:block;") {
         spices.setAttribute("style", "display:none;");
@@ -100,6 +109,16 @@ spicesButton.addEventListener("click", function () {
         spices.setAttribute("style", "display:block;");
     }
 });
+
+processedButton.addEventListener("click", function () {
+    if (ultraProcessed.getAttribute("style") === "display:block;") {
+        ultraProcessed.setAttribute("style", "display:none;");
+    }
+    else {
+        ultraProcessed.setAttribute("style", "display:block;");
+    }
+});
+
 
 searchButton.addEventListener("click", function () {
     let filter = searchField.value.toUpperCase();
@@ -133,12 +152,10 @@ searchButton.addEventListener("click", function () {
 });
 
 showAllButton.addEventListener("click", function () {
-
     for (let i = 0; i < checkboxes.length; i++) {
         checkboxes[i].style.display = "";
         checkboxes[i].parentElement.style.display = "";
     }
-
     showAllCategories();
 });
 
@@ -193,7 +210,7 @@ checkboxes.forEach(function (checkbox) {
 });
 
 function countFoodValues() {
-    foodValuesCount = ["fiber", foodValues.fiber, "carbs", foodValues.carbs, "fat", foodValues.fat, "protein", foodValues.protein, "fodmaps", foodValues.fodmaps, "histamine", foodValues.histamine];
+    foodValuesCount = ["fiber", foodValues.fiber, "carbs", foodValues.carbs, "over_10g_fat", foodValues.over_10g_fat, "protein", foodValues.protein, "fodmaps", foodValues.fodmaps, "histamine", foodValues.histamine, "over_3g_lactose", foodValues.over_3g_lactose];
 
     for (k = 1; k < foodValuesCount.length - 2; k = k + 2) {
         for (i = 1; i < foodValuesCount.length; i = i + 2) {
@@ -298,7 +315,9 @@ function hideAllCategories() {
     nutsAndSeeds.setAttribute("style", "display:none;");
     grains.setAttribute("style", "display:none;");
     animals.setAttribute("style", "display:none");
+    dairy.setAttribute("style", "display:none;");
     spices.setAttribute("style", "display:none");
+    ultraProcessed.setAttribute("style", "display:none");
 }
 
 function showAllCategories() {
@@ -308,7 +327,9 @@ function showAllCategories() {
     nutsAndSeeds.setAttribute("style", "display:block;");
     grains.setAttribute("style", "display:block;");
     animals.setAttribute("style", "display:block;");
-    spices.setAttribute("style", "display:block;");
+    dairy.setAttribute("style", "display:block;");
+    spices.setAttribute("style", "display:block;"); 
+    ultraProcessed.setAttribute("style", "display:block;");
 }
 
 function clearCheckboxes() {
@@ -332,8 +353,9 @@ function resetAllValues() {
 function resetFoodValues() {
     foodValues.fiber = 0;
     foodValues.carbs = 0;
-    foodValues.fat = 0;
+    foodValues.over_10g_fat = 0;
     foodValues.protein = 0;
     foodValues.fodmaps = 0;
     foodValues.histamine = 0;
+    foodValues.over_3g_lactose = 0; 
 }

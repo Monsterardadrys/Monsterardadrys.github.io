@@ -267,7 +267,15 @@ input[type="checkbox"]:checked:before {
     display: none;
 }
 
+.dairy {
+    display: none;
+}
+
 .spices {
+    display: none;
+}
+
+.ultraProcessed {
     display: none;
 }
 
