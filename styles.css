@@ -106,7 +106,9 @@ header li a:hover {
 .disclaimerText {
     background-color: rgba(255, 255, 255, 1);
     width: 70vw;
+    max-width: 700px;
     height: 70%;
+    max-height: 5000px;
     position: relative;
     margin: 5% auto;
     padding: 5px 20px 13px 20px;
@@ -355,6 +357,12 @@ footer {
 
     .checkboxStyle {
         font-size: 3vw;
+        padding:5px;
+    }
+
+    .checkboxStyle input[type="checkbox"] {
+        position:relative; 
+        top: -2px;
     }
 
     .button {
@@ -380,6 +388,23 @@ footer {
 
     .footer p {
         font-size: 2.5vw;
+    }
+
+    .disclaimerText {
+        height: 70vw;
+    }
+
+    .disclaimerText p{
+        font-size: 3vw;
+        font-weight: 600;
+    }
+
+    .closePopup {
+        font-size: 4.5vw;
+        line-height: 50px;
+        width: 72px;
+        border-radius: 22px;
+        box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
     }
 }
 
