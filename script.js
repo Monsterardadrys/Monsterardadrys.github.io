@@ -14,7 +14,10 @@ let grainsButton = document.getElementById("grainsButton");
 let animalsButton = document.getElementById("animalsButton");
 let spicesButton = document.getElementById("spicesButton");
 
-let popup = document.getElementById("popupText");
+let popupContainer = document.getElementById("popupContainer");
+let popupText = document.getElementById("popupText");
+let popupText2 = document.getElementById("popupText2");
+let popupText3 = document.getElementById("popupText3");
 
 let foodValuesCount = [];
 let firstIndex = -1;
@@ -270,23 +273,51 @@ function getPercentages() {
         summaryText.textContent = `You have chosen ${selectedFoods.length} foods from the list and their commonalitys are: ${firstPercent}% have ${foodValuesCount[firstIndex - 1]}, ${secondPercent}% have ${foodValuesCount[secondIndex - 1]} and ${thirdPercent}% have ${foodValuesCount[thirdIndex - 1]} in common.`;
     }
 }
-
+ 
+/* I broke it trying to make the popup have three separate paragraphs */
 showAnalysisButton.addEventListener("click", function () {
     if (selectedFoods.length > 0) {
         if (foodValuesCount[firstIndex - 1] === "fodmaps") {
-            popup.textContent = "The number one commonality of these foods is FODMAPs which can cause mild or moderate gastrointestinal discomfort for anyone if the intake is high enough. For sensitive individuals, like people with Irritable bowel syndrome (IBS), moderate symtoms can occur at a relatively low intake. With high daly intake the gastrointestinal symtoms can become severe, causing acute diarrhea and mind numbing abdominal pain. Common foods high in FODMAPS are among others: Garlic, Onions, Pasta, Plain white bread, beans and peas. Follow the link in the main menu to read more.";
+            popupText.textContent = "The number one commonality of these foods is FODMAPs which can cause mild or moderate gastrointestinal discomfort for anyone if the intake is high enough. For sensitive individuals, like people with Irritable bowel syndrome (IBS), moderate symtoms can occur at a relatively low intake. With high daly intake the gastrointestinal symtoms can become severe, causing acute diarrhea and mind numbing abdominal pain. Common foods high in FODMAPS are among others: Garlic, Onions, Pasta, Plain white bread, beans and peas. Follow the link in the main menu to read more.";
         }
         else if (foodValuesCount[firstIndex - 1] === "fiber") {
-            popup.textContent = "The number one commonality of these foods is Fiber which can cause mild or moderate gas and bloating for anyone if the intake is high enough. High fiber intake during dehydration can contribute to constipation and if the dehydration is not corrected the constipation can cause severe gastrointestinal discomfort and lowered apetite, which in the worst case scenario will worsen the dehydration. For sensitive individuals, like people with gut-microbial dysbiosis, gastrointestinal discomfort can occur at a relatively low intake. Common foods high in Fiber are among others: Flax seeds, Chia seeds, Wheat/Oat bran, Whole grain pasta/bread/rice, beans and peas. Follow the link in the main menu to read more.";
+            popupText.textContent = "The number one commonality of these foods is Fiber which can cause mild or moderate gas and bloating for anyone if the intake is high enough.";
+            popupText2.textContent = "High fiber intake during dehydration can contribute to constipation and if the dehydration is not corrected the constipation can cause severe gastrointestinal discomfort and lowered apetite, which in the worst case scenario will worsen the dehydration. ";
+            popupText3.textContent = "For sensitive individuals, like people with gut-microbial dysbiosis, gastrointestinal discomfort can occur at a relatively low intake. Common foods high in Fiber are among others: Flax seeds, Chia seeds, Wheat/Oat bran, Whole grain pasta/bread/rice, beans and peas. Follow the link in the main menu to read more.";
+        }
+        else if (foodValuesCount[firstIndex - 1] === "over_3g_lactose") {
+            popupText.textContent = "Lactose";
+        }
+        else if (foodValuesCount[firstIndex - 1] === "over_10g_fat") {
+            popupText.textContent = "Fat";
+        }
+        else if (foodValuesCount[firstIndex - 1] === "protein") {
+            popupText.textContent = "Protein";
+        }
+        else if (foodValuesCount[firstIndex - 1] === "carbs") {
+            popupText.textContent = "Carbs";
+        }
+        else if (foodValuesCount[firstIndex - 1] === "histamine") {
+            popupText.textContent = "Histamine";
         }
         else {
-            popup.textContent = "Wohoo!";
+            popupText.textContent = "Wohoo!";
         }
     }
     else {
-        popup.textContent = "Select foods to see a deeper summary and analysis of the foods.";
+        popupText.textContent = "Select foods to see a deeper summary and analysis of the foods.";
     }
-    popup.classList.toggle("show");
+    popupContainer.classList.toggle("show");
+    popupText.classList.toggle("show");
+    popupText2.classList.toggle("show");
+    popupText3.classList.toggle("show");
+});
+
+popupContainer.addEventListener("click", function () {
+    popupContainer.classList.toggle("show");
+    popupText.classList.toggle("show");
+    popupText2.classList.toggle("show");
+    popupText3.classList.toggle("show");
 });
 
 restartButton.addEventListener("click", function () {
@@ -359,3 +390,12 @@ function resetFoodValues() {
     foodValues.histamine = 0;
     foodValues.over_3g_lactose = 0; 
 }
+
+/* TODO
+Jag vill lägga till möjligheten att filtrera bort saker från analysen, tex macros, fiber, fodmaps, mm, 
+för att kunna se vad som blir kvar när man tagit bort saker man redan vet att man reagerar på eller ¨
+vet att man inte har besvär av.  
+
+Så det skulle kunna vara en "Filtrera analysen-meny" strax under analys-knappen där man kan välja en 
+eller flera faktorer, som exkluderar dessa från beräkningarna i countfoodvalues-metoden
+*/

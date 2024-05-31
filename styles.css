@@ -92,7 +92,7 @@ header li a:hover {
     bottom: 0;
     left: 0;
     z-index: 99999;
-    opacity: 0; 
+    opacity: 0;
     transition: opacity 400ms ease-in;
     pointer-events: none;
 }
@@ -107,7 +107,7 @@ header li a:hover {
     background-color: rgba(255, 255, 255, 1);
     width: 70vw;
     max-width: 700px;
-    height: 70%;
+    height: fit-content;
     max-height: 5000px;
     position: relative;
     margin: 5% auto;
@@ -115,25 +115,25 @@ header li a:hover {
     border-radius: 10px;
 }
 
-.disclaimerText p{
+.disclaimerText p {
     font-size: 22px;
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .closePopup {
     background: #606061;
     color: #FFFFFF;
-    font-size: 34px;
+    font-size: 2rem;
     text-decoration: none;
     font-weight: bold;
-    line-height: 50px;
+    line-height: 4rem;
+    width: 5rem;
     position: absolute;
     right: 45%;
     text-align: center;
-    top: 85%;
-    width: 72px;
+    top: 105%;
     border-radius: 22px;
-    box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 }
 
 .closePopup:hover {
@@ -148,7 +148,7 @@ header li a:hover {
     padding: 5px;
     margin-top: 10px;
     font-size: 20px;
-    border: none;
+    border-radius: 10px;
 }
 
 .searchContainer button {
@@ -158,7 +158,13 @@ header li a:hover {
     font-size: 20px;
     background-color: #fff;
     border: none;
+    border-radius: 15px;
     cursor: pointer;
+}
+
+.searchContainer button:hover {
+    background-color: #8a5f04;
+    color: #fff;
 }
 
 .topSection {
@@ -172,6 +178,7 @@ header li a:hover {
     margin-bottom: -0.5rem;
 }
 
+/* Style for the food category buttons */
 .button {
     height: 50px;
     background-image: linear-gradient(188deg, #fcde32, #fca311, #e28f09);
@@ -198,7 +205,6 @@ header li a:hover {
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 600;
-    width: fit-content;
     line-height: 1.1;
     display: grid;
     grid-template-columns: 2rem auto;
@@ -212,38 +218,6 @@ header li a:hover {
 input[type="checkbox"]:hover {
     cursor: pointer;
 }
-
-
-/* Alternative style for cecking boxes 
-input[type="checkbox"] {
-    appearance:none; 
-    background-color:#fff; 
-    margin: 0; 
-    font: inherit; 
-    color: currentColor; 
-    width: 1.15rem; 
-    height: 1.15rem; 
-    border: 0.15rem solid currentColor; 
-    border-radius: 0.15rem;
-    transform:translateY(-0.075rem); 
-    display: grid;
-    place-content: center;
-}
-
-input[type="checkbox"]::before {
-    content: ""; 
-    width: 0.65rem; 
-    height: 0.65rem;
-    transform: scale(0); 
-    transition: 120ms transform ease-in-out; 
-    box-shadow: inset 1rem 1 rem let(--checkboxStyle-color); 
-    background-color: CanvasText; 
-}
-
-input[type="checkbox"]:checked:before {
-    transform: scale(1);
-}
-*/
 
 .roots {
     display: none;
@@ -289,6 +263,7 @@ input[type="checkbox"]:checked:before {
     flex: 30%;
 }
 
+/* Style for the analysis and the restart buttons */
 .button2 {
     background-image: linear-gradient(180deg, #ffdeaa, #b5935b, #ff924e);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -326,104 +301,35 @@ footer {
     height: 500px;
 }
 
-/* If used in a small window or a small device like iPad or smartphone */
-@media only screen and (((max-device-width: 1024px) and (orientation:portrait)) or ((max-device-width: 896px) and (orientation:landscape)) or (max-width: 700px)) {
-    header li a {
-        font-size: 3.5vw;
-    }
 
-    h2 {
-        font-size: 3.5vw;
-    }
-
-    p {
-        font-size: 2.6vw;
-    }
-
-    .searchContainer input {
-        font-size: 3vw;
-    }
-
-    .searchContainer button {
-        font-size: 3vw;
-    }
-
-    .topSection {
-        margin: 6vw;
-        margin-top: 12vw;
-        padding: 2vw;
-        margin-bottom: -2vw;
-    }
-
-    .checkboxStyle {
-        font-size: 3vw;
-        padding:5px;
-    }
-
-    .checkboxStyle input[type="checkbox"] {
-        position:relative; 
-        top: -2px;
-    }
-
-    .button {
-        height: 7vw;
-        font-size: 3.5vw;
-        margin: 0.5vw;
-        padding-top: 0.5vw;
-    }
-
-    .button2 {
-        height: 7vw;
-        font-size: 3.5vw;
-        margin: 0.5vw;
-        padding-top: 0.5vw;
-    }
-
-    .bottomSection {
-        margin: 2vw;
-        margin-bottom: 4vw;
-        margin-top: -2vw;
-        padding: 2vw;
-    }
-
-    .footer p {
-        font-size: 2.5vw;
-    }
-
-    .disclaimerText {
-        height: 70vw;
-    }
-
-    .disclaimerText p{
-        font-size: 3vw;
-        font-weight: 600;
-    }
-
-    .closePopup {
-        font-size: 4.5vw;
-        line-height: 50px;
-        width: 72px;
-        border-radius: 22px;
-        box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
-    }
-}
-
-/* For print outs: 
-@media print {} */
-
-/* Trying a pop up! */
-.popuptext {
+/* A popup with possibility of three separate paragraphs */
+.popupContainer {
     visibility: hidden;
     width: 90%;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.95);
     color: rgb(0, 0, 0);
     text-align: center;
-    border-radius: 6px;
-    padding: 100px 0;
+    border: 2px solid black;
+    border-radius: 16px;
+    padding: 50px 0;
     position: fixed;
     z-index: 1;
-    top: 0;
+    top: 5%;
     left: 5%;
+}
+
+.popupContainer:hover {
+    cursor: pointer; 
+}
+.popupContainer p{
+    position: relative;
+    left: 5%;
+    width: 90%;
+}
+
+.popupText {
+    font-size: 21px;
+    font-weight: 600;
 }
 
 /* Toggle this class when clicking on the popup container (hide and show the popup) */
@@ -453,3 +359,201 @@ footer {
         opacity: 1;
     }
 }
+
+
+/* If used in a small window or a small device like iPad or smartphone */
+@media only screen and (((max-device-width: 1024px) and (orientation:portrait)) or ((max-device-width: 896px) and (orientation:landscape)) or (max-width: 700px)) {
+
+    .backToMain {
+        font-size: 4.5vw;
+    }
+
+    header li a {
+        font-size: 4.5vw;
+    }
+
+    h2 {
+        font-size: 4.5vw;
+    }
+
+    p {
+        font-size: 3.5vw;
+    }
+
+    .disclaimerText {
+        height: fit-content;
+    }
+
+    .disclaimerText p {
+        font-size: 4vw;
+        font-weight: 400;
+    }
+
+    .closePopup {
+        top: 105%;
+        left: 37%;
+    }
+
+
+    .searchContainer {
+        display: flex;
+    }
+
+    .searchContainer input {
+        font-size: 3vw;
+        margin: 0;
+        margin-right: 2vw;
+    }
+
+    .searchContainer button {
+        font-size: 2.5vw;
+        margin-top: 0.5vw;
+    }
+
+    .topSection {
+        margin: 6vw;
+        margin-top: 12vw;
+        padding: 2vw;
+        margin-bottom: -2vw;
+    }
+
+    .checkboxStyle {
+        padding: 1vw;
+    }
+
+    .button {
+        height: 7vw;
+        font-size: 3.5vw;
+        margin: 0.5vw;
+        padding-top: 0.5vw;
+    }
+
+    .button2 {
+        height: 7vw;
+        font-size: 3.5vw;
+        margin: 0.5vw;
+        padding-top: 0.5vw;
+    }
+
+    .bottomSection {
+        margin: 2vw;
+        margin-bottom: 4vw;
+        margin-top: -2vw;
+        padding: 2vw;
+    }
+
+    /* A popup with possibility of three separate paragraphs */
+    .popupContainer {
+        visibility: hidden;
+        width: 90%;
+        background-color: rgba(255, 255, 255, 0.95);
+        color: rgb(0, 0, 0);
+        text-align: center;
+        border-radius: 6px;
+        padding: 100px 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 5%;
+    }
+
+    .popupContainer p{
+        font-size: max(3.5vw, 18px);
+        position: relative;
+        left: 3%;
+        width: 94%;
+    }
+}
+
+/* If used on a lagre device like 8K TV screen */
+@media (min-width: 3800px) {
+
+    .backToMain {
+        width: 12vw;
+        font-size: 3.5vw;
+    }
+
+    header li a {
+        width: auto;
+        font-size: 3.5vw;
+        padding-left: 1vw;
+        padding-right: 1vw;
+    }
+
+    h2 {
+        font-size: 3.5vw;
+    }
+
+    p {
+        font-size: 2.6vw;
+    }
+
+    .disclaimerText {
+        max-width: 70%;
+        height: 80%;
+    }
+
+    .disclaimerText p {
+        font-size: 2.5vw;
+        font-weight: 40;
+    }
+
+    .closePopup {
+        font-size: 4.5vw;
+        line-height: 5vw;
+        width: 8vw;
+        top: 88%;
+        border-radius: 22px;
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .searchContainer input {
+        font-size: 3vw;
+    }
+
+    .searchContainer button {
+        font-size: 3vw;
+    }
+
+    .topSection {
+        margin: 6vw;
+        margin-top: 12vw;
+        padding: 2vw;
+        margin-bottom: -2vw;
+    }
+
+    .checkboxStyle {
+        font-size: 4vw;
+        line-height: 1.3rem;
+        padding: 2vw;
+    }
+
+    .button {
+        height: 7vw;
+        font-size: 3.5vw;
+        margin: 0.5vw;
+        padding-top: 0.5vw;
+    }
+
+    .button2 {
+        height: 7vw;
+        font-size: 3.5vw;
+        margin: 0.5vw;
+        padding-top: 0.5vw;
+    }
+
+    .bottomSection {
+        margin: 2vw;
+        margin-bottom: 4vw;
+        margin-top: -2vw;
+        padding: 2vw;
+    }
+
+    footer {
+        height: auto;
+    }
+
+}
+
+/* For print outs: 
+@media print {} */
