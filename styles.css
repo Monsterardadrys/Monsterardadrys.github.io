@@ -274,6 +274,7 @@ input[type="checkbox"]:hover {
     padding-left: 20px;
     padding-right: 20px;
     margin: 5px;
+    margin-bottom: 50px;
     border-radius: 25px;
     border-width: 0.5px;
     border-color: azure;
@@ -289,18 +290,6 @@ input[type="checkbox"]:hover {
     padding: 10px;
     display: inline-block;
 }
-
-footer {
-    background-color: #59839250;
-    text-align: center;
-    padding: 20px;
-    margin-left: -10px;
-    margin-right: -10px;
-    margin-bottom: -10px;
-    font-style: Italic;
-    height: 500px;
-}
-
 
 /* A popup with possibility of three separate paragraphs */
 .popupContainer {
@@ -337,6 +326,32 @@ footer {
     visibility: visible;
     -webkit-animation: fadeIn 1s;
     animation: fadeIn 1s;
+}
+
+.filterContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    position: relative;
+    left: 20%;
+    width: 60%; 
+    padding: 0;
+    margin: 0;
+}
+
+.filterContainer label {
+    width: fit-content;
+}
+
+footer {
+    background-color: #59839250;
+    text-align: center;
+    padding: 20px;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-bottom: -10px;
+    font-style: Italic;
+    height: 500px;
 }
 
 /* Add animation (fade in the popup) */

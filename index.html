@@ -60,7 +60,7 @@
         <p>2. Further down you get a summary of what common factors the foods share.</p>
         <p>3. In the end you'll get an analysis of what could be causing the negative reactions to the foods.</p>
         <div id="chosenFoods">
-            <h2>Chosen foods:</h2>
+            <h2>Chosen items:</h2>
             <p id="chosenText">Click on a category to show lists of foods</p>
         </div>
         <div class="searchContainer" id="searchContainer">
@@ -477,8 +477,32 @@
         </div>
 
         <button class="button2" id="showAnalysisButton" name="Show Analysis Popup">Show Anlysis</button>
-        <div id="restart">
-            <button class="button2" id="restartButton" name="Restart">Restart</button>
+        <button class="button2" id="restartButton" name="Restart">Restart</button>
+        
+        <h2>Filter Analysis</h2>
+        <p>Select one or more factors to exclude from the analysis</p>
+
+        <div class="filterContainer" id="filterContainer">
+            <label class="checkboxStyle" data-values="fodmapFilter">
+                <input type="checkbox" value="FODMAP filter" id="fodmapFilter">
+                FODMAPs
+            </label>
+            <label class="checkboxStyle" data-values="fatsFilter">
+                <input type="checkbox" value="Fats filter" id="fatsFilter">
+                Fats
+            </label>
+            <label class="checkboxStyle" data-values="fiberFilter">
+                <input type="checkbox" value="Fiber filter" id="fiberFilter">
+                Fiber
+            </label>
+            <label class="checkboxStyle" data-values="proteinFilter">
+                <input type="checkbox" value="Protein filter" id="proteinFilter">
+                Protein
+            </label>
+            <label class="checkboxStyle" data-values="carbFilter">
+                <input type="checkbox" value="Carb filter" id="carbFilter">
+                Carbohydrate
+            </label>
         </div>
 
     </div>
