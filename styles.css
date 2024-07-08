@@ -239,6 +239,10 @@ input[type="checkbox"]:hover {
     display: none;
 }
 
+.legumes {
+    display: none; 
+}
+
 .animals {
     display: none;
 }
