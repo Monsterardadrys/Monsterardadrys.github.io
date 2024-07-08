@@ -2,9 +2,11 @@
 let searchField = document.getElementById('search');
 let summary = document.getElementById("summary");
 
-const checkboxes = document.querySelectorAll("input[type='checkbox']");
+const checkboxes = document.getElementById("topSection").querySelectorAll("input[type='checkbox']");
 let selectedFoods = [];
 let foodValues = [];
+let selectedFilters = [];
+let filterValues = [];
 
 let rootsButton = document.getElementById("rootsButton");
 let veggiesButton = document.getElementById("veggiesButton");
@@ -27,11 +29,15 @@ let secondCount = 0;
 let thirdIndex = -1;
 let thirdCount = 0;
 
+// Sätter alla foodValues till 0. 
 resetFoodValues();
+resetFilterValues();
 
 let firstPercent = 0;
 let secondPercent = 0;
 let thirdPercent = 0;
+
+const filterCheckboxes = document.getElementById("bottomSection").querySelectorAll("input[type='checkbox']");; 
 
 // Open disclaimer 
 function openPopup() {
@@ -176,14 +182,8 @@ checkboxes.forEach(function (checkbox) {
             values.forEach(function (value) {
                 foodValues[value]++;
             })
-            countFoodValues();
-            if (firstCount != 0) {
-                getPercentages();
-            }
-            else {
-                summaryText.textContent = "Select foods to see a summary.";
-            }
         }
+
         // When a checkbox gets unchecked and the list includes the food
         else if ((!checkbox.checked) && (selectedFoods.includes(checkbox.value))) {
             // Resets the chosen-text 
@@ -201,20 +201,75 @@ checkboxes.forEach(function (checkbox) {
             values.forEach(function (value) {
                 foodValues[value]--;
             })
-            countFoodValues();
-            if (firstCount != 0) {
-                getPercentages();
-            }
-            else {
-                summaryText.textContent = "Select foods to see a summary.";
-            }
         }
+        
+        countFoodValues();
+    })
+});
+
+/* Ska lyssna om filter väljs för analysen. 
+- Funkar hyfsat, tills man väljer bort ett filter, då måste man starta om från början för att få rätt. Ska jag lägga in en funktion som räknar om alla food values när man väljer bort ett filter? 
+*/ 
+filterCheckboxes.forEach(function (checkbox) {
+    checkbox.addEventListener("click", function () {
+        // When a checkbox gets checked and the list of selected foods didn't include the food 
+        if ((checkbox.checked) && (!selectedFilters.includes(checkbox.value))) {
+            selectedFilters.push(checkbox.value);
+            const values = checkbox.parentNode.dataset.values.split(" ");
+            values.forEach(function (value) {
+                filterValues[value]++;
+                console.log(filterValues);
+            })
+            console.log(selectedFilters); 
+        }
+
+        // When a checkbox gets unchecked and the list includes the food
+        else if ((!checkbox.checked) && (selectedFilters.includes(checkbox.value))) {
+            // Finds the index of the filter that was unchecked 
+            let index1 = selectedFilters.indexOf(checkbox.value);
+            // Removes the filter from the list 
+            selectedFilters.splice(index1, 1);
+            // Reduces the corresponding values in filterValues
+            const values = checkbox.parentNode.dataset.values.split(" ");
+            values.forEach(function (value) {
+                filterValues[value]--;
+                console.log(filterValues);
+            })
+            console.log(selectedFilters); 
+        }
+
+        countFoodValues();
     })
 });
 
 function countFoodValues() {
-    foodValuesCount = ["fiber", foodValues.fiber, "carbs", foodValues.carbs, "over_10g_fat", foodValues.over_10g_fat, "protein", foodValues.protein, "fodmaps", foodValues.fodmaps, "histamine", foodValues.histamine, "over_3g_lactose", foodValues.over_3g_lactose];
+    // First check if any filter is chosen and if so set corresponding food value to zero
+    if (filterValues.fiberFilter === 1) {
+        foodValues.fiber = 0; 
+    }
+    if (filterValues.fodmapFilter === 1) {
+        foodValues.fodmaps = 0; 
+    }
+    if (filterValues.fatsFilter === 1) {
+        foodValues.over_10g_fat = 0; 
+    }
+    if (filterValues.carbsFilter === 1) {
+        foodValues.carbs = 0; 
+    }
+    if (filterValues.proteinFilter === 1) {
+        foodValues.protein = 0; 
+    }
 
+    foodValuesCount = [
+        "fiber", foodValues.fiber, 
+        "carbs", foodValues.carbs, 
+        "over_10g_fat", foodValues.over_10g_fat, 
+        "protein", foodValues.protein, 
+        "fodmaps", foodValues.fodmaps, 
+        "histamine", foodValues.histamine, 
+        "over_3g_lactose", foodValues.over_3g_lactose]; 
+
+    // Sorterar foodValuesCount 
     for (k = 1; k < foodValuesCount.length - 2; k = k + 2) {
         for (i = 1; i < foodValuesCount.length; i = i + 2) {
             if (foodValuesCount[i] > foodValuesCount[i + 2]) {
@@ -228,15 +283,14 @@ function countFoodValues() {
         }
     }
 
+    // Kollar vilket Value som har högst antal
     firstCount = 0;
-    console.log(`Before ${firstCount}`);
     for (i = 0; i < foodValuesCount.length; i++) {
         if (foodValuesCount[i] >= firstCount) {
             firstCount = foodValuesCount[i];
             firstIndex = i;
         }
     }
-    console.log(`After ${firstCount}`);
 
     secondCount = 0;
     for (i = 0; i < firstIndex; i++) {
@@ -253,6 +307,13 @@ function countFoodValues() {
             thirdIndex = i;
         }
     }
+
+    if (firstCount != 0) {
+        getPercentages();
+    }
+    else {
+        summaryText.textContent = "Select foods to see a summary.";
+    }
 }
 
 function getPercentages() {
@@ -264,17 +325,19 @@ function getPercentages() {
     thirdPercent = Math.floor(thirdPercent);
 
     if (secondCount === 0) {
-        summaryText.textContent = `You have chosen ${selectedFoods.length} foods from the list and ${firstPercent}% of them have ${foodValuesCount[firstIndex - 1]} in common.`;
+        summaryText.textContent = 
+        `You have chosen ${selectedFoods.length} foods from the list and ${firstPercent}% of them have ${foodValuesCount[firstIndex - 1]} in common.`;
     }
     else if (thirdCount === 0) {
-        summaryText.textContent = `You have chosen ${selectedFoods.length} foods from the list and their commonalitys are: ${firstPercent}% have ${foodValuesCount[firstIndex - 1]} and ${secondPercent}% have ${foodValuesCount[secondIndex - 1]} in common.`;
+        summaryText.textContent = 
+        `You have chosen ${selectedFoods.length} foods from the list and their commonalitys are: ${firstPercent}% have ${foodValuesCount[firstIndex - 1]} and ${secondPercent}% have ${foodValuesCount[secondIndex - 1]} in common.`;
     }
     else {
-        summaryText.textContent = `You have chosen ${selectedFoods.length} foods from the list and their commonalitys are: ${firstPercent}% have ${foodValuesCount[firstIndex - 1]}, ${secondPercent}% have ${foodValuesCount[secondIndex - 1]} and ${thirdPercent}% have ${foodValuesCount[thirdIndex - 1]} in common.`;
+        summaryText.textContent = 
+        `You have chosen ${selectedFoods.length} foods from the list and their commonalitys are: ${firstPercent}% have ${foodValuesCount[firstIndex - 1]}, ${secondPercent}% have ${foodValuesCount[secondIndex - 1]} and ${thirdPercent}% have ${foodValuesCount[thirdIndex - 1]} in common.`;
     }
 }
  
-/* I broke it trying to make the popup have three separate paragraphs */
 showAnalysisButton.addEventListener("click", function () {
     if (selectedFoods.length > 0) {
         if (foodValuesCount[firstIndex - 1] === "fodmaps") {
@@ -364,14 +427,22 @@ function showAllCategories() {
 }
 
 function clearCheckboxes() {
+    // Reset food item checkboxes
     checkboxes.forEach(function (checkbox) {
+        checkbox.checked = false;
+    });
+
+    // Reset analysis filter checkboxes
+    filterCheckboxes.forEach(function (checkbox) {
         checkbox.checked = false;
     });
 }
 
 function resetAllValues() {
     resetFoodValues();
+    resetFilterValues();
     selectedFoods = [];
+    selectedFilters = [];
     foodValuesCount = [];
     firstIndex = -1;
     firstCount = 0;
@@ -389,6 +460,14 @@ function resetFoodValues() {
     foodValues.fodmaps = 0;
     foodValues.histamine = 0;
     foodValues.over_3g_lactose = 0; 
+}
+
+function resetFilterValues() {
+    filterValues.fiberFilter = 0; 
+    filterValues.fodmapFilter = 0; 
+    filterValues.fatsFilter = 0; 
+    filterValues.carbFilter = 0; 
+    filterValues.proteinFilter = 0; 
 }
 
 /* TODO
