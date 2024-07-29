@@ -349,7 +349,7 @@ function getPercentages() {
         summaryText.textContent = 
         `You have chosen ${selectedFoods.length} foods from the list and their commonalitys are: ${firstPercent}% have ${foodValuesCount[firstIndex - 1]}, ${secondPercent}% have ${foodValuesCount[secondIndex - 1]} and ${thirdPercent}% have ${foodValuesCount[thirdIndex - 1]} in common.`;
     }
-}
+} 
  
 showAnalysisButton.addEventListener("click", function () {
     if (selectedFoods.length > 0) {
