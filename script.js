@@ -13,6 +13,7 @@ let veggiesButton = document.getElementById("veggiesButton");
 let fruitsButton = document.getElementById("fruitsButton");
 let nutsButton = document.getElementById("nutsButton");
 let grainsButton = document.getElementById("grainsButton");
+let legumesButton = document.getElementById("legumesButton");
 let animalsButton = document.getElementById("animalsButton");
 let spicesButton = document.getElementById("spicesButton");
 
@@ -89,6 +90,15 @@ grainsButton.addEventListener("click", function () {
     }
     else {
         grains.setAttribute("style", "display:block;");
+    }
+});
+
+legumesButton.addEventListener("click", function () {
+    if (legumes.getAttribute("style") === "display:block;") {
+        legumes.setAttribute("style", "display:none;");
+    }
+    else {
+        legumes.setAttribute("style", "display:block;");
     }
 });
 
@@ -259,6 +269,9 @@ function countFoodValues() {
     if (filterValues.proteinFilter === 1) {
         foodValues.protein = 0; 
     }
+    if (filterValues.lactoseFilter === 1) {
+        foodValues.over_3g_lactose = 0; 
+    }
 
     foodValuesCount = [
         "fiber", foodValues.fiber, 
@@ -336,12 +349,14 @@ function getPercentages() {
         summaryText.textContent = 
         `You have chosen ${selectedFoods.length} foods from the list and their commonalitys are: ${firstPercent}% have ${foodValuesCount[firstIndex - 1]}, ${secondPercent}% have ${foodValuesCount[secondIndex - 1]} and ${thirdPercent}% have ${foodValuesCount[thirdIndex - 1]} in common.`;
     }
-}
+} 
  
 showAnalysisButton.addEventListener("click", function () {
     if (selectedFoods.length > 0) {
         if (foodValuesCount[firstIndex - 1] === "fodmaps") {
-            popupText.textContent = "The number one commonality of these foods is FODMAPs which can cause mild or moderate gastrointestinal discomfort for anyone if the intake is high enough. For sensitive individuals, like people with Irritable bowel syndrome (IBS), moderate symtoms can occur at a relatively low intake. With high daly intake the gastrointestinal symtoms can become severe, causing acute diarrhea and mind numbing abdominal pain. Common foods high in FODMAPS are among others: Garlic, Onions, Pasta, Plain white bread, beans and peas. Follow the link in the main menu to read more.";
+            popupText.textContent = "The number one commonality of these foods is FODMAPs which can cause mild or moderate gastrointestinal discomfort for anyone going from a low intake to a high intake.";
+            popupText2.textContent = "For most people the symtoms of a high intake of FODMAPs is mild and improves over time even when the intake stays high, as the gut microbiome is the main reason for the symtoms and it adapts to the new diet.";
+            popupText3.textContent = "For sensitive individuals on the other hand, like people with Irritable bowel syndrome (IBS), moderate symtoms can occur at a relatively low intake and the adaptation of the gut microbiome takes a longer time. With high daly intake the gastrointestinal symtoms can become severe, causing acute diarrhea and mind numbing abdominal pain. Follow the link in the main menu to read more.";
         }
         else if (foodValuesCount[firstIndex - 1] === "fiber") {
             popupText.textContent = "The number one commonality of these foods is Fiber which can cause mild or moderate gas and bloating for anyone if the intake is high enough.";
@@ -349,10 +364,14 @@ showAnalysisButton.addEventListener("click", function () {
             popupText3.textContent = "For sensitive individuals, like people with gut-microbial dysbiosis, gastrointestinal discomfort can occur at a relatively low intake. Common foods high in Fiber are among others: Flax seeds, Chia seeds, Wheat/Oat bran, Whole grain pasta/bread/rice, beans and peas. Follow the link in the main menu to read more.";
         }
         else if (foodValuesCount[firstIndex - 1] === "over_3g_lactose") {
-            popupText.textContent = "Lactose";
+            popupText.textContent = "The number one commonality of these foods is Lactose which is a sugar (di-saccharide) that comes with the milk from all mamals.";
+            popupText2.textContent = "Lactose can cause discomfort or even diarrhea for most people if eaten in very high amounts. Sensitive individuals, like people with celiac disease, IBD, IBS or lactose intolerance, can get moderate to severe pain, gas and diarrhea even in relatively low doses.";
+            popupText3.textContent = "It is mainly found in dairy products (no matter what animal the milk has come from) and it is added as a sweetener to some processed foods, supplements and medications. Fermented foods like yoghurt and cheese will have lower levels of lactose, the longer the ferment and/or aging of the product the lower the levels of lactose will be. ";
         }
         else if (foodValuesCount[firstIndex - 1] === "over_10g_fat") {
-            popupText.textContent = "Fat";
+            popupText.textContent = "The number one commonality of these foods is a fat content of more than 10g per 100g of the food, which can cause symtoms in several cases of GI-disorders";
+            popupText2.textContent = "This is likely to cause clear symtoms in people with a number of disorders. An increase of symtoms is expected in people with GERD, Gastro Esofageal Reflux Disorder, or IBS, Irritable Bowl Syndrome. Severe and acute symtoms within 1-2 hours after a meal, like chronic diarrhea and pain/cramps, is common in malabsorption disorders like EPI, Exocrine Pancreatic Insufficiency.";
+            popupText3.textContent = "EPI can be a severe disorder that is usually followed by unplanned weight loss, muscle loss and deteriorating health, most importantly it can be a sign of pancreatic cancer. Indicators of severe fat malabsorption is acute diarrhea within 1-2 hours of fatty meals, a yellow coloring of the stool and oily traces on the toilet paper or in the toilet. The oil content can make it harder than usual to flush the toilet clean and to wipe the behind clean.";
         }
         else if (foodValuesCount[firstIndex - 1] === "protein") {
             popupText.textContent = "Protein";
@@ -408,6 +427,7 @@ function hideAllCategories() {
     fruits.setAttribute("style", "display:none;");
     nutsAndSeeds.setAttribute("style", "display:none;");
     grains.setAttribute("style", "display:none;");
+    legumes.setAttribute("style", "display:none;");
     animals.setAttribute("style", "display:none");
     dairy.setAttribute("style", "display:none;");
     spices.setAttribute("style", "display:none");
@@ -420,7 +440,7 @@ function showAllCategories() {
     fruits.setAttribute("style", "display:block;");
     nutsAndSeeds.setAttribute("style", "display:block;");
     grains.setAttribute("style", "display:block;");
-    animals.setAttribute("style", "display:block;");
+    legumes.setAttribute("style", "display:block;");animals.setAttribute("style", "display:block;");
     dairy.setAttribute("style", "display:block;");
     spices.setAttribute("style", "display:block;"); 
     ultraProcessed.setAttribute("style", "display:block;");
@@ -468,6 +488,7 @@ function resetFilterValues() {
     filterValues.fatsFilter = 0; 
     filterValues.carbFilter = 0; 
     filterValues.proteinFilter = 0; 
+    filterValues.lactoseFilter = 0; 
 }
 
 /* TODO
