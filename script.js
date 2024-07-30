@@ -263,7 +263,7 @@ function countFoodValues() {
     if (filterValues.fatsFilter === 1) {
         foodValues.over_10g_fat = 0; 
     }
-    if (filterValues.carbsFilter === 1) {
+    if (filterValues.carbFilter === 1) {
         foodValues.carbs = 0; 
     }
     if (filterValues.proteinFilter === 1) {
