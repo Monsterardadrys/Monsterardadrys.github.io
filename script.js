@@ -1,501 +1,283 @@
+/* =========================================================================
+   script.js — Food Intolerance Guide interactivity
 
-let searchField = document.getElementById('search');
-let summary = document.getElementById("summary");
+   This file is fully generic: it builds the category boxes and filter
+   checkboxes from CATEGORIES and TRAITS (see foods-data.js), and never
+   hardcodes a food, category, or trait name. To add content, edit
+   foods-data.js only.
 
-const checkboxes = document.getElementById("topSection").querySelectorAll("input[type='checkbox']");
-let selectedFoods = [];
-let foodValues = [];
-let selectedFilters = [];
-let filterValues = [];
+   Bug fix note: the old version kept a running tally of trait counts and
+   incremented/decremented it on every checkbox click. Unchecking a FILTER
+   checkbox after foods were already selected left that tally wrong,
+   because the increment/decrement logic for filters didn't perfectly
+   mirror the logic for foods. This version has no running tally at all —
+   on every change it reads which food checkboxes and which filter
+   checkboxes are currently checked directly from the page, and recomputes
+   the whole analysis from that. There's nothing to get out of sync.
+   ========================================================================= */
 
-let rootsButton = document.getElementById("rootsButton");
-let veggiesButton = document.getElementById("veggiesButton");
-let fruitsButton = document.getElementById("fruitsButton");
-let nutsButton = document.getElementById("nutsButton");
-let grainsButton = document.getElementById("grainsButton");
-let legumesButton = document.getElementById("legumesButton");
-let animalsButton = document.getElementById("animalsButton");
-let spicesButton = document.getElementById("spicesButton");
+(function () {
+  "use strict";
 
-let popupContainer = document.getElementById("popupContainer");
-let popupText = document.getElementById("popupText");
-let popupText2 = document.getElementById("popupText2");
-let popupText3 = document.getElementById("popupText3");
+  const topSection = document.getElementById("topSection");
+  const filterContainer = document.getElementById("filterContainer");
+  const chosenText = document.getElementById("chosenText");
+  const summaryText = document.getElementById("summaryText");
+  const searchField = document.getElementById("search");
+  const searchButton = document.getElementById("searchButton");
+  const showAllButton = document.getElementById("showAllButton");
+  const restartButton = document.getElementById("restartButton");
+  const showAnalysisButton = document.getElementById("showAnalysisButton");
+  const popupContainer = document.getElementById("popupContainer");
+  const popupTextContainer = document.getElementById("popupTextContainer");
 
-let foodValuesCount = [];
-let firstIndex = -1;
-let firstCount = 0;
-let secondIndex = -1;
-let secondCount = 0;
-let thirdIndex = -1;
-let thirdCount = 0;
+  let lastTopTraits = [];
 
-// Sätter alla foodValues till 0. 
-resetFoodValues();
-resetFilterValues();
+  // ---- Disclaimer popup (unchanged behaviour) --------------------------
+  function openDisclaimer() {
+    window.location.hash = "disclaimerPopup";
+  }
+  window.onload = openDisclaimer;
 
-let firstPercent = 0;
-let secondPercent = 0;
-let thirdPercent = 0;
+  // ---- Build the food category boxes from CATEGORIES -------------------
+  function renderCategories() {
+    CATEGORIES.forEach(function (category) {
+      const box = document.createElement("div");
+      box.className = "foodBox";
 
-const filterCheckboxes = document.getElementById("bottomSection").querySelectorAll("input[type='checkbox']");; 
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "button";
+      button.textContent = category.label;
 
-// Open disclaimer 
-function openPopup() {
-    window.location.hash = 'disclaimerPopup';
-}
+      const group = document.createElement("div");
+      group.className = "foodGroup";
 
-window.onload = openPopup;
+      category.foods.forEach(function (food) {
+        const label = document.createElement("label");
+        label.className = "checkboxStyle";
+        label.dataset.traits = food.traits.join(" ");
 
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.value = food.name;
+        checkbox.addEventListener("change", recompute);
 
-rootsButton.addEventListener("click", function () {
-    if (roots.getAttribute("style") === "display:block;") {
-        roots.setAttribute("style", "display:none;");
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(food.name));
+        group.appendChild(label);
+      });
+
+      button.addEventListener("click", function () {
+        group.classList.toggle("open");
+      });
+
+      box.appendChild(button);
+      box.appendChild(group);
+      topSection.appendChild(box);
+    });
+  }
+
+  // ---- Build the filter checkboxes from TRAITS --------------------------
+  function renderFilters() {
+    Object.keys(TRAITS).forEach(function (traitId) {
+      const trait = TRAITS[traitId];
+      if (!trait.filter) return;
+
+      const label = document.createElement("label");
+      label.className = "checkboxStyle";
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.value = traitId;
+      checkbox.addEventListener("change", recompute);
+
+      label.appendChild(checkbox);
+      label.appendChild(document.createTextNode(trait.label));
+      filterContainer.appendChild(label);
+    });
+  }
+
+  // ---- Read current state straight from the DOM ------------------------
+  function getSelectedFoods() {
+    const checked = topSection.querySelectorAll("input[type='checkbox']:checked");
+    return Array.from(checked).map(function (checkbox) {
+      const traitString = checkbox.closest("label").dataset.traits || "";
+      return {
+        name: checkbox.value,
+        traits: traitString.split(" ").filter(Boolean)
+      };
+    });
+  }
+
+  function getExcludedTraitIds() {
+    const checked = filterContainer.querySelectorAll("input[type='checkbox']:checked");
+    return new Set(Array.from(checked).map(function (checkbox) {
+      return checkbox.value;
+    }));
+  }
+
+  function getTopTraits(counts, totalSelected) {
+    return Object.keys(counts)
+      .filter(function (traitId) { return counts[traitId] > 0; })
+      .sort(function (a, b) { return counts[b] - counts[a]; })
+      .slice(0, 3)
+      .map(function (traitId) {
+        return {
+          traitId: traitId,
+          count: counts[traitId],
+          percent: Math.floor((counts[traitId] / totalSelected) * 100)
+        };
+      });
+  }
+
+  // ---- Main recompute — runs on every food or filter checkbox change ---
+  function recompute() {
+    const selectedFoods = getSelectedFoods();
+    const excluded = getExcludedTraitIds();
+
+    chosenText.textContent = selectedFoods.length
+      ? selectedFoods.map(function (f) { return f.name; }).join(", ")
+      : "Click on a category to show lists of foods";
+
+    const counts = {};
+    selectedFoods.forEach(function (food) {
+      food.traits.forEach(function (traitId) {
+        if (excluded.has(traitId)) return;
+        if (!TRAITS[traitId]) return;
+        counts[traitId] = (counts[traitId] || 0) + 1;
+      });
+    });
+
+    lastTopTraits = getTopTraits(counts, selectedFoods.length);
+    updateSummaryText(selectedFoods.length, lastTopTraits);
+  }
+
+  function updateSummaryText(total, topTraits) {
+    if (total === 0) {
+      summaryText.textContent = "Select foods to see a summary.";
+      return;
     }
-    else {
-        roots.setAttribute("style", "display:block;");
+    if (topTraits.length === 0) {
+      summaryText.textContent =
+        "You have chosen " + total + " foods from the list, but they don't share a tracked trait right now (or every relevant filter is excluded).";
+      return;
     }
-});
 
-veggiesButton.addEventListener("click", function () {
-    if (veggies.getAttribute("style") === "display:block;") {
-        veggies.setAttribute("style", "display:none;");
-    }
-    else {
-        veggies.setAttribute("style", "display:block;");
-    }
-});
+    const phrases = topTraits.map(function (t) {
+      return t.percent + "% have " + TRAITS[t.traitId].label;
+    });
 
-fruitsButton.addEventListener("click", function () {
-    if (fruits.getAttribute("style") === "display:block;") {
-        fruits.setAttribute("style", "display:none;");
+    let tail;
+    if (phrases.length === 1) {
+      tail = "and " + phrases[0] + " in common.";
+    } else {
+      const last = phrases.pop();
+      tail = "and their commonalities are: " + phrases.join(", ") + " and " + last + " in common.";
     }
-    else {
-        fruits.setAttribute("style", "display:block;");
-    }
-});
 
-nutsButton.addEventListener("click", function () {
-    if (nutsAndSeeds.getAttribute("style") === "display:block;") {
-        nutsAndSeeds.setAttribute("style", "display:none;");
-    }
-    else {
-        nutsAndSeeds.setAttribute("style", "display:block;");
-    }
-});
+    summaryText.textContent = "You have chosen " + total + " foods from the list " + tail;
+  }
 
-grainsButton.addEventListener("click", function () {
-    if (grains.getAttribute("style") === "display:block;") {
-        grains.setAttribute("style", "display:none;");
-    }
-    else {
-        grains.setAttribute("style", "display:block;");
-    }
-});
+  // ---- Analysis popup ----------------------------------------------------
+  function addPopupParagraph(text, isLead) {
+    const p = document.createElement("p");
+    if (isLead) p.className = "popupText";
+    p.textContent = text;
+    popupTextContainer.appendChild(p);
+  }
 
-legumesButton.addEventListener("click", function () {
-    if (legumes.getAttribute("style") === "display:block;") {
-        legumes.setAttribute("style", "display:none;");
-    }
-    else {
-        legumes.setAttribute("style", "display:block;");
-    }
-});
+  function addPopupArticleLink(articleId) {
+    const p = document.createElement("p");
+    const link = document.createElement("a");
+    link.href = "articles.html#" + articleId;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = "Read the full article →";
+    // Stop the click from also triggering the popup's own close-on-click handler.
+    link.addEventListener("click", function (e) { e.stopPropagation(); });
+    p.appendChild(link);
+    popupTextContainer.appendChild(p);
+  }
 
-animalsButton.addEventListener("click", function () {
-    if (animals.getAttribute("style") === "display:block;") {
-        animals.setAttribute("style", "display:none;");
-    }
-    else {
-        animals.setAttribute("style", "display:block;");
-    }
-});
+  showAnalysisButton.addEventListener("click", function () {
+    popupTextContainer.innerHTML = "";
 
-dairyButton.addEventListener("click", function () {
-    if (dairy.getAttribute("style") === "display:block;") {
-        dairy.setAttribute("style", "display:none;");
+    if (lastTopTraits.length === 0) {
+      addPopupParagraph("Select foods to see a deeper summary and analysis of the foods.", true);
+    } else {
+      const trait = TRAITS[lastTopTraits[0].traitId];
+      const paragraphs = (trait.analysis && trait.analysis.length)
+        ? trait.analysis
+        : ["The most common shared trait among these foods is " + trait.label + "."];
+      paragraphs.forEach(function (text, i) {
+        addPopupParagraph(text, i === 0);
+      });
+      if (trait.articleId) {
+        addPopupArticleLink(trait.articleId);
+      }
     }
-    else {
-        dairy.setAttribute("style", "display:block;");
-    }
-});
 
-spicesButton.addEventListener("click", function () {
-    if (spices.getAttribute("style") === "display:block;") {
-        spices.setAttribute("style", "display:none;");
-    }
-    else {
-        spices.setAttribute("style", "display:block;");
-    }
-});
+    popupContainer.classList.toggle("show");
+  });
 
-processedButton.addEventListener("click", function () {
-    if (ultraProcessed.getAttribute("style") === "display:block;") {
-        ultraProcessed.setAttribute("style", "display:none;");
-    }
-    else {
-        ultraProcessed.setAttribute("style", "display:block;");
-    }
-});
+  popupContainer.addEventListener("click", function () {
+    popupContainer.classList.toggle("show");
+  });
 
+  // ---- Search / show-all -------------------------------------------------
+  function showAllCategories() {
+    topSection.querySelectorAll(".foodGroup").forEach(function (group) {
+      group.classList.add("open");
+    });
+  }
 
-searchButton.addEventListener("click", function () {
-    let filter = searchField.value.toUpperCase();
+  function hideAllCategories() {
+    topSection.querySelectorAll(".foodGroup").forEach(function (group) {
+      group.classList.remove("open");
+    });
+  }
+
+  searchButton.addEventListener("click", function () {
+    const filter = searchField.value.toUpperCase();
     let found = false;
-
     showAllCategories();
 
-    for (let i = 0; i < checkboxes.length; i++) {
-        let txtValue = checkboxes[i].value.toUpperCase();
-
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            found = true;
-            checkboxes[i].style.display = "";
-            checkboxes[i].parentElement.style.display = "";
-        } else {
-            checkboxes[i].style.display = "none";
-            checkboxes[i].parentElement.style.display = "none";
-        }
-    }
-
-    if (found === false) {
-        // reset foodlist
-        for (let i = 0; i < checkboxes.length; i++) {
-            checkboxes[i].style.display = "";
-            checkboxes[i].parentElement.style.display = "";
-        }
-    }
-
-    // clear field
-    searchField.value = null;
-});
-
-showAllButton.addEventListener("click", function () {
-    for (let i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].style.display = "";
-        checkboxes[i].parentElement.style.display = "";
-    }
-    showAllCategories();
-});
-
-
-checkboxes.forEach(function (checkbox) {
-    checkbox.addEventListener("click", function () {
-        // When a checkbox gets checked and the list of selected foods didn't include the food 
-        if ((checkbox.checked) && (!selectedFoods.includes(checkbox.value))) {
-            chosenText.textContent = "";
-            selectedFoods.push(checkbox.value);
-            selectedFoods.forEach(function (element) {
-                chosenText.textContent += `${element}, `;
-            })
-            const values = checkbox.parentNode.dataset.values.split(" ");
-            values.forEach(function (value) {
-                foodValues[value]++;
-            })
-        }
-
-        // When a checkbox gets unchecked and the list includes the food
-        else if ((!checkbox.checked) && (selectedFoods.includes(checkbox.value))) {
-            // Resets the chosen-text 
-            chosenText.textContent = "";
-            // Finds the index of the food that was unchecked 
-            let index1 = selectedFoods.indexOf(checkbox.value);
-            // Removes the food from the list of chosen foods
-            selectedFoods.splice(index1, 1);
-            // Makes a new chosen-text with foods remaining in the chosen-list
-            selectedFoods.forEach(function (element) {
-                chosenText.textContent += `${element}, `;
-            })
-            // Reduces the corresponding values in foodValues
-            const values = checkbox.parentNode.dataset.values.split(" ");
-            values.forEach(function (value) {
-                foodValues[value]--;
-            })
-        }
-        
-        countFoodValues();
-    })
-});
-
-/* Ska lyssna om filter väljs för analysen. 
-- Funkar hyfsat, tills man väljer bort ett filter, då måste man starta om från början för att få rätt. Ska jag lägga in en funktion som räknar om alla food values när man väljer bort ett filter? 
-*/ 
-filterCheckboxes.forEach(function (checkbox) {
-    checkbox.addEventListener("click", function () {
-        // When a checkbox gets checked and the list of selected foods didn't include the food 
-        if ((checkbox.checked) && (!selectedFilters.includes(checkbox.value))) {
-            selectedFilters.push(checkbox.value);
-            const values = checkbox.parentNode.dataset.values.split(" ");
-            values.forEach(function (value) {
-                filterValues[value]++;
-                console.log(filterValues);
-            })
-            console.log(selectedFilters); 
-        }
-
-        // When a checkbox gets unchecked and the list includes the food
-        else if ((!checkbox.checked) && (selectedFilters.includes(checkbox.value))) {
-            // Finds the index of the filter that was unchecked 
-            let index1 = selectedFilters.indexOf(checkbox.value);
-            // Removes the filter from the list 
-            selectedFilters.splice(index1, 1);
-            // Reduces the corresponding values in filterValues
-            const values = checkbox.parentNode.dataset.values.split(" ");
-            values.forEach(function (value) {
-                filterValues[value]--;
-                console.log(filterValues);
-            })
-            console.log(selectedFilters); 
-        }
-
-        countFoodValues();
-    })
-});
-
-function countFoodValues() {
-    // First check if any filter is chosen and if so set corresponding food value to zero
-    if (filterValues.fiberFilter === 1) {
-        foodValues.fiber = 0; 
-    }
-    if (filterValues.fodmapFilter === 1) {
-        foodValues.fodmaps = 0; 
-    }
-    if (filterValues.fatsFilter === 1) {
-        foodValues.over_10g_fat = 0; 
-    }
-    if (filterValues.carbFilter === 1) {
-        foodValues.carbs = 0; 
-    }
-    if (filterValues.proteinFilter === 1) {
-        foodValues.protein = 0; 
-    }
-    if (filterValues.lactoseFilter === 1) {
-        foodValues.over_3g_lactose = 0; 
-    }
-
-    foodValuesCount = [
-        "fiber", foodValues.fiber, 
-        "carbs", foodValues.carbs, 
-        "over_10g_fat", foodValues.over_10g_fat, 
-        "protein", foodValues.protein, 
-        "fodmaps", foodValues.fodmaps, 
-        "histamine", foodValues.histamine, 
-        "over_3g_lactose", foodValues.over_3g_lactose]; 
-
-    // Sorterar foodValuesCount 
-    for (k = 1; k < foodValuesCount.length - 2; k = k + 2) {
-        for (i = 1; i < foodValuesCount.length; i = i + 2) {
-            if (foodValuesCount[i] > foodValuesCount[i + 2]) {
-                let tempText = foodValuesCount[i - 1];
-                let tempValue = foodValuesCount[i];
-                foodValuesCount[i - 1] = foodValuesCount[i + 1];
-                foodValuesCount[i] = foodValuesCount[i + 2];
-                foodValuesCount[i + 1] = tempText;
-                foodValuesCount[i + 2] = tempValue;
-            }
-        }
-    }
-
-    // Kollar vilket Value som har högst antal
-    firstCount = 0;
-    for (i = 0; i < foodValuesCount.length; i++) {
-        if (foodValuesCount[i] >= firstCount) {
-            firstCount = foodValuesCount[i];
-            firstIndex = i;
-        }
-    }
-
-    secondCount = 0;
-    for (i = 0; i < firstIndex; i++) {
-        if (foodValuesCount[i] >= secondCount) {
-            secondCount = foodValuesCount[i];
-            secondIndex = i;
-        }
-    }
-
-    thirdCount = 0;
-    for (i = 0; i < secondIndex; i++) {
-        if (foodValuesCount[i] >= thirdCount) {
-            thirdCount = foodValuesCount[i];
-            thirdIndex = i;
-        }
-    }
-
-    if (firstCount != 0) {
-        getPercentages();
-    }
-    else {
-        summaryText.textContent = "Select foods to see a summary.";
-    }
-}
-
-function getPercentages() {
-    firstPercent = firstCount / selectedFoods.length * 100;
-    firstPercent = Math.floor(firstPercent);
-    secondPercent = secondCount / selectedFoods.length * 100;
-    secondPercent = Math.floor(secondPercent);
-    thirdPercent = thirdCount / selectedFoods.length * 100;
-    thirdPercent = Math.floor(thirdPercent);
-
-    if (secondCount === 0) {
-        summaryText.textContent = 
-        `You have chosen ${selectedFoods.length} foods from the list and ${firstPercent}% of them have ${foodValuesCount[firstIndex - 1]} in common.`;
-    }
-    else if (thirdCount === 0) {
-        summaryText.textContent = 
-        `You have chosen ${selectedFoods.length} foods from the list and their commonalitys are: ${firstPercent}% have ${foodValuesCount[firstIndex - 1]} and ${secondPercent}% have ${foodValuesCount[secondIndex - 1]} in common.`;
-    }
-    else {
-        summaryText.textContent = 
-        `You have chosen ${selectedFoods.length} foods from the list and their commonalitys are: ${firstPercent}% have ${foodValuesCount[firstIndex - 1]}, ${secondPercent}% have ${foodValuesCount[secondIndex - 1]} and ${thirdPercent}% have ${foodValuesCount[thirdIndex - 1]} in common.`;
-    }
-} 
- 
-showAnalysisButton.addEventListener("click", function () {
-    if (selectedFoods.length > 0) {
-        if (foodValuesCount[firstIndex - 1] === "fodmaps") {
-            popupText.textContent = "The number one commonality of these foods is FODMAPs which can cause mild or moderate gastrointestinal discomfort for anyone going from a low intake to a high intake.";
-            popupText2.textContent = "For most people the symtoms of a high intake of FODMAPs is mild and improves over time even when the intake stays high, as the gut microbiome is the main reason for the symtoms and it adapts to the new diet.";
-            popupText3.textContent = "For sensitive individuals on the other hand, like people with Irritable bowel syndrome (IBS), moderate symtoms can occur at a relatively low intake and the adaptation of the gut microbiome takes a longer time. With high daly intake the gastrointestinal symtoms can become severe, causing acute diarrhea and mind numbing abdominal pain. Follow the link in the main menu to read more.";
-        }
-        else if (foodValuesCount[firstIndex - 1] === "fiber") {
-            popupText.textContent = "The number one commonality of these foods is Fiber which can cause mild or moderate gas and bloating for anyone if the intake is high enough.";
-            popupText2.textContent = "High fiber intake during dehydration can contribute to constipation and if the dehydration is not corrected the constipation can cause severe gastrointestinal discomfort and lowered apetite, which in the worst case scenario will worsen the dehydration. ";
-            popupText3.textContent = "For sensitive individuals, like people with gut-microbial dysbiosis, gastrointestinal discomfort can occur at a relatively low intake. Common foods high in Fiber are among others: Flax seeds, Chia seeds, Wheat/Oat bran, Whole grain pasta/bread/rice, beans and peas. Follow the link in the main menu to read more.";
-        }
-        else if (foodValuesCount[firstIndex - 1] === "over_3g_lactose") {
-            popupText.textContent = "The number one commonality of these foods is Lactose which is a sugar (di-saccharide) that comes with the milk from all mamals.";
-            popupText2.textContent = "Lactose can cause discomfort or even diarrhea for most people if eaten in very high amounts. Sensitive individuals, like people with celiac disease, IBD, IBS or lactose intolerance, can get moderate to severe pain, gas and diarrhea even in relatively low doses.";
-            popupText3.textContent = "It is mainly found in dairy products (no matter what animal the milk has come from) and it is added as a sweetener to some processed foods, supplements and medications. Fermented foods like yoghurt and cheese will have lower levels of lactose, the longer the ferment and/or aging of the product the lower the levels of lactose will be. ";
-        }
-        else if (foodValuesCount[firstIndex - 1] === "over_10g_fat") {
-            popupText.textContent = "The number one commonality of these foods is a fat content of more than 10g per 100g of the food, which can cause symtoms in several cases of GI-disorders";
-            popupText2.textContent = "This is likely to cause clear symtoms in people with a number of disorders. An increase of symtoms is expected in people with GERD, Gastro Esofageal Reflux Disorder, or IBS, Irritable Bowl Syndrome. Severe and acute symtoms within 1-2 hours after a meal, like chronic diarrhea and pain/cramps, is common in malabsorption disorders like EPI, Exocrine Pancreatic Insufficiency.";
-            popupText3.textContent = "EPI can be a severe disorder that is usually followed by unplanned weight loss, muscle loss and deteriorating health, most importantly it can be a sign of pancreatic cancer. Indicators of severe fat malabsorption is acute diarrhea within 1-2 hours of fatty meals, a yellow coloring of the stool and oily traces on the toilet paper or in the toilet. The oil content can make it harder than usual to flush the toilet clean and to wipe the behind clean.";
-        }
-        else if (foodValuesCount[firstIndex - 1] === "protein") {
-            popupText.textContent = "Protein";
-        }
-        else if (foodValuesCount[firstIndex - 1] === "carbs") {
-            popupText.textContent = "Carbs";
-        }
-        else if (foodValuesCount[firstIndex - 1] === "histamine") {
-            popupText.textContent = "Histamine";
-        }
-        else {
-            popupText.textContent = "Wohoo!";
-        }
-    }
-    else {
-        popupText.textContent = "Select foods to see a deeper summary and analysis of the foods.";
-    }
-    popupContainer.classList.toggle("show");
-    popupText.classList.toggle("show");
-    popupText2.classList.toggle("show");
-    popupText3.classList.toggle("show");
-});
-
-popupContainer.addEventListener("click", function () {
-    popupContainer.classList.toggle("show");
-    popupText.classList.toggle("show");
-    popupText2.classList.toggle("show");
-    popupText3.classList.toggle("show");
-});
-
-restartButton.addEventListener("click", function () {
-    clearCheckboxes();
-
-    // Clear search
-    searchField.value = null;
-    for (let i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].style.display = "";
-        checkboxes[i].parentElement.style.display = "";
-    }
-
-    // Clear list of selected foods, food values and display of chosen foods. 
-    resetAllValues();
-    chosenText.textContent = "Click on a category to show lists of foods";
-
-    // Hide all food categories
-    summaryText.textContent = "Select foods to see a summary.";
-    hideAllCategories();
-});
-
-function hideAllCategories() {
-    roots.setAttribute("style", "display:none;");
-    veggies.setAttribute("style", "display:none;");
-    fruits.setAttribute("style", "display:none;");
-    nutsAndSeeds.setAttribute("style", "display:none;");
-    grains.setAttribute("style", "display:none;");
-    legumes.setAttribute("style", "display:none;");
-    animals.setAttribute("style", "display:none");
-    dairy.setAttribute("style", "display:none;");
-    spices.setAttribute("style", "display:none");
-    ultraProcessed.setAttribute("style", "display:none");
-}
-
-function showAllCategories() {
-    roots.setAttribute("style", "display:block;");
-    veggies.setAttribute("style", "display:block;");
-    fruits.setAttribute("style", "display:block;");
-    nutsAndSeeds.setAttribute("style", "display:block;");
-    grains.setAttribute("style", "display:block;");
-    legumes.setAttribute("style", "display:block;");animals.setAttribute("style", "display:block;");
-    dairy.setAttribute("style", "display:block;");
-    spices.setAttribute("style", "display:block;"); 
-    ultraProcessed.setAttribute("style", "display:block;");
-}
-
-function clearCheckboxes() {
-    // Reset food item checkboxes
+    const checkboxes = topSection.querySelectorAll("input[type='checkbox']");
     checkboxes.forEach(function (checkbox) {
-        checkbox.checked = false;
+      const matches = checkbox.value.toUpperCase().indexOf(filter) > -1;
+      if (matches) found = true;
+      checkbox.closest("label").style.display = matches ? "" : "none";
     });
 
-    // Reset analysis filter checkboxes
-    filterCheckboxes.forEach(function (checkbox) {
-        checkbox.checked = false;
+    if (!found) {
+      checkboxes.forEach(function (checkbox) {
+        checkbox.closest("label").style.display = "";
+      });
+    }
+
+    searchField.value = "";
+  });
+
+  showAllButton.addEventListener("click", function () {
+    topSection.querySelectorAll("label").forEach(function (label) {
+      label.style.display = "";
     });
-}
+    showAllCategories();
+  });
 
-function resetAllValues() {
-    resetFoodValues();
-    resetFilterValues();
-    selectedFoods = [];
-    selectedFilters = [];
-    foodValuesCount = [];
-    firstIndex = -1;
-    firstCount = 0;
-    secondIndex = -1;
-    secondCount = 0;
-    thirdIndex = -1;
-    thirdCount = 0;
-}
+  // ---- Restart ------------------------------------------------------------
+  restartButton.addEventListener("click", function () {
+    topSection.querySelectorAll("input[type='checkbox']").forEach(function (cb) { cb.checked = false; });
+    filterContainer.querySelectorAll("input[type='checkbox']").forEach(function (cb) { cb.checked = false; });
+    topSection.querySelectorAll("label").forEach(function (label) { label.style.display = ""; });
+    searchField.value = "";
+    hideAllCategories();
+    recompute();
+  });
 
-function resetFoodValues() {
-    foodValues.fiber = 0;
-    foodValues.carbs = 0;
-    foodValues.over_10g_fat = 0;
-    foodValues.protein = 0;
-    foodValues.fodmaps = 0;
-    foodValues.histamine = 0;
-    foodValues.over_3g_lactose = 0; 
-}
-
-function resetFilterValues() {
-    filterValues.fiberFilter = 0; 
-    filterValues.fodmapFilter = 0; 
-    filterValues.fatsFilter = 0; 
-    filterValues.carbFilter = 0; 
-    filterValues.proteinFilter = 0; 
-    filterValues.lactoseFilter = 0; 
-}
-
-/* TODO
-Jag vill lägga till möjligheten att filtrera bort saker från analysen, tex macros, fiber, fodmaps, mm, 
-för att kunna se vad som blir kvar när man tagit bort saker man redan vet att man reagerar på eller ¨
-vet att man inte har besvär av.  
-
-Så det skulle kunna vara en "Filtrera analysen-meny" strax under analys-knappen där man kan välja en 
-eller flera faktorer, som exkluderar dessa från beräkningarna i countfoodvalues-metoden
-*/
+  // ---- Boot ----------------------------------------------------------------
+  renderCategories();
+  renderFilters();
+  recompute();
+})();
