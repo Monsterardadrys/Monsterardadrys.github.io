@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Intolerance Guide — Content Editor</title>
+<style>
+  :root {
+    --dark: #124559;
+    --accent: #fca311;
+    --border: #d8dde0;
+    --bg: #f6f7f8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: var(--bg);
+    color: #1a1a1a;
+  }
+  header {
+    background: var(--dark);
+    color: #fff;
+    padding: 20px 24px;
+  }
+  header h1 { margin: 0 0 6px; font-size: 22px; }
+  header p { margin: 0; font-size: 14px; opacity: 0.9; max-width: 800px; }
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .toolbar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 24px;
+    position: sticky;
+    top: 10px;
+    z-index: 5;
+  }
+  #status { font-size: 13px; color: #2e7d32; }
+  button {
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+  button:hover { background: #eef1f2; }
+  button.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #1a1a1a;
+    font-weight: 600;
+  }
+  button.primary:hover { background: #e2900a; }
+  button.dangerBtn { color: #b3261e; border-color: #f0c4c1; }
+  button.dangerBtn:hover { background: #fdecea; }
+  button.small { padding: 2px 8px; font-size: 12px; }
+  button:disabled { opacity: 0.4; cursor: default; }
+
+  section { margin-bottom: 36px; }
+  h2 { color: var(--dark); border-bottom: 2px solid var(--border); padding-bottom: 6px; }
+  .hint { font-size: 13px; color: #555; margin-top: -4px; margin-bottom: 14px; }
+
+  .traitRow {
+    display: grid;
+    grid-template-columns: 160px 200px auto;
+    gap: 10px 16px;
+    align-items: start;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+  .traitRow .fieldLabel:nth-child(4) { grid-column: 1 / 3; }
+  .fieldLabel {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    font-weight: 600;
+    color: #444;
+    gap: 4px;
+  }
+  .fieldLabel input, .fieldLabel textarea {
+    font-weight: 400;
+    font-size: 14px;
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: inherit;
+  }
+  .inlineCheckboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    margin-top: 22px;
+  }
+
+  .categoryBlock {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 18px;
+  }
+  .categoryHeader {
+    display: flex;
+    gap: 14px;
+    align-items: end;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .foodsTable {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .foodRow {
+    display: grid;
+    grid-template-columns: 200px repeat(var(--trait-count), 90px) 36px;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding: 4px 6px;
+  }
+  .foodRow:last-child { border-bottom: none; }
+  .foodRowHead {
+    background: #f1f3f4;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--dark);
+    position: sticky;
+    top: 0;
+  }
+  .foodRowHead span { padding: 6px 4px; }
+  .traitColHead {
+    text-align: center;
+    word-break: break-word;
+    line-height: 1.2;
+  }
+  .traitCell { text-align: center; }
+  .foodRow input[type="text"] {
+    width: 100%;
+    padding: 5px 6px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  .foodRow input[type="text"]:hover, .foodRow input[type="text"]:focus {
+    border-color: var(--border);
+    background: #fafbfb;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Food Intolerance Guide — Content Editor</h1>
+  <p>
+    Add, edit, or remove foods, categories, and traits below, then download a new
+    <code>foods-data.js</code> and use it to replace the one in your project repo.
+    This page isn't linked from the live site and doesn't change anything until you
+    download and swap the file in yourself.
+  </p>
+</header>
+
+<main>
+  <div class="toolbar">
+    <button id="loadFileBtn">Load a foods-data.js file…</button>
+    <input type="file" id="fileInput" accept=".js" hidden>
+    <button id="resetBtn">Reset to current site data</button>
+    <button id="downloadBtn" class="primary">⬇ Download foods-data.js</button>
+    <span id="status"></span>
+  </div>
+
+  <section>
+    <h2>Traits</h2>
+    <p class="hint">
+      A trait is anything foods can share (FODMAPs, fiber, fat, a trait you invent).
+      "Show as a filter checkbox" controls whether visitors can exclude it from the
+      analysis on the live site. Changing a trait's ID updates it everywhere it's used.
+    </p>
+    <div id="traitsList"></div>
+    <button id="addTraitBtn">+ Add trait</button>
+  </section>
+
+  <section>
+    <h2>Categories &amp; Foods</h2>
+    <p class="hint">
+      Check the boxes for whichever traits each food has. Use the ID field if you want
+      a specific internal name — otherwise the auto-generated one is fine to leave alone.
+    </p>
+    <div id="categoriesList"></div>
+    <button id="addCategoryBtn">+ Add category</button>
+  </section>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---- Seed data: a copy of what's currently in foods-data.js ----------
+  const SEED = {
+    traits: {
+      fodmaps: {
+        label: "FODMAPs",
+        filter: true,
+        analysis: [
+          "The number one commonality of these foods is FODMAPs which can cause mild or moderate gastrointestinal discomfort for anyone going from a low intake to a high intake.",
+          "For most people the symtoms of a high intake of FODMAPs is mild and improves over time even when the intake stays high, as the gut microbiome is the main reason for the symtoms and it adapts to the new diet.",
+          "For sensitive individuals on the other hand, like people with Irritable bowel syndrome (IBS), moderate symtoms can occur at a relatively low intake and the adaptation of the gut microbiome takes a longer time. With high daly intake the gastrointestinal symtoms can become severe, causing acute diarrhea and mind numbing abdominal pain. Follow the link in the main menu to read more."
+        ]
+      },
+      over_10g_fat: {
+        label: "Fat",
+        filter: true,
+        analysis: [
+          "The number one commonality of these foods is a fat content of more than 10g per 100g of the food, which can cause symtoms in several cases of GI-disorders.",
+          "This is likely to cause clear symtoms in people with a number of disorders. An increase of symtoms is expected in people with GERD, Gastro Esofageal Reflux Disorder, or IBS, Irritable Bowl Syndrome. Severe and acute symtoms within 1-2 hours after a meal, like chronic diarrhea and pain/cramps, is common in malabsorption disorders like EPI, Exocrine Pancreatic Insufficiency.",
+          "EPI can be a severe disorder that is usually followed by unplanned weight loss, muscle loss and deteriorating health, most importantly it can be a sign of pancreatic cancer. Indicators of severe fat malabsorption is acute diarrhea within 1-2 hours of fatty meals, a yellow coloring of the stool and oily traces on the toilet paper or in the toilet. The oil content can make it harder than usual to flush the toilet clean and to wipe the behind clean."
+        ]
+      },
+      fiber: {
+        label: "Fiber",
+        filter: true,
+        analysis: [
+          "The number one commonality of these foods is Fiber which can cause mild or moderate gas and bloating for anyone if the intake is high enough.",
+          "High fiber intake during dehydration can contribute to constipation and if the dehydration is not corrected the constipation can cause severe gastrointestinal discomfort and lowered apetite, which in the worst case scenario will worsen the dehydration.",
+          "For sensitive individuals, like people with gut-microbial dysbiosis, gastrointestinal discomfort can occur at a relatively low intake. Common foods high in Fiber are among others: Flax seeds, Chia seeds, Wheat/Oat bran, Whole grain pasta/bread/rice, beans and peas. Follow the link in the main menu to read more."
+        ]
+      },
+      protein: {
+        label: "Protein",
+        filter: true,
+        analysis: ["Detailed analysis for protein is coming soon — check the Protein page in the menu for more info."]
+      },
+      carbs: {
+        label: "Carbohydrates",
+        filter: true,
+        analysis: ["Detailed analysis for carbohydrates is coming soon — check the Carbohydrates page in the menu for more info."]
+      },
+      over_3g_lactose: {
+        label: "Lactose",
+        filter: true,
+        analysis: [
+          "The number one commonality of these foods is Lactose which is a sugar (di-saccharide) that comes with the milk from all mamals.",
+          "Lactose can cause discomfort or even diarrhea for most people if eaten in very high amounts. Sensitive individuals, like people with celiac disease, IBD, IBS or lactose intolerance, can get moderate to severe pain, gas and diarrhea even in relatively low doses.",
+          "It is mainly found in dairy products (no matter what animal the milk has come from) and it is added as a sweetener to some processed foods, supplements and medications. Fermented foods like yoghurt and cheese will have lower levels of lactose, the longer the ferment and/or aging of the product the lower the levels of lactose will be."
+        ]
+      },
+      histamine: { label: "Histamine", filter: false, analysis: ["Detailed analysis for histamine is coming soon."] },
+      reflux: { label: "Reflux trigger", filter: false, analysis: [] },
+      aceticAcid: { label: "Acetic acid", filter: false, analysis: [] }
+    },
+    categories: [
+      { id: "roots", label: "Roots", foods: [
+        { name: "Beet Root", traits: ["fiber","carbs"] },
+        { name: "Carrot", traits: ["fiber","carbs"] },
+        { name: "Celeriac Root", traits: ["fiber"] },
+        { name: "Jerusalem Artichoke", traits: ["fiber","carbs"] },
+        { name: "Parsnip", traits: ["fiber","carbs"] },
+        { name: "Potato", traits: ["fiber","carbs"] },
+        { name: "Suede", traits: ["fiber"] },
+        { name: "Sweet Potato", traits: ["fiber","carbs"] }
+      ]},
+      { id: "veggies", label: "Vegetables", foods: [
+        { name: "Cabbage", traits: ["fiber","fodmaps"] },
+        { name: "Kale", traits: ["fiber"] },
+        { name: "Onion", traits: ["fiber","fodmaps"] },
+        { name: "Tomato", traits: ["fiber","histamine"] },
+        { name: "Cauliflower", traits: ["fiber"] },
+        { name: "Aubergine", traits: ["fiber"] },
+        { name: "Parsley", traits: ["fiber"] },
+        { name: "Leek", traits: ["fiber"] },
+        { name: "Shiitake Mushrooms", traits: ["fiber"] },
+        { name: "Oyster Mushrooms", traits: ["fiber"] },
+        { name: "White Button Mushrooms", traits: ["fiber"] }
+      ]},
+      { id: "fruits", label: "Fruits", foods: [
+        { name: "Apples", traits: ["fiber","carbs","fodmaps"] },
+        { name: "Oranges", traits: ["fiber"] },
+        { name: "Pears", traits: ["fiber"] },
+        { name: "Mangos", traits: ["fiber"] },
+        { name: "Blueberry", traits: ["fiber"] },
+        { name: "Strawberry", traits: ["fiber","histamine"] },
+        { name: "Cherries", traits: ["fiber"] },
+        { name: "Blackberries", traits: ["fiber"] },
+        { name: "Raspberries", traits: ["fiber"] },
+        { name: "Lemon", traits: ["fiber"] },
+        { name: "Lime", traits: ["fiber"] },
+        { name: "Grapefruit", traits: ["fiber"] },
+        { name: "Grapes", traits: ["fiber"] },
+        { name: "Rhubarb", traits: ["fiber"] },
+        { name: "Cloudberries", traits: ["fiber"] },
+        { name: "Lingonberry", traits: ["fiber"] }
+      ]},
+      { id: "nuts", label: "Nuts/Seeds", foods: [
+        { name: "Almond", traits: ["fiber","over_10g_fat","carbs","protein","fodmaps"] },
+        { name: "Brazil Nut", traits: ["fiber","over_10g_fat","carbs","protein","fodmaps"] },
+        { name: "Cashew Nut", traits: ["fiber","over_10g_fat","carbs","protein","fodmaps"] },
+        { name: "Chiaseeds (whole)", traits: ["fiber"] },
+        { name: "Chiaseeds (ground)", traits: ["fiber","over_10g_fat","carbs","protein"] },
+        { name: "Flaxseed (whole)", traits: ["fiber","fodmaps"] },
+        { name: "Flaxseed (ground)", traits: ["fiber","over_10g_fat","carbs","protein","fodmaps"] },
+        { name: "Hazelnut", traits: ["fiber","over_10g_fat","carbs","protein","fodmaps"] },
+        { name: "Peanut", traits: ["fiber","over_10g_fat","carbs","protein","fodmaps"] },
+        { name: "Pumpkin Seeds", traits: ["fiber","over_10g_fat","carbs","protein"] },
+        { name: "Sunflower Seeds", traits: ["fiber","over_10g_fat","carbs","protein"] }
+      ]},
+      { id: "grains", label: "Grains", foods: [
+        { name: "Oats", traits: ["fiber","carbs","protein"] },
+        { name: "Wheat", traits: ["fiber","carbs","protein","fodmaps"] },
+        { name: "Rye", traits: ["fiber","carbs","protein","fodmaps"] },
+        { name: "Barley", traits: ["fiber","carbs","protein","fodmaps"] },
+        { name: "Quinoa", traits: ["fiber","carbs","protein"] },
+        { name: "Buckwheat", traits: ["fiber","carbs","protein"] },
+        { name: "Rice", traits: ["fiber","carbs","protein"] }
+      ]},
+      { id: "legumes", label: "Legumes", foods: [
+        { name: "Black Bean", traits: ["fiber","carbs","protein","fodmaps"] },
+        { name: "Chickpea", traits: ["fiber","carbs","protein","fodmaps"] },
+        { name: "Common Peas", traits: ["fiber","carbs","protein","fodmaps"] },
+        { name: "Lentils", traits: ["fiber","carbs","protein","fodmaps"] },
+        { name: "Tempeh", traits: ["fiber","carbs","protein"] },
+        { name: "Tofu (firm)", traits: ["fiber","carbs","protein"] },
+        { name: "Tofu (silken)", traits: ["fiber","carbs","protein","fodmaps"] }
+      ]},
+      { id: "animals", label: "Animals", foods: [
+        { name: "Cows Meat", traits: ["protein"] },
+        { name: "Pork", traits: ["over_10g_fat","protein"] },
+        { name: "Salmon", traits: ["over_10g_fat","protein"] },
+        { name: "Cod", traits: ["protein"] },
+        { name: "Oysters", traits: ["protein"] },
+        { name: "Lobsters", traits: ["protein"] },
+        { name: "Crayfish", traits: ["protein"] },
+        { name: "Elk Meat", traits: ["protein"] },
+        { name: "Shrimp", traits: ["protein"] },
+        { name: "Egg White", traits: ["protein"] },
+        { name: "Egg Yolk", traits: ["over_10g_fat"] }
+      ]},
+      { id: "dairy", label: "Dairy", foods: [
+        { name: "Cows Milk", traits: ["protein","over_3g_lactose"] },
+        { name: "Goats Milk", traits: ["protein","over_3g_lactose"] },
+        { name: "Sheeps Milk", traits: ["protein","over_3g_lactose"] },
+        { name: "Cheese", traits: ["over_10g_fat","protein"] },
+        { name: "Yogurt", traits: ["protein","over_3g_lactose"] },
+        { name: "Greek Yogurt", traits: ["over_10g_fat","protein","over_3g_lactose"] },
+        { name: "Butter", traits: ["over_10g_fat"] },
+        { name: "Cream", traits: ["over_10g_fat","protein","over_3g_lactose"] },
+        { name: "Quark Cheese", traits: ["protein"] },
+        { name: "Cottage Cheese", traits: ["protein"] },
+        { name: "Sour Cream", traits: ["over_10g_fat","protein","over_3g_lactose"] },
+        { name: "Cream Cheese", traits: ["over_10g_fat","protein","over_3g_lactose"] },
+        { name: "Ricotta Cheese", traits: ["over_10g_fat","protein"] },
+        { name: "Mascarpone", traits: ["over_10g_fat","protein"] },
+        { name: "Parmesan", traits: ["over_10g_fat","protein"] },
+        { name: "Halloumi", traits: ["over_10g_fat","protein","over_3g_lactose"] }
+      ]},
+      { id: "spices", label: "Spices", foods: [
+        { name: "Chili", traits: ["reflux","histamine"] },
+        { name: "Garlic", traits: ["fodmaps"] },
+        { name: "Turmeric", traits: ["fiber"] },
+        { name: "Vinegar", traits: ["aceticAcid"] }
+      ]},
+      { id: "ultraProcessed", label: "Ultra-Processed Foods", foods: [
+        { name: "Potato chips", traits: ["over_10g_fat"] },
+        { name: "Candy bars", traits: ["over_10g_fat","carbs"] },
+        { name: "Sugary soft drinks", traits: ["carbs"] },
+        { name: "Frozen pizza", traits: ["over_10g_fat","carbs"] },
+        { name: "Milk chocolate", traits: ["over_10g_fat","carbs","over_3g_lactose"] },
+        { name: "Ice Cream", traits: ["over_10g_fat","carbs","over_3g_lactose"] }
+      ]}
+    ]
+  };
+
+  function cloneSeed() {
+    return JSON.parse(JSON.stringify(SEED));
+  }
+
+  let state = cloneSeed();
+
+  const traitsListEl = document.getElementById('traitsList');
+  const categoriesListEl = document.getElementById('categoriesList');
+  const statusEl = document.getElementById('status');
+
+  function setStatus(msg) {
+    statusEl.textContent = msg;
+    clearTimeout(setStatus._t);
+    setStatus._t = setTimeout(() => { statusEl.textContent = ''; }, 4000);
+  }
+
+  function validateId(id) {
+    return /^[A-Za-z_][A-Za-z0-9_]*$/.test(id);
+  }
+
+  function labeledField(labelText, type, value) {
+    const wrapper = document.createElement('label');
+    wrapper.className = 'fieldLabel';
+    wrapper.appendChild(document.createTextNode(labelText));
+    const input = document.createElement(type === 'textarea' ? 'textarea' : 'input');
+    if (type !== 'textarea') input.type = type;
+    input.value = value;
+    wrapper.appendChild(input);
+    return { wrapper, input };
+  }
+
+  // ---- Trait operations ---------------------------------------------------
+  function renameTraitId(oldId, newId, inputEl) {
+    newId = newId.trim();
+    if (newId === oldId) return;
+    if (!validateId(newId)) {
+      alert('Trait ID must start with a letter or underscore, and contain only letters, numbers, and underscores.');
+      inputEl.value = oldId;
+      return;
+    }
+    if (state.traits[newId]) {
+      alert('That trait ID is already used by another trait.');
+      inputEl.value = oldId;
+      return;
+    }
+    state.traits[newId] = state.traits[oldId];
+    delete state.traits[oldId];
+    state.categories.forEach(cat => {
+      cat.foods.forEach(food => {
+        const idx = food.traits.indexOf(oldId);
+        if (idx > -1) food.traits[idx] = newId;
+      });
+    });
+    render();
+    setStatus('Renamed trait "' + oldId + '" to "' + newId + '".');
+  }
+
+  function deleteTrait(id) {
+    const usage = state.categories.reduce((sum, cat) =>
+      sum + cat.foods.filter(f => f.traits.includes(id)).length, 0);
+    const label = state.traits[id].label;
+    const msg = usage > 0
+      ? '"' + label + '" is used by ' + usage + ' food' + (usage === 1 ? '' : 's') + '. Deleting it will remove that trait from those foods too. Continue?'
+      : 'Delete trait "' + label + '"?';
+    if (!confirm(msg)) return;
+    delete state.traits[id];
+    state.categories.forEach(cat => {
+      cat.foods.forEach(food => {
+        food.traits = food.traits.filter(t => t !== id);
+      });
+    });
+    render();
+    setStatus('Deleted trait "' + label + '".');
+  }
+
+  function addTrait() {
+    let n = 1, id = 'newTrait' + n;
+    while (state.traits[id]) { n++; id = 'newTrait' + n; }
+    state.traits[id] = { label: 'New trait', filter: false, analysis: [] };
+    render();
+    const input = document.querySelector('[data-trait-label-input="' + id + '"]');
+    if (input) { input.focus(); input.select(); }
+  }
+
+  // ---- Category / food operations -----------------------------------------
+  function validateCategoryIdChange(catIndex, newId, inputEl) {
+    newId = newId.trim();
+    const cat = state.categories[catIndex];
+    if (newId === cat.id) return;
+    if (!validateId(newId)) {
+      alert('Category ID must start with a letter or underscore, and contain only letters, numbers, and underscores.');
+      inputEl.value = cat.id;
+      return;
+    }
+    if (state.categories.some((c, i) => i !== catIndex && c.id === newId)) {
+      alert('That category ID is already used by another category.');
+      inputEl.value = cat.id;
+      return;
+    }
+    cat.id = newId;
+    setStatus('Updated category ID.');
+  }
+
+  function addCategory() {
+    let n = 1, id = 'newCategory' + n;
+    while (state.categories.some(c => c.id === id)) { n++; id = 'newCategory' + n; }
+    state.categories.push({ id, label: 'New Category', foods: [] });
+    render();
+  }
+
+  function deleteCategory(catIndex) {
+    const cat = state.categories[catIndex];
+    const msg = cat.foods.length > 0
+      ? 'Delete category "' + cat.label + '" and its ' + cat.foods.length + ' food' + (cat.foods.length === 1 ? '' : 's') + '?'
+      : 'Delete category "' + cat.label + '"?';
+    if (!confirm(msg)) return;
+    state.categories.splice(catIndex, 1);
+    render();
+    setStatus('Deleted category "' + cat.label + '".');
+  }
+
+  function moveCategory(catIndex, direction) {
+    const newIndex = catIndex + direction;
+    if (newIndex < 0 || newIndex >= state.categories.length) return;
+    const [cat] = state.categories.splice(catIndex, 1);
+    state.categories.splice(newIndex, 0, cat);
+    render();
+  }
+
+  function addFood(catIndex) {
+    state.categories[catIndex].foods.push({ name: 'New food', traits: [] });
+    render();
+  }
+
+  function deleteFood(catIndex, foodIndex) {
+    const food = state.categories[catIndex].foods[foodIndex];
+    if (!confirm('Delete "' + food.name + '"?')) return;
+    state.categories[catIndex].foods.splice(foodIndex, 1);
+    render();
+  }
+
+  // ---- Rendering -------------------------------------------------------
+  function renderTraits() {
+    traitsListEl.innerHTML = '';
+    Object.keys(state.traits).forEach(id => {
+      const trait = state.traits[id];
+      const row = document.createElement('div');
+      row.className = 'traitRow';
+
+      const idField = labeledField('ID', 'text', id);
+      idField.input.addEventListener('change', () => renameTraitId(id, idField.input.value, idField.input));
+
+      const labelField = labeledField('Label', 'text', trait.label);
+      labelField.input.dataset.traitLabelInput = id;
+      labelField.input.addEventListener('change', () => {
+        trait.label = labelField.input.value;
+        render();
+      });
+
+      const filterField = document.createElement('label');
+      filterField.className = 'inlineCheckboxLabel';
+      const filterCheckbox = document.createElement('input');
+      filterCheckbox.type = 'checkbox';
+      filterCheckbox.checked = !!trait.filter;
+      filterCheckbox.addEventListener('change', () => { trait.filter = filterCheckbox.checked; });
+      filterField.appendChild(filterCheckbox);
+      filterField.appendChild(document.createTextNode(' Show as a filter checkbox'));
+
+      const analysisField = labeledField('Analysis text (blank line between paragraphs)', 'textarea', (trait.analysis || []).join('\n\n'));
+      analysisField.input.rows = 3;
+      analysisField.input.addEventListener('change', () => {
+        trait.analysis = analysisField.input.value.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean);
+      });
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.className = 'dangerBtn';
+      deleteBtn.textContent = 'Delete trait';
+      deleteBtn.addEventListener('click', () => deleteTrait(id));
+
+      row.appendChild(idField.wrapper);
+      row.appendChild(labelField.wrapper);
+      row.appendChild(filterField);
+      row.appendChild(analysisField.wrapper);
+      row.appendChild(deleteBtn);
+
+      traitsListEl.appendChild(row);
+    });
+  }
+
+  function renderCategories() {
+    categoriesListEl.innerHTML = '';
+    const traitIds = Object.keys(state.traits);
+
+    state.categories.forEach((cat, catIndex) => {
+      const block = document.createElement('div');
+      block.className = 'categoryBlock';
+
+      const header = document.createElement('div');
+      header.className = 'categoryHeader';
+
+      const idField = labeledField('Category ID', 'text', cat.id);
+      idField.input.addEventListener('change', () => validateCategoryIdChange(catIndex, idField.input.value, idField.input));
+
+      const labelField = labeledField('Category label', 'text', cat.label);
+      labelField.input.addEventListener('change', () => { cat.label = labelField.input.value; });
+
+      const upBtn = document.createElement('button');
+      upBtn.type = 'button'; upBtn.textContent = '↑'; upBtn.title = 'Move up';
+      upBtn.disabled = catIndex === 0;
+      upBtn.addEventListener('click', () => moveCategory(catIndex, -1));
+
+      const downBtn = document.createElement('button');
+      downBtn.type = 'button'; downBtn.textContent = '↓'; downBtn.title = 'Move down';
+      downBtn.disabled = catIndex === state.categories.length - 1;
+      downBtn.addEventListener('click', () => moveCategory(catIndex, 1));
+
+      const deleteCatBtn = document.createElement('button');
+      deleteCatBtn.type = 'button'; deleteCatBtn.className = 'dangerBtn';
+      deleteCatBtn.textContent = 'Delete category';
+      deleteCatBtn.addEventListener('click', () => deleteCategory(catIndex));
+
+      header.appendChild(idField.wrapper);
+      header.appendChild(labelField.wrapper);
+      header.appendChild(upBtn);
+      header.appendChild(downBtn);
+      header.appendChild(deleteCatBtn);
+
+      const foodsTable = document.createElement('div');
+      foodsTable.className = 'foodsTable';
+      foodsTable.style.setProperty('--trait-count', traitIds.length);
+
+      const headRow = document.createElement('div');
+      headRow.className = 'foodRow foodRowHead';
+      const nameHead = document.createElement('span');
+      nameHead.textContent = 'Food name';
+      headRow.appendChild(nameHead);
+      traitIds.forEach(traitId => {
+        const span = document.createElement('span');
+        span.className = 'traitColHead';
+        span.textContent = state.traits[traitId].label;
+        headRow.appendChild(span);
+      });
+      headRow.appendChild(document.createElement('span'));
+      foodsTable.appendChild(headRow);
+
+      cat.foods.forEach((food, foodIndex) => {
+        const row = document.createElement('div');
+        row.className = 'foodRow';
+
+        const nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.value = food.name;
+        nameInput.addEventListener('change', () => { food.name = nameInput.value; });
+        row.appendChild(nameInput);
+
+        traitIds.forEach(traitId => {
+          const cell = document.createElement('span');
+          cell.className = 'traitCell';
+          const cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.checked = food.traits.includes(traitId);
+          cb.addEventListener('change', () => {
+            if (cb.checked) {
+              if (!food.traits.includes(traitId)) food.traits.push(traitId);
+            } else {
+              food.traits = food.traits.filter(t => t !== traitId);
+            }
+          });
+          cell.appendChild(cb);
+          row.appendChild(cell);
+        });
+
+        const delBtn = document.createElement('button');
+        delBtn.type = 'button'; delBtn.className = 'dangerBtn small';
+        delBtn.textContent = '✕';
+        delBtn.title = 'Delete food';
+        delBtn.addEventListener('click', () => deleteFood(catIndex, foodIndex));
+        row.appendChild(delBtn);
+
+        foodsTable.appendChild(row);
+      });
+
+      const addFoodBtn = document.createElement('button');
+      addFoodBtn.type = 'button';
+      addFoodBtn.textContent = '+ Add food to ' + cat.label;
+      addFoodBtn.addEventListener('click', () => addFood(catIndex));
+
+      block.appendChild(header);
+      block.appendChild(foodsTable);
+      block.appendChild(addFoodBtn);
+      categoriesListEl.appendChild(block);
+    });
+  }
+
+  function render() {
+    renderTraits();
+    renderCategories();
+  }
+
+  // ---- File import / export -----------------------------------------------
+  function buildFileContent() {
+    const header = '/* =========================================================================\n' +
+      '   foods-data.js — all editable content for the Food Intolerance Guide\n' +
+      '   =========================================================================\n' +
+      '   Generated by editor.html on ' + new Date().toISOString().slice(0, 10) + '.\n' +
+      '   Edit foods, categories and traits with editor.html rather than by hand\n' +
+      '   where possible — it keeps everything consistent and re-exports this\n' +
+      '   exact file format.\n' +
+      '   ========================================================================= */\n\n';
+    return header +
+      'const TRAITS = ' + JSON.stringify(state.traits, null, 2) + ';\n\n' +
+      'const CATEGORIES = ' + JSON.stringify(state.categories, null, 2) + ';\n';
+  }
+
+  document.getElementById('downloadBtn').addEventListener('click', () => {
+    const content = buildFileContent();
+    const blob = new Blob([content], { type: 'text/javascript' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'foods-data.js';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setStatus('Downloaded foods-data.js — replace the old one in your project with this file.');
+  });
+
+  document.getElementById('loadFileBtn').addEventListener('click', () => {
+    document.getElementById('fileInput').click();
+  });
+
+  document.getElementById('fileInput').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const text = reader.result;
+        const sandbox = {};
+        // This runs the loaded file's JavaScript in your browser to pull out
+        // TRAITS and CATEGORIES — only load files you trust (your own).
+        const fn = new Function('module', text + '\nmodule.TRAITS = TRAITS; module.CATEGORIES = CATEGORIES;');
+        fn(sandbox);
+        if (!sandbox.TRAITS || !sandbox.CATEGORIES) throw new Error('File does not define TRAITS and CATEGORIES.');
+        if (!confirm('This will replace everything currently in the editor with the contents of this file. Continue?')) return;
+        state.traits = sandbox.TRAITS;
+        state.categories = sandbox.CATEGORIES;
+        render();
+        setStatus('Loaded ' + file.name + '.');
+      } catch (err) {
+        alert('Could not read this as a foods-data.js config: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (!confirm('Discard all unsaved changes and reset to the current site data?')) return;
+    state = cloneSeed();
+    render();
+    setStatus('Reset to current site data.');
+  });
+
+  document.getElementById('addTraitBtn').addEventListener('click', addTrait);
+  document.getElementById('addCategoryBtn').addEventListener('click', addCategory);
+
+  render();
+})();
+</script>
+</body>
+</html>

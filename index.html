@@ -1,20 +1,24 @@
-<!-- 
-    This is an ongoing project of mine since march of 2024. You can find me on GitHub by username Monsterardadrys. 
+<!--
+    Food Intolerance Guide — ongoing project by Andreas Rydström (since March 2024).
+    GitHub: Monsterardadrys
 
-    To add more food groups 
-    Make a new <div class="foodBox"> with a button and a div with same class and id as the text in the button. 
-    In styles.css add the new foodgroup by class name and give it display:none; as initial value. 
-    In script.js add adventListener for the group button and add the group to hide by the reset-button. 
+    HOW TO EXTEND THIS SITE
+    All food categories, foods, and tracked traits (FODMAPs, fiber, fat, etc.)
+    now live in foods-data.js as plain data — index.html, styles.css and
+    script.js never need to change to add more of any of them.
 
-    To add more foods 
-    Inside the div with the same class/id as the text in the corresponding button: 
-    - add a checkbox and a label for each food. 
-    - Every label needs data-values (foodValues in script.js) which will be used for the analysis. 
+    - New food category  -> add an object to CATEGORIES in foods-data.js
+    - New food            -> add it to that category's `foods` array
+    - New trait/value     -> add a key to TRAITS in foods-data.js
+                             (set filter: true to give it a filter checkbox,
+                             and an `analysis` array for the popup text)
 
-    To add a new food value 
-    Add it in the label data-values-attribute for selected foods 
-    add it to the filter part 
-    In script.js add it to the functions countFoodValues() and resetFoodValues() 
+    Deep-dive write-ups (macros, FODMAPs, fiber, etc.) live in articles.html /
+    articles-data.js — adding a new one doesn't add anything to this nav bar
+    either. Give a trait an `articleId` in foods-data.js to link its analysis
+    popup straight to the matching article.
+
+    See the comment block at the top of foods-data.js for full examples.
 -->
 
 <!DOCTYPE html>
@@ -36,8 +40,7 @@
         <h1>Food intolerance guide</h1>
         <a class="backToMain" href=index.html>Main</a>
         <ul>
-            <li><a href=macros.html>Macros</a></li>
-            <li><a href=fodmaps.html>FODMAPs</a></li>
+            <li><a href=articles.html>Articles</a></li>
         </ul>
     </header>
 
@@ -71,456 +74,8 @@
         </div>
     </div>
 
-    <div class="topSection" id="topSection">
-        <div class="foodBox">
-            <button class="button" id="rootsButton">Roots</button>
-            <div class="roots" id="roots">
-                <label class="checkboxStyle" data-values="fiber carbs fodmaps">
-                    <input type="checkbox" value="Beetroot" id="beetroot">
-                    Beetroot
-                </label>
-                <label class="checkboxStyle" data-values="fiber carbs">
-                    <input type="checkbox" value="Carrot" id="carrot">
-                    Carrot
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Celeriac Root" id="celeriacroot">
-                    Celeriac Root
-                </label>
-                <label class="checkboxStyle" data-values="fiber carbs fodmaps">
-                    <input type="checkbox" value="Jerusalem Artichoke" id="jerusalemArtichoke">
-                    Jerusalem Artichoke
-                </label>
-                <label class="checkboxStyle" data-values="fiber carbs">
-                    <input type="checkbox" value="Parsnip" id="parsnip">
-                    Parsnip
-                </label>
-                <label class="checkboxStyle" data-values="fiber carbs">
-                    <input type="checkbox" value="Potato" id="potato">
-                    Potato
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Suede" id="suede">
-                    Suede
-                </label>
-                <label class="checkboxStyle" data-values="fiber carbs">
-                    <input type="checkbox" value="Sweet Potato" id="sweetpotato">
-                    Sweet Potato
-                </label>
-            </div>
-        </div>
-
-        <div class="foodBox">
-            <button class="button" id="veggiesButton">Vegetables</button>
-            <div class="veggies" id="veggies">
-                <label class="checkboxStyle" data-values="fiber fodmaps">
-                    <input type="checkbox" value="Cabbage" id="cabbage">
-                    Cabbage
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Kale" id="kale">
-                    Kale
-                </label>
-                <label class="checkboxStyle" data-values="fiber fodmaps">
-                    <input type="checkbox" value="Onion" id="onion">
-                    Onion
-                </label>
-                <label class="checkboxStyle" data-values="fiber histamine">
-                    <input type="checkbox" value="Tomato" id="tomato">
-                    Tomato
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Cauliflower" id="cauliflower">
-                    Cauliflower
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Aubergine" id="aubergine">
-                    Aubergine
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Parsley" id="parsley">
-                    Parsley
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Leek" id="leek">
-                    Leek
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Shiitake Mushrooms" id="shiitake">
-                    Shiitake Mushrooms
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Oyster Mushrooms" id="oystermushrooms">
-                    Oyster Mushrooms
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="White Button Mushrooms" id="whitebuttonmushrooms">
-                    White Button Mushrooms
-                </label>
-            </div>
-        </div>
-
-        <div class="foodBox">
-            <button class="button" id="fruitsButton">Fruits</button>
-            <div class="fruits" id="fruits">
-                <label class="checkboxStyle" data-values="fiber carbs fodmaps">
-                    <input type="checkbox" value="Apples" id="apples">
-                    Apples
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Oranges" id="oranges">
-                    Oranges
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Pears" id="pears">
-                    Pears
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Mangos" id="mangos">
-                    Mangos
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Blueberry" id="blueberry">
-                    Blueberry
-                </label>
-                <label class="checkboxStyle" data-values="fiber histamine">
-                    <input type="checkbox" value="Strawberry" id="strawberry">
-                    Strawberry
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Cherries" id="cherries">
-                    Cherries
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Blackberries" id="blackberries">
-                    Blackberries
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Raspberries" id="raspberries">
-                    Raspberries
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Lemon" id="lemon">
-                    Lemon
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Lime" id="lime">
-                    Lime
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Grapefruit" id="grapefruit">
-                    Grapefruit
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Grapes" id="grapes">
-                    Grapes
-                </label> 
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Rhubarb" id="rhubarb">
-                    Rhubarb
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Cloudberries" id="cloudberries">
-                    Cloudberries
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Lingonberry" id="lingonberry">
-                    Lingonberry
-                </label>
-            </div>
-        </div>
-
-        <div class="foodBox">
-            <button class="button" id="nutsButton">Nuts/Seeds</button>
-            <div class="nuts" id="nutsAndSeeds">
-                <label class="checkboxStyle" data-values="fiber over_10g_fat carbs protein fodmaps">
-                    <input type="checkbox" value="Almond" id="almond">
-                    Almond
-                </label>
-                <label class="checkboxStyle" data-values="fiber over_10g_fat carbs protein fodmaps">
-                    <input type="checkbox" value="Brazil Nut" id="brazilnut">
-                    Brazil Nut
-                </label>
-                <label class="checkboxStyle" data-values="fiber over_10g_fat carbs protein fodmaps">
-                    <input type="checkbox" value="Cashew Nut" id="cashewnut">
-                    Cashew Nut
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Chiaseeds (whole)" id="chiaseedsWhole">
-                    Chiaseeds (whole)
-                </label> 
-                <label class="checkboxStyle" data-values="fiber over_10g_fat carbs protein">
-                    <input type="checkbox" value="Chiaseeds (ground)" id="chiaseedsGround">
-                    Chiaseeds (ground)
-                </label>
-                <label class="checkboxStyle" data-values="fiber fodmaps">
-                    <input type="checkbox" value="Flaxseed (whole)" id="flaxseedsWhole">
-                    Flaxseeds (whole)
-                </label>
-                <label class="checkboxStyle" data-values="fiber over_10g_fat carbs protein fodmaps">
-                    <input type="checkbox" value="Flaxseed (ground)" id="flaxseedsGround">
-                    Flaxseeds (ground)
-                </label>
-                <label class="checkboxStyle" data-values="fiber over_10g_fat carbs protein fodmaps">
-                    <input type="checkbox" value="Hazelnut" id="hazelnut">
-                    Hazelnut
-                </label>
-                <label class="checkboxStyle" data-values="fiber over_10g_fat carbs protein fodmaps">
-                    <input type="checkbox" value="Peanut" id="peanut">
-                    Peanut
-                </label>
-                <label class="checkboxStyle" data-values="fiber over_10g_fat carbs protein">
-                    <input type="checkbox" value="Pumpkin Seeds" id="pumpkinSeeds">
-                    Pumpkin Seeds
-                </label>
-                <label class="checkboxStyle" data-values="fiber over_10g_fat carbs protein">
-                    <input type="checkbox" value="Sunflower Seeds" id="sunflowerseeds">
-                    Sunflowerseeds
-                </label>
-            </div>
-        </div>
-
-        <div class="foodBox">
-            <button class="button" id="grainsButton">Grains</button>
-            <div class="grains" id="grains">
-                <label class="checkboxStyle" data-values="fiber carbs protein">
-                    <input type="checkbox" value="Oats" id="oats">
-                    Oats
-                </label>
-                <label class="checkboxStyle" data-values="fiber carbs protein fodmaps">
-                    <input type="checkbox" value="Wheat" id="wheat">
-                    Wheat
-                </label>
-                <label class="checkboxStyle" data-values="fiber carbs protein fodmaps">
-                    <input type="checkbox" value="Rye" id="rye">
-                    Rye
-                </label>
-                <label class="checkboxStyle" data-values="fiber carbs protein fodmaps">
-                    <input type="checkbox" value="Barley" id="barley">
-                    Barley
-                </label>
-                <label class="checkboxStyle" data-values="fiber carbs protein">
-                    <input type="checkbox" value="Quinoa" id="quinoa">
-                    Quinoa
-                </label>
-                <label class="checkboxStyle" data-values="fiber carbs protein">
-                    <input type="checkbox" value="Buckwheat" id="buckwheat">
-                    Buckwheat
-                </label>
-                
-                <label class="checkboxStyle" data-values="fiber carbs protein">
-                    <input type="checkbox" value="Rice" id="rice">
-                    Rice
-                </label>
-            </div>
-        </div>
-
-        <div class="foodBox">
-            <button class="button" id="legumesButton">Legumes</button>
-            <div class="legumes" id="legumes">
-                <label class="checkboxStyle" data-values="fiber carbs protein fodmaps">
-                    <input type="checkbox" value="Black bean" id="blackbean">
-                    Beans
-                </label>
-                <label class="checkboxStyle" data-values="fiber carbs protein fodmaps">
-                    <input type="checkbox" value="Chickpea" id="chickpea">
-                    Chickpeas
-                </label>
-                <label class="checkboxStyle" data-values="fiber carbs protein fodmaps">
-                    <input type="checkbox" value="Common Peas" id="commonPeas">
-                    Common Peas 
-                </label>
-                <label class="checkboxStyle" data-values="fiber carbs protein fodmaps">
-                    <input type="checkbox" value="Lentils" id="lentils">
-                    Lentils
-                </label>
-                <label class="checkboxStyle" data-values="fiber carbs protein">
-                    <input type="checkbox" value="Tempeh" id="tempeh">
-                    Tempeh
-                </label>
-                <label class="checkboxStyle" data-values="fiber carbs protein">
-                    <input type="checkbox" value="Tofu (firm)" id="tofuFirm">
-                    Tofu (firm)
-                </label>
-                <label class="checkboxStyle" data-values="fiber carbs protein fodmaps">
-                    <input type="checkbox" value="Tofu (silken)" id="tofuSilken">
-                    Tofu (Silken)
-                </label>
-            </div>
-        </div>
-
-        <div class="foodBox">
-            <button class="button" id="animalsButton">Animals</button>
-            <div class="animals" id="animals">
-                <label class="checkboxStyle" data-values="protein">
-                    <input type="checkbox" value="Cows Meat" id="cowsmeat">
-                    Cow's Meat
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat protein">
-                    <input type="checkbox" value="Pork" id="pork">
-                    Pork
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat protein">
-                    <input type="checkbox" value="Salmon" id="salmon">
-                    Salmon
-                </label>
-                <label class="checkboxStyle" data-values="protein">
-                    <input type="checkbox" value="Cod" id="cod">
-                    Cod
-                </label>
-                <label class="checkboxStyle" data-values="protein">
-                    <input type="checkbox" value="Oysters" id="oysters">
-                    Oysters
-                </label>
-                <label class="checkboxStyle" data-values="protein">
-                    <input type="checkbox" value="Lobsters" id="lobsters">
-                    Lobsters
-                </label>
-                <label class="checkboxStyle" data-values="protein">
-                    <input type="checkbox" value="Crayfish" id="crayfish">
-                    Crayfish
-                </label>
-                <label class="checkboxStyle" data-values="protein">
-                    <input type="checkbox" value="Elk Meat" id="elkmeat">
-                    Elk Meat
-                </label>
-                <label class="checkboxStyle" data-values="protein">
-                    <input type="checkbox" value="Shrimp" id="shrimp">
-                    Shrimp
-                </label>
-                <label class="checkboxStyle" data-values="protein">
-                    <input type="checkbox" value="Egg White" id="eggwhite">
-                    Egg White
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat">
-                    <input type="checkbox" value="Egg Yolk" id="eggyolk">
-                    Egg Yolk
-                </label>
-            </div>
-        </div>
-
-        <div class="foodBox">
-            <button class="button" id="dairyButton">Dairy</button>
-            <div class="dairy" id="dairy">
-                <label class="checkboxStyle" data-values="protein over_3g_lactose">
-                    <input type="checkbox" value="Cows Milk" id="cowMilk">
-                    Cows Milk
-                </label>
-                <label class="checkboxStyle" data-values="protein over_3g_lactose">
-                    <input type="checkbox" value="Goats Milk" id="goatMilk">
-                    Goats Milk
-                </label>
-                <label class="checkboxStyle" data-values="protein over_3g_lactose">
-                    <input type="checkbox" value="Sheeps Milk" id="sheepMilk">
-                    Sheeps Milk
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat protein">
-                    <input type="checkbox" value="Cheese" id="cheese">
-                    Cheese
-                </label>
-                <label class="checkboxStyle" data-values="protein over_3g_lactose">
-                    <input type="checkbox" value="Yogurt" id="yogurt">
-                    Yogurt
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat protein over_3g_lactose">
-                    <input type="checkbox" value="Greek Yogurt" id="greekYogurt">
-                    Greek Yogurt
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat">
-                    <input type="checkbox" value="Butter" id="butter">
-                    Butter
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat protein over_3g_lactose">
-                    <input type="checkbox" value="Cream" id="cream">
-                    Cream
-                </label>
-                <label class="checkboxStyle" data-values="protein">
-                    <input type="checkbox" value="Quark Cheese" id="quark">
-                    Quark Cheese
-                </label>
-                <label class="checkboxStyle" data-values="protein">
-                    <input type="checkbox" value="Cottage Cheese" id="cottagecheese">
-                    Cottage Cheese
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat protein over_3g_lactose">
-                    <input type="checkbox" value="Sour Cream" id="sourcream">
-                    Sour Cream
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat protein over_3g_lactose">
-                    <input type="checkbox" value="Cream Cheese" id="creamcheese">
-                    Cream Cheese
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat protein">
-                    <input type="checkbox" value="Ricotta Cheese" id="ricottacheese">
-                    Ricotta Cheese
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat protein">
-                    <input type="checkbox" value="Mascarpone" id="mascarpone">
-                    Mascarpone
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat protein">
-                    <input type="checkbox" value="Parmesan" id="parmesan">
-                    Parmesan
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat protein over_3g_lactose">
-                    <input type="checkbox" value="Halloumi" id="halloumi">
-                    Halloumi
-                </label>
-            </div>
-        </div>
-
-        <div class="foodBox">
-            <button class="button" id="spicesButton">Spices</button>
-            <div class="spices" id="spices">
-                <label class="checkboxStyle" data-values="reflux histamine">
-                    <input type="checkbox" value="Chili" id="chili">
-                    Chili
-                </label>
-                <label class="checkboxStyle" data-values="fodmaps">
-                    <input type="checkbox" value="Garlic" id="garlic">
-                    Garlic
-                </label>
-                <label class="checkboxStyle" data-values="fiber">
-                    <input type="checkbox" value="Turmeric" id="turmeric">
-                    Turmeric
-                </label>
-                <label class="checkboxStyle" data-values="aceticAcid">
-                    <input type="checkbox" value="Vinegar" id="vinegar">
-                    Vinegar
-                </label>
-            </div>
-        </div>
-
-        <div class="foodBox">
-            <button class="button" id="processedButton">Ultra-Processed Foods</button>
-            <div class="ultraProcessed" id="ultraProcessed">
-                <label class="checkboxStyle" data-values="over_10g_fat">
-                    <input type="checkbox" value="Potato chips" id="potatoChips">
-                    Potato chips
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat carbs">
-                    <input type="checkbox" value="Candy bars" id="candyBars">
-                    Candy bars
-                </label>
-                <label class="checkboxStyle" data-values="carbs">
-                    <input type="checkbox" value="Sugary soft drinks" id="sugarySoftDrinks">
-                    Sugary soft drinks
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat carbs">
-                    <input type="checkbox" value="Frozen pizza" id="frozenPizza">
-                    Frozen pizza
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat carbs over_3g_lactose">
-                    <input type="checkbox" value="Milk chocolate" id="milkChocolate">
-                    Milk chocolate
-                </label>
-                <label class="checkboxStyle" data-values="over_10g_fat carbs over_3g_lactose">
-                    <input type="checkbox" value="Ice Cream" id="iceCream">
-                    Ice Cream
-                </label>
-            </div>
-        </div>
-    </div>
+    <!-- Food category boxes are generated from CATEGORIES in foods-data.js -->
+    <div class="topSection" id="topSection"></div>
 
     <div class="bottomSection" id="bottomSection">
         <div class="summary" id="summary">
@@ -531,52 +86,22 @@
 
         <div class="analysisPopup">
             <div class="popupContainer" id="popupContainer">
-                <p class="popupText" id="popupText">
-                    <!-- text is added by script -->
-                </p>
-                <p class="popupText2" id="popupText2">
-                    <!-- text is added by script -->
-                </p>
-                <p class="popupText3" id="popupText3">
-                    <!-- text is added by script -->
-                </p>
+                <div id="popupTextContainer">
+                    <!-- analysis paragraphs are added by script.js -->
+                </div>
                 <p><em>Click on this popup to close it</em></p>
             </div>
         </div>
 
         <button class="button2" id="showAnalysisButton" name="Show Analysis Popup">Show Anlysis</button>
         <button class="button2" id="restartButton" name="Restart">Restart</button>
-        
-        <h2>Filter Analysis</h2>
-        <p>Select one or more factors to exclude from the analysis</p>
-        <p><em>Note that if you want to deselect a filter after having selected foods you will have to press the "Restart"-button and select the foods again to get the right analysis. This is a bug that will be fixed in the future.</em></p>
 
-        <div class="filterContainer" id="filterContainer">
-            <label class="checkboxStyle" data-values="fodmapFilter">
-                <input type="checkbox" value="FODMAP filter" id="fodmapFilter">
-                FODMAPs
-            </label>
-            <label class="checkboxStyle" data-values="fatsFilter">
-                <input type="checkbox" value="Fats filter" id="fatsFilter">
-                Fats
-            </label>
-            <label class="checkboxStyle" data-values="fiberFilter">
-                <input type="checkbox" value="Fiber filter" id="fiberFilter">
-                Fiber
-            </label>
-            <label class="checkboxStyle" data-values="proteinFilter">
-                <input type="checkbox" value="Protein filter" id="proteinFilter">
-                Protein
-            </label>
-            <label class="checkboxStyle" data-values="carbFilter">
-                <input type="checkbox" value="Carb filter" id="carbFilter">
-                Carbohydrate
-            </label>
-            <label class="checkboxStyle" data-values="lactoseFilter">
-                <input type="checkbox" value="Lactose filter" id="lactoseFilter">
-                Lactose
-            </label>
-        </div>
+        <h2>Filter Analysis</h2>
+        <p>Select one or more factors to exclude from the analysis. Filters update the analysis immediately, even
+            after foods are already selected.</p>
+
+        <!-- Filter checkboxes are generated from TRAITS in foods-data.js -->
+        <div class="filterContainer" id="filterContainer"></div>
 
     </div>
 </body>
@@ -588,7 +113,7 @@
     <p>Uppsala, Sweden, 2024</p>
 </footer>
 
+<script src="foods-data.js"></script>
 <script src="script.js"></script>
-
 
 </html>

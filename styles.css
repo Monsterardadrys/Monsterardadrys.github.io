@@ -84,6 +84,15 @@ header li a:hover {
     text-align: center;
 }
 
+.neck ul {
+    display: list-items;
+    float: none;
+    position: relative;
+    list-style-type: none;
+    padding-top: 5px;
+    padding-bottom: 15px;
+}
+
 /* Disclaimer popup */
 .disclaimerPopup {
     position: fixed;
@@ -219,44 +228,15 @@ input[type="checkbox"]:hover {
     cursor: pointer;
 }
 
-.roots {
+/* Every category's food list shares this one rule now (toggled via the
+   "open" class in script.js) instead of one display:none rule per
+   category — so a new category in foods-data.js needs zero CSS. */
+.foodGroup {
     display: none;
 }
 
-.veggies {
-    display: none;
-}
-
-.fruits {
-    display: none;
-}
-
-.nuts {
-    display: none;
-} 
-
-.grains {
-    display: none;
-}
-
-.legumes {
-    display: none; 
-}
-
-.animals {
-    display: none;
-}
-
-.dairy {
-    display: none;
-}
-
-.spices {
-    display: none;
-}
-
-.ultraProcessed {
-    display: none;
+.foodGroup.open {
+    display: block;
 }
 
 .bottomSection {
@@ -345,6 +325,81 @@ input[type="checkbox"]:hover {
 
 .filterContainer label {
     width: fit-content;
+}
+
+/* ---- articles.html: topic index + article content ---- */
+.articleLayout {
+    display: flex;
+    gap: 30px;
+    margin: 40px 75px;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.articleIndex {
+    flex: 0 0 220px;
+    background: #ffffffd2;
+    border-radius: 10px;
+    padding: 16px;
+    position: sticky;
+    top: 20px;
+}
+
+.articleIndex h2 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+.articleIndex ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.articleIndex li {
+    margin-bottom: 8px;
+}
+
+.articleIndex a {
+    text-decoration: none;
+    color: #124559;
+    font-weight: 600;
+    display: block;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+.articleIndex a:hover {
+    background: rgba(252, 163, 17, 0.25);
+}
+
+.articleIndex a.active {
+    background: #fca311;
+    color: #000;
+}
+
+.articleContent {
+    flex: 1;
+    min-width: 0;
+    background: #ffffffd2;
+    border-radius: 10px;
+    padding: 10px 30px 30px;
+}
+
+.articleContent h1 {
+    color: #124559;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.articleContent h2 {
+    margin-top: 30px;
+}
+
+.articleNote {
+    background: rgba(252, 163, 17, 0.15);
+    border-left: 4px solid #fca311;
+    padding: 10px 14px;
+    border-radius: 6px;
 }
 
 footer {
@@ -481,6 +536,17 @@ footer {
         position: relative;
         left: 3%;
         width: 94%;
+    }
+
+    .articleLayout {
+        flex-direction: column;
+        margin: 6vw;
+    }
+
+    .articleIndex {
+        position: static;
+        flex: none;
+        width: 100%;
     }
 }
 

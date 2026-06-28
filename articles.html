@@ -1,0 +1,66 @@
+<!--
+    Food Intolerance Guide — articles page.
+
+    This one page renders every deep-dive article from articles-data.js.
+    To add a new article (or expand one of the "More info to come..."
+    stubs), edit articles-data.js only — this file and articles.js don't
+    need to change.
+
+    Routing is via the URL hash, e.g. articles.html#fiber. That means any
+    page on the site can deep-link straight to a specific article, and
+    script.js's analysis popup does exactly that through each trait's
+    `articleId` in foods-data.js.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Food intolerance guide — Articles</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+    <header>
+        <h1>Articles</h1>
+        <a class="backToMain" href=index.html>Main</a>
+        <ul>
+            <li><a href=articles.html>Articles</a></li>
+        </ul>
+    </header>
+
+    <div class="neck">
+        <p>Deep dives into the traits tracked on the main checklist — what they are, why they can cause symptoms,
+            and who tends to be more sensitive to them.</p>
+    </div>
+
+    <div class="articleLayout">
+        <nav class="articleIndex" id="articleIndex">
+            <h2>Topics</h2>
+            <ul id="articleIndexList">
+                <!-- populated by articles.js -->
+            </ul>
+        </nav>
+
+        <article class="articleContent" id="articleContent">
+            <!-- populated by articles.js -->
+        </article>
+    </div>
+</body>
+
+<footer>
+    <p>Did you find this webpage useful?</p>
+    <p>Did you find any errors or have ideas for improvement?</p>
+    <p>Email: info@foodintoleranceguide.com</p>
+    <p>Uppsala, Sweden, 2024</p>
+</footer>
+
+<script src="articles-data.js"></script>
+<script src="articles.js"></script>
+
+</html>
