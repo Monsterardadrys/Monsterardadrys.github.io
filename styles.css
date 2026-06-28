@@ -1,33 +1,51 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=Source+Sans+Pro:wght@400;600&display=swap");
+
+:root {
+    --ink: #232b27;
+    --primary: #15414c;
+    --primary-dark: #0c2a31;
+    --sage: #7e9b7a;
+    --sage-dark: #5c7a59;
+    --clay: #c98a5e;
+    --clay-dark: #a96b41;
+    --linen: #f6f1e6;
+    --paper: #fffdf8;
+    --border: #ddd6c6;
+}
+
 html {
-    background-image: url("bilder/mixed-vegetables-2-ai-craiyon.png");
-    background-size: cover;
+    background: linear-gradient(165deg, #f1ece0 0%, #e3e9de 55%, #d9e3da 100%);
     background-attachment: fixed;
     font-family: 'Source Sans Pro', sans-serif;
 }
 
 body {
-    background-color: #ffffffd2;
+    background-color: #fffdf8d2;
 }
 
 h1 {
+    font-family: 'Lora', Georgia, serif;
+    font-weight: 600;
     font-size: 6vw;
-    color: #eff6e0;
+    color: var(--linen);
+    letter-spacing: 0.5px;
 }
 
 h2 {
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-family: 'Lora', Georgia, serif;
     font-style: italic;
-    color: #124559;
+    font-weight: 500;
+    color: var(--primary);
 }
 
 p {
     font-size: 18px;
-    color: #000000;
+    color: var(--ink);
 }
 
 header {
     display: block;
-    background: #124559de;
+    background: linear-gradient(180deg, var(--primary), var(--primary-dark));
     height: auto;
     width: auto;
     margin: 0;
@@ -36,7 +54,7 @@ header {
 }
 
 .backToMain {
-    color: white;
+    color: var(--linen);
     display: block;
     width: 100px;
     margin: 8px;
@@ -48,12 +66,12 @@ header {
 
 .backToMain:hover {
     cursor: pointer;
-    background-color: white;
-    color: black;
+    background-color: var(--linen);
+    color: var(--primary-dark);
 }
 
 header ul {
-    background-color: #5983928e;
+    background-color: rgba(255, 255, 255, 0.08);
     display: flex;
     flex-wrap: wrap;
     list-style-type: none;
@@ -63,7 +81,7 @@ header ul {
 }
 
 header li a {
-    color: white;
+    color: var(--linen);
     display: block;
     margin: 8px;
     padding: 8px 16px;
@@ -74,8 +92,8 @@ header li a {
 
 header li a:hover {
     cursor: pointer;
-    background-color: white;
-    color: black;
+    background-color: var(--linen);
+    color: var(--primary-dark);
 }
 
 .neck {
@@ -108,12 +126,12 @@ header li a:hover {
 
 .disclaimerPopup:target {
     opacity: 1;
-    background-color: rgba(155, 155, 155, 0.5);
+    background-color: rgba(35, 43, 39, 0.55);
     pointer-events: auto;
 }
 
 .disclaimerText {
-    background-color: rgba(255, 255, 255, 1);
+    background-color: var(--paper);
     width: 70vw;
     max-width: 700px;
     height: fit-content;
@@ -121,16 +139,18 @@ header li a:hover {
     position: relative;
     margin: 5% auto;
     padding: 5px 20px 13px 20px;
-    border-radius: 10px;
+    border-radius: 14px;
+    box-shadow: 0 16px 40px rgba(21, 65, 76, 0.25);
 }
 
 .disclaimerText p {
     font-size: 22px;
     font-weight: 400;
+    color: var(--ink);
 }
 
 .closePopup {
-    background: #606061;
+    background: var(--sage-dark);
     color: #FFFFFF;
     font-size: 2rem;
     text-decoration: none;
@@ -142,11 +162,11 @@ header li a:hover {
     text-align: center;
     top: 105%;
     border-radius: 22px;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25);
 }
 
 .closePopup:hover {
-    background: #33641a;
+    background: var(--primary-dark);
 }
 
 .searchContainer {
@@ -154,10 +174,12 @@ header li a:hover {
 }
 
 .searchContainer input {
-    padding: 5px;
+    padding: 5px 10px;
     margin-top: 10px;
     font-size: 20px;
+    border: 1px solid var(--border);
     border-radius: 10px;
+    background: var(--paper);
 }
 
 .searchContainer button {
@@ -165,14 +187,16 @@ header li a:hover {
     margin-top: -10px;
     margin-right: 10px;
     font-size: 20px;
-    background-color: #fff;
-    border: none;
+    background-color: var(--paper);
+    border: 1px solid var(--border);
     border-radius: 15px;
     cursor: pointer;
+    color: var(--ink);
 }
 
 .searchContainer button:hover {
-    background-color: #8a5f04;
+    background-color: var(--sage);
+    border-color: var(--sage);
     color: #fff;
 }
 
@@ -190,24 +214,25 @@ header li a:hover {
 /* Style for the food category buttons */
 .button {
     height: 50px;
-    background-image: linear-gradient(188deg, #fcde32, #fca311, #e28f09);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(160deg, var(--sage), var(--sage-dark));
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 22px;
     font-weight: 600;
-    color: #000000;
+    color: #fff;
     padding: 5px;
     padding-left: 25px;
     padding-right: 25px;
     margin: 5px;
     border-radius: 25px;
     border-width: 0.5px;
-    border-color: rgba(46, 118, 118, 0.6);
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+    border-color: rgba(21, 65, 76, 0.3);
+    box-shadow: 0 6px 14px rgba(21, 65, 76, 0.2);
 }
 
 .button:hover {
     cursor: pointer;
-    background-image: linear-gradient(180deg, #ffffff, #ffffff, #ffffff);
+    background: var(--paper);
+    color: var(--primary);
 }
 
 .checkboxStyle {
@@ -217,10 +242,11 @@ header li a:hover {
     line-height: 1.1;
     display: grid;
     grid-template-columns: 2rem auto;
+    color: var(--ink);
 }
 
 .checkboxStyle:hover {
-    background-color: rgba(55, 55, 55, 0.201);
+    background-color: rgba(126, 155, 122, 0.18);
     cursor: pointer;
 }
 
@@ -249,11 +275,11 @@ input[type="checkbox"]:hover {
 
 /* Style for the analysis and the restart buttons */
 .button2 {
-    background-image: linear-gradient(180deg, #ffdeaa, #b5935b, #ff924e);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(160deg, var(--clay), var(--clay-dark));
+    font-family: 'Source Sans Pro', sans-serif;
     font-weight: 600;
     font-size: 22px;
-    color: rgba(0, 0, 0, 0.8);
+    color: #fff;
     padding: 10px;
     padding-left: 20px;
     padding-right: 20px;
@@ -261,13 +287,14 @@ input[type="checkbox"]:hover {
     margin-bottom: 50px;
     border-radius: 25px;
     border-width: 0.5px;
-    border-color: azure;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
+    border-color: rgba(21, 65, 76, 0.2);
+    box-shadow: 0 6px 14px rgba(21, 65, 76, 0.2);
 }
 
 .button2:hover {
     cursor: pointer;
-    background-image: linear-gradient(180deg, #ffffff, #ffffff, #ffffff);
+    background: var(--paper);
+    color: var(--clay-dark);
 }
 
 .summary {
@@ -279,16 +306,17 @@ input[type="checkbox"]:hover {
 .popupContainer {
     visibility: hidden;
     width: 90%;
-    background-color: rgba(255, 255, 255, 0.95);
-    color: rgb(0, 0, 0);
+    background-color: var(--paper);
+    color: var(--ink);
     text-align: center;
-    border: 2px solid black;
+    border: 1px solid var(--border);
     border-radius: 16px;
     padding: 50px 0;
     position: fixed;
     z-index: 1;
     top: 5%;
     left: 5%;
+    box-shadow: 0 20px 50px rgba(21, 65, 76, 0.25);
 }
 
 .popupContainer:hover {
@@ -303,6 +331,7 @@ input[type="checkbox"]:hover {
 .popupText {
     font-size: 21px;
     font-weight: 600;
+    color: var(--primary);
 }
 
 /* Toggle this class when clicking on the popup container (hide and show the popup) */
@@ -338,7 +367,8 @@ input[type="checkbox"]:hover {
 
 .articleIndex {
     flex: 0 0 220px;
-    background: #ffffffd2;
+    background: var(--paper);
+    border: 1px solid var(--border);
     border-radius: 10px;
     padding: 16px;
     position: sticky;
@@ -362,7 +392,7 @@ input[type="checkbox"]:hover {
 
 .articleIndex a {
     text-decoration: none;
-    color: #124559;
+    color: var(--primary);
     font-weight: 600;
     display: block;
     padding: 6px 10px;
@@ -370,25 +400,26 @@ input[type="checkbox"]:hover {
 }
 
 .articleIndex a:hover {
-    background: rgba(252, 163, 17, 0.25);
+    background: rgba(126, 155, 122, 0.2);
 }
 
 .articleIndex a.active {
-    background: #fca311;
-    color: #000;
+    background: var(--sage);
+    color: #fff;
 }
 
 .articleContent {
     flex: 1;
     min-width: 0;
-    background: #ffffffd2;
+    background: var(--paper);
+    border: 1px solid var(--border);
     border-radius: 10px;
     padding: 10px 30px 30px;
 }
 
 .articleContent h1 {
-    color: #124559;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: var(--primary);
+    font-family: 'Lora', Georgia, serif;
 }
 
 .articleContent h2 {
@@ -396,21 +427,25 @@ input[type="checkbox"]:hover {
 }
 
 .articleNote {
-    background: rgba(252, 163, 17, 0.15);
-    border-left: 4px solid #fca311;
+    background: rgba(126, 155, 122, 0.14);
+    border-left: 4px solid var(--sage-dark);
     padding: 10px 14px;
     border-radius: 6px;
 }
 
 footer {
-    background-color: #59839250;
+    background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+    color: var(--linen);
     text-align: center;
-    padding: 20px;
+    padding: 30px 20px;
     margin-left: -10px;
     margin-right: -10px;
     margin-bottom: -10px;
-    font-style: Italic;
-    height: 500px;
+    font-style: italic;
+}
+
+footer p {
+    color: var(--linen);
 }
 
 /* Add animation (fade in the popup) */
@@ -520,8 +555,8 @@ footer {
     .popupContainer {
         visibility: hidden;
         width: 90%;
-        background-color: rgba(255, 255, 255, 0.95);
-        color: rgb(0, 0, 0);
+        background-color: var(--paper);
+        color: var(--ink);
         text-align: center;
         border-radius: 6px;
         padding: 100px 0;
