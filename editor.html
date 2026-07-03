@@ -122,9 +122,10 @@
   }
   .foodsTable {
     display: flex;
-    align-items: stretch;
+    align-items: flex-start;
     max-height: 60vh;
     overflow-y: auto;
+    overflow-x: hidden;
     border: 1px solid var(--border);
     border-radius: 8px;
     margin-bottom: 10px;
@@ -135,6 +136,9 @@
     flex-direction: column;
     border-right: 2px solid var(--border);
     background: #fff;
+    position: sticky;
+    left: 0;
+    z-index: 1;
   }
   .scrollPane {
     flex: 1 1 auto;
@@ -154,13 +158,14 @@
   .frozenRow:last-child, .scrollRow:last-child { border-bottom: none; }
   .frozenHead, .scrollHead {
     position: sticky;
-    top: var(--toolbar-h, 70px);
-    z-index: 2;
+    top: 0;
+    z-index: 3;
     background: #f1f3f4;
     font-size: 12px;
     font-weight: 700;
     color: var(--dark);
   }
+  .frozenHead { z-index: 4; }
   .frozenHead span, .scrollHead span { padding: 0 4px; }
   .traitColHead {
     text-align: center;
@@ -1989,12 +1994,8 @@
 
   function setStatus(msg) {
     statusEl.textContent = msg;
-    if (typeof updateToolbarOffset === 'function') updateToolbarOffset();
     clearTimeout(setStatus._t);
-    setStatus._t = setTimeout(() => {
-      statusEl.textContent = '';
-      if (typeof updateToolbarOffset === 'function') updateToolbarOffset();
-    }, 4000);
+    setStatus._t = setTimeout(() => { statusEl.textContent = ''; }, 4000);
   }
 
   function validateId(id) {
@@ -2302,20 +2303,9 @@
     });
   }
 
-  // ---- Keep the table header offset clear of the toolbar (height varies
-  // on mobile when its buttons wrap to multiple lines) -----------------
-  function updateToolbarOffset() {
-    const toolbar = document.querySelector('.toolbar');
-    if (toolbar) {
-      document.documentElement.style.setProperty('--toolbar-h', toolbar.offsetHeight + 'px');
-    }
-  }
-  window.addEventListener('resize', updateToolbarOffset);
-
   function render() {
     renderTraits();
     renderCategories();
-    updateToolbarOffset();
   }
 
   // ---- File import / export -----------------------------------------------
