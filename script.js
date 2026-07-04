@@ -20,6 +20,7 @@
   "use strict";
 
   const topSection = document.getElementById("topSection");
+  const bottomSection = document.getElementById("bottomSection");
   const filterContainer = document.getElementById("filterContainer");
   const chosenText = document.getElementById("chosenText");
   const summaryText = document.getElementById("summaryText");
@@ -30,6 +31,8 @@
   const showAnalysisButton = document.getElementById("showAnalysisButton");
   const popupContainer = document.getElementById("popupContainer");
   const popupTextContainer = document.getElementById("popupTextContainer");
+  const searchContainer = document.getElementById("searchContainer");
+  const disclaimerCheckbox = document.getElementById("disclaimerCheckbox");
 
   let lastTopTraits = [];
 
@@ -38,6 +41,26 @@
     window.location.hash = "disclaimerPopup";
   }
   window.onload = openDisclaimer;
+
+  // ---- Disclaimer confirmation gate --------------------------------------
+  // The food checklist, search, and analysis controls stay locked until
+  // the "I have read and understood the disclaimer" checkbox (in the bar
+  // under the header, not the popup) is checked. This is per-visit only —
+  // nothing is remembered, so the checkbox starts unchecked on every load.
+  const lockTargets = [topSection, searchContainer, bottomSection];
+
+  function setToolLocked(locked) {
+    lockTargets.forEach(function (el) {
+      el.classList.toggle("toolLocked", locked);
+    });
+  }
+
+  if (disclaimerCheckbox) {
+    disclaimerCheckbox.addEventListener("change", function () {
+      setToolLocked(!disclaimerCheckbox.checked);
+    });
+    setToolLocked(!disclaimerCheckbox.checked);
+  }
 
   // ---- Build the food category boxes from CATEGORIES -------------------
   function renderCategories() {

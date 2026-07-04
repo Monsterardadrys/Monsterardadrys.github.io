@@ -44,18 +44,37 @@
         </ul>
     </header>
 
+    <!-- Persistent disclaimer confirmation bar. This is separate from the
+         popup below: the popup holds the disclaimer text itself, this bar
+         is the visible, permanent confirmation control + a way to reopen
+         the popup at any time. script.js locks the food checklist until
+         the checkbox here is checked. -->
+    <div class="disclaimerBar" id="disclaimerBar">
+        <label class="disclaimerCheck">
+            <input type="checkbox" id="disclaimerCheckbox">
+            I have read and understood the disclaimer
+        </label>
+        <a href="#disclaimerPopup" class="disclaimerBtn">Read disclaimer</a>
+    </div>
+
     <div class="neck" id="neck">
 
         <div class="disclaimerPopup" id="disclaimerPopup">
             <div class="disclaimerText">
                 <a href="#close" title="Close" class="closePopup">OK</a>
-                <p>By entering this website you agree that the author of this website can not be held responsible for
-                    any health issues that could occur by using the information on the website.</p>
-                <p>You understand that: </p>
-                <p>- This website is still under construction and therefore the information on it could be inaccurate.
-                </p>
-                <p>- It is meant to be a tool for health care professionals</p>
-                <p>- It is <em>NOT</em> meant to replace the diagnostics and advice of a health care professional</p>
+                <h2>Before you start</h2>
+                <p>This tool helps spot patterns between foods and symptoms. It is <strong>not</strong> a
+                    diagnosis, and it does not replace the advice of a health care professional.</p>
+                <ul>
+                    <li>This website is still under construction, so some information may be incomplete or
+                        inaccurate.</li>
+                    <li>It is designed as a triage aid for health care professionals, not as a self-diagnosis tool.
+                    </li>
+                    <li>It must never replace the diagnosis, testing, or advice of a qualified health care
+                        professional.</li>
+                    <li>By using this tool you accept that the author cannot be held responsible for any health
+                        outcome related to the information shown here.</li>
+                </ul>
             </div>
         </div>
 
@@ -109,7 +128,7 @@
 <footer>
     <p>Did you find this webpage useful?</p>
     <p>Did you find any errors or have ideas for improvement?</p>
-    <p>Email: info@foodintoleranceguide.com</p>
+    <p>Email: Monsterardadrys@duck.com</p>
     <p>Uppsala, Sweden, 2024</p>
 </footer>
 
