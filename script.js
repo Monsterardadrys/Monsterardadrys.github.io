@@ -35,8 +35,9 @@
 
   // ---- Disclaimer popup close-on-click -----------------------------------
   const disclaimerPopup = document.getElementById("disclaimerPopup");
-  disclaimerPopup.addEventListener("click", function () {
-    history.replaceState(null, "", location.pathname + location.search);
+  document.addEventListener("click", function () {
+     disclaimerPopup.style.display = "none";
+     history.replaceState(null, "", location.pathname + location.search);
   });
 
   // ---- Disclaimer / tool lock -----------------------------------------
