@@ -518,8 +518,8 @@ footer p { color: var(--linen); }
 
 
 
-    .articleLayout { flex-direction: column; margin: 6vw; }
-    .articleIndex { position: static; flex: none; width: 100%; }
+    .articleLayout { flex-direction: column; margin: 6vw; box-sizing: border-box; }
+    .articleIndex { position: static; flex: none; width: 100%; box-sizing: border-box; }
 }
 
 @media (min-width: 3800px) {

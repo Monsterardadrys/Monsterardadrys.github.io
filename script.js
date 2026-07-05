@@ -33,6 +33,12 @@
 
   let lastTopTraits = [];
 
+  // ---- Disclaimer popup close-on-click -----------------------------------
+  const disclaimerPopup = document.getElementById("disclaimerPopup");
+  disclaimerPopup.addEventListener("click", function () {
+    history.replaceState(null, "", location.pathname + location.search);
+  });
+
   // ---- Disclaimer / tool lock -----------------------------------------
   const lockTargets = ["topSection", "searchContainer", "bottomSection"];
   lockTargets.forEach(id => document.getElementById(id).classList.add("toolLocked"));
@@ -84,13 +90,30 @@
   function renderFilters() {
     const grouped = {};
     const groupOrder = [];
+    const ungrouped = [];
     Object.keys(TRAITS).forEach(function (traitId) {
       const trait = TRAITS[traitId];
       if (!trait.filter) return;
-      const g = trait.group || "Other";
+      if (!trait.group) { ungrouped.push({ traitId, trait }); return; }
+      const g = trait.group;
       if (!grouped[g]) { grouped[g] = []; groupOrder.push(g); }
       grouped[g].push({ traitId, trait });
     });
+
+    ungrouped
+      .sort(function (a, b) { return (a.trait.order || 99) - (b.trait.order || 99); })
+      .forEach(function (item) {
+        const label = document.createElement("label");
+        label.className = "checkboxStyle";
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.value = item.traitId;
+        checkbox.addEventListener("change", recompute);
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(item.trait.label));
+        filterContainer.appendChild(label);
+      });
+
     groupOrder.forEach(function (groupName) {
       const header = document.createElement("p");
       header.className = "filterGroupHeader";

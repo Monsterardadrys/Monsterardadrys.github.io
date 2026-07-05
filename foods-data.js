@@ -79,8 +79,7 @@ const TRAITS = {
 
   /* ---- FODMAPs: broad trait + 4 specific subtypes (additive) ---- */
   fodmaps: {
-    group: "FODMAPs",
-    order: 1,
+    order: 6,
     label: "FODMAPs",
     filter: true,
     articleId: "fodmaps",
@@ -93,8 +92,8 @@ const TRAITS = {
   },
   fructose: {
     group: "FODMAPs",
-    order: 2,
-    label: "Fructose (excess)",
+    order: 1,
+    label: "Fructose",
     filter: true,
     articleId: "fructose",
     analysis: [
@@ -104,8 +103,8 @@ const TRAITS = {
   },
   polyols: {
     group: "FODMAPs",
-    order: 3,
-    label: "Polyols (sugar alcohols)",
+    order: 2,
+    label: "Polyols",
     filter: true,
     articleId: "polyols",
     analysis: [
@@ -115,7 +114,7 @@ const TRAITS = {
   },
   fructans: {
     group: "FODMAPs",
-    order: 4,
+    order: 3,
     label: "Fructans",
     filter: true,
     articleId: "fructans",
@@ -126,8 +125,8 @@ const TRAITS = {
   },
   galactans: {
     group: "FODMAPs",
-    order: 5,
-    label: "Galacto-oligosaccharides (GOS)",
+    order: 4,
+    label: "GOS",
     filter: true,
     articleId: "galactans",
     analysis: [
@@ -138,7 +137,6 @@ const TRAITS = {
 
   /* ---- Macros ---- */
   over_10g_fat: {
-    group: "Macronutrients",
     order: 1,
     label: "Fat",
     filter: true,
@@ -150,8 +148,7 @@ const TRAITS = {
     ]
   },
   bile_stimulant: {
-    group: "Macronutrients",
-    order: 2,
+    order: 8,
     label: "Bile stimulant",
     filter: true,
     analysis: [
@@ -161,8 +158,7 @@ const TRAITS = {
     ]
   },
   fiber: {
-    group: "Macronutrients",
-    order: 3,
+    order: 4,
     label: "Fiber",
     filter: true,
     articleId: "fiber",
@@ -173,8 +169,7 @@ const TRAITS = {
     ]
   },
   protein: {
-    group: "Macronutrients",
-    order: 4,
+    order: 2,
     label: "Protein",
     filter: true,
     articleId: "protein",
@@ -183,8 +178,7 @@ const TRAITS = {
     ]
   },
   carbs: {
-    group: "Macronutrients",
-    order: 5,
+    order: 3,
     label: "Carbohydrates",
     filter: true,
     articleId: "carbs",
@@ -193,8 +187,8 @@ const TRAITS = {
     ]
   },
   over_3g_lactose: {
-    group: "Macronutrients",
-    order: 6,
+    group: "FODMAPs",
+    order: 5,
     label: "Lactose",
     filter: true,
     articleId: "lactose",
@@ -207,8 +201,7 @@ const TRAITS = {
 
   /* ---- Histamine ---- */
   histamine: {
-    group: "Histamine",
-    order: 1,
+    order: 7,
     label: "Histamine",
     filter: true,
     articleId: "histamine",
@@ -222,7 +215,7 @@ const TRAITS = {
   /* ---- Alcohol / caffeine ---- */
   alcohol: {
     group: "GI Irritants",
-    order: 1,
+    order: 6,
     label: "Alcohol",
     filter: true,
     analysis: [
@@ -231,7 +224,7 @@ const TRAITS = {
   },
   caffeine: {
     group: "GI Irritants",
-    order: 2,
+    order: 7,
     label: "Caffeine",
     filter: true,
     analysis: [
@@ -241,9 +234,8 @@ const TRAITS = {
 
   /* ---- Irritant: broad trait + specific mechanisms (additive) ---- */
   irritant: {
-    group: "GI Irritants",
-    order: 3,
-    label: "GI irritant (general)",
+    order: 5,
+    label: "General",
     filter: true,
     articleId: "irritant",
     analysis: [
@@ -254,7 +246,7 @@ const TRAITS = {
   },
   capsaicin: {
     group: "GI Irritants",
-    order: 4,
+    order: 1,
     label: "Capsaicin",
     filter: true,
     analysis: [
@@ -264,7 +256,7 @@ const TRAITS = {
   },
   peel_skin: {
     group: "GI Irritants",
-    order: 5,
+    order: 2,
     label: "Peel/skin",
     filter: true,
     analysis: [
@@ -274,7 +266,7 @@ const TRAITS = {
   },
   allyl_compounds: {
     group: "GI Irritants",
-    order: 6,
+    order: 3,
     label: "Allyl/sulfur compounds",
     filter: true,
     analysis: [
@@ -284,7 +276,7 @@ const TRAITS = {
   },
   carbonation: {
     group: "GI Irritants",
-    order: 7,
+    order: 4,
     label: "Carbonation",
     filter: true,
     analysis: [
@@ -293,7 +285,7 @@ const TRAITS = {
   },
   aceticAcid: {
     group: "GI Irritants",
-    order: 8,
+    order: 5,
     label: "Acetic acid",
     filter: true,
     analysis: [
@@ -303,9 +295,8 @@ const TRAITS = {
 
   /* ---- Allergen: broad "Big 9" trait + specific allergens (additive) ---- */
   allergen: {
-    group: "Allergens",
-    order: 1,
-    label: "Common allergen (Big 9)",
+    order: 9,
+    label: "Big 9 (general)",
     filter: true,
     articleId: "allergen",
     analysis: [
@@ -315,8 +306,8 @@ const TRAITS = {
   },
   allergen_milk: {
     group: "Allergens",
-    order: 2,
-    label: "Milk allergen",
+    order: 1,
+    label: "Milk",
     filter: true,
     analysis: [
       "Cow's milk allergy is mediated mainly by casein and whey proteins — distinct from lactose intolerance, which is a digestive enzyme issue, not an immune one."
@@ -324,8 +315,8 @@ const TRAITS = {
   },
   allergen_egg: {
     group: "Allergens",
-    order: 3,
-    label: "Egg allergen",
+    order: 2,
+    label: "Egg",
     filter: true,
     analysis: [
       "Egg allergy is mediated mainly by proteins in the egg white (ovalbumin, ovomucoid). The yolk is less allergenic but not necessarily safe for someone with an egg allergy."
@@ -333,8 +324,8 @@ const TRAITS = {
   },
   allergen_wheat: {
     group: "Allergens",
-    order: 4,
-    label: "Wheat allergen",
+    order: 3,
+    label: "Wheat",
     filter: true,
     analysis: [
       "Wheat allergy is an immune reaction to wheat proteins — distinct from celiac disease and from non-celiac gluten sensitivity, which are not classic IgE-mediated allergies."
@@ -342,8 +333,8 @@ const TRAITS = {
   },
   allergen_fish: {
     group: "Allergens",
-    order: 5,
-    label: "Fish allergen",
+    order: 4,
+    label: "Fish",
     filter: true,
     analysis: [
       "Fish allergy is mediated mainly by parvalbumin, a muscle protein — a different allergen than shellfish tropomyosin, so an allergy to one doesn't necessarily mean an allergy to the other."
@@ -351,8 +342,8 @@ const TRAITS = {
   },
   allergen_shellfish: {
     group: "Allergens",
-    order: 6,
-    label: "Shellfish allergen",
+    order: 5,
+    label: "Shellfish",
     filter: true,
     analysis: [
       "Shellfish allergy is mediated mainly by tropomyosin, found in crustaceans and molluscs."
@@ -360,8 +351,8 @@ const TRAITS = {
   },
   allergen_peanut: {
     group: "Allergens",
-    order: 7,
-    label: "Peanut allergen",
+    order: 6,
+    label: "Peanut",
     filter: true,
     analysis: [
       "Peanut allergy is one of the most common severe food allergies. Peanut is a legume, not a tree nut, and peanut allergy doesn't reliably predict tree nut allergy."
@@ -369,8 +360,8 @@ const TRAITS = {
   },
   allergen_treenut: {
     group: "Allergens",
-    order: 8,
-    label: "Tree nut allergen",
+    order: 7,
+    label: "Tree nut",
     filter: true,
     analysis: [
       "Tree nut allergy (almond, cashew, walnut, hazelnut, Brazil nut, etc.) is botanically and clinically distinct from peanut allergy."
@@ -378,8 +369,8 @@ const TRAITS = {
   },
   allergen_soy: {
     group: "Allergens",
-    order: 9,
-    label: "Soy allergen",
+    order: 8,
+    label: "Soy",
     filter: true,
     analysis: [
       "Soy allergy is mediated by several soy proteins and can occasionally cross-react with peanut, since both are legumes."
@@ -387,8 +378,8 @@ const TRAITS = {
   },
   allergen_sesame: {
     group: "Allergens",
-    order: 10,
-    label: "Sesame allergen",
+    order: 9,
+    label: "Sesame",
     filter: true,
     analysis: [
       "Sesame is one of the more recently recognized \"Big 9\" allergens and can cause severe reactions."
@@ -397,9 +388,8 @@ const TRAITS = {
 
   /* ---- Cross-reactive: broad OAS trait + specific pollen syndromes ---- */
   cross_reactive: {
-    group: "Cross-reactivity",
-    order: 1,
-    label: "Pollen-food cross-reactivity (OAS)",
+    order: 10,
+    label: "General (OAS)",
     filter: true,
     articleId: "cross_reactive",
     analysis: [
@@ -410,8 +400,8 @@ const TRAITS = {
   },
   cross_birch: {
     group: "Cross-reactivity",
-    order: 2,
-    label: "Birch pollen cross-reactivity",
+    order: 1,
+    label: "Birch pollen",
     filter: true,
     analysis: [
       "Relevant for people with a birch pollen allergy, due to a shared protein family (PR-10) between birch pollen and these foods — classically apples, stone fruits, carrots, celery/celeriac, hazelnuts and soy."
@@ -419,8 +409,8 @@ const TRAITS = {
   },
   cross_grass: {
     group: "Cross-reactivity",
-    order: 3,
-    label: "Grass pollen cross-reactivity",
+    order: 2,
+    label: "Grass pollen",
     filter: true,
     analysis: [
       "Relevant for people with a grass pollen allergy. Cross-reactive proteins are found in foods like melon, watermelon, tomato, orange, peanut and potato."
@@ -428,8 +418,8 @@ const TRAITS = {
   },
   cross_latex: {
     group: "Cross-reactivity",
-    order: 4,
-    label: "Latex cross-reactivity",
+    order: 3,
+    label: "Latex",
     filter: true,
     analysis: [
       "Relevant for people with a latex allergy (e.g. healthcare workers). Cross-reactive proteins (mainly chitinases) are found in foods like banana, avocado, kiwi and papaya."

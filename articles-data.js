@@ -424,7 +424,7 @@ const ARTICLES = {
   },
 
   lactose: {
-    title: "Lactose Intolerance",
+    title: "Lactose",
     sections: [
       {
         heading: "What is lactose intolerance?",
@@ -450,7 +450,8 @@ const ARTICLES = {
       {
         heading: "Lactose and FODMAPs/IBS",
         blocks: [
-          { type: "p", text: "Lactose is one of the FODMAP subtypes (the \"D\" for disaccharides), so it's tested during a structured low-FODMAP elimination diet alongside fructans, GOS, and polyols. People with IBS often have some degree of lactose sensitivity even with normal lactase levels, since IBS increases general sensitivity to fermentable sugars — not just lactose specifically." }
+          { type: "p", text: "Lactose is one of the FODMAP subtypes (the \"D\" for disaccharides), so it's tested during a structured low-FODMAP elimination diet alongside fructans, GOS, and polyols. People with IBS often have some degree of lactose sensitivity even with normal lactase levels, since IBS increases general sensitivity to fermentable sugars — not just lactose specifically." },
+          { type: "note", text: "As a FODMAP subtype, lactose is mainly a problem for people with IBS, though it can also cause discomfort in other GI disorders, or in anyone if consumption is high enough." }
         ]
       },
       {
@@ -474,6 +475,7 @@ const ARTICLES = {
       {
         heading: null,
         blocks: [
+          { type: "note", text: "This is a FODMAP subtype. It's mainly a problem for people with IBS, though it can also cause discomfort in other GI disorders, or in anyone if consumption is high enough." },
           { type: "note", text: "This is distinct from hereditary fructose intolerance (HFI), a rare genetic condition (roughly 1 in 20,000-30,000) causing an inability to break down fructose at all. It's present from birth, but because affected people often develop a strong natural aversion to sweet foods, it can go undiagnosed until adulthood." }
         ]
       }
@@ -488,6 +490,12 @@ const ARTICLES = {
         blocks: [
           { type: "p", text: "Sorbitol and mannitol are poorly absorbed, pulling water into the bowel osmotically and getting fermented by colon bacteria, producing gas. Common in stone fruits, mushrooms, and sugar-free sweeteners (chewing gum, \"diet\" products)." }
         ]
+      },
+      {
+        heading: null,
+        blocks: [
+          { type: "note", text: "This is a FODMAP subtype. It's mainly a problem for people with IBS, though it can also cause discomfort in other GI disorders, or in anyone if consumption is high enough." }
+        ]
       }
     ]
   },
@@ -500,6 +508,12 @@ const ARTICLES = {
         blocks: [
           { type: "p", text: "Chains of fructose molecules humans can't digest; fermented by colon bacteria. Found in wheat, onion, and garlic — among the most common FODMAP triggers." }
         ]
+      },
+      {
+        heading: null,
+        blocks: [
+          { type: "note", text: "This is a FODMAP subtype. It's mainly a problem for people with IBS, though it can also cause discomfort in other GI disorders, or in anyone if consumption is high enough." }
+        ]
       }
     ]
   },
@@ -511,6 +525,12 @@ const ARTICLES = {
         heading: null,
         blocks: [
           { type: "p", text: "Short galactose chains the small intestine can't break down, fermented in the colon. Main sources: legumes and some nuts." }
+        ]
+      },
+      {
+        heading: null,
+        blocks: [
+          { type: "note", text: "This is a FODMAP subtype. It's mainly a problem for people with IBS, though it can also cause discomfort in other GI disorders, or in anyone if consumption is high enough." }
         ]
       }
     ]
