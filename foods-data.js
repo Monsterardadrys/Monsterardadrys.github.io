@@ -79,6 +79,8 @@ const TRAITS = {
 
   /* ---- FODMAPs: broad trait + 4 specific subtypes (additive) ---- */
   fodmaps: {
+    group: "FODMAPs",
+    order: 1,
     label: "FODMAPs",
     filter: true,
     articleId: "fodmaps",
@@ -90,32 +92,44 @@ const TRAITS = {
     ]
   },
   fructose: {
+    group: "FODMAPs",
+    order: 2,
     label: "Fructose (excess)",
     filter: true,
+    articleId: "fructose",
     analysis: [
       "These foods are high in free fructose relative to glucose, which can exceed the small intestine's absorption capacity and draw extra water into the bowel.",
       "This is one of several FODMAP subtypes tracked alongside the broader FODMAPs trait."
     ]
   },
   polyols: {
+    group: "FODMAPs",
+    order: 3,
     label: "Polyols (sugar alcohols)",
     filter: true,
+    articleId: "polyols",
     analysis: [
       "These foods naturally contain sugar alcohols such as sorbitol and mannitol, which are poorly absorbed and have an osmotic, water-drawing effect in the bowel.",
       "Stone fruits and mushrooms are common sources. This is one of several FODMAP subtypes tracked alongside the broader FODMAPs trait."
     ]
   },
   fructans: {
+    group: "FODMAPs",
+    order: 4,
     label: "Fructans",
     filter: true,
+    articleId: "fructans",
     analysis: [
       "Fructans are chains of fructose molecules that humans lack the enzymes to digest, so they pass intact to the colon where gut bacteria ferment them.",
       "Wheat, onion and garlic are classic sources. This is one of several FODMAP subtypes tracked alongside the broader FODMAPs trait."
     ]
   },
   galactans: {
+    group: "FODMAPs",
+    order: 5,
     label: "Galacto-oligosaccharides (GOS)",
     filter: true,
+    articleId: "galactans",
     analysis: [
       "Galacto-oligosaccharides are short chains of galactose the small intestine can't break down, so they reach the colon largely intact and get fermented by gut bacteria.",
       "Legumes and some nuts are the main sources. This is one of several FODMAP subtypes tracked alongside the broader FODMAPs trait."
@@ -124,6 +138,8 @@ const TRAITS = {
 
   /* ---- Macros ---- */
   over_10g_fat: {
+    group: "Macronutrients",
+    order: 1,
     label: "Fat",
     filter: true,
     articleId: "fat",
@@ -134,6 +150,8 @@ const TRAITS = {
     ]
   },
   bile_stimulant: {
+    group: "Macronutrients",
+    order: 2,
     label: "Bile stimulant",
     filter: true,
     analysis: [
@@ -143,6 +161,8 @@ const TRAITS = {
     ]
   },
   fiber: {
+    group: "Macronutrients",
+    order: 3,
     label: "Fiber",
     filter: true,
     articleId: "fiber",
@@ -153,24 +173,31 @@ const TRAITS = {
     ]
   },
   protein: {
+    group: "Macronutrients",
+    order: 4,
     label: "Protein",
     filter: true,
     articleId: "protein",
     analysis: [
-      "Detailed analysis for protein is coming soon."
+      "These foods are protein-rich. Protein moderately stimulates bile release and can add to digestive workload in large amounts. Symptoms are more often linked to what accompanies the protein (lactose, allergens, histamine) than protein itself, though pancreatitis, pancreatic tumors, and true food allergy can cause direct reactions."
     ]
   },
   carbs: {
+    group: "Macronutrients",
+    order: 5,
     label: "Carbohydrates",
     filter: true,
     articleId: "carbs",
     analysis: [
-      "Detailed analysis for carbohydrates is coming soon."
+      "These foods are carbohydrate-rich. Symptoms attributed to carbs are usually driven by a specific subtype — FODMAPs, lactose, or excess fructose — rather than carbohydrate content as a whole. Check the more specific traits (FODMAPs, lactose) for the likely mechanism."
     ]
   },
   over_3g_lactose: {
+    group: "Macronutrients",
+    order: 6,
     label: "Lactose",
     filter: true,
+    articleId: "lactose",
     analysis: [
       "The number one commonality of these foods is Lactose which is a sugar (di-saccharide) that comes with the milk from all mammals.",
       "Lactose can cause discomfort or even diarrhea for most people if eaten in very high amounts. Sensitive individuals, like people with celiac disease, IBD, IBS or lactose intolerance, can get moderate to severe pain, gas and diarrhea even in relatively low doses.",
@@ -180,8 +207,11 @@ const TRAITS = {
 
   /* ---- Histamine ---- */
   histamine: {
+    group: "Histamine",
+    order: 1,
     label: "Histamine",
     filter: true,
+    articleId: "histamine",
     analysis: [
       "These foods are either naturally high in histamine, trigger the body's own histamine release (\"histamine liberators\"), or block the enzyme (DAO) that breaks histamine down — all of which can produce similar symptoms in sensitive individuals.",
       "Symptoms can include flushing, headache, hives, and gut discomfort. Freshness, fermentation, and aging strongly affect histamine content, especially for fish, cheese, and cured meats.",
@@ -191,6 +221,8 @@ const TRAITS = {
 
   /* ---- Alcohol / caffeine ---- */
   alcohol: {
+    group: "GI Irritants",
+    order: 1,
     label: "Alcohol",
     filter: true,
     analysis: [
@@ -198,6 +230,8 @@ const TRAITS = {
     ]
   },
   caffeine: {
+    group: "GI Irritants",
+    order: 2,
     label: "Caffeine",
     filter: true,
     analysis: [
@@ -207,8 +241,11 @@ const TRAITS = {
 
   /* ---- Irritant: broad trait + specific mechanisms (additive) ---- */
   irritant: {
+    group: "GI Irritants",
+    order: 3,
     label: "GI irritant (general)",
     filter: true,
+    articleId: "irritant",
     analysis: [
       "These foods can worsen symptoms across many different GI conditions (GERD, IBS, gallbladder disease, general gut sensitivity) through a variety of mechanisms — some well-established (fat, alcohol, caffeine, capsaicin), others based mainly on clinical experience and observation rather than a confirmed lab mechanism.",
       "This is a broad, catch-all trait. Where a more specific mechanism is known, the food will also carry one of the more specific irritant traits (acetic acid, capsaicin, peel/skin, allyl/sulfur compounds, carbonation, alcohol, caffeine) — check the filters for those if you want to narrow down further.",
@@ -216,6 +253,8 @@ const TRAITS = {
     ]
   },
   capsaicin: {
+    group: "GI Irritants",
+    order: 4,
     label: "Capsaicin",
     filter: true,
     analysis: [
@@ -224,6 +263,8 @@ const TRAITS = {
     ]
   },
   peel_skin: {
+    group: "GI Irritants",
+    order: 5,
     label: "Peel/skin",
     filter: true,
     analysis: [
@@ -232,6 +273,8 @@ const TRAITS = {
     ]
   },
   allyl_compounds: {
+    group: "GI Irritants",
+    order: 6,
     label: "Allyl/sulfur compounds",
     filter: true,
     analysis: [
@@ -240,6 +283,8 @@ const TRAITS = {
     ]
   },
   carbonation: {
+    group: "GI Irritants",
+    order: 7,
     label: "Carbonation",
     filter: true,
     analysis: [
@@ -247,6 +292,8 @@ const TRAITS = {
     ]
   },
   aceticAcid: {
+    group: "GI Irritants",
+    order: 8,
     label: "Acetic acid",
     filter: true,
     analysis: [
@@ -256,14 +303,19 @@ const TRAITS = {
 
   /* ---- Allergen: broad "Big 9" trait + specific allergens (additive) ---- */
   allergen: {
+    group: "Allergens",
+    order: 1,
     label: "Common allergen (Big 9)",
     filter: true,
+    articleId: "allergen",
     analysis: [
       "These foods belong to the \"Big 9\" group responsible for the large majority of true, IgE-mediated food allergies: milk, egg, wheat, fish, shellfish, peanut, tree nuts, soy and sesame.",
       "This reflects known common allergens, not a dose-dependent intolerance. Allergen reactions can be severe or systemic. If a true allergy is suspected, refer for formal allergy testing rather than relying on this tool."
     ]
   },
   allergen_milk: {
+    group: "Allergens",
+    order: 2,
     label: "Milk allergen",
     filter: true,
     analysis: [
@@ -271,6 +323,8 @@ const TRAITS = {
     ]
   },
   allergen_egg: {
+    group: "Allergens",
+    order: 3,
     label: "Egg allergen",
     filter: true,
     analysis: [
@@ -278,6 +332,8 @@ const TRAITS = {
     ]
   },
   allergen_wheat: {
+    group: "Allergens",
+    order: 4,
     label: "Wheat allergen",
     filter: true,
     analysis: [
@@ -285,6 +341,8 @@ const TRAITS = {
     ]
   },
   allergen_fish: {
+    group: "Allergens",
+    order: 5,
     label: "Fish allergen",
     filter: true,
     analysis: [
@@ -292,6 +350,8 @@ const TRAITS = {
     ]
   },
   allergen_shellfish: {
+    group: "Allergens",
+    order: 6,
     label: "Shellfish allergen",
     filter: true,
     analysis: [
@@ -299,6 +359,8 @@ const TRAITS = {
     ]
   },
   allergen_peanut: {
+    group: "Allergens",
+    order: 7,
     label: "Peanut allergen",
     filter: true,
     analysis: [
@@ -306,6 +368,8 @@ const TRAITS = {
     ]
   },
   allergen_treenut: {
+    group: "Allergens",
+    order: 8,
     label: "Tree nut allergen",
     filter: true,
     analysis: [
@@ -313,6 +377,8 @@ const TRAITS = {
     ]
   },
   allergen_soy: {
+    group: "Allergens",
+    order: 9,
     label: "Soy allergen",
     filter: true,
     analysis: [
@@ -320,6 +386,8 @@ const TRAITS = {
     ]
   },
   allergen_sesame: {
+    group: "Allergens",
+    order: 10,
     label: "Sesame allergen",
     filter: true,
     analysis: [
@@ -329,8 +397,11 @@ const TRAITS = {
 
   /* ---- Cross-reactive: broad OAS trait + specific pollen syndromes ---- */
   cross_reactive: {
+    group: "Cross-reactivity",
+    order: 1,
     label: "Pollen-food cross-reactivity (OAS)",
     filter: true,
+    articleId: "cross_reactive",
     analysis: [
       "These foods can trigger oral allergy syndrome (OAS) in people already allergic to certain pollens, because the food contains proteins structurally similar to the pollen allergen.",
       "Unlike true food allergies, OAS reactions are usually mild and limited to tingling, itching or mild swelling of the mouth/throat. The proteins involved are often heat-labile, meaning cooking the food frequently resolves the reaction.",
@@ -338,6 +409,8 @@ const TRAITS = {
     ]
   },
   cross_birch: {
+    group: "Cross-reactivity",
+    order: 2,
     label: "Birch pollen cross-reactivity",
     filter: true,
     analysis: [
@@ -345,6 +418,8 @@ const TRAITS = {
     ]
   },
   cross_grass: {
+    group: "Cross-reactivity",
+    order: 3,
     label: "Grass pollen cross-reactivity",
     filter: true,
     analysis: [
@@ -352,6 +427,8 @@ const TRAITS = {
     ]
   },
   cross_latex: {
+    group: "Cross-reactivity",
+    order: 4,
     label: "Latex cross-reactivity",
     filter: true,
     analysis: [

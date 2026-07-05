@@ -86,10 +86,22 @@
     highlightActive(null);
   }
 
+  function renderNotFound(id) {
+    content.innerHTML = "";
+    const h1 = document.createElement("h1");
+    h1.textContent = "Topic not found";
+    content.appendChild(h1);
+    const p = document.createElement("p");
+    p.textContent = "There's no article called \"" + id + "\". Pick a topic from the list instead.";
+    content.appendChild(p);
+    highlightActive(null);
+  }
+
   function renderArticle(id) {
     const article = ARTICLES[id];
     if (!article) {
-      renderLanding();
+      if (id) renderNotFound(id);
+      else renderLanding();
       return;
     }
 
@@ -108,7 +120,6 @@
     });
 
     highlightActive(id);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function route() {

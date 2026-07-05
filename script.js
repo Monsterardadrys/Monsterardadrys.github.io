@@ -20,7 +20,6 @@
   "use strict";
 
   const topSection = document.getElementById("topSection");
-  const bottomSection = document.getElementById("bottomSection");
   const filterContainer = document.getElementById("filterContainer");
   const chosenText = document.getElementById("chosenText");
   const summaryText = document.getElementById("summaryText");
@@ -31,36 +30,16 @@
   const showAnalysisButton = document.getElementById("showAnalysisButton");
   const popupContainer = document.getElementById("popupContainer");
   const popupTextContainer = document.getElementById("popupTextContainer");
-  const searchContainer = document.getElementById("searchContainer");
-  const disclaimerCheckbox = document.getElementById("disclaimerCheckbox");
 
   let lastTopTraits = [];
 
-  // ---- Disclaimer popup (unchanged behaviour) --------------------------
-  function openDisclaimer() {
-    window.location.hash = "disclaimerPopup";
-  }
-  window.onload = openDisclaimer;
-
-  // ---- Disclaimer confirmation gate --------------------------------------
-  // The food checklist, search, and analysis controls stay locked until
-  // the "I have read and understood the disclaimer" checkbox (in the bar
-  // under the header, not the popup) is checked. This is per-visit only —
-  // nothing is remembered, so the checkbox starts unchecked on every load.
-  const lockTargets = [topSection, searchContainer, bottomSection];
-
-  function setToolLocked(locked) {
-    lockTargets.forEach(function (el) {
-      el.classList.toggle("toolLocked", locked);
-    });
-  }
-
-  if (disclaimerCheckbox) {
-    disclaimerCheckbox.addEventListener("change", function () {
-      setToolLocked(!disclaimerCheckbox.checked);
-    });
-    setToolLocked(!disclaimerCheckbox.checked);
-  }
+  // ---- Disclaimer / tool lock -----------------------------------------
+  const lockTargets = ["topSection", "searchContainer", "bottomSection"];
+  lockTargets.forEach(id => document.getElementById(id).classList.add("toolLocked"));
+  document.getElementById("disclaimerCheckbox").addEventListener("change", function () {
+    if (this.checked) lockTargets.forEach(id => document.getElementById(id).classList.remove("toolLocked"));
+    else lockTargets.forEach(id => document.getElementById(id).classList.add("toolLocked"));
+  });
 
   // ---- Build the food category boxes from CATEGORIES -------------------
   function renderCategories() {
@@ -76,7 +55,7 @@
       const group = document.createElement("div");
       group.className = "foodGroup";
 
-      category.foods.forEach(function (food) {
+      category.foods.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (food) {
         const label = document.createElement("label");
         label.className = "checkboxStyle";
         label.dataset.traits = food.traits.join(" ");
@@ -103,21 +82,44 @@
 
   // ---- Build the filter checkboxes from TRAITS --------------------------
   function renderFilters() {
+    const grouped = {};
+    const groupOrder = [];
     Object.keys(TRAITS).forEach(function (traitId) {
       const trait = TRAITS[traitId];
       if (!trait.filter) return;
+      const g = trait.group || "Other";
+      if (!grouped[g]) { grouped[g] = []; groupOrder.push(g); }
+      grouped[g].push({ traitId, trait });
+    });
+    groupOrder.forEach(function (groupName) {
+      const header = document.createElement("p");
+      header.className = "filterGroupHeader";
+      header.textContent = groupName;
+      header.setAttribute("aria-expanded", "false");
+      filterContainer.appendChild(header);
 
-      const label = document.createElement("label");
-      label.className = "checkboxStyle";
+      const groupWrap = document.createElement("div");
+      groupWrap.className = "filterGroup collapsed";
+      grouped[groupName]
+        .sort(function (a, b) { return (a.trait.order || 99) - (b.trait.order || 99); })
+        .forEach(function (item) {
+          const label = document.createElement("label");
+          label.className = "checkboxStyle";
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.value = item.traitId;
+          checkbox.addEventListener("change", recompute);
+          label.appendChild(checkbox);
+          label.appendChild(document.createTextNode(item.trait.label));
+          groupWrap.appendChild(label);
+        });
+      filterContainer.appendChild(groupWrap);
 
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.value = traitId;
-      checkbox.addEventListener("change", recompute);
-
-      label.appendChild(checkbox);
-      label.appendChild(document.createTextNode(trait.label));
-      filterContainer.appendChild(label);
+      header.addEventListener("click", function () {
+        const expanded = header.getAttribute("aria-expanded") === "true";
+        header.setAttribute("aria-expanded", !expanded);
+        groupWrap.classList.toggle("collapsed", expanded);
+      });
     });
   }
 
@@ -203,42 +205,47 @@
   }
 
   // ---- Analysis popup ----------------------------------------------------
-  function addPopupParagraph(text, isLead) {
-    const p = document.createElement("p");
-    if (isLead) p.className = "popupText";
-    p.textContent = text;
-    popupTextContainer.appendChild(p);
-  }
-
-  function addPopupArticleLink(articleId) {
-    const p = document.createElement("p");
-    const link = document.createElement("a");
-    link.href = "articles.html#" + articleId;
-    link.target = "_blank";
-    link.rel = "noopener";
-    link.textContent = "Read the full article →";
-    // Stop the click from also triggering the popup's own close-on-click handler.
-    link.addEventListener("click", function (e) { e.stopPropagation(); });
-    p.appendChild(link);
-    popupTextContainer.appendChild(p);
-  }
-
   showAnalysisButton.addEventListener("click", function () {
     popupTextContainer.innerHTML = "";
 
     if (lastTopTraits.length === 0) {
-      addPopupParagraph("Select foods to see a deeper summary and analysis of the foods.", true);
+      const p = document.createElement("p");
+      p.className = "popupText";
+      p.textContent = "Select foods to see a deeper summary and analysis of the foods.";
+      popupTextContainer.appendChild(p);
     } else {
-      const trait = TRAITS[lastTopTraits[0].traitId];
-      const paragraphs = (trait.analysis && trait.analysis.length)
-        ? trait.analysis
-        : ["The most common shared trait among these foods is " + trait.label + "."];
-      paragraphs.forEach(function (text, i) {
-        addPopupParagraph(text, i === 0);
+      lastTopTraits.forEach(function (item, index) {
+        if (index > 0) {
+          const hr = document.createElement("hr");
+          hr.className = "popupDivider";
+          popupTextContainer.appendChild(hr);
+        }
+        const trait = TRAITS[item.traitId];
+        const heading = document.createElement("p");
+        heading.className = "popupTraitHeading";
+        heading.textContent = item.percent + "% — " + trait.label;
+        popupTextContainer.appendChild(heading);
+        const paragraphs = (trait.analysis && trait.analysis.length)
+          ? trait.analysis
+          : ["The most common shared trait among these foods is " + trait.label + "."];
+        paragraphs.forEach(function (text, i) {
+          const p = document.createElement("p");
+          if (i === 0) p.className = "popupText";
+          p.textContent = text;
+          popupTextContainer.appendChild(p);
+        });
+        if (trait.articleId) {
+          const p = document.createElement("p");
+          const link = document.createElement("a");
+          link.href = "articles.html#" + trait.articleId;
+          link.target = "_blank";
+          link.rel = "noopener";
+          link.textContent = "Read the full article →";
+          link.addEventListener("click", function (e) { e.stopPropagation(); });
+          p.appendChild(link);
+          popupTextContainer.appendChild(p);
+        }
       });
-      if (trait.articleId) {
-        addPopupArticleLink(trait.articleId);
-      }
     }
 
     popupContainer.classList.toggle("show");
@@ -246,6 +253,14 @@
 
   popupContainer.addEventListener("click", function () {
     popupContainer.classList.toggle("show");
+  });
+
+  document.getElementById("printAnalysisButton").addEventListener("click", function (e) {
+    e.stopPropagation();
+    const foods = getSelectedFoods().map(function (f) { return f.name; });
+    const list = document.getElementById("printFoodsList");
+    list.innerHTML = "<h2>Selected foods</h2><p>" + foods.join(", ") + "</p>";
+    window.print();
   });
 
   // ---- Search / show-all -------------------------------------------------

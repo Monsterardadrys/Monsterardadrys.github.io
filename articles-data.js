@@ -216,12 +216,37 @@ const ARTICLES = {
   },
 
   fat: {
-    title: "Fats",
+    title: "Fat",
     sections: [
+      {
+        heading: "Why fat can trigger symptoms",
+        blocks: [
+          { type: "p", text: "Fat doesn't mix with water, so it needs bile as an emulsifier to break it into digestible droplets. Without enough bile, fat passes through poorly digested." },
+          { type: "p", text: "Fat is the slowest macronutrient to digest. A high-fat meal stays in the stomach and small intestine longer, and it strongly stimulates the gallbladder and pancreas to release bile and digestive enzymes." },
+          { type: "p", text: "For most people this is no problem. For people with GERD, IBS, gallbladder disease, or pancreatic insufficiency (EPI), it can trigger reflux, cramping, or diarrhea." }
+        ]
+      },
+      {
+        heading: "Who is more sensitive?",
+        blocks: [
+          { type: "list", items: [
+            "**GERD, IBS, IBD:** fat most often worsens symptoms already caused by these conditions rather than causing them directly.",
+            "**Gallstones / biliary colic:** fat triggers gallbladder contraction, which can cause pain in a diseased gallbladder — a case of fat causing symptoms directly.",
+            "**EPI / pancreatitis:** without enough pancreatic enzymes, fat isn't broken down properly, causing oily stools and urgent diarrhea — also a direct cause."
+          ]}
+        ]
+      },
+      {
+        heading: "Warning signs of fat malabsorption",
+        blocks: [
+          { type: "p", text: "Acute diarrhea within 1-2 hours of a fatty meal, pale or yellow stool, and oily residue in the toilet can indicate a malabsorption disorder and deserve medical follow-up rather than self-managed avoidance." }
+        ]
+      },
       {
         heading: null,
         blocks: [
-          { type: "p", text: "More info to come..." }
+          { type: "note", text: "Loss of appetite from unrelated medical conditions (e.g. heart failure) can shift food preference toward carbs and away from fat- and protein-rich foods — worth distinguishing from a true food intolerance." },
+          { type: "note", text: "Dumping syndrome — rapid gastric emptying causing cramping, diarrhea, and sometimes low blood sugar — is common after GI surgery (bariatric, oncologic, or IBD-related resections), typically triggered by fat-rich or carb-rich meals." }
         ]
       }
     ]
@@ -231,9 +256,34 @@ const ARTICLES = {
     title: "Protein",
     sections: [
       {
+        heading: "Why protein can trigger symptoms",
+        blocks: [
+          { type: "p", text: "Protein itself is well tolerated by most people, but it's a moderate stimulant of bile release (weaker than fat) and a large protein load can slow digestion." },
+          { type: "p", text: "Symptoms usually come from something protein-rich foods carry alongside the protein: dairy protein is often paired with lactose, some proteins overlap with Big 9 allergens, and fermented or aged proteins (cured meat, aged cheese) can be high in histamine." }
+        ]
+      },
+      {
+        heading: "Who is more sensitive?",
+        blocks: [
+          { type: "list", items: [
+            "**Gallbladder disease:** protein adds to the bile-release load alongside fat.",
+            "**Pancreatitis / pancreatic tumors:** among the most specific causes of true protein malabsorption.",
+            "**True food allergy:** milk, egg, fish, shellfish, peanut, tree nut, soy, and sesame proteins can trigger immune reactions unrelated to digestion.",
+            "**Histamine intolerance:** aged, cured, or fermented protein sources tend to be high in histamine."
+          ]}
+        ]
+      },
+      {
+        heading: "A note on quantity",
+        blocks: [
+          { type: "p", text: "Very high single-meal protein intakes (common in high-protein diets) can occasionally cause bloating or discomfort simply from the digestive workload, independent of any allergy or intolerance." }
+        ]
+      },
+      {
         heading: null,
         blocks: [
-          { type: "p", text: "More info to come..." }
+          { type: "note", text: "Some amino acid metabolism disorders are congenital and almost never first appear in adulthood." },
+          { type: "note", text: "Loss of appetite from unrelated medical conditions (e.g. heart failure) can shift food preference toward carbs and away from fat- and protein-rich foods — worth distinguishing from a true food intolerance." }
         ]
       }
     ]
@@ -243,9 +293,275 @@ const ARTICLES = {
     title: "Carbohydrates",
     sections: [
       {
+        heading: "Why carbohydrates can trigger symptoms",
+        blocks: [
+          { type: "p", text: "Most digestive symptoms blamed on \"carbs\" actually come from specific subtypes: FODMAPs (see the FODMAPs article), lactose, or excess fructose, rather than starch or sugar in general." },
+          { type: "p", text: "Refined carbohydrates can also raise blood sugar quickly, which is a separate concern from GI symptoms but often gets grouped in with them." }
+        ]
+      },
+      {
+        heading: "Who is more sensitive?",
+        blocks: [
+          { type: "list", items: [
+            "**IBS / SIBO:** fermentable carbohydrate subtypes (FODMAPs) are the main driver of bloating and gas.",
+            "**Lactose intolerance:** lactose specifically, not carbohydrates broadly.",
+            "**Diabetes / insulin resistance:** carbohydrate load affects blood sugar regardless of GI tolerance."
+          ]}
+        ]
+      },
+      {
+        heading: "Practical takeaway",
+        blocks: [
+          { type: "p", text: "If carbohydrate-containing foods are a suspected trigger, checking which specific subtype (FODMAPs, lactose, fructose) they share is usually more useful than avoiding carbohydrates as a whole." }
+        ]
+      },
+      {
         heading: null,
         blocks: [
-          { type: "p", text: "More info to come..." }
+          { type: "note", text: "Dumping syndrome — rapid gastric emptying causing cramping, diarrhea, and sometimes low blood sugar — is common after GI surgery (bariatric, oncologic, or IBD-related resections), typically triggered by carb-rich or fat-rich meals." }
+        ]
+      }
+    ]
+  },
+
+  irritant: {
+    title: "GI Irritants",
+    sections: [
+      {
+        heading: "What counts as a GI irritant?",
+        blocks: [
+          { type: "p", text: "A broad group of foods that can worsen gut symptoms through different mechanisms — some well-established (fat, alcohol, caffeine, capsaicin), others based mainly on clinical observation." }
+        ]
+      },
+      {
+        heading: "Specific mechanisms",
+        blocks: [
+          { type: "list", items: [
+            "**Capsaicin:** activates pain/heat receptors in the gut lining, found in hot peppers",
+            "**Peel/skin:** concentrated fiber and irritant compounds in the outer layer of some fruits/vegetables",
+            "**Allyl/sulfur compounds:** pungent compounds in raw garlic, onion, mustard",
+            "**Carbonation:** gas causes distension, worsens bloating and reflux",
+            "**Acetic acid:** vinegar's acidity can irritate the gut lining directly",
+            "**Alcohol:** relaxes the esophageal sphincter, irritates gut lining",
+            "**Caffeine:** stimulates gut motility and acid secretion"
+          ]}
+        ]
+      },
+      {
+        heading: null,
+        blocks: [
+          { type: "note", text: "This reflects a mix of clinical experience, general physiology, and GI research — with varying levels of confidence per specific trait. Not every food tagged here has an equally strong or proven effect; treat this as a starting point for individual investigation." }
+        ]
+      }
+    ]
+  },
+
+  allergen: {
+    title: "Allergens",
+    sections: [
+      {
+        heading: "The \"Big 9\"",
+        blocks: [
+          { type: "p", text: "Milk, egg, wheat, fish, shellfish, peanut, tree nut, soy, and sesame cause the large majority of true, IgE-mediated food allergies — distinct from dose-dependent intolerances tracked elsewhere on this site." }
+        ]
+      },
+      {
+        heading: "Key distinctions",
+        blocks: [
+          { type: "list", items: [
+            "Milk allergy (casein/whey) is not the same as lactose intolerance (an enzyme issue, not immune).",
+            "Egg allergy is mainly driven by egg-white proteins; the yolk is less allergenic but not necessarily safe.",
+            "Wheat allergy, celiac disease, and non-celiac gluten sensitivity are three distinct conditions.",
+            "Fish (parvalbumin) and shellfish (tropomyosin) are different allergens — one doesn't predict the other.",
+            "Peanut is a legume; peanut allergy doesn't reliably predict tree nut allergy.",
+            "Sesame is a more recently recognized Big 9 allergen and can cause severe reactions."
+          ]}
+        ]
+      },
+      {
+        heading: "Sensitization and reaction severity",
+        blocks: [
+          { type: "p", text: "The first exposure to an allergen often causes no reaction — it primes the immune system to produce antibodies. Later exposures can trigger much stronger reactions as antibody levels rise, which is why an allergy can appear \"suddenly\" even to a food eaten safely before." }
+        ]
+      },
+      {
+        heading: "Tolerance",
+        blocks: [
+          { type: "p", text: "Tolerance means the immune system learns to accept a food antigen without reacting — it's the default state for most food proteins in most people. Many childhood allergies (milk, egg, wheat, soy) are outgrown as tolerance develops with age and continued exposure; others (peanut, tree nut, shellfish, fish) are more likely to persist for life." },
+          { type: "p", text: "Oral immunotherapy is an emerging approach that tries to build tolerance deliberately under medical supervision — not something to attempt unsupervised." }
+        ]
+      },
+      {
+        heading: null,
+        blocks: [
+          { type: "note", text: "Long-term unnecessary avoidance of a food can reduce tolerance over time, making a reaction more likely if the food is reintroduced later — this applies to true allergies, but similar patterns are seen with IBS and lactose intolerance too, even though the underlying mechanisms differ. Reintroduction is best guided by a professional rather than done alone after a long avoidance period." },
+          { type: "note", text: "If a true allergy is suspected, refer for formal allergy testing rather than relying on this tool." }
+        ]
+      }
+    ]
+  },
+
+  cross_reactive: {
+    title: "Pollen-Food Cross-Reactivity (OAS)",
+    sections: [
+      {
+        heading: "What is OAS?",
+        blocks: [
+          { type: "p", text: "Oral allergy syndrome occurs when foods contain proteins structurally similar to pollen allergens, causing mild tingling or itching in the mouth in people already allergic to that pollen. Most of these proteins are heat-labile, so symptoms often resolve once the food is cooked — but some (like certain lipid transfer proteins) are heat-stable and can still trigger reactions, occasionally more severe ones, even when cooked." }
+        ]
+      },
+      {
+        heading: "The three pollen groups",
+        blocks: [
+          { type: "list", items: [
+            "**Birch (PR-10 protein family):** apples, stone fruits, carrots, celery/celeriac, hazelnuts, soy",
+            "**Grass:** melon, watermelon, tomato, orange, peanut, potato",
+            "**Latex (chitinases):** banana, avocado, kiwi, papaya"
+          ]}
+        ]
+      }
+    ]
+  },
+
+  lactose: {
+    title: "Lactose Intolerance",
+    sections: [
+      {
+        heading: "What is lactose intolerance?",
+        blocks: [
+          { type: "p", text: "Lactose is a sugar found in milk, broken down by the enzyme lactase. When lactase activity is too low, undigested lactose draws water into the bowel and ferments in the colon, causing gas, bloating, cramping, and diarrhea." }
+        ]
+      },
+      {
+        heading: "Types",
+        blocks: [
+          { type: "list", items: [
+            "**Primary:** the most common form — lactase production naturally declines after childhood in most of the world's population",
+            "**Secondary (temporary):** caused by damage to the gut lining from another condition, and resolves once that condition is treated"
+          ]}
+        ]
+      },
+      {
+        heading: null,
+        blocks: [
+          { type: "note", text: "Untreated coeliac disease often causes temporary secondary lactose intolerance, since gut lining damage reduces lactase production. This is a key reason proper diagnosis matters — in children who previously tolerated lactose well, and arguably even more so in adults who have been lactose tolerant their whole life, since new-onset intolerance in adulthood is a stronger signal that something else needs investigating." }
+        ]
+      },
+      {
+        heading: "Lactose and FODMAPs/IBS",
+        blocks: [
+          { type: "p", text: "Lactose is one of the FODMAP subtypes (the \"D\" for disaccharides), so it's tested during a structured low-FODMAP elimination diet alongside fructans, GOS, and polyols. People with IBS often have some degree of lactose sensitivity even with normal lactase levels, since IBS increases general sensitivity to fermentable sugars — not just lactose specifically." }
+        ]
+      },
+      {
+        heading: "Managing it",
+        blocks: [
+          { type: "p", text: "Tolerance is dose- and dairy-type dependent — many people can tolerate small amounts or fermented/aged dairy (yogurt, hard cheese) even if unable to tolerate a glass of milk." }
+        ]
+      }
+    ]
+  },
+
+  fructose: {
+    title: "Fructose (Excess)",
+    sections: [
+      {
+        heading: null,
+        blocks: [
+          { type: "p", text: "Excess free fructose relative to glucose overwhelms small-intestine absorption, drawing water into the bowel. Found in honey, apples, mangoes, and high-fructose corn syrup." }
+        ]
+      },
+      {
+        heading: null,
+        blocks: [
+          { type: "note", text: "This is distinct from hereditary fructose intolerance (HFI), a rare genetic condition (roughly 1 in 20,000-30,000) causing an inability to break down fructose at all. It's present from birth, but because affected people often develop a strong natural aversion to sweet foods, it can go undiagnosed until adulthood." }
+        ]
+      }
+    ]
+  },
+
+  polyols: {
+    title: "Polyols (Sugar Alcohols)",
+    sections: [
+      {
+        heading: null,
+        blocks: [
+          { type: "p", text: "Sorbitol and mannitol are poorly absorbed, pulling water into the bowel osmotically and getting fermented by colon bacteria, producing gas. Common in stone fruits, mushrooms, and sugar-free sweeteners (chewing gum, \"diet\" products)." }
+        ]
+      }
+    ]
+  },
+
+  fructans: {
+    title: "Fructans",
+    sections: [
+      {
+        heading: null,
+        blocks: [
+          { type: "p", text: "Chains of fructose molecules humans can't digest; fermented by colon bacteria. Found in wheat, onion, and garlic — among the most common FODMAP triggers." }
+        ]
+      }
+    ]
+  },
+
+  galactans: {
+    title: "Galacto-oligosaccharides (GOS)",
+    sections: [
+      {
+        heading: null,
+        blocks: [
+          { type: "p", text: "Short galactose chains the small intestine can't break down, fermented in the colon. Main sources: legumes and some nuts." }
+        ]
+      }
+    ]
+  },
+
+  histamine: {
+    title: "Histamine",
+    sections: [
+      {
+        heading: "What is histamine intolerance?",
+        blocks: [
+          { type: "p", text: "Histamine is a normal signaling molecule found in many foods and made by the body, mainly by mast cells, then broken down by two enzymes: DAO (in the gut) and MAO (mostly elsewhere in the body). When breakdown is too slow or intake too high, histamine builds up and causes symptoms that mimic an allergic reaction, even without a true immune allergy." }
+        ]
+      },
+      {
+        heading: "Three ways foods raise histamine load",
+        blocks: [
+          { type: "list", items: [
+            "**High histamine content:** aged, fermented, or spoiled foods (aged cheese, cured meat, sauerkraut, wine)",
+            "**Histamine liberators:** foods that trigger mast cells to release stored histamine (citrus, strawberries, chocolate, some nuts)",
+            "**DAO/MAO blockers:** foods or drinks that inhibit these breakdown enzymes (alcohol, energy drinks)"
+          ]}
+        ]
+      },
+      {
+        heading: "Symptoms and who's affected",
+        blocks: [
+          { type: "p", text: "Flushing, headache, hives, nasal congestion, and gut discomfort (bloating, diarrhea). More common in adults; dose-dependent, so small amounts of a trigger may be fine while larger amounts aren't. Mast cell activation syndrome (MCAS) is a related, more complex condition sometimes considered alongside histamine intolerance." }
+        ]
+      },
+      {
+        heading: "Diagnosis",
+        blocks: [
+          { type: "p", text: "There's no single definitive test. Serum DAO activity and tryptase (a mast cell marker) blood tests can support a diagnosis in some cases, but a supervised elimination-and-reintroduction diet remains the main diagnostic tool." }
+        ]
+      },
+      {
+        heading: "Reducing histamine in your diet",
+        blocks: [
+          { type: "list", items: [
+            "Avoid cooked food that's been sitting in the fridge or at room temperature for a while — histamine rises as food ages, even before it looks or smells spoiled.",
+            "Freeze leftovers soon after cooking to slow that buildup.",
+            "Avoid most fish and shellfish unless certain it was frozen shortly after catch — histamine in fish rises quickly once out of the water.",
+            "For specific food guidance beyond these general rules, the SIGHI food list is a detailed reference."
+          ]}
+        ]
+      },
+      {
+        heading: null,
+        blocks: [
+          { type: "note", text: "Work with a dietitian or physician experienced in histamine intolerance before starting an elimination diet — it's easy to over-restrict and end up with unnecessary nutrient gaps." }
         ]
       }
     ]
