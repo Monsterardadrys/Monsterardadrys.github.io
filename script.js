@@ -35,10 +35,17 @@
 
   // ---- Disclaimer popup close-on-click -----------------------------------
   const disclaimerPopup = document.getElementById("disclaimerPopup");
+  const disclaimerBtn = document.querySelector(".disclaimerBtn");
+
+  disclaimerBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    disclaimerPopup.classList.add("active");
+  });
+
   document.addEventListener("click", function () {
-  if (location.hash === "#disclaimerPopup") {
-    history.replaceState(null, "", location.pathname + location.search);
-  }
+    if (!disclaimerPopup.classList.contains("active")) return;
+    disclaimerPopup.classList.remove("active");
   });
 
   // ---- Disclaimer / tool lock -----------------------------------------

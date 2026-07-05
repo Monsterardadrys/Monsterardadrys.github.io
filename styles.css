@@ -145,7 +145,7 @@ header li a:hover {
     cursor: pointer;
 }
 
-.disclaimerPopup:target {
+.disclaimerPopup.active {
     opacity: 1;
     background-color: rgba(21, 65, 76, 0.45);
     pointer-events: auto;
