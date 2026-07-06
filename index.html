@@ -92,8 +92,6 @@
             <p>Find more info in the menu at the top.</p>
         </div>
 
-        <div id="printFoodsList" class="printOnly"></div>
-
         <div class="analysisPopup">
             <div class="popupContainer" id="popupContainer">
                 <div id="popupTextContainer">
@@ -104,10 +102,14 @@
             </div>
         </div>
 
+        <div id="printFoodsList" class="printOnly"></div>
+        <div id="printArticlesList" class="printOnly"></div>
+
         <button class="button2" id="showAnalysisButton" name="Show Analysis Popup">Show Anlysis</button>
         <button class="button2" id="restartButton" name="Restart">Restart</button>
 
         <h2>Filter Analysis</h2>
+        <button class="button2" id="clearFiltersButton" name="Clear Filters">Clear Filters</button>
         <p>Select one or more factors to exclude from the analysis. Filters update the analysis immediately, even
             after foods are already selected.</p>
 
@@ -125,6 +127,7 @@
 </footer>
 
 <script src="foods-data.js"></script>
+<script src="articles-data.js"></script>
 <script src="script.js"></script>
 
 </html>

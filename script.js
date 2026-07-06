@@ -268,6 +268,7 @@
         });
         if (trait.articleId) {
           const p = document.createElement("p");
+          p.className = "noPrint";
           const link = document.createElement("a");
           link.href = "articles.html#" + trait.articleId;
           link.target = "_blank";
@@ -276,6 +277,13 @@
           link.addEventListener("click", function (e) { e.stopPropagation(); });
           p.appendChild(link);
           popupTextContainer.appendChild(p);
+
+          const printNote = document.createElement("p");
+          printNote.className = "printOnly";
+          const articleTitle = (typeof ARTICLES !== "undefined" && ARTICLES[trait.articleId])
+            ? ARTICLES[trait.articleId].title : trait.label;
+          printNote.textContent = "See \"" + articleTitle + "\" below.";
+          popupTextContainer.appendChild(printNote);
         }
       });
     }
@@ -289,9 +297,63 @@
 
   document.getElementById("printAnalysisButton").addEventListener("click", function (e) {
     e.stopPropagation();
-    const foods = getSelectedFoods().map(function (f) { return f.name; });
-    const list = document.getElementById("printFoodsList");
-    list.innerHTML = "<h2>Selected foods</h2><p>" + foods.join(", ") + "</p>";
+
+    const foods = getSelectedFoods().map(function (f) { return f.name; }).sort();
+    const foodsList = document.getElementById("printFoodsList");
+    foodsList.innerHTML = "<h2>Selected foods (" + foods.length + ")</h2>";
+    const ul = document.createElement("ul");
+    ul.className = "printFoodsUl";
+    foods.forEach(function (name) {
+      const li = document.createElement("li");
+      li.textContent = name;
+      ul.appendChild(li);
+    });
+    foodsList.appendChild(ul);
+
+    const articlesBox = document.getElementById("printArticlesList");
+    articlesBox.innerHTML = "";
+    if (typeof ARTICLES !== "undefined") {
+      const seen = new Set();
+      lastTopTraits.forEach(function (item) {
+        const trait = TRAITS[item.traitId];
+        if (!trait.articleId || seen.has(trait.articleId)) return;
+        const article = ARTICLES[trait.articleId];
+        if (!article) return;
+        seen.add(trait.articleId);
+
+        const section = document.createElement("div");
+        section.id = "print-article-" + trait.articleId;
+        const h2 = document.createElement("h2");
+        h2.textContent = article.title;
+        section.appendChild(h2);
+
+        article.sections.forEach(function (sec) {
+          if (sec.heading) {
+            const h3 = document.createElement("h3");
+            h3.textContent = sec.heading;
+            section.appendChild(h3);
+          }
+          sec.blocks.forEach(function (block) {
+            if (block.type === "list") {
+              const ul2 = document.createElement("ul");
+              block.items.forEach(function (i) {
+                const li = document.createElement("li");
+                li.textContent = i.replace(/\*\*/g, "");
+                ul2.appendChild(li);
+              });
+              section.appendChild(ul2);
+            } else {
+              const p = document.createElement("p");
+              p.textContent = (block.text || "").replace(/\*\*/g, "");
+              section.appendChild(p);
+            }
+          });
+        });
+
+        articlesBox.appendChild(section);
+      });
+    }
+
     window.print();
   });
 
@@ -343,6 +405,11 @@
     topSection.querySelectorAll("label").forEach(function (label) { label.style.display = ""; });
     searchField.value = "";
     hideAllCategories();
+    recompute();
+  });
+
+  document.getElementById("clearFiltersButton").addEventListener("click", function () {
+    filterContainer.querySelectorAll("input[type='checkbox']").forEach(function (cb) { cb.checked = false; });
     recompute();
   });
 

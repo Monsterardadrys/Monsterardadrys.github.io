@@ -84,10 +84,8 @@ const TRAITS = {
     filter: true,
     articleId: "fodmaps",
     analysis: [
-      "The number one commonality of these foods is FODMAPs which can cause mild or moderate gastrointestinal discomfort for anyone going from a low intake to a high intake.",
-      "For most people the symptoms of a high intake of FODMAPs is mild and improves over time even when the intake stays high, as the gut microbiome is the main reason for the symptoms and it adapts to the new diet.",
-      "For sensitive individuals on the other hand, like people with Irritable Bowel Syndrome (IBS), moderate symptoms can occur at a relatively low intake and the adaptation of the gut microbiome takes a longer time. With high daily intake the gastrointestinal symptoms can become severe, causing acute diarrhea and severe abdominal pain.",
-      "Several more specific FODMAP subtypes are tracked separately below (fructose, polyols, fructans, galactans) — a food can carry more than one at once."
+      "These foods are high in FODMAPs — fermentable carbs that can cause gas, bloating, and discomfort. Usually mild, but more pronounced and slower to resolve in IBS.",
+      "See the FODMAPs article for the specific subtypes and the low-FODMAP approach."
     ]
   },
   fructose: {
@@ -142,19 +140,18 @@ const TRAITS = {
     filter: true,
     articleId: "fat",
     analysis: [
-      "The number one commonality of these foods is a fat content of more than 10g per 100g of the food, which can cause symptoms in several cases of GI-disorders.",
-      "This is likely to cause clear symptoms in people with a number of disorders. An increase of symptoms is expected in people with GERD, Gastro Esophageal Reflux Disorder, or IBS, Irritable Bowel Syndrome. Severe and acute symptoms within 1-2 hours after a meal, like chronic diarrhea and pain/cramps, is common in malabsorption disorders like EPI, Exocrine Pancreatic Insufficiency.",
-      "EPI can be a severe disorder that is usually followed by unplanned weight loss, muscle loss and deteriorating health, most importantly it can be a sign of pancreatic cancer. Indicators of severe fat malabsorption is acute diarrhea within 1-2 hours of fatty meals, a yellow coloring of the stool and oily traces on the toilet paper or in the toilet. The oil content can make it harder than usual to flush the toilet clean and to wipe the behind clean."
+      "These foods contain more than 10g fat per 100g, which can worsen symptoms in GERD, IBS, gallbladder disease, and pancreatic insufficiency (EPI).",
+      "See the Fat article for warning signs of malabsorption and who is most affected."
     ]
   },
   bile_stimulant: {
     order: 8,
     label: "Bile stimulant",
     filter: true,
+    articleId: "bile_stimulant",
     analysis: [
-      "These foods strongly stimulate cholecystokinin (CCK) release, which triggers gallbladder contraction and bile release. Dietary fat is the dominant trigger of this pathway, with protein as a secondary, weaker stimulant.",
-      "Egg yolk specifically is used clinically as a standard fatty-meal challenge to test gallbladder emptying via ultrasound. Curcumin (from turmeric) has also been shown in human ultrasound studies to cause a dose-dependent gallbladder contraction, separate from its fat content.",
-      "This trait is most relevant for people with gallstones, biliary colic, or a history of gallbladder attacks, where a strong contraction can trigger pain."
+      "These foods strongly stimulate bile release via CCK, mainly through fat and protein content. Most relevant for gallstones or a history of gallbladder attacks.",
+      "See the Bile Stimulants article for clinical detail."
     ]
   },
   fiber: {
@@ -163,9 +160,8 @@ const TRAITS = {
     filter: true,
     articleId: "fiber",
     analysis: [
-      "The number one commonality of these foods is Fiber which can cause mild or moderate gas and bloating for anyone if the intake is high enough.",
-      "High fiber intake during dehydration can contribute to constipation and if the dehydration is not corrected the constipation can cause severe gastrointestinal discomfort and lowered appetite, which in the worst case scenario will worsen the dehydration.",
-      "For sensitive individuals, like people with gut-microbial dysbiosis, gastrointestinal discomfort can occur at a relatively low intake. Common foods high in Fiber are among others: Flax seeds, Chia seeds, Wheat/Oat bran, Whole grain pasta/bread/rice, beans and peas."
+      "These foods are high in fiber, which can cause gas and bloating at high intake, especially with dehydration or gut-microbial dysbiosis.",
+      "See the Fiber article for benefits, sources, and the risks of a low-fiber diet."
     ]
   },
   protein: {
@@ -193,9 +189,8 @@ const TRAITS = {
     filter: true,
     articleId: "lactose",
     analysis: [
-      "The number one commonality of these foods is Lactose which is a sugar (di-saccharide) that comes with the milk from all mammals.",
-      "Lactose can cause discomfort or even diarrhea for most people if eaten in very high amounts. Sensitive individuals, like people with celiac disease, IBD, IBS or lactose intolerance, can get moderate to severe pain, gas and diarrhea even in relatively low doses.",
-      "It is mainly found in dairy products (no matter what animal the milk has come from) and it is added as a sweetener to some processed foods, supplements and medications. Fermented foods like yoghurt and cheese will have lower levels of lactose, the longer the ferment and/or aging of the product the lower the levels of lactose will be."
+      "These foods are high in lactose, a milk sugar that can cause gas, bloating, and diarrhea in lactose-intolerant individuals, and discomfort in anyone at high intake.",
+      "See the Lactose article for types, IBS overlap, and why new-onset intolerance in adults deserves investigation."
     ]
   },
 
@@ -206,9 +201,8 @@ const TRAITS = {
     filter: true,
     articleId: "histamine",
     analysis: [
-      "These foods are either naturally high in histamine, trigger the body's own histamine release (\"histamine liberators\"), or block the enzyme (DAO) that breaks histamine down — all of which can produce similar symptoms in sensitive individuals.",
-      "Symptoms can include flushing, headache, hives, and gut discomfort. Freshness, fermentation, and aging strongly affect histamine content, especially for fish, cheese, and cured meats.",
-      "This tool does not distinguish between the different mechanisms (high content vs. liberator vs. DAO-blocker) — dedicated histamine-intolerance food lists (e.g. SIGHI) go further into that detail."
+      "These foods are high in histamine, trigger histamine release, or block its breakdown — all producing similar symptoms (flushing, headache, hives, gut discomfort) in sensitive individuals.",
+      "See the Histamine article for mechanisms, diagnosis, and dietary management."
     ]
   },
 
@@ -239,9 +233,8 @@ const TRAITS = {
     filter: true,
     articleId: "irritant",
     analysis: [
-      "These foods can worsen symptoms across many different GI conditions (GERD, IBS, gallbladder disease, general gut sensitivity) through a variety of mechanisms — some well-established (fat, alcohol, caffeine, capsaicin), others based mainly on clinical experience and observation rather than a confirmed lab mechanism.",
-      "This is a broad, catch-all trait. Where a more specific mechanism is known, the food will also carry one of the more specific irritant traits (acetic acid, capsaicin, peel/skin, allyl/sulfur compounds, carbonation, alcohol, caffeine) — check the filters for those if you want to narrow down further.",
-      "Not every food tagged here has an equally strong or well-proven effect; treat this as a starting point for individual investigation rather than a settled finding."
+      "These foods can worsen symptoms across GERD, IBS, gallbladder disease, and general gut sensitivity through varied mechanisms — some well-established, others based on clinical experience.",
+      "See the GI Irritants article for the specific mechanisms tracked separately."
     ]
   },
   capsaicin: {
@@ -393,9 +386,8 @@ const TRAITS = {
     filter: true,
     articleId: "cross_reactive",
     analysis: [
-      "These foods can trigger oral allergy syndrome (OAS) in people already allergic to certain pollens, because the food contains proteins structurally similar to the pollen allergen.",
-      "Unlike true food allergies, OAS reactions are usually mild and limited to tingling, itching or mild swelling of the mouth/throat. The proteins involved are often heat-labile, meaning cooking the food frequently resolves the reaction.",
-      "Relevance depends on which pollen the person is allergic to — check the more specific cross-reactivity traits (birch, grass, latex) for that detail."
+      "These foods can trigger oral allergy syndrome (OAS) in people allergic to certain pollens, due to structurally similar proteins. Reactions are usually mild and often resolve with cooking.",
+      "See the Cross-Reactivity article for the three pollen groups."
     ]
   },
   cross_birch: {

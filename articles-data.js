@@ -419,6 +419,12 @@ const ARTICLES = {
             "**Latex (chitinases):** banana, avocado, kiwi, papaya"
           ]}
         ]
+      },
+      {
+        heading: "Diagnosis",
+        blocks: [
+          { type: "p", text: "OAS is typically diagnosed based on the pattern of symptoms (reaction limited to the mouth/throat, tied to specific fresh foods) plus a known pollen allergy, sometimes confirmed with skin prick testing against fresh food extracts rather than standard commercial extracts, which can miss these heat-labile proteins." }
+        ]
       }
     ]
   },
@@ -476,7 +482,8 @@ const ARTICLES = {
         heading: null,
         blocks: [
           { type: "note", text: "This is a FODMAP subtype. It's mainly a problem for people with IBS, though it can also cause discomfort in other GI disorders, or in anyone if consumption is high enough." },
-          { type: "note", text: "This is distinct from hereditary fructose intolerance (HFI), a rare genetic condition (roughly 1 in 20,000-30,000) causing an inability to break down fructose at all. It's present from birth, but because affected people often develop a strong natural aversion to sweet foods, it can go undiagnosed until adulthood." }
+          { type: "note", text: "This is distinct from hereditary fructose intolerance (HFI), a rare genetic condition (roughly 1 in 20,000-30,000) causing an inability to break down fructose at all. It's present from birth, but because affected people often develop a strong natural aversion to sweet foods, it can go undiagnosed until adulthood." },
+          { type: "note", text: "Pairing high-fructose foods with a source of glucose (e.g. fruit with a starchy side) can improve absorption, since glucose helps transport fructose across the gut wall." }
         ]
       }
     ]
@@ -488,7 +495,8 @@ const ARTICLES = {
       {
         heading: null,
         blocks: [
-          { type: "p", text: "Sorbitol and mannitol are poorly absorbed, pulling water into the bowel osmotically and getting fermented by colon bacteria, producing gas. Common in stone fruits, mushrooms, and sugar-free sweeteners (chewing gum, \"diet\" products)." }
+          { type: "p", text: "Sorbitol and mannitol are poorly absorbed, pulling water into the bowel osmotically and getting fermented by colon bacteria, producing gas. Common in stone fruits, mushrooms, and sugar-free sweeteners (chewing gum, \"diet\" products)." },
+          { type: "p", text: "This osmotic effect is dose-dependent and well known enough that many sugar-free products carry a laxative-effect warning label — worth checking if bloating or diarrhea follows sugar-free snacks or gum." }
         ]
       },
       {
@@ -506,7 +514,8 @@ const ARTICLES = {
       {
         heading: null,
         blocks: [
-          { type: "p", text: "Chains of fructose molecules humans can't digest; fermented by colon bacteria. Found in wheat, onion, and garlic — among the most common FODMAP triggers." }
+          { type: "p", text: "Chains of fructose molecules humans can't digest; fermented by colon bacteria. Found in wheat, onion, and garlic — among the most common FODMAP triggers." },
+          { type: "p", text: "Fructans aren't oil-soluble, which is why garlic-infused oil is a common low-FODMAP substitute for cooking with garlic — it carries the flavor without the fructans." }
         ]
       },
       {
@@ -524,13 +533,42 @@ const ARTICLES = {
       {
         heading: null,
         blocks: [
-          { type: "p", text: "Short galactose chains the small intestine can't break down, fermented in the colon. Main sources: legumes and some nuts." }
+          { type: "p", text: "Short galactose chains the small intestine can't break down, fermented in the colon. Main sources: legumes and some nuts." },
+          { type: "p", text: "Symptoms are typical FODMAP fermentation symptoms — gas and bloating, dose-dependent. Soaking or sprouting legumes before cooking reduces their GOS content and is a common practical tip for better tolerance." }
         ]
       },
       {
         heading: null,
         blocks: [
           { type: "note", text: "This is a FODMAP subtype. It's mainly a problem for people with IBS, though it can also cause discomfort in other GI disorders, or in anyone if consumption is high enough." }
+        ]
+      }
+    ]
+  },
+
+  bile_stimulant: {
+    title: "Bile Stimulants",
+    sections: [
+      {
+        heading: "What triggers bile release?",
+        blocks: [
+          { type: "p", text: "Fat is the dominant dietary trigger of cholecystokinin (CCK), a hormone that signals the gallbladder to contract and release bile. Protein is a weaker, secondary trigger. Fried and smoked foods are common contributors too, both because they're typically high in fat and because the frying/smoking process itself can add further irritant compounds." }
+        ]
+      },
+      {
+        heading: "Clinical relevance",
+        blocks: [
+          { type: "list", items: [
+            "Egg yolk is used clinically as a standard fatty-meal challenge to test gallbladder emptying via ultrasound",
+            "Curcumin (turmeric) causes dose-dependent gallbladder contraction separately from fat content",
+            "Most relevant for people with gallstones, biliary colic, or a history of gallbladder attacks — a strong contraction can trigger pain"
+          ]}
+        ]
+      },
+      {
+        heading: "After gallbladder removal",
+        blocks: [
+          { type: "p", text: "After cholecystectomy, bile drips continuously into the gut instead of being released in a controlled burst with meals. Fat-rich meals can then cause bile acid diarrhea, a different mechanism from the pain caused by an intact but diseased gallbladder." }
         ]
       }
     ]
