@@ -32,6 +32,7 @@
   const popupTextContainer = document.getElementById("popupTextContainer");
 
   let lastTopTraits = [];
+  let lastMacroNotes = [];
 
   // ---- Disclaimer popup close-on-click -----------------------------------
   const disclaimerPopup = document.getElementById("disclaimerPopup");
@@ -97,33 +98,38 @@
 
   // ---- Build the filter checkboxes from TRAITS --------------------------
   function renderFilters() {
+    const BROAD_TO_SUBGROUP = {
+      irritant: "GI Irritants",
+      fodmaps: "FODMAPs",
+      allergen: "Allergens",
+      cross_reactive: "Cross-reactivity"
+    };
+
     const grouped = {};
-    const groupOrder = [];
     const ungrouped = [];
     Object.keys(TRAITS).forEach(function (traitId) {
       const trait = TRAITS[traitId];
       if (!trait.filter) return;
       if (!trait.group) { ungrouped.push({ traitId, trait }); return; }
-      const g = trait.group;
-      if (!grouped[g]) { grouped[g] = []; groupOrder.push(g); }
-      grouped[g].push({ traitId, trait });
+      if (!grouped[trait.group]) grouped[trait.group] = [];
+      grouped[trait.group].push({ traitId, trait });
     });
 
-    ungrouped
-      .sort(function (a, b) { return (a.trait.order || 99) - (b.trait.order || 99); })
-      .forEach(function (item) {
-        const label = document.createElement("label");
-        label.className = "checkboxStyle";
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.value = item.traitId;
-        checkbox.addEventListener("change", recompute);
-        label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(item.trait.label));
-        filterContainer.appendChild(label);
-      });
+    function renderCheckbox(container, traitId, trait) {
+      const label = document.createElement("label");
+      label.className = "checkboxStyle";
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.value = traitId;
+      checkbox.addEventListener("change", recompute);
+      label.appendChild(checkbox);
+      label.appendChild(document.createTextNode(trait.label));
+      container.appendChild(label);
+    }
 
-    groupOrder.forEach(function (groupName) {
+    function renderSubgroup(groupName) {
+      const items = grouped[groupName];
+      if (!items) return;
       const header = document.createElement("p");
       header.className = "filterGroupHeader";
       header.textContent = groupName;
@@ -132,19 +138,9 @@
 
       const groupWrap = document.createElement("div");
       groupWrap.className = "filterGroup collapsed";
-      grouped[groupName]
+      items
         .sort(function (a, b) { return (a.trait.order || 99) - (b.trait.order || 99); })
-        .forEach(function (item) {
-          const label = document.createElement("label");
-          label.className = "checkboxStyle";
-          const checkbox = document.createElement("input");
-          checkbox.type = "checkbox";
-          checkbox.value = item.traitId;
-          checkbox.addEventListener("change", recompute);
-          label.appendChild(checkbox);
-          label.appendChild(document.createTextNode(item.trait.label));
-          groupWrap.appendChild(label);
-        });
+        .forEach(function (item) { renderCheckbox(groupWrap, item.traitId, item.trait); });
       filterContainer.appendChild(groupWrap);
 
       header.addEventListener("click", function () {
@@ -152,7 +148,15 @@
         header.setAttribute("aria-expanded", !expanded);
         groupWrap.classList.toggle("collapsed", expanded);
       });
-    });
+    }
+
+    ungrouped
+      .sort(function (a, b) { return (a.trait.order || 99) - (b.trait.order || 99); })
+      .forEach(function (item) {
+        renderCheckbox(filterContainer, item.traitId, item.trait);
+        const subgroupName = BROAD_TO_SUBGROUP[item.traitId];
+        if (subgroupName) renderSubgroup(subgroupName);
+      });
   }
 
   // ---- Read current state straight from the DOM ------------------------
@@ -174,18 +178,23 @@
     }));
   }
 
-  function getTopTraits(counts, totalSelected) {
-    return Object.keys(counts)
-      .filter(function (traitId) { return counts[traitId] > 0; })
+  const MACRO_TRAIT_IDS = ["over_10g_fat", "protein", "carbs"];
+
+  function getRankedTraits(counts, totalSelected, limit) {
+    const list = Object.keys(counts)
+      .filter(function (id) { return counts[id] > 0 && MACRO_TRAIT_IDS.indexOf(id) === -1; })
       .sort(function (a, b) { return counts[b] - counts[a]; })
-      .slice(0, 3)
-      .map(function (traitId) {
-        return {
-          traitId: traitId,
-          count: counts[traitId],
-          percent: Math.floor((counts[traitId] / totalSelected) * 100)
-        };
+      .map(function (id) {
+        return { traitId: id, count: counts[id], percent: Math.floor((counts[id] / totalSelected) * 100) };
       });
+    return typeof limit === "number" ? list.slice(0, limit) : list;
+  }
+
+  function getMacroNotes(counts, totalSelected) {
+    if (totalSelected === 0) return [];
+    return MACRO_TRAIT_IDS
+      .filter(function (id) { return ((counts[id] || 0) / totalSelected) * 100 > 90; })
+      .map(function (id) { return TRAITS[id].label; });
   }
 
   // ---- Main recompute — runs on every food or filter checkbox change ---
@@ -206,35 +215,64 @@
       });
     });
 
-    lastTopTraits = getTopTraits(counts, selectedFoods.length);
-    updateSummaryText(selectedFoods.length, lastTopTraits);
+    const allTraits = getRankedTraits(counts, selectedFoods.length);
+    lastTopTraits = allTraits.slice(0, 3);
+    lastMacroNotes = getMacroNotes(counts, selectedFoods.length);
+    updateSummaryText(selectedFoods.length, allTraits);
   }
 
-  function updateSummaryText(total, topTraits) {
+  function updateSummaryText(total, allTraits) {
+    const summaryTraitList = document.getElementById("summaryTraitList");
+    const summaryToggle = document.getElementById("summaryToggle");
+    const visibleCount = 3;
+
     if (total === 0) {
       summaryText.textContent = "Select foods to see a summary.";
+      summaryTraitList.innerHTML = "";
+      summaryToggle.style.display = "none";
       return;
     }
-    if (topTraits.length === 0) {
+    if (allTraits.length === 0) {
       summaryText.textContent =
         "You have chosen " + total + " foods from the list, but they don't share a tracked trait right now (or every relevant filter is excluded).";
+      summaryTraitList.innerHTML = "";
+      summaryToggle.style.display = "none";
       return;
     }
 
-    const phrases = topTraits.map(function (t) {
-      return t.percent + "% have " + TRAITS[t.traitId].label;
+    summaryText.textContent = "You have chosen " + total + " foods from the list. Shared traits:";
+    summaryTraitList.innerHTML = "";
+    summaryTraitList.classList.remove("expanded");
+    allTraits.forEach(function (t, i) {
+      const li = document.createElement("li");
+      li.textContent = t.percent + "% — " + TRAITS[t.traitId].label;
+      if (i >= visibleCount) li.className = "extraTrait";
+      summaryTraitList.appendChild(li);
     });
 
-    let tail;
-    if (phrases.length === 1) {
-      tail = "and " + phrases[0] + " in common.";
+    const extraCount = allTraits.length - visibleCount;
+    if (extraCount > 0) {
+      summaryToggle.style.display = "inline-block";
+      summaryToggle.textContent = "Show " + extraCount + " more ▾";
+      summaryToggle.dataset.expanded = "false";
     } else {
-      const last = phrases.pop();
-      tail = "and their commonalities are: " + phrases.join(", ") + " and " + last + " in common.";
+      summaryToggle.style.display = "none";
     }
-
-    summaryText.textContent = "You have chosen " + total + " foods from the list " + tail;
   }
+
+  document.getElementById("summaryToggle").addEventListener("click", function () {
+    const btn = this;
+    const summaryTraitList = document.getElementById("summaryTraitList");
+    const expanded = btn.dataset.expanded === "true";
+    summaryTraitList.classList.toggle("expanded", !expanded);
+    btn.dataset.expanded = String(!expanded);
+    if (expanded) {
+      const extraCount = summaryTraitList.querySelectorAll(".extraTrait").length;
+      btn.textContent = "Show " + extraCount + " more ▾";
+    } else {
+      btn.textContent = "Show less ▴";
+    }
+  });
 
   // ---- Analysis popup ----------------------------------------------------
   showAnalysisButton.addEventListener("click", function () {
@@ -286,6 +324,20 @@
           popupTextContainer.appendChild(printNote);
         }
       });
+
+      if (lastMacroNotes.length > 0) {
+        const hr = document.createElement("hr");
+        hr.className = "popupDivider";
+        popupTextContainer.appendChild(hr);
+        const note = document.createElement("p");
+        note.className = "popupMacroNote";
+        const joined = lastMacroNotes.length > 1
+          ? lastMacroNotes.slice(0, -1).join(", ") + " and " + lastMacroNotes[lastMacroNotes.length - 1]
+          : lastMacroNotes[0];
+        note.textContent = "Note: this selection is also high in " + joined +
+          " (over 90% of foods) — these rarely cause symptoms directly but can worsen other GI issues.";
+        popupTextContainer.appendChild(note);
+      }
     }
 
     popupContainer.classList.toggle("show");

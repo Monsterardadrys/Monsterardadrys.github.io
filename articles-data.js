@@ -574,6 +574,42 @@ const ARTICLES = {
     ]
   },
 
+  alpha_gal: {
+    title: "Alpha-Gal Syndrome",
+    sections: [
+      {
+        heading: "What is alpha-gal syndrome?",
+        blocks: [
+          { type: "p", text: "Alpha-gal syndrome (AGS) is a delayed allergic reaction to galactose-alpha-1,3-galactose, a sugar molecule found in the meat of mammals. Unlike most food allergies, it's not triggered by a protein, and the sensitization doesn't come from food at all — it starts with a tick bite." }
+        ]
+      },
+      {
+        heading: "The tick-bite mechanism",
+        blocks: [
+          { type: "p", text: "Certain tick species carry alpha-gal in their saliva. A bite can sensitize the immune system to this molecule, and afterward, eating mammalian meat can trigger an allergic reaction. The Lone Star tick is the most documented cause, but other species — including some found in Scandinavia and Europe — have also been implicated." }
+        ]
+      },
+      {
+        heading: "Why it's easy to miss",
+        blocks: [
+          { type: "p", text: "Reactions typically appear 3 to 8 hours after eating, not within minutes like most food allergies. This delay makes the food connection easy to overlook — someone might eat dinner, then wake up in the middle of the night with hives, GI symptoms, or anaphylaxis, with no obvious trigger in sight." }
+        ]
+      },
+      {
+        heading: "Which foods are affected",
+        blocks: [
+          { type: "p", text: "Beef, pork, lamb, and other mammalian meat and meat products (sausages, cured meats, minced meat) can trigger reactions. Poultry and fish are not affected, since alpha-gal is specific to mammals. Dairy is a gray area — some people with AGS react to dairy fat, but many don't; this isn't tagged in the tool, but worth asking about individually." }
+        ]
+      },
+      {
+        heading: "Diagnosis",
+        blocks: [
+          { type: "p", text: "A specific alpha-gal IgE blood test can confirm the diagnosis. Given the delayed and inconsistent symptom pattern, AGS is worth considering in unexplained nighttime allergic reactions or GI symptoms, especially in people with a known tick bite history." }
+        ]
+      }
+    ]
+  },
+
   histamine: {
     title: "Histamine",
     sections: [
