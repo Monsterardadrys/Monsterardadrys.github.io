@@ -811,7 +811,7 @@ const CATEGORIES = [
     label: "Mushrooms",
     foods: [
       { name: "Shiitake Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
-      { name: "Oyster Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
+      { name: "Oyster Mushrooms", traits: ["fiber", "histamine"] },
       { name: "White Button Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
       { name: "Portobello Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
       { name: "Cremini Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
@@ -819,7 +819,7 @@ const CATEGORIES = [
       { name: "Chanterelle Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
       { name: "Porcini Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
       { name: "Morel Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
-      { name: "King Oyster Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] }
+      { name: "King Oyster Mushrooms", traits: ["fiber", "histamine"] }
     ]
   },
   {
