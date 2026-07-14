@@ -512,6 +512,24 @@ const CATEGORIES = [
     ]
   },
   {
+    id: "berries",
+    label: "Berries",
+    foods: [
+      { name: "Blueberry", traits: ["fiber"] },
+      { name: "Strawberry", traits: ["fiber", "histamine"] },
+      { name: "Cherries", traits: ["fiber", "fodmaps", "polyols", "fructose", "cross_reactive", "cross_birch"] },
+      { name: "Blackberries", traits: ["fiber", "fodmaps", "polyols"] },
+      { name: "Raspberries", traits: ["fiber", "histamine"] },
+      { name: "Cloudberries", traits: ["fiber"] },
+      { name: "Lingonberry", traits: ["fiber"] },
+      { name: "Redcurrant", traits: ["fiber"] },
+      { name: "Blackcurrant", traits: ["fiber"] },
+      { name: "Gooseberry", traits: ["fiber"] },
+      { name: "Elderberry", traits: ["fiber"] },
+      { name: "Cranberry", traits: ["fiber"] }
+    ]
+  },
+  {
     id: "nuts",
     label: "Nuts/Seeds",
     foods: [
@@ -550,7 +568,10 @@ const CATEGORIES = [
       { name: "Naan Bread", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "carbs", "over_10g_fat", "histamine"] },
       { name: "Soba Noodles", traits: ["carbs", "allergen", "allergen_wheat", "fodmaps", "fructans"] },
       { name: "Rice Noodles", traits: ["carbs"] },
-      { name: "White Bread", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "carbs", "histamine"] }
+      { name: "White Bread", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "carbs", "histamine"] },
+      { name: "Pasta (no egg)", traits: ["carbs", "allergen", "allergen_wheat", "fodmaps", "fructans"] },
+      { name: "Teff", traits: ["fiber", "carbs", "protein"] },
+      { name: "Sorghum/Durra", traits: ["fiber", "carbs", "protein"] }
     ]
   },
   {
@@ -722,7 +743,8 @@ const CATEGORIES = [
       { name: "Flavored Yogurt", traits: ["over_3g_lactose", "fodmaps", "carbs", "allergen", "allergen_milk", "histamine"] },
       { name: "Pretzels", traits: ["allergen", "allergen_wheat", "carbs", "histamine"] },
       { name: "Instant Mashed Potato", traits: ["carbs"] },
-      { name: "Dumplings", traits: ["allergen", "allergen_wheat", "protein", "over_10g_fat"] }
+      { name: "Dumplings", traits: ["allergen", "allergen_wheat", "protein", "over_10g_fat"] },
+      { name: "Fresh Pasta (w/ egg)", traits: ["carbs", "protein", "allergen", "allergen_wheat", "allergen_egg", "fodmaps", "fructans"] }
     ]
   },
   {
@@ -732,6 +754,35 @@ const CATEGORIES = [
       { name: "Soy Sauce", traits: ["histamine", "allergen", "allergen_soy", "allergen_wheat"] },
       { name: "Vinegar", traits: ["aceticAcid", "irritant"] },
       { name: "Balsamic Vinegar", traits: ["aceticAcid", "irritant", "histamine"] },
+      { name: "Aioli", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "irritant", "allyl_compounds", "histamine"] },
+      { name: "Pesto", traits: ["over_10g_fat", "allergen", "allergen_treenut", "allergen_milk", "histamine", "fodmaps", "fructans"] },
+      { name: "Tzatziki", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk", "histamine"] },
+      { name: "Hummus", traits: ["fiber", "carbs", "protein", "fodmaps", "galactans", "histamine"] },
+      { name: "Guacamole", traits: ["over_10g_fat", "fiber", "histamine", "cross_reactive", "cross_latex"] },
+      { name: "Mango Chutney", traits: ["carbs", "histamine"] },
+      { name: "Cranberry Sauce", traits: ["carbs", "fructose"] },
+      { name: "Fish Roe Spread", traits: ["histamine", "allergen", "allergen_fish"] },
+      { name: "Yeast Extract", traits: ["histamine"] },
+      { name: "Ajvar", traits: ["irritant", "histamine"] },
+      { name: "Harissa", traits: ["irritant", "capsaicin", "histamine"] },
+      { name: "Tahini", traits: ["over_10g_fat", "allergen", "allergen_sesame"] },
+      { name: "Baba Ganoush", traits: ["fiber", "histamine"] },
+      { name: "Preserved Lemon", traits: ["histamine", "aceticAcid"] },
+      { name: "Pomegranate Molasses", traits: ["carbs", "fructose"] },
+      { name: "Sesame Oil", traits: ["over_10g_fat", "allergen", "allergen_sesame"] },
+      { name: "Olive Oil", traits: ["over_10g_fat"] },
+      { name: "Sunflower Oil", traits: ["over_10g_fat"] },
+      { name: "Rapeseed Oil", traits: ["over_10g_fat"] },
+      { name: "Coconut Oil", traits: ["over_10g_fat"] },
+      { name: "Avocado Oil", traits: ["over_10g_fat"] },
+      { name: "Ghee", traits: ["over_10g_fat", "bile_stimulant", "histamine"] },
+      { name: "Tamarind", traits: ["fiber", "aceticAcid"] }
+    ]
+  },
+  {
+    id: "sauces",
+    label: "Sauces",
+    foods: [
       { name: "Ketchup", traits: ["histamine", "aceticAcid", "irritant"] },
       { name: "Mayonnaise", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg"] },
       { name: "Barbecue Sauce", traits: ["histamine", "aceticAcid", "irritant", "carbs"] },
@@ -740,12 +791,7 @@ const CATEGORIES = [
       { name: "Worcestershire Sauce", traits: ["histamine", "allergen", "allergen_fish"] },
       { name: "Horseradish Sauce", traits: ["irritant", "over_10g_fat", "histamine"] },
       { name: "Tartar Sauce", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "histamine"] },
-      { name: "Aioli", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "irritant", "allyl_compounds", "histamine"] },
-      { name: "Pesto", traits: ["over_10g_fat", "allergen", "allergen_treenut", "allergen_milk", "histamine", "fodmaps", "fructans"] },
-      { name: "Tzatziki", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk", "histamine"] },
-      { name: "Hummus", traits: ["fiber", "carbs", "protein", "fodmaps", "galactans", "histamine"] },
       { name: "Salsa", traits: ["histamine", "irritant"] },
-      { name: "Guacamole", traits: ["over_10g_fat", "fiber", "histamine", "cross_reactive", "cross_latex"] },
       { name: "Ranch Dressing", traits: ["over_10g_fat", "allergen", "allergen_milk", "allergen_egg", "histamine"] },
       { name: "Thousand Island Dressing", traits: ["over_10g_fat", "allergen", "allergen_egg", "histamine"] },
       { name: "Balsamic Vinaigrette", traits: ["aceticAcid", "irritant", "histamine"] },
@@ -754,24 +800,10 @@ const CATEGORIES = [
       { name: "Fish Sauce", traits: ["histamine", "allergen", "allergen_fish"] },
       { name: "Oyster Sauce", traits: ["histamine", "allergen", "allergen_shellfish"] },
       { name: "Hoisin Sauce", traits: ["histamine", "allergen", "allergen_soy", "allergen_wheat", "carbs"] },
-      { name: "Mango Chutney", traits: ["carbs", "histamine"] },
-      { name: "Cranberry Sauce", traits: ["carbs", "fructose"] },
       { name: "Brown Gravy", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_wheat", "histamine"] },
       { name: "Béarnaise Sauce", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "allergen_milk", "histamine"] },
       { name: "Hollandaise Sauce", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "allergen_milk", "histamine"] },
-      { name: "Remoulade", traits: ["over_10g_fat", "allergen", "allergen_egg", "irritant", "histamine"] },
-      { name: "Fish Roe Spread", traits: ["histamine", "allergen", "allergen_fish"] },
-      { name: "Yeast Extract", traits: ["histamine"] },
-      { name: "Ajvar", traits: ["irritant", "histamine"] },
-      { name: "Harissa", traits: ["irritant", "capsaicin", "histamine"] },
-      { name: "Tahini", traits: ["over_10g_fat", "allergen", "allergen_sesame"] },
-      { name: "Baba Ganoush", traits: ["fiber", "histamine"] },
-      { name: "Miso Paste", traits: ["histamine", "allergen", "allergen_soy", "fodmaps"] },
-      { name: "Preserved Lemon", traits: ["histamine", "aceticAcid"] },
-      { name: "Pomegranate Molasses", traits: ["carbs", "fructose"] },
-      { name: "Sesame Oil", traits: ["over_10g_fat", "allergen", "allergen_sesame"] },
-      { name: "Ghee", traits: ["over_10g_fat", "bile_stimulant", "histamine"] },
-      { name: "Tamarind", traits: ["fiber", "aceticAcid"] },
+      { name: "Remoulade", traits: ["over_10g_fat", "allergen", "allergen_egg", "irritant", "histamine"] }
     ]
   },
   {
@@ -780,20 +812,14 @@ const CATEGORIES = [
     foods: [
       { name: "Shiitake Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
       { name: "Oyster Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
-      { name: "White Button Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] }
-    ]
-  },
-  {
-    id: "berries",
-    label: "Berries",
-    foods: [
-      { name: "Blueberry", traits: ["fiber"] },
-      { name: "Strawberry", traits: ["fiber", "histamine"] },
-      { name: "Cherries", traits: ["fiber", "fodmaps", "polyols", "fructose", "cross_reactive", "cross_birch"] },
-      { name: "Blackberries", traits: ["fiber", "fodmaps", "polyols"] },
-      { name: "Raspberries", traits: ["fiber", "histamine"] },
-      { name: "Cloudberries", traits: ["fiber"] },
-      { name: "Lingonberry", traits: ["fiber"] }
+      { name: "White Button Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
+      { name: "Portobello Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
+      { name: "Cremini Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
+      { name: "Enoki Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
+      { name: "Chanterelle Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
+      { name: "Porcini Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
+      { name: "Morel Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] },
+      { name: "King Oyster Mushrooms", traits: ["fiber", "fodmaps", "polyols", "histamine"] }
     ]
   },
   {
@@ -824,7 +850,8 @@ const CATEGORIES = [
       { name: "Sauerkraut", traits: ["fiber", "histamine"] },
       { name: "Pickled Cucumber", traits: ["histamine", "aceticAcid", "irritant"] },
       { name: "Pickle Relish", traits: ["histamine", "aceticAcid", "irritant"] },
-      { name: "Olives", traits: ["over_10g_fat", "histamine"] }
+      { name: "Olives", traits: ["over_10g_fat", "histamine"] },
+      { name: "Miso Paste", traits: ["histamine", "allergen", "allergen_soy", "fodmaps"] }
     ]
   }
 ];
