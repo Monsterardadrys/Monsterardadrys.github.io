@@ -422,7 +422,7 @@
     });
   }
 
-  searchButton.addEventListener("click", function () {
+  function runSearch() {
     const filter = searchField.value.toUpperCase();
     let found = false;
     showAllCategories();
@@ -441,6 +441,15 @@
     }
 
     searchField.value = "";
+  }
+
+  searchButton.addEventListener("click", runSearch);
+
+  searchField.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      runSearch();
+    }
   });
 
   showAllButton.addEventListener("click", function () {
