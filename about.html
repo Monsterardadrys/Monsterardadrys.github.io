@@ -1,0 +1,108 @@
+<!--
+    Food Intolerance Guide — About page.
+
+    Background + methodology, written for both curious end users and
+    other clinicians who want to know how the analysis actually works
+    before trusting it.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About — Food Intolerance Guide</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>About</h1>
+        <a class="backToMain" href="index.html">Home</a>
+        <ul>
+            <li><a href="app.html">Launch App</a></li>
+            <li><a href="articles.html">Articles</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </header>
+
+    <div class="articleLayout">
+        <div class="articleIndex">
+            <h2>On this page</h2>
+            <ul>
+                <li><a href="#background">Background</a></li>
+                <li><a href="#why">Why this tool exists</a></li>
+                <li><a href="#methodology">How the analysis works</a></li>
+                <li><a href="#sources">Data sources</a></li>
+                <li><a href="#limitations">Limitations</a></li>
+            </ul>
+        </div>
+
+        <div class="articleContent">
+            <section id="background">
+                <h2>Background</h2>
+                <p>This tool is built by Andreas Rydström, a registered dietitian based in Uppsala, Sweden. It grew
+                    out of a recurring pattern seen in clinical practice: a patient reacts to a handful of
+                    seemingly unrelated foods, and the shared thread — a FODMAP subtype, a histamine load, a
+                    cross-reactive allergen — only becomes visible once someone lays every food's traits side by
+                    side.</p>
+                <p>Doing that by hand, meal by meal, is slow and easy to get wrong. This tool automates the
+                    side-by-side comparison so the pattern shows up in seconds instead of a week of food diaries.</p>
+            </section>
+
+            <section id="why">
+                <h2>Why this tool exists</h2>
+                <p>Food intolerance and sensitivity work is full of diagnoses that get missed simply because
+                    nobody thought to check for them — alpha-gal syndrome, oral allergy syndrome, secondary
+                    lactose intolerance from undiagnosed coeliac disease. This tool is meant to surface exactly
+                    those overlooked possibilities, not replace a proper clinical workup.</p>
+            </section>
+
+            <section id="methodology">
+                <h2>How the analysis works</h2>
+                <p>Every food in the tool is tagged with the traits it carries — FODMAP subtypes, histamine
+                    content, allergens, GI irritant mechanisms, and more. When you select a group of foods, the
+                    tool counts how many of them share each trait and ranks traits by how common they are across
+                    your selection.</p>
+                <p>Fat, protein, and carbohydrate content are tracked too, but handled differently: they're rarely
+                    the direct cause of GI symptoms on their own, so instead of competing for a top spot in the
+                    trait ranking, they only appear as a side note when they're extremely common across your
+                    selection (over 90% of foods) — a signal that they may be worsening symptoms driven by
+                    something else.</p>
+                <p>Some traits, like <strong>bile stimulant</strong>, are only assigned to foods that clearly
+                    cross a clinical threshold — currently over 17.5g fat or over 20g protein per 100g, based on
+                    EU food-labeling "high fat"/"high protein" categories. That's why you'll see foods like sour
+                    cream, ground meat, and Greek yogurt split into separate low-fat, medium-fat, and full-fat
+                    entries: the fat content genuinely changes whether the trait applies.</p>
+            </section>
+
+            <section id="sources">
+                <h2>Data sources</h2>
+                <p>Histamine content is cross-referenced against the SIGHI histamine food lists. FODMAP subtypes
+                    are cross-referenced against the Monash University FODMAP database. Everything else —
+                    allergens, GI irritants, bile stimulants, cross-reactivity, alpha-gal — draws on clinical
+                    literature and practice experience, and is reviewed for accuracy before being added.</p>
+                <p>The food list is still growing, with new additions prioritizing foods common in European and
+                    Scandinavian diets.</p>
+            </section>
+
+            <section id="limitations">
+                <h2>Limitations</h2>
+                <p>This is a triage and pattern-recognition tool, not a diagnostic one. It can't account for an
+                    individual's dose tolerance, cooking methods, food combinations, or the many other variables
+                    that affect real-world reactions. Shared traits point toward hypotheses worth investigating
+                    with a qualified health care professional — they aren't a diagnosis on their own.</p>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>Built by a dietitian, for dietitians (and the curious).</p>
+    </footer>
+
+</body>
+
+</html>

@@ -1,24 +1,12 @@
 <!--
-    Food Intolerance Guide — ongoing project by Andreas Rydström (since March 2024).
-    GitHub: Monsterardadrys
+    Food Intolerance Guide — landing page.
 
-    HOW TO EXTEND THIS SITE
-    All food categories, foods, and tracked traits (FODMAPs, fiber, fat, etc.)
-    now live in foods-data.js as plain data — index.html, styles.css and
-    script.js never need to change to add more of any of them.
-
-    - New food category  -> add an object to CATEGORIES in foods-data.js
-    - New food            -> add it to that category's `foods` array
-    - New trait/value     -> add a key to TRAITS in foods-data.js
-                             (set filter: true to give it a filter checkbox,
-                             and an `analysis` array for the popup text)
-
-    Deep-dive write-ups (macros, FODMAPs, fiber, etc.) live in articles.html /
-    articles-data.js — adding a new one doesn't add anything to this nav bar
-    either. Give a trait an `articleId` in foods-data.js to link its analysis
-    popup straight to the matching article.
-
-    See the comment block at the top of foods-data.js for full examples.
+    This is the public front door: pitch + a tiny interactive demo, with
+    links out to the full app, articles, about, and contact. The demo
+    reads real data from foods-data.js so it never drifts out of sync
+    with the app itself — it just works with a small curated subset of
+    foods and shows a single shared-trait result instead of the full
+    analysis popup.
 -->
 
 <!DOCTYPE html>
@@ -28,106 +16,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Food intolerance guide</title>
+    <title>Food Intolerance Guide</title>
 
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 </head>
 
 <body>
     <header>
         <h1>Food intolerance guide</h1>
-        <a class="backToMain" href=index.html>Main</a>
         <ul>
-            <li><a href=articles.html>Articles</a></li>
+            <li><a href="app.html">Launch App</a></li>
+            <li><a href="articles.html">Articles</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
         </ul>
     </header>
 
-    <div class="disclaimerBar">
-        <label class="disclaimerCheck">
-            <input type="checkbox" id="disclaimerCheckbox">
-            I have read and understood the disclaimer
-        </label>
-        <a href="#disclaimerPopup" class="disclaimerBtn">Read disclaimer</a>
-    </div>
+    <section class="hero">
+        <h2>Some foods don't just taste different. They react differently in you.</h2>
+        <p>This is a triage tool for exploring possible GI reactions to foods — built for dietitians and other
+            health care professionals, and open for anyone curious about the patterns behind their own symptoms.</p>
+        <p>Pick a handful of foods someone reacts to. The tool looks for what they have in common — a shared
+            FODMAP subtype, a histamine load, a hidden allergen — the kind of overlap that's easy to miss meal
+            by meal, but obvious once it's laid out.</p>
+        <a class="button2 heroButton" href="app.html">Launch the app →</a>
+    </section>
 
-    <div class="neck" id="neck">
+    <section class="demo">
+        <h2>Try it — pick 2 or 3 foods</h2>
+        <p>This is a small taste of the real tool: eight foods, one shared trait. The full app tracks over 30
+            traits across 250+ foods.</p>
 
-        <div class="disclaimerPopup" id="disclaimerPopup">
-        <div class="disclaimerText">
-                <h2>Disclaimer</h2>
-                <ul>
-                    <li>This website is still under construction — information may be inaccurate.</li>
-                    <li>It is intended as a tool for health care professionals.</li>
-                    <li>It is <em>NOT</em> meant to replace the diagnostics and advice of a health care professional.</li>
-                    <li>By continuing you agree that the author cannot be held responsible for any health issues arising from use of this information.</li>
-                </ul>
-                <p><em>Click anywhere to close.</em></p>
-            </div>
+        <div id="demoFoods" class="demoFoods"></div>
+
+        <div id="demoResult" class="demoResult">Select at least two foods to see what they share.</div>
+
+        <p class="demoDisclaimer">This mini-demo is for illustration only, not medical advice — same as the full
+            app. <a href="app.html">Read the full disclaimer</a> when you launch it.</p>
+    </section>
+
+    <section class="linksOut">
+        <div class="linkCard">
+            <h3>Explore the articles</h3>
+            <p>Deep dives into FODMAPs, histamine, allergens, and more — what they are and why they cause symptoms.</p>
+            <a href="articles.html">Read the articles →</a>
         </div>
-
-        <h2>A faster way to navigate food intolerances.</h2>
-        <p>1. Get started by choosing foods suspected of causing a negative reaction.</p>
-        <p>2. Further down you get a summary of what common factors the foods share.</p>
-        <p>3. In the end you'll get an analysis of what could be causing the negative reactions to the foods.</p>
-        <div id="chosenFoods">
-            <h2>Chosen items:</h2>
-            <p id="chosenText">Click on a category to show lists of foods</p>
+        <div class="linkCard">
+            <h3>About this tool</h3>
+            <p>The clinical reasoning behind it, and how the trait analysis actually works.</p>
+            <a href="about.html">Learn more →</a>
         </div>
-        <div class="searchContainer" id="searchContainer">
-            <input type="text" id="search" placeholder="Filter food list...">
-            <button class="searchButton" id="searchButton">Search</button>
-            <button class="showAllButton" id="showAllButton">Show All</button>
+        <div class="linkCard">
+            <h3>Get in touch</h3>
+            <p>Found an error, have a suggestion, or want to support the project?</p>
+            <a href="contact.html">Contact →</a>
         </div>
-    </div>
+    </section>
 
-    <!-- Food category boxes are generated from CATEGORIES in foods-data.js -->
-    <div class="topSection" id="topSection"></div>
+    <footer>
+        <p>Built by a dietitian, for dietitians (and the curious).</p>
+    </footer>
 
-    <div class="bottomSection" id="bottomSection">
-        <div class="summary" id="summary">
-            <h2>Summary:</h2>
-            <p id="summaryText">Select foods to see a summary.</p>
-            <p>Find more info in the menu at the top.</p>
-        </div>
-
-        <div class="analysisPopup">
-            <div class="popupContainer" id="popupContainer">
-                <div id="popupTextContainer">
-                    <!-- analysis paragraphs are added by script.js -->
-                </div>
-                <button class="button2 noPrint" id="printAnalysisButton">Print analysis</button>
-                <p class="noPrint"><em>Click on this popup to close it</em></p>
-            </div>
-        </div>
-
-        <div id="printFoodsList" class="printOnly"></div>
-        <div id="printArticlesList" class="printOnly"></div>
-
-        <button class="button2" id="showAnalysisButton" name="Show Analysis Popup">Show Anlysis</button>
-        <button class="button2" id="restartButton" name="Restart">Restart</button>
-
-        <h2>Filter Analysis</h2>
-        <button class="button2" id="clearFiltersButton" name="Clear Filters">Clear Filters</button>
-        <p>Select one or more factors to exclude from the analysis. Filters update the analysis immediately, even
-            after foods are already selected.</p>
-
-        <!-- Filter checkboxes are generated from TRAITS in foods-data.js -->
-        <div class="filterContainer" id="filterContainer"></div>
-
-    </div>
+    <script src="foods-data.js"></script>
+    <script src="landing.js"></script>
 </body>
-
-<footer>
-    <p>Did you find this webpage useful?</p>
-    <p>Did you find any errors or have ideas for improvement?</p>
-    <p>Email: Monsterardadrys@duck.com</p>
-    <p>Uppsala, Sweden, 2024</p>
-</footer>
-
-<script src="foods-data.js"></script>
-<script src="articles-data.js"></script>
-<script src="script.js"></script>
 
 </html>
