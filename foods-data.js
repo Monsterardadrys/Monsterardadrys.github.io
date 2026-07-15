@@ -227,7 +227,7 @@ const TRAITS = {
   /* ---- Irritant: broad trait + specific mechanisms (additive) ---- */
   irritant: {
     order: 5,
-    label: "General",
+    label: "Irritant",
     filter: true,
     articleId: "irritant",
     analysis: [
@@ -287,7 +287,7 @@ const TRAITS = {
   /* ---- Allergen: broad "Big 9" trait + specific allergens (additive) ---- */
   allergen: {
     order: 9,
-    label: "Big 9 (general)",
+    label: "Allergy",
     filter: true,
     articleId: "allergen",
     analysis: [
