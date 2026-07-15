@@ -380,7 +380,7 @@ const TRAITS = {
   /* ---- Cross-reactive: broad OAS trait + specific pollen syndromes ---- */
   cross_reactive: {
     order: 10,
-    label: "General (OAS)",
+    label: "Cross-reaction",
     filter: true,
     articleId: "cross_reactive",
     analysis: [
