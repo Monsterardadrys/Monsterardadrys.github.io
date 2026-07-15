@@ -17,8 +17,6 @@ html {
     background: linear-gradient(165deg, #f1ece0 0%, #e3e9de 55%, #d9e3da 100%);
     background-attachment: fixed;
     font-family: 'Source Sans Pro', sans-serif;
-    -webkit-text-size-adjust: 100%;
-    text-size-adjust: 100%;
 }
 
 body {
@@ -59,6 +57,11 @@ header {
     right: 0;
     z-index: 500;
     transition: transform 0.3s ease;
+    /* Stop mobile browsers auto-boosting the title font past its clamp()
+       size — scoped to the header only so the rest of the page keeps its
+       normal (and legible) mobile text sizing. */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 header.header--hidden {
@@ -315,30 +318,11 @@ header.header--hidden {
 
 .stepsList li {
     counter-increment: step;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 10px 0;
+    padding: 12px 0;
 }
 
 .stepsList li:not(:last-child) {
     border-bottom: 1px solid var(--border);
-}
-
-.stepsList li::before {
-    content: counter(step);
-    flex: 0 0 auto;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--sage);
-    color: white;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-weight: 600;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .stepTitle {
@@ -348,13 +332,24 @@ header.header--hidden {
     color: var(--primary);
 }
 
+.stepTitle::before {
+    content: counter(step) ". ";
+    color: var(--sage-dark);
+}
+
 .stepDetail {
     display: block;
     font-style: italic;
     font-size: 15px;
     color: var(--ink);
     opacity: 0.85;
-    margin-top: 2px;
+    margin-top: 4px;
+}
+
+.stepDetail::before {
+    content: "\2013";
+    font-style: normal;
+    margin-right: 5px;
 }
 
 #chosenFoods {
