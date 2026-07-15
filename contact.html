@@ -19,13 +19,22 @@
 
 <body>
     <header>
-        <h1>Contact</h1>
-        <a class="backToMain" href="index.html">Home</a>
-        <ul>
-            <li><a href="app.html">Launch App</a></li>
-            <li><a href="articles.html">Articles</a></li>
-            <li><a href="about.html">About</a></li>
-        </ul>
+        <div class="headerBar">
+            <h1>Contact</h1>
+            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <nav class="navDrawer" id="navDrawer" aria-hidden="true">
+            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu">&times;</button>
+            <a class="backToMain" href="index.html">Home</a>
+            <ul>
+                <li><a href="app.html">Launch App</a></li>
+                <li><a href="articles.html">Articles</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+        <div class="navOverlay" id="navOverlay"></div>
     </header>
 
     <section class="demo">
@@ -48,6 +57,7 @@
         <p>Built by a dietitian, for dietitians (and the curious).</p>
     </footer>
 
+    <script src="nav.js"></script>
 </body>
 
 </html>
