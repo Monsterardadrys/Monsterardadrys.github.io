@@ -1,9 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const DEMO_FOODS = ["Wheat", "Garlic", "Apples", "Cows Milk", "Shrimp", "Strawberry", "Coffee", "Peanut"];
-  const DEFAULT_CHECKED = ["Wheat", "Garlic", "Apples"];
+  // Six common foods that all carry FODMAPs and/or histamine, so most
+  // combinations turn up a meaningful shared trait.
+  const DEMO_FOODS = ["Wheat", "Garlic", "Onion", "Cows Milk", "Avocado", "Strawberry"];
+  const DEFAULT_CHECKED = ["Wheat", "Garlic", "Onion"];
+  const TOP_TRAITS_SHOWN = 3;
 
   const demoFoodsContainer = document.getElementById("demoFoods");
-  const demoResult = document.getElementById("demoResult");
+  const demoResultText = document.getElementById("demoResultText");
+  const demoTraitList = document.getElementById("demoTraitList");
 
   function findFoodTraits(name) {
     for (const category of CATEGORIES) {
@@ -26,26 +30,47 @@ document.addEventListener("DOMContentLoaded", function () {
     demoFoodsContainer.appendChild(label);
   });
 
-  function recomputeDemo() {
-    const checked = Array.from(demoFoodsContainer.querySelectorAll("input:checked")).map(function (cb) { return cb.value; });
-
-    if (checked.length < 2) {
-      demoResult.textContent = "Select at least two foods to see what they share.";
-      return;
-    }
-
-    const traitSets = checked.map(findFoodTraits);
-    const shared = traitSets[0].filter(function (trait) {
-      return traitSets.every(function (set) { return set.indexOf(trait) !== -1; });
+  // Ranks traits the same way the full app's summary does: how many of the
+  // selected foods carry each trait, shown as a percent of the selection.
+  function getRankedTraits(checked) {
+    const counts = {};
+    checked.forEach(function (name) {
+      findFoodTraits(name).forEach(function (traitId) {
+        counts[traitId] = (counts[traitId] || 0) + 1;
+      });
     });
 
-    if (shared.length === 0) {
-      demoResult.textContent = "These foods don't share a tracked trait — try a different combination.";
+    return Object.keys(counts)
+      .sort(function (a, b) { return counts[b] - counts[a]; })
+      .map(function (traitId) {
+        return { traitId: traitId, percent: Math.floor((counts[traitId] / checked.length) * 100) };
+      })
+      .slice(0, TOP_TRAITS_SHOWN);
+  }
+
+  function recomputeDemo() {
+    const checked = Array.from(demoFoodsContainer.querySelectorAll("input:checked")).map(function (cb) { return cb.value; });
+    demoTraitList.innerHTML = "";
+
+    if (checked.length < 2) {
+      demoResultText.textContent = "Select at least two foods to see what they share.";
       return;
     }
 
-    const label = TRAITS[shared[0]] ? TRAITS[shared[0]].label : shared[0];
-    demoResult.textContent = "These foods share: " + label + (shared.length > 1 ? " (and " + (shared.length - 1) + " more)" : "");
+    const topTraits = getRankedTraits(checked);
+
+    if (topTraits.length === 0) {
+      demoResultText.textContent = "These foods don't share a tracked trait — try a different combination.";
+      return;
+    }
+
+    demoResultText.textContent = "Top shared traits among these " + checked.length + " foods:";
+    topTraits.forEach(function (t) {
+      const li = document.createElement("li");
+      const label = TRAITS[t.traitId] ? TRAITS[t.traitId].label : t.traitId;
+      li.textContent = t.percent + "% — " + label;
+      demoTraitList.appendChild(li);
+    });
   }
 
   recomputeDemo();

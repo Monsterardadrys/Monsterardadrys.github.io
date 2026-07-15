@@ -815,14 +815,30 @@ footer p { color: var(--linen); }
 }
 
 .demoResult {
-    font-size: 18px;
-    font-weight: bold;
     color: var(--primary-dark);
     background: var(--linen);
     border-radius: 10px;
-    padding: 14px;
+    padding: 14px 18px;
     margin: 20px 0;
     min-height: 24px;
+}
+
+#demoResultText {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.demoTraitList {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+}
+
+.demoTraitList li {
+    font-size: 17px;
+    font-weight: 600;
+    padding: 3px 0;
 }
 
 .demoDisclaimer {
