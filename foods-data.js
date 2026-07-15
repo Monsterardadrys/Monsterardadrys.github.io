@@ -74,6 +74,35 @@
      { name: "Jackfruit", traits: ["fiber", "carbs"] }
 
    That's it — no HTML, CSS, or JS changes needed anywhere else.
+
+   ---------------------------------------------------------------------
+   FILTER LIST LAYOUT (the cards under "Filter Analysis" in the app)
+   ---------------------------------------------------------------------
+   FILTER_SECTIONS (below TRAITS) controls how filterable traits are
+   grouped into cards, independent of any food/trait data. Each entry:
+
+     {
+       title: "Card heading",
+       broad: "traitId",   // optional — rendered as the card's bold parent
+                            // checkbox (usually a "broad" trait, see above)
+       group: "GroupName", // optional — pulls every trait whose `group`
+                            // matches, sorted by `order`, indented under
+                            // the broad checkbox
+       items: ["traitId"], // optional — extra standalone checkboxes with no
+                            // broad/specific nesting (or the card's only
+                            // content, if `broad`/`group` are omitted)
+       wide: true           // optional — card spans both grid columns
+     }
+
+   A new trait with `filter: true` needs to be added to one of these
+   sections (via `group` or `items`) to actually show up in the filter
+   list — TRAITS alone only makes it filterable in principle.
+
+   Fat, Protein and Carbohydrates are deliberately NOT filterable and
+   don't appear in any section — they're tracked in the background and
+   only ever surface as an automatic side note in the analysis popup when
+   over 90% of the selected foods share one (see MACRO_TRAIT_IDS in
+   script.js). Leave them out of FILTER_SECTIONS.
    ========================================================================= */
 
 const TRAITS = {
@@ -426,6 +455,37 @@ const TRAITS = {
     ]
   }
 };
+
+/* See "FILTER LIST LAYOUT" in the comment block above for the shape of
+   each entry. */
+const FILTER_SECTIONS = [
+  {
+    title: "GI Irritants",
+    broad: "irritant",
+    group: "GI Irritants"
+  },
+  {
+    title: "FODMAPs",
+    broad: "fodmaps",
+    group: "FODMAPs"
+  },
+  {
+    title: "Other Digestive Factors",
+    items: ["fiber", "histamine", "bile_stimulant"]
+  },
+  {
+    title: "Allergens",
+    broad: "allergen",
+    group: "Allergens"
+  },
+  {
+    title: "Cross-Reactivity & Delayed Allergy",
+    broad: "cross_reactive",
+    group: "Cross-reactivity",
+    items: ["alpha_gal"],
+    wide: true
+  }
+];
 
 const CATEGORIES = [
   {

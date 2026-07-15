@@ -563,55 +563,66 @@ input[type="checkbox"]:hover { cursor: pointer; }
 }
 
 .filterContainer {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    width: min(60%, 600px);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    width: min(85%, 780px);
     margin: 0 auto;
     padding: 0;
+    text-align: left;
 }
 
-.filterContainer label { width: fit-content; }
+.filterCard {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+}
 
-.filterGroupHeader {
-    width: 100%;
+.filterCard.wide {
+    grid-column: 1 / -1;
+}
+
+.filterCardTitle {
     font-family: 'Lora', serif;
     font-style: italic;
+    font-weight: 600;
     font-size: 17px;
     color: var(--primary);
-    font-weight: 600;
-    margin: 16px 0 4px;
-    padding-bottom: 3px;
+    margin: 0 0 10px;
+    padding-bottom: 8px;
     border-bottom: 1px solid var(--border);
-    cursor: pointer;
-    user-select: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
-.filterGroupHeader::after {
-    content: '▸';
-    font-style: normal;
-    font-size: 12px;
-    transition: transform 0.2s ease;
-}
-
-.filterGroupHeader[aria-expanded="true"]::after {
-    transform: rotate(90deg);
-}
-
-.filterGroup {
-    width: 100%;
+.checkRow {
     display: flex;
     flex-wrap: wrap;
-    overflow: hidden;
-    max-height: 600px;
-    transition: max-height 0.25s ease;
 }
 
-.filterGroup.collapsed {
-    max-height: 0;
+.checkRow.extraRow {
+    margin-top: 10px;
+}
+
+.checkboxStyle.broad {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.specificWrap {
+    margin: 10px 0 0 6px;
+    padding: 8px 0 0 16px;
+    border-left: 3px solid var(--sage);
+}
+
+.specificWrap .checkboxStyle {
+    font-size: 18px;
+}
+
+@media (max-width: 700px) {
+    .filterContainer {
+        grid-template-columns: 1fr;
+        width: min(94%, 600px);
+    }
 }
 
 /* ---- articles.html ---- */
