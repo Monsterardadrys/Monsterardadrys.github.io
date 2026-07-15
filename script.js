@@ -102,28 +102,11 @@
     });
   }
 
-  // ---- Build the filter checkboxes from TRAITS --------------------------
+  // ---- Build the filter checkboxes from FILTER_SECTIONS / TRAITS --------
   function renderFilters() {
-    const BROAD_TO_SUBGROUP = {
-      irritant: "GI Irritants",
-      fodmaps: "FODMAPs",
-      allergen: "Allergens",
-      cross_reactive: "Cross-reactivity"
-    };
-
-    const grouped = {};
-    const ungrouped = [];
-    Object.keys(TRAITS).forEach(function (traitId) {
-      const trait = TRAITS[traitId];
-      if (!trait.filter) return;
-      if (!trait.group) { ungrouped.push({ traitId, trait }); return; }
-      if (!grouped[trait.group]) grouped[trait.group] = [];
-      grouped[trait.group].push({ traitId, trait });
-    });
-
-    function renderCheckbox(container, traitId, trait) {
+    function renderCheckbox(container, traitId, trait, extraClass) {
       const label = document.createElement("label");
-      label.className = "checkboxStyle";
+      label.className = extraClass ? "checkboxStyle " + extraClass : "checkboxStyle";
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.value = traitId;
@@ -133,36 +116,46 @@
       container.appendChild(label);
     }
 
-    function renderSubgroup(groupName) {
-      const items = grouped[groupName];
-      if (!items) return;
-      const header = document.createElement("p");
-      header.className = "filterGroupHeader";
-      header.textContent = groupName;
-      header.setAttribute("aria-expanded", "false");
-      filterContainer.appendChild(header);
-
-      const groupWrap = document.createElement("div");
-      groupWrap.className = "filterGroup collapsed";
-      items
-        .sort(function (a, b) { return (a.trait.order || 99) - (b.trait.order || 99); })
-        .forEach(function (item) { renderCheckbox(groupWrap, item.traitId, item.trait); });
-      filterContainer.appendChild(groupWrap);
-
-      header.addEventListener("click", function () {
-        const expanded = header.getAttribute("aria-expanded") === "true";
-        header.setAttribute("aria-expanded", !expanded);
-        groupWrap.classList.toggle("collapsed", expanded);
-      });
+    function getGroupTraits(groupName) {
+      return Object.keys(TRAITS)
+        .filter(function (id) { return TRAITS[id].filter && TRAITS[id].group === groupName; })
+        .map(function (id) { return { traitId: id, trait: TRAITS[id] }; })
+        .sort(function (a, b) { return (a.trait.order || 99) - (b.trait.order || 99); });
     }
 
-    ungrouped
-      .sort(function (a, b) { return (a.trait.order || 99) - (b.trait.order || 99); })
-      .forEach(function (item) {
-        renderCheckbox(filterContainer, item.traitId, item.trait);
-        const subgroupName = BROAD_TO_SUBGROUP[item.traitId];
-        if (subgroupName) renderSubgroup(subgroupName);
-      });
+    FILTER_SECTIONS.forEach(function (section) {
+      const card = document.createElement("div");
+      card.className = section.wide ? "filterCard wide" : "filterCard";
+
+      const title = document.createElement("p");
+      title.className = "filterCardTitle";
+      title.textContent = section.title;
+      card.appendChild(title);
+
+      if (section.broad) {
+        renderCheckbox(card, section.broad, TRAITS[section.broad], "broad");
+      }
+
+      if (section.group) {
+        const specificWrap = document.createElement("div");
+        specificWrap.className = "specificWrap checkRow";
+        getGroupTraits(section.group).forEach(function (item) {
+          renderCheckbox(specificWrap, item.traitId, item.trait);
+        });
+        card.appendChild(specificWrap);
+      }
+
+      if (section.items) {
+        const row = document.createElement("div");
+        row.className = section.group ? "checkRow extraRow" : "checkRow";
+        section.items.forEach(function (traitId) {
+          renderCheckbox(row, traitId, TRAITS[traitId]);
+        });
+        card.appendChild(row);
+      }
+
+      filterContainer.appendChild(card);
+    });
   }
 
   // ---- Read current state straight from the DOM ------------------------
