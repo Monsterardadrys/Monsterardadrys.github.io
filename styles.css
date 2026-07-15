@@ -17,6 +17,8 @@ html {
     background: linear-gradient(165deg, #f1ece0 0%, #e3e9de 55%, #d9e3da 100%);
     background-attachment: fixed;
     font-family: 'Source Sans Pro', sans-serif;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 body {
@@ -67,21 +69,32 @@ header.header--hidden {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
+    gap: 10px;
     max-width: 1100px;
     margin: 0 auto;
 }
 
 .headerBar h1 {
     margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+}
+
+/* Invisible spacer so the title stays visually centered against the button */
+.headerBar::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 34px;
 }
 
 /* Hamburger toggle button */
 .hamburgerBtn {
-    position: absolute;
-    right: 4px;
-    top: 50%;
-    transform: translateY(-50%);
+    position: relative;
+    flex: 0 0 auto;
     width: 34px;
     height: 26px;
     background: none;
@@ -127,24 +140,24 @@ header.header--hidden {
 .navDrawer {
     position: fixed;
     top: 0;
-    left: -340px;
-    width: 280px;
-    max-width: 80vw;
+    right: -360px;
+    width: 300px;
+    max-width: 85vw;
     height: 100vh;
     background: linear-gradient(180deg, var(--primary), var(--primary-dark));
-    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.3);
+    box-shadow: -4px 0 30px rgba(0, 0, 0, 0.3);
     z-index: 950;
-    padding: 70px 24px 24px;
+    padding: 70px 20px 24px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    transition: left 0.3s ease;
+    gap: 10px;
+    transition: right 0.3s ease;
     overflow-y: auto;
     text-align: left;
 }
 
 .navDrawer.open {
-    left: 0;
+    right: 0;
 }
 
 .navDrawerClose {
@@ -154,7 +167,7 @@ header.header--hidden {
     background: none;
     border: none;
     color: var(--linen);
-    font-size: 28px;
+    font-size: 30px;
     line-height: 1;
     cursor: pointer;
 }
@@ -169,15 +182,15 @@ header.header--hidden {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    gap: 4px;
+    gap: 8px;
 }
 
 .navDrawer li a,
 .navDrawer .backToMain {
     color: white;
     display: block;
-    padding: 10px 14px;
-    font-size: 18px;
+    padding: 12px 14px;
+    font-size: 38px;
     text-decoration: none;
     border-radius: 8px;
 }
@@ -207,6 +220,10 @@ header.header--hidden {
     font-size: 16px;
     font-weight: 600;
     accent-color: var(--sage-dark);
+}
+
+.disclaimerCheck.disclaimerCheck--done {
+    display: none;
 }
 
 .disclaimerBtn {
@@ -705,6 +722,10 @@ footer p { color: var(--linen); }
 }
 
 @media only screen and (((max-device-width: 1024px) and (orientation:portrait)) or ((max-device-width: 896px) and (orientation:landscape)) or (max-width: 700px)) {
+
+    .headerBar h1 { font-size: clamp(18px, 6vw, 30px); }
+    .headerBar::before,
+    .hamburgerBtn { width: 28px; }
 
     h2 { font-size: 4.5vw; }
     p { font-size: 3.5vw; }
