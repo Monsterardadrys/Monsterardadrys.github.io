@@ -23,13 +23,22 @@
 
 <body>
     <header>
-        <h1>Food intolerance guide</h1>
-        <ul>
-            <li><a href="app.html">Launch App</a></li>
-            <li><a href="articles.html">Articles</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
+        <div class="headerBar">
+            <h1>Food intolerance guide</h1>
+            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <nav class="navDrawer" id="navDrawer" aria-hidden="true">
+            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu">&times;</button>
+            <ul>
+                <li><a href="app.html">Launch App</a></li>
+                <li><a href="articles.html">Articles</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="navOverlay" id="navOverlay"></div>
     </header>
 
     <section class="hero">
@@ -78,6 +87,7 @@
     </footer>
 
     <script src="foods-data.js"></script>
+    <script src="nav.js"></script>
     <script src="landing.js"></script>
 </body>
 

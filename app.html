@@ -37,13 +37,22 @@
 
 <body>
     <header>
-        <h1>Food intolerance guide</h1>
-        <a class="backToMain" href="index.html">Home</a>
-        <ul>
-            <li><a href="articles.html">Articles</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
+        <div class="headerBar">
+            <h1>Food intolerance guide</h1>
+            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <nav class="navDrawer" id="navDrawer" aria-hidden="true">
+            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu">&times;</button>
+            <a class="backToMain" href="index.html">Home</a>
+            <ul>
+                <li><a href="articles.html">Articles</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="navOverlay" id="navOverlay"></div>
     </header>
 
     <div class="disclaimerBar">
@@ -69,10 +78,23 @@
             </div>
         </div>
 
-        <h2>A faster way to navigate food intolerances.</h2>
-        <p>1. Get started by choosing foods suspected of causing a negative reaction.</p>
-        <p>2. Further down you get a summary of what common factors the foods share.</p>
-        <p>3. In the end you'll get an analysis of what could be causing the negative reactions to the foods.</p>
+        <div class="instructionsBox">
+            <h2>A faster way to navigate food intolerances.</h2>
+            <ol class="stepsList">
+                <li>
+                    <span class="stepTitle">Pick the foods that bother you.</span>
+                    <span class="stepDetail">Choose any you suspect cause a reaction — change your mind anytime.</span>
+                </li>
+                <li>
+                    <span class="stepTitle">Check what they share.</span>
+                    <span class="stepDetail">A live summary below highlights shared FODMAPs, allergens, and more.</span>
+                </li>
+                <li>
+                    <span class="stepTitle">Read the full analysis.</span>
+                    <span class="stepDetail">Open the popup for a deeper breakdown of likely culprits.</span>
+                </li>
+            </ol>
+        </div>
         <div id="chosenFoods">
             <h2>Chosen items:</h2>
             <p id="chosenText">Click on a category to show lists of foods</p>
@@ -138,6 +160,7 @@
 
 <script src="foods-data.js"></script>
 <script src="articles-data.js"></script>
+<script src="nav.js"></script>
 <script src="script.js"></script>
 
 </html>
