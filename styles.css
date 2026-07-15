@@ -222,6 +222,10 @@ header.header--hidden {
     accent-color: var(--sage-dark);
 }
 
+.disclaimerCheck.disclaimerCheck--done {
+    display: none;
+}
+
 .disclaimerBtn {
     background: var(--paper);
     border: 1px solid var(--border);
