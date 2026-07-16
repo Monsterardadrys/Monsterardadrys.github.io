@@ -807,7 +807,7 @@ input[type="checkbox"]:hover { cursor: pointer; }
     top: 20px;
 }
 
-.articleIndex h2 { margin-top: 0; font-size: 20px; }
+.articleIndex h2 { margin-top: 0; font-size: 23px; }
 
 .articleIndex ul { list-style: none; padding: 0; margin: 0; }
 
@@ -840,9 +840,12 @@ input[type="checkbox"]:hover { cursor: pointer; }
 .articleContent h1 {
     color: var(--primary);
     font-family: 'Lora', serif;
+    font-size: clamp(30px, 4.8vw, 44px);
 }
 
-.articleContent h2 { margin-top: 30px; }
+.articleContent h2 { margin-top: 30px; font-size: 28px; }
+
+.articleContent h3 { font-size: 21px; margin-top: 20px; }
 
 .articleNote {
     background: rgba(126, 155, 122, 0.14);
@@ -922,6 +925,10 @@ footer p { color: var(--linen); }
 
     .articleLayout { flex-direction: column; margin: 6vw; box-sizing: border-box; }
     .articleIndex { position: static; flex: none; width: 100%; box-sizing: border-box; }
+
+    /* Article/about body text: fixed-minimum size so it doesn't shrink
+       below ~16px on narrow phones like the old pure-vw sizing did. */
+    .articleContent p, .neck p, .articleContent li, .articleNote { font-size: clamp(16px, 4.5vw, 18px); }
 }
 
 @media (min-width: 3800px) {
