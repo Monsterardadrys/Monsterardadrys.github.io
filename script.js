@@ -640,19 +640,28 @@
     showAllCategories();
   });
 
-  // ---- Restart ------------------------------------------------------------
+  // ---- Clear selection (Foods / Filter / All) -----------------------------
+  document.getElementById("clearFoodsButton").addEventListener("click", function () {
+    if (!window.confirm("Clear all selected foods?")) return;
+    topSection.querySelectorAll("input[type='checkbox']").forEach(function (cb) { cb.checked = false; });
+    recompute();
+  });
+
+  document.getElementById("clearFiltersButton").addEventListener("click", function () {
+    if (!window.confirm("Clear all filters?")) return;
+    filterContainer.querySelectorAll("input[type='checkbox']").forEach(function (cb) { cb.checked = false; });
+    recompute();
+  });
+
   restartButton.addEventListener("click", function () {
+    if (!window.confirm("Clear everything — foods, filters, and search?")) return;
     topSection.querySelectorAll("input[type='checkbox']").forEach(function (cb) { cb.checked = false; });
     filterContainer.querySelectorAll("input[type='checkbox']").forEach(function (cb) { cb.checked = false; });
     topSection.querySelectorAll("label").forEach(function (label) { label.style.display = ""; });
     searchField.value = "";
     hideAllCategories();
     recompute();
-  });
-
-  document.getElementById("clearFiltersButton").addEventListener("click", function () {
-    filterContainer.querySelectorAll("input[type='checkbox']").forEach(function (cb) { cb.checked = false; });
-    recompute();
+    document.getElementById("chosenFoods").scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
   // ---- Boot ----------------------------------------------------------------
