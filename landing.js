@@ -8,6 +8,32 @@ document.addEventListener("DOMContentLoaded", function () {
   const demoFoodsContainer = document.getElementById("demoFoods");
   const demoResultText = document.getElementById("demoResultText");
   const demoTraitList = document.getElementById("demoTraitList");
+  const demoPopupOverlay = document.getElementById("demoPopupOverlay");
+  const demoPopupTitle = document.getElementById("demoPopupTitle");
+  const demoPopupText = document.getElementById("demoPopupText");
+  const demoPopupClose = document.getElementById("demoPopupClose");
+
+  // Small teaser popup — one sentence pulled from the same TRAITS data the
+  // full app's analysis popup uses, just enough to show what's there.
+  function openDemoPopup(traitId) {
+    const trait = TRAITS[traitId];
+    if (!trait) return;
+    demoPopupTitle.textContent = trait.label;
+    demoPopupText.textContent = trait.analysis[0];
+    demoPopupOverlay.classList.add("show");
+  }
+
+  function closeDemoPopup() {
+    demoPopupOverlay.classList.remove("show");
+  }
+
+  demoPopupClose.addEventListener("click", closeDemoPopup);
+  demoPopupOverlay.addEventListener("click", function (e) {
+    if (e.target === demoPopupOverlay) closeDemoPopup();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeDemoPopup();
+  });
 
   function findFoodTraits(name) {
     for (const category of CATEGORIES) {
@@ -69,6 +95,14 @@ document.addEventListener("DOMContentLoaded", function () {
       const li = document.createElement("li");
       const label = TRAITS[t.traitId] ? TRAITS[t.traitId].label : t.traitId;
       li.textContent = t.percent + "% — " + label;
+      if (TRAITS[t.traitId]) {
+        li.tabIndex = 0;
+        li.setAttribute("role", "button");
+        li.addEventListener("click", function () { openDemoPopup(t.traitId); });
+        li.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDemoPopup(t.traitId); }
+        });
+      }
       demoTraitList.appendChild(li);
     });
   }

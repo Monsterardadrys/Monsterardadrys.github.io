@@ -1026,6 +1026,14 @@ footer p { color: var(--linen); }
     font-size: 17px;
     font-weight: 600;
     padding: 3px 0;
+    cursor: pointer;
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+}
+
+.demoTraitList li:hover,
+.demoTraitList li:focus-visible {
+    color: var(--clay-dark);
 }
 
 .demoDisclaimer {
@@ -1033,6 +1041,71 @@ footer p { color: var(--linen); }
     opacity: 0.75;
     font-style: italic;
     text-align: center;
+}
+
+/* Mini "hint of the full app" popup, opened by tapping a shared trait */
+.demoPopupOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(12, 42, 49, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 970;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.demoPopupOverlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.demoPopupBox {
+    position: relative;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    max-width: 360px;
+    width: 100%;
+    padding: 26px 22px 22px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(21, 65, 76, 0.25);
+}
+
+.demoPopupBox h3 {
+    margin: 0 0 10px;
+    font-size: 21px;
+}
+
+.demoPopupBox p {
+    text-align: left;
+    font-size: 17px;
+    margin: 0 0 16px;
+}
+
+.demoPopupClose {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    line-height: 1;
+    color: var(--primary);
+    cursor: pointer;
+}
+
+.demoPopupLink {
+    color: var(--clay-dark);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.demoPopupLink:hover {
+    text-decoration: underline;
 }
 
 .linksOut {
