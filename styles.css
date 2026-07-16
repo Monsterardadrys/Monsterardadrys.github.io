@@ -817,6 +817,7 @@ input[type="checkbox"]:hover { cursor: pointer; }
     text-decoration: none;
     color: var(--primary);
     font-weight: 600;
+    font-size: 19px;
     display: block;
     padding: 6px 10px;
     border-radius: 8px;
@@ -843,7 +844,7 @@ input[type="checkbox"]:hover { cursor: pointer; }
     font-size: clamp(30px, 4.8vw, 44px);
 }
 
-.articleContent h2 { margin-top: 30px; font-size: 28px; }
+.articleContent h2 { margin-top: 30px; font-size: 25px; }
 
 .articleContent h3 { font-size: 21px; margin-top: 20px; }
 
@@ -928,7 +929,7 @@ footer p { color: var(--linen); }
 
     /* Article/about body text: fixed-minimum size so it doesn't shrink
        below ~16px on narrow phones like the old pure-vw sizing did. */
-    .articleContent p, .neck p, .articleContent li, .articleNote { font-size: clamp(16px, 4.5vw, 18px); }
+    .articleContent p, .neck p, .articleContent li, .articleNote { font-size: clamp(18px, 4.5vw, 19px); }
 }
 
 @media (min-width: 3800px) {
@@ -1074,7 +1075,7 @@ footer p { color: var(--linen); }
        readable on narrow phones (the global "p" rule alone can drop below 16px). */
     .hero h2 { font-size: 28px; }
     .demo h2 { font-size: 22px; }
-    .hero p, .demo p, .demoDisclaimer, .linkCard p { font-size: clamp(16px, 4.5vw, 18px); }
+    .hero p, .demo p, .demoDisclaimer, .linkCard p { font-size: clamp(18px, 4.5vw, 19px); }
     .linkCard h3 { font-size: 20px; }
     .demo { margin: 30px 15px; padding: 20px; }
     .linksOut { margin: 30px 15px; }
