@@ -182,33 +182,43 @@ const ARTICLES = {
     ]
   },
 
-  irritant: {
-    title: "GI Irritants",
+  fiber: {
+    title: "Fiber",
     sections: [
       {
-        heading: "What counts as a GI irritant?",
+        heading: "What is fiber?",
         blocks: [
-          { type: "p", text: "A broad group of foods that can worsen gut symptoms through different mechanisms — some well-established (fat, alcohol, caffeine, capsaicin), others based mainly on clinical observation." }
+          { type: "p", text: "Fiber is the part of plant foods the body can't fully digest. It passes through the digestive system largely intact, which is exactly what makes it so useful — and, for some people, occasionally uncomfortable." }
         ]
       },
       {
-        heading: "Specific mechanisms",
+        heading: "Health benefits",
         blocks: [
-          { type: "list", items: [
-            "**Capsaicin:** activates pain/heat receptors in the gut lining, found in hot peppers",
-            "**Peel/skin:** concentrated fiber and irritant compounds in the outer layer of some fruits/vegetables",
-            "**Allyl/sulfur compounds:** pungent compounds in raw garlic, onion, mustard",
-            "**Carbonation:** gas causes distension, worsens bloating and reflux",
-            "**Acetic acid:** vinegar's acidity can irritate the gut lining directly",
-            "**Alcohol:** relaxes the esophageal sphincter, irritates gut lining",
-            "**Caffeine:** stimulates gut motility and acid secretion"
-          ]}
+          { type: "p", text: "Fiber supports gut health and the gut microbiome, heart health, blood sugar regulation, weight control, and helps move waste (and the toxins bound to it) through the digestive tract." }
+        ]
+      },
+      {
+        heading: "Food sources",
+        blocks: [
+          { type: "p", text: "Fiber is present in plant foods: vegetables, fruits, whole grains, legumes, nuts, and seeds. Processed foods usually contain less fiber than their whole-food counterparts, though some are fortified with added fiber. Foods particularly high in fiber include flax seeds, chia seeds, wheat and oat bran, whole grain pasta, bread and rice, and beans and peas." }
+        ]
+      },
+      {
+        heading: "What problems can fiber cause?",
+        blocks: [
+          { type: "p", text: "Overconsumption from supplements carries real risks for anyone: in rare cases, ileus (a bowel blockage), constipation (especially combined with low water intake), gas, and bloating. Overconsumption from whole foods is gentler, but can still reduce appetite and lead to unintended weight loss if taken to an extreme." }
+        ]
+      },
+      {
+        heading: "Who is more sensitive?",
+        blocks: [
+          { type: "p", text: "Fiber can cause more pronounced symptoms in people with certain sensitivities — IBS, reflux, slowed gastric emptying, short bowel syndrome, or small intestinal bacterial overgrowth (SIBO), among others." }
         ]
       },
       {
         heading: null,
         blocks: [
-          { type: "note", text: "This reflects a mix of clinical experience, general physiology, and GI research — with varying levels of confidence per specific trait. Not every food tagged here has an equally strong or proven effect; treat this as a starting point for individual investigation." }
+          { type: "note", text: "Don't stick to a low-fiber, low-variety diet for more than a couple of weeks unless it's clearly necessary." }
         ]
       }
     ]
@@ -428,43 +438,33 @@ const ARTICLES = {
     ]
   },
 
-  fiber: {
-    title: "Fiber",
+  irritant: {
+    title: "GI Irritants",
     sections: [
       {
-        heading: "What is fiber?",
+        heading: "What counts as a GI irritant?",
         blocks: [
-          { type: "p", text: "Fiber is the part of plant foods the body can't fully digest. It passes through the digestive system largely intact, which is exactly what makes it so useful — and, for some people, occasionally uncomfortable." }
+          { type: "p", text: "A broad group of foods that can worsen gut symptoms through different mechanisms — some well-established (fat, alcohol, caffeine, capsaicin), others based mainly on clinical observation." }
         ]
       },
       {
-        heading: "Health benefits",
+        heading: "Specific mechanisms",
         blocks: [
-          { type: "p", text: "Fiber supports gut health and the gut microbiome, heart health, blood sugar regulation, weight control, and helps move waste (and the toxins bound to it) through the digestive tract." }
-        ]
-      },
-      {
-        heading: "Food sources",
-        blocks: [
-          { type: "p", text: "Fiber is present in plant foods: vegetables, fruits, whole grains, legumes, nuts, and seeds. Processed foods usually contain less fiber than their whole-food counterparts, though some are fortified with added fiber. Foods particularly high in fiber include flax seeds, chia seeds, wheat and oat bran, whole grain pasta, bread and rice, and beans and peas." }
-        ]
-      },
-      {
-        heading: "What problems can fiber cause?",
-        blocks: [
-          { type: "p", text: "Overconsumption from supplements carries real risks for anyone: in rare cases, ileus (a bowel blockage), constipation (especially combined with low water intake), gas, and bloating. Overconsumption from whole foods is gentler, but can still reduce appetite and lead to unintended weight loss if taken to an extreme." }
-        ]
-      },
-      {
-        heading: "Who is more sensitive?",
-        blocks: [
-          { type: "p", text: "Fiber can cause more pronounced symptoms in people with certain sensitivities — IBS, reflux, slowed gastric emptying, short bowel syndrome, or small intestinal bacterial overgrowth (SIBO), among others." }
+          { type: "list", items: [
+            "**Capsaicin:** activates pain/heat receptors in the gut lining, found in hot peppers",
+            "**Peel/skin:** concentrated fiber and irritant compounds in the outer layer of some fruits/vegetables",
+            "**Allyl/sulfur compounds:** pungent compounds in raw garlic, onion, mustard",
+            "**Carbonation:** gas causes distension, worsens bloating and reflux",
+            "**Acetic acid:** vinegar's acidity can irritate the gut lining directly",
+            "**Alcohol:** relaxes the esophageal sphincter, irritates gut lining",
+            "**Caffeine:** stimulates gut motility and acid secretion"
+          ]}
         ]
       },
       {
         heading: null,
         blocks: [
-          { type: "note", text: "Don't stick to a low-fiber, low-variety diet for more than a couple of weeks unless it's clearly necessary." }
+          { type: "note", text: "This reflects a mix of clinical experience, general physiology, and GI research — with varying levels of confidence per specific trait. Not every food tagged here has an equally strong or proven effect; treat this as a starting point for individual investigation." }
         ]
       }
     ]
