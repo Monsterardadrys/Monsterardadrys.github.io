@@ -31,9 +31,6 @@
   const popupContainer = document.getElementById("popupContainer");
   const popupTextContainer = document.getElementById("popupTextContainer");
 
-  let lastTopTraits = [];
-  let lastMacroNotes = [];
-
   // ---- Disclaimer popup close-on-click -----------------------------------
   const disclaimerPopup = document.getElementById("disclaimerPopup");
   const disclaimerBtn = document.querySelector(".disclaimerBtn");
@@ -63,9 +60,9 @@
     }
   });
 
-  // ---- Build the food category boxes from CATEGORIES -------------------
+  // ---- Build the food category boxes from CATEGORIES / CATEGORY_GROUPS --
   function renderCategories() {
-    CATEGORIES.forEach(function (category) {
+    function renderCategoryBox(container, category) {
       const box = document.createElement("div");
       box.className = "foodBox";
 
@@ -98,8 +95,55 @@
 
       box.appendChild(button);
       box.appendChild(group);
-      topSection.appendChild(box);
+      container.appendChild(box);
+    }
+
+    const byId = {};
+    CATEGORIES.forEach(function (category) { byId[category.id] = category; });
+    const placedIds = new Set();
+
+    CATEGORY_GROUPS.forEach(function (categoryGroup) {
+      const categories = categoryGroup.categories
+        .map(function (id) { return byId[id]; })
+        .filter(Boolean);
+      if (categories.length === 0) return;
+
+      const section = document.createElement("div");
+      section.className = "categoryGroup";
+
+      const title = document.createElement("p");
+      title.className = "categoryGroupTitle";
+      title.textContent = categoryGroup.title;
+      section.appendChild(title);
+
+      const row = document.createElement("div");
+      row.className = "categoryGroupRow";
+      categories.forEach(function (category) {
+        placedIds.add(category.id);
+        renderCategoryBox(row, category);
+      });
+      section.appendChild(row);
+
+      topSection.appendChild(section);
     });
+
+    const leftover = CATEGORIES.filter(function (category) { return !placedIds.has(category.id); });
+    if (leftover.length > 0) {
+      const section = document.createElement("div");
+      section.className = "categoryGroup";
+
+      const title = document.createElement("p");
+      title.className = "categoryGroupTitle";
+      title.textContent = "Other";
+      section.appendChild(title);
+
+      const row = document.createElement("div");
+      row.className = "categoryGroupRow";
+      leftover.forEach(function (category) { renderCategoryBox(row, category); });
+      section.appendChild(row);
+
+      topSection.appendChild(section);
+    }
   }
 
   // ---- Build the filter checkboxes from FILTER_SECTIONS / TRAITS --------
@@ -170,6 +214,37 @@
     });
   }
 
+  // Renders each chosen food as a chip with its own remove (×) button, wired
+  // directly to the checkbox that put it there so removal always finds the
+  // right one, even if two foods share a name substring.
+  function renderChosenFoods() {
+    const checkboxes = Array.from(topSection.querySelectorAll("input[type='checkbox']:checked"));
+    chosenText.innerHTML = "";
+
+    if (checkboxes.length === 0) {
+      chosenText.textContent = "Click on a category to show lists of foods";
+      return;
+    }
+
+    checkboxes.forEach(function (checkbox) {
+      const chip = document.createElement("span");
+      chip.className = "chosenFoodChip";
+      chip.appendChild(document.createTextNode(checkbox.value));
+
+      const removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.className = "chosenFoodRemove";
+      removeBtn.setAttribute("aria-label", "Remove " + checkbox.value);
+      removeBtn.textContent = "×";
+      removeBtn.addEventListener("click", function () {
+        checkbox.checked = false;
+        recompute();
+      });
+      chip.appendChild(removeBtn);
+      chosenText.appendChild(chip);
+    });
+  }
+
   function getExcludedTraitIds() {
     const checked = filterContainer.querySelectorAll("input[type='checkbox']:checked");
     return new Set(Array.from(checked).map(function (checkbox) {
@@ -201,9 +276,7 @@
     const selectedFoods = getSelectedFoods();
     const excluded = getExcludedTraitIds();
 
-    chosenText.textContent = selectedFoods.length
-      ? selectedFoods.map(function (f) { return f.name; }).join(", ")
-      : "Click on a category to show lists of foods";
+    renderChosenFoods();
 
     const counts = {};
     selectedFoods.forEach(function (food) {
@@ -215,8 +288,6 @@
     });
 
     const allTraits = getRankedTraits(counts, selectedFoods.length);
-    lastTopTraits = allTraits.slice(0, 3);
-    lastMacroNotes = getMacroNotes(counts, selectedFoods.length);
     updateSummaryText(selectedFoods.length, allTraits);
   }
 
@@ -274,71 +345,175 @@
   });
 
   // ---- Analysis popup ----------------------------------------------------
-  showAnalysisButton.addEventListener("click", function () {
+  // The popup keeps its own live, self-contained view: all selected foods
+  // are listed and can be toggled out of the analysis one at a time without
+  // touching the real selection (so they're easy to bring back), and each
+  // shown trait can be excluded on the spot — which reuses the real filter
+  // checkbox, so it stays in sync with the main Filter Analysis section.
+  let popupAllFoods = [];
+  let popupExcludedFoods = new Set();
+  let popupActiveFoods = [];
+  let popupActiveTraits = [];
+
+  function renderPopupAnalysis() {
     popupTextContainer.innerHTML = "";
 
-    if (lastTopTraits.length === 0) {
+    if (popupAllFoods.length === 0) {
+      popupActiveFoods = [];
+      popupActiveTraits = [];
       const p = document.createElement("p");
       p.className = "popupText";
       p.textContent = "Select foods to see a deeper summary and analysis of the foods.";
       popupTextContainer.appendChild(p);
-    } else {
-      lastTopTraits.forEach(function (item, index) {
-        if (index > 0) {
-          const hr = document.createElement("hr");
-          hr.className = "popupDivider";
-          popupTextContainer.appendChild(hr);
-        }
-        const trait = TRAITS[item.traitId];
-        const heading = document.createElement("p");
-        heading.className = "popupTraitHeading";
-        heading.textContent = item.percent + "% — " + trait.label;
-        popupTextContainer.appendChild(heading);
-        const paragraphs = (trait.analysis && trait.analysis.length)
-          ? trait.analysis
-          : ["The most common shared trait among these foods is " + trait.label + "."];
-        paragraphs.forEach(function (text, i) {
-          const p = document.createElement("p");
-          if (i === 0) p.className = "popupText";
-          p.textContent = text;
-          popupTextContainer.appendChild(p);
-        });
-        if (trait.articleId) {
-          const p = document.createElement("p");
-          p.className = "noPrint";
-          const link = document.createElement("a");
-          link.href = "articles.html#" + trait.articleId;
-          link.target = "_blank";
-          link.rel = "noopener";
-          link.textContent = "Read the full article →";
-          link.addEventListener("click", function (e) { e.stopPropagation(); });
-          p.appendChild(link);
-          popupTextContainer.appendChild(p);
+      return;
+    }
 
-          const printNote = document.createElement("p");
-          printNote.className = "printOnly";
-          const articleTitle = (typeof ARTICLES !== "undefined" && ARTICLES[trait.articleId])
-            ? ARTICLES[trait.articleId].title : trait.label;
-          printNote.textContent = "See \"" + articleTitle + "\" below.";
-          popupTextContainer.appendChild(printNote);
-        }
+    const activeFoods = popupAllFoods.filter(function (food) { return !popupExcludedFoods.has(food.name); });
+    const excludedTraitIds = getExcludedTraitIds();
+    const counts = {};
+    activeFoods.forEach(function (food) {
+      food.traits.forEach(function (traitId) {
+        if (excludedTraitIds.has(traitId)) return;
+        if (!TRAITS[traitId]) return;
+        counts[traitId] = (counts[traitId] || 0) + 1;
       });
+    });
+    const topTraits = getRankedTraits(counts, activeFoods.length, 3);
+    const macroNotes = getMacroNotes(counts, activeFoods.length);
 
-      if (lastMacroNotes.length > 0) {
+    popupActiveFoods = activeFoods;
+    popupActiveTraits = topTraits;
+
+    const foodsIntro = document.createElement("p");
+    foodsIntro.className = "popupFoodsIntro noPrint";
+    foodsIntro.textContent = "Foods in this analysis — click one to leave it out, click again to bring it back:";
+    popupTextContainer.appendChild(foodsIntro);
+
+    const chipRow = document.createElement("div");
+    chipRow.className = "popupFoodChips noPrint";
+    popupAllFoods.forEach(function (food) {
+      const isExcluded = popupExcludedFoods.has(food.name);
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = isExcluded ? "popupFoodChip excluded" : "popupFoodChip";
+      chip.textContent = food.name;
+      chip.setAttribute("aria-pressed", String(!isExcluded));
+      chip.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (isExcluded) popupExcludedFoods.delete(food.name);
+        else popupExcludedFoods.add(food.name);
+        renderPopupAnalysis();
+      });
+      chipRow.appendChild(chip);
+    });
+    popupTextContainer.appendChild(chipRow);
+
+    const introHr = document.createElement("hr");
+    introHr.className = "popupDivider";
+    popupTextContainer.appendChild(introHr);
+
+    if (activeFoods.length === 0) {
+      const p = document.createElement("p");
+      p.className = "popupText";
+      p.textContent = "Every food above is left out of the analysis right now — click one to bring it back.";
+      popupTextContainer.appendChild(p);
+      return;
+    }
+
+    if (topTraits.length === 0) {
+      const p = document.createElement("p");
+      p.className = "popupText";
+      p.textContent = "These foods don't share a tracked trait right now (or every relevant factor is excluded).";
+      popupTextContainer.appendChild(p);
+      return;
+    }
+
+    topTraits.forEach(function (item, index) {
+      if (index > 0) {
         const hr = document.createElement("hr");
         hr.className = "popupDivider";
         popupTextContainer.appendChild(hr);
-        const note = document.createElement("p");
-        note.className = "popupMacroNote";
-        const joined = lastMacroNotes.length > 1
-          ? lastMacroNotes.slice(0, -1).join(", ") + " and " + lastMacroNotes[lastMacroNotes.length - 1]
-          : lastMacroNotes[0];
-        note.textContent = "Note: this selection is also high in " + joined +
-          " (over 90% of foods) — these rarely cause symptoms directly but can worsen other GI issues.";
-        popupTextContainer.appendChild(note);
       }
-    }
+      const trait = TRAITS[item.traitId];
 
+      const headingRow = document.createElement("div");
+      headingRow.className = "popupTraitHeadingRow";
+
+      const heading = document.createElement("p");
+      heading.className = "popupTraitHeading";
+      heading.textContent = item.percent + "% — " + trait.label;
+      headingRow.appendChild(heading);
+
+      const removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.className = "popupTraitRemove noPrint";
+      removeBtn.textContent = "Exclude";
+      removeBtn.setAttribute("aria-label", "Exclude " + trait.label + " from the analysis");
+      removeBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        const filterCheckbox = filterContainer.querySelector('input[value="' + item.traitId + '"]');
+        if (filterCheckbox) {
+          filterCheckbox.checked = true;
+          recompute();
+        }
+        renderPopupAnalysis();
+      });
+      headingRow.appendChild(removeBtn);
+
+      popupTextContainer.appendChild(headingRow);
+
+      const paragraphs = (trait.analysis && trait.analysis.length)
+        ? trait.analysis
+        : ["The most common shared trait among these foods is " + trait.label + "."];
+      paragraphs.forEach(function (text, i) {
+        const p = document.createElement("p");
+        if (i === 0) p.className = "popupText";
+        p.textContent = text;
+        popupTextContainer.appendChild(p);
+      });
+      if (trait.articleId) {
+        const p = document.createElement("p");
+        p.className = "noPrint";
+        const link = document.createElement("a");
+        link.href = "articles.html#" + trait.articleId;
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.textContent = "Read the full article →";
+        link.addEventListener("click", function (e) { e.stopPropagation(); });
+        p.appendChild(link);
+        popupTextContainer.appendChild(p);
+
+        const printNote = document.createElement("p");
+        printNote.className = "printOnly";
+        const articleTitle = (typeof ARTICLES !== "undefined" && ARTICLES[trait.articleId])
+          ? ARTICLES[trait.articleId].title : trait.label;
+        printNote.textContent = "See \"" + articleTitle + "\" below.";
+        popupTextContainer.appendChild(printNote);
+      }
+    });
+
+    if (macroNotes.length > 0) {
+      const hr = document.createElement("hr");
+      hr.className = "popupDivider";
+      popupTextContainer.appendChild(hr);
+      const note = document.createElement("p");
+      note.className = "popupMacroNote";
+      const joined = macroNotes.length > 1
+        ? macroNotes.slice(0, -1).join(", ") + " and " + macroNotes[macroNotes.length - 1]
+        : macroNotes[0];
+      note.textContent = "Note: this selection is also high in " + joined +
+        " (over 90% of foods) — these rarely cause symptoms directly but can worsen other GI issues.";
+      popupTextContainer.appendChild(note);
+    }
+  }
+
+  showAnalysisButton.addEventListener("click", function () {
+    const opening = !popupContainer.classList.contains("show");
+    if (opening) {
+      popupAllFoods = getSelectedFoods();
+      popupExcludedFoods = new Set();
+      renderPopupAnalysis();
+    }
     popupContainer.classList.toggle("show");
   });
 
@@ -349,9 +524,9 @@
   document.getElementById("printAnalysisButton").addEventListener("click", function (e) {
     e.stopPropagation();
 
-    const foods = getSelectedFoods().map(function (f) { return f.name; }).sort();
+    const foods = popupActiveFoods.map(function (f) { return f.name; }).sort();
     const foodsList = document.getElementById("printFoodsList");
-    foodsList.innerHTML = "<h2>Selected foods (" + foods.length + ")</h2>";
+    foodsList.innerHTML = "<h2>Foods in this analysis (" + foods.length + ")</h2>";
     const ul = document.createElement("ul");
     ul.className = "printFoodsUl";
     foods.forEach(function (name) {
@@ -365,7 +540,7 @@
     articlesBox.innerHTML = "";
     if (typeof ARTICLES !== "undefined") {
       const seen = new Set();
-      lastTopTraits.forEach(function (item) {
+      popupActiveTraits.forEach(function (item) {
         const trait = TRAITS[item.traitId];
         if (!trait.articleId || seen.has(trait.articleId)) return;
         const article = ARTICLES[trait.articleId];

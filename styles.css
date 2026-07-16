@@ -358,6 +358,46 @@ header.header--hidden {
     padding-top: 18px;
 }
 
+#chosenText {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.chosenFoodChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--linen);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 6px 4px 14px;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.chosenFoodRemove {
+    background: var(--clay);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    line-height: 1;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.chosenFoodRemove:hover {
+    background: var(--clay-dark);
+}
+
 .neck ul {
     float: none;
     position: relative;
@@ -393,9 +433,27 @@ header.header--hidden {
 }
 
 .topSection {
+    margin: 75px;
+}
+
+.categoryGroup {
+    margin-bottom: 26px;
+}
+
+.categoryGroupTitle {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--primary);
+    margin: 0 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+}
+
+.categoryGroupRow {
     display: flex;
     flex-wrap: wrap;
-    margin: 75px;
 }
 
 .foodBox {
@@ -555,6 +613,91 @@ input[type="checkbox"]:hover { cursor: pointer; }
     font-size: 18px;
     color: var(--primary);
     margin-bottom: 6px;
+}
+
+.popupFoodsIntro {
+    font-size: 15px;
+    font-style: italic;
+    opacity: 0.8;
+    margin-bottom: 6px !important;
+}
+
+.popupFoodChips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    left: 5%;
+    width: 90%;
+    margin: 0 0 6px;
+}
+
+.popupFoodChip {
+    background: var(--linen);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+}
+
+.popupFoodChip:hover {
+    background: var(--sage);
+    color: white;
+}
+
+.popupFoodChip.excluded {
+    background: transparent;
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.popupFoodChip.excluded:hover {
+    background: var(--border);
+    color: var(--ink);
+    opacity: 0.8;
+}
+
+.popupTraitHeadingRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    position: relative;
+    left: 5%;
+    width: 90%;
+}
+
+.popupTraitHeadingRow .popupTraitHeading {
+    position: static;
+    width: auto;
+    left: auto;
+    margin-bottom: 0;
+    text-align: left;
+}
+
+.popupTraitRemove {
+    flex: 0 0 auto;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--clay-dark);
+    cursor: pointer;
+}
+
+.popupTraitRemove:hover {
+    background: var(--clay);
+    color: white;
+    border-color: var(--clay);
 }
 
 .analysisPopup .show {

@@ -75,6 +75,11 @@
 
    That's it — no HTML, CSS, or JS changes needed anywhere else.
 
+   A new category should also be listed under a group in CATEGORY_GROUPS
+   below (just its `id`, in whichever group it fits best) so it's shown
+   next to related categories instead of on its own. If you forget, it
+   still renders — grouped at the end under "Other".
+
    ---------------------------------------------------------------------
    FILTER LIST LAYOUT (the cards under "Filter Analysis" in the app)
    ---------------------------------------------------------------------
@@ -902,5 +907,32 @@ const CATEGORIES = [
       { name: "Olives", traits: ["over_10g_fat", "histamine"] },
       { name: "Miso Paste", traits: ["histamine", "allergen", "allergen_soy", "fodmaps"] }
     ]
+  }
+];
+
+/* Groups the category buttons under "Choose foods" into labeled clusters.
+   List category `id`s (from CATEGORIES above), not labels. Any category id
+   not listed here still renders, grouped under a trailing "Other" section —
+   see FOOD_CATEGORY logic in script.js. */
+const CATEGORY_GROUPS = [
+  {
+    title: "Produce",
+    categories: ["roots", "veggies", "fruits", "berries", "mushrooms"]
+  },
+  {
+    title: "Grains, Legumes & Nuts",
+    categories: ["grains", "legumes", "nuts"]
+  },
+  {
+    title: "Animal-Based",
+    categories: ["landAnimals", "seafood", "dairy"]
+  },
+  {
+    title: "Flavor & Extras",
+    categories: ["spices", "condiments", "sauces", "picklesFerments"]
+  },
+  {
+    title: "Processed & Beverages",
+    categories: ["ultraProcessed", "snacksSweets", "beverages"]
   }
 ];
