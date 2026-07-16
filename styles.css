@@ -586,7 +586,27 @@ input[type="checkbox"]:hover { cursor: pointer; }
     overflow-y: auto;
 }
 
-.popupContainer:hover { cursor: pointer; }
+.popupClose {
+    position: fixed;
+    top: calc(5% + 10px);
+    right: 6%;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    font-size: 20px;
+    line-height: 1;
+    color: var(--primary);
+    cursor: pointer;
+    z-index: 2;
+}
+
+.popupClose:hover {
+    background: var(--clay);
+    color: white;
+    border-color: var(--clay);
+}
 
 .popupContainer p {
     position: relative;
@@ -896,6 +916,7 @@ footer p { color: var(--linen); }
 
     .popupContainer { padding: 60px 0; top: 0; left: 5%; max-height: 90vh; }
     .popupContainer p { font-size: max(3.5vw, 18px); left: 3%; width: 94%; }
+    .popupClose { top: 10px; }
 
 
 

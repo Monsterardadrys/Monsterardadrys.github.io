@@ -508,17 +508,24 @@
   }
 
   showAnalysisButton.addEventListener("click", function () {
-    const opening = !popupContainer.classList.contains("show");
-    if (opening) {
-      popupAllFoods = getSelectedFoods();
-      popupExcludedFoods = new Set();
-      renderPopupAnalysis();
-    }
-    popupContainer.classList.toggle("show");
+    popupAllFoods = getSelectedFoods();
+    popupExcludedFoods = new Set();
+    renderPopupAnalysis();
+    popupContainer.classList.add("show");
   });
 
-  popupContainer.addEventListener("click", function () {
-    popupContainer.classList.toggle("show");
+  function closePopup() {
+    popupContainer.classList.remove("show");
+  }
+
+  document.getElementById("popupCloseBtn").addEventListener("click", function (e) {
+    e.stopPropagation();
+    closePopup();
+  });
+
+  document.getElementById("popupCloseBottomBtn").addEventListener("click", function (e) {
+    e.stopPropagation();
+    closePopup();
   });
 
   document.getElementById("printAnalysisButton").addEventListener("click", function (e) {
