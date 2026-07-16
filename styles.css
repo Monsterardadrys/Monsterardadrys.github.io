@@ -204,16 +204,20 @@ header.header--hidden {
     color: var(--primary);
 }
 
-/* Disclaimer bar */
+/* Disclaimer bar — extended up behind the fixed header (via negative
+   margin + matching extra padding) so hiding the header on scroll reveals
+   this bar's own background instead of a lighter gap. */
 .disclaimerBar {
     background: var(--linen);
     border-bottom: 1px solid var(--border);
-    padding: 10px 16px;
+    margin-top: calc(-1 * var(--header-height, 84px));
+    padding: calc(var(--header-height, 84px) + 10px) 16px 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 14px;
     flex-wrap: wrap;
+    position: relative;
 }
 
 .disclaimerCheck {
@@ -352,10 +356,22 @@ header.header--hidden {
     margin-right: 5px;
 }
 
+.noSaveWarning {
+    margin: 16px 0 0;
+    padding: 10px 14px;
+    background: rgba(201, 138, 94, 0.15);
+    border: 1px solid var(--clay);
+    border-radius: 8px;
+    font-size: 15px;
+    color: var(--clay-dark);
+    text-align: center;
+}
+
 #chosenFoods {
     border-top: 1px solid var(--border);
     margin-top: 22px;
     padding-top: 18px;
+    padding-bottom: 18px;
 }
 
 #chosenText {
