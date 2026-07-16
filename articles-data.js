@@ -38,96 +38,31 @@ const ARTICLES = {
       {
         heading: null,
         blocks: [
-          { type: "p", text: "Macronutrients are the essential nutrients that our bodies require in relatively large amounts to provide energy, support growth, and maintain proper physiological function. These include carbohydrates, proteins, fats (lipids), and fiber (which is technically a type of carbohydrate but deserves special attention). Alcohol is sometimes included in discussions of macronutrients as it provides calories but offers no nutritional value." },
-          { type: "p", text: "The human body requires a balance of these macronutrients to function optimally. Each plays distinct but interconnected roles in maintaining health and providing energy. Understanding macronutrients is fundamental to making informed dietary choices and maintaining overall health." }
+          { type: "p", text: "Macronutrients — carbohydrates, protein, fat, and fiber — are the nutrients the body needs in large amounts for energy and tissue maintenance. Alcohol is sometimes grouped alongside them, since it provides calories but no nutrients." }
         ]
       },
       {
-        heading: "Carbohydrates: The Primary Energy Source",
+        heading: "The main groups",
         blocks: [
-          { type: "p", text: "Carbohydrates are the body's main source of energy, providing 4 calories per gram. They come in two primary forms: sugars and starches. Sugars are simple carbohydrates (monosaccharides and disaccharides) that are quickly digested and absorbed, providing immediate energy. Starches are complex carbohydrates (polysaccharides) that take longer to digest, offering sustained energy release." },
-          { type: "subheading", text: "Functions of carbohydrates:" },
           { type: "list", items: [
-            "Provide energy for the brain, kidneys, and central nervous system",
-            "Help spare protein and fat for other critical functions",
-            "Regulate blood sugar levels when consumed in appropriate portions",
-            "Are essential for athletic performance and physical activity"
-          ]},
-          { type: "p", text: "Good carbohydrate sources include whole grains, fruits, vegetables, legumes, and dairy products. The American Heart Association recommends limiting added sugars to less than 25% of daily calories, emphasizing the importance of distinguishing between nutrient-dense carbohydrates and those that offer empty calories." }
+            "**Carbohydrates:** the body's main energy source; includes sugars, starches, and fiber",
+            "**Protein:** builds and repairs tissue; a moderate stimulant of bile release",
+            "**Fat:** the most energy-dense macronutrient; needs bile to digest",
+            "**Fiber:** the indigestible part of plant foods; feeds the gut microbiome",
+            "**Alcohol:** not a nutrient, but a common dietary component worth tracking separately"
+          ]}
         ]
       },
       {
-        heading: "Fiber: The Digestive System's Unsung Hero",
+        heading: "Why they matter for GI symptoms",
         blocks: [
-          { type: "p", text: "Fiber is a type of carbohydrate that the body cannot digest. There are two types: soluble and insoluble fiber, each offering unique benefits." },
-          { type: "subheading", text: "Soluble Fiber" },
-          { type: "p", text: "Dissolves in water. Forms a gel-like substance in the stomach. Helps lower cholesterol levels. Regulates blood sugar. Sources: oats, barley, beans, lentils, nuts, seeds, and fruits." },
-          { type: "subheading", text: "Insoluble Fiber" },
-          { type: "p", text: "Does not dissolve in water. Adds bulk to stool. Promotes regular digestion. Prevents constipation and reduces colon cancer risk. Sources: whole grains, wheat bran, vegetables (especially dark leafy greens), and potatoes with skin." },
-          { type: "p", text: "A balanced diet should include about 25-30 grams of fiber daily. Fiber is crucial for digestive health, weight management (promotes satiety), and overall metabolic health. Whole foods that contain fiber are generally more beneficial than isolated fiber supplements." },
-          { type: "note", text: "Pro-tip: gradually increase your fiber intake to avoid digestive discomfort, and drink plenty of water to help fiber do its job effectively." }
-        ]
-      },
-      {
-        heading: "Protein: Building and Repairing Tissue",
-        blocks: [
-          { type: "p", text: "Proteins are complex molecules made of amino acids, which are the body's building blocks. Nine essential amino acids must come from the diet, while the body can synthesize the other non-essential amino acids." },
-          { type: "subheading", text: "Functions of protein:" },
-          { type: "list", items: [
-            "Builds and repairs tissues",
-            "Creates enzymes, hormones, and other body chemicals",
-            "Supports immune system function",
-            "Provides 4 calories per gram (along with carbohydrates)",
-            "Helps maintain muscle mass"
-          ]},
-          { type: "p", text: "Proteins are composed of chains of amino acids. The unique sequence of amino acids determines each protein's specific function. Complete proteins contain all nine essential amino acids and are found in animal products like meat, fish, eggs, and dairy. Incomplete proteins are found in plant foods and must be combined to provide all essential amino acids." },
-          { type: "p", text: "Good protein sources include lean meats, poultry, fish, eggs, dairy products, legumes, tofu, tempeh, and seitan. The recommended daily intake is about 0.8 grams per kilogram of body weight for most adults, though athletes and those recovering from illness may require more." }
-        ]
-      },
-      {
-        heading: "Fats: Essential for Health and Function",
-        blocks: [
-          { type: "p", text: "Fats (or lipids) are essential macronutrients that provide energy, support cell growth, protect organs, and help absorb vitamins. There are different types of fats with varying health implications." },
-          { type: "subheading", text: "Types of Fats" },
-          { type: "list", items: [
-            "**Saturated fats**: solid at room temperature, found in animal products and some tropical oils. Should be limited in the diet.",
-            "**Trans fats**: artificial fats created through hydrogenation. Linked to heart disease and should be avoided.",
-            "**Monounsaturated fats**: liquid at room temperature, found in olive oil, avocados, and nuts.",
-            "**Polyunsaturated fats**: include omega-3 and omega-6 sources like fish, flaxseeds, and walnuts."
-          ]},
-          { type: "subheading", text: "Functions of fats:" },
-          { type: "list", items: [
-            "Provide energy (9 calories per gram)",
-            "Support cell growth",
-            "Protect organs",
-            "Produce hormones",
-            "Help with calcium absorption",
-            "Support immune system function"
-          ]},
-          { type: "p", text: "The Dietary Guidelines for Americans recommend limiting saturated and trans fats while focusing on unsaturated fats for heart health. Healthy fats should make up about 20-35% of daily caloric intake." },
-          { type: "p", text: "**Healthy fat sources:** fatty fish (salmon, mackerel), walnuts, chia seeds, flaxseeds, avocados, and olive oil are excellent sources of heart-healthy fats." }
-        ]
-      },
-      {
-        heading: "Alcohol: Energy Without Nutrition",
-        blocks: [
-          { type: "p", text: "Alcohol is unique among macronutrients because it provides calories (7 calories per gram) but offers no essential nutrients. Most alcoholic beverages contain carbohydrates (in the form of sugar, starch, or fiber) that contribute to the calorie count." },
-          { type: "subheading", text: "Alcohol's impact:" },
-          { type: "list", items: [
-            "Affects brain function and judgment",
-            "Interferes with nutrient absorption",
-            "Contributes empty calories to the diet",
-            "Can disrupt sleep patterns",
-            "May impact liver function with chronic use"
-          ]},
-          { type: "p", text: "The Dietary Guidelines for Americans recommend that if alcohol is consumed, it should be in moderation — up to one drink per day for women and two for men. However, this recommendation may vary based on health conditions, pregnancy, or certain medications." },
-          { type: "p", text: "For those who choose to drink, it's important to be aware of the calorie content and how alcohol can affect nutrient intake and overall health." }
+          { type: "p", text: "Each macronutrient can trigger digestive symptoms through a different mechanism, and in different people. This overview only summarizes what they are — each has its own dedicated article on this site covering how and why it can cause GI symptoms." }
         ]
       },
       {
         heading: null,
         blocks: [
-          { type: "note", text: "This information is for educational purposes and is not a substitute for professional medical advice." }
+          { type: "note", text: "See the individual carbohydrate, protein, fat, and fiber articles for symptom-specific detail." }
         ]
       }
     ]
@@ -143,25 +78,33 @@ const ARTICLES = {
         ]
       },
       {
-        heading: "What are the health benefits of fiber?",
+        heading: "Health benefits",
         blocks: [
-          { type: "p", text: "Fiber supports gut health and the gut microbiome, heart health, blood sugar regulation, weight control, and helps move waste (and the toxins bound to it) through the digestive tract." },
-          { type: "note", text: "Never stick to a low-fiber diet — or a low-variety, low-fiber diet — for more than a couple of weeks unless you're sure it's necessary." }
+          { type: "p", text: "Fiber supports gut health and the gut microbiome, heart health, blood sugar regulation, weight control, and helps move waste (and the toxins bound to it) through the digestive tract." }
         ]
       },
       {
-        heading: "What foods contain fiber?",
+        heading: "Food sources",
         blocks: [
-          { type: "p", text: "Fiber is present in plant foods: vegetables, fruits, whole grains, legumes, nuts, and seeds. Processed foods usually contain less fiber than their whole-food counterparts, though some are fortified with added fiber." },
-          { type: "p", text: "Examples of foods high in fiber include flax seeds, chia seeds, wheat and oat bran, whole grain pasta, bread and rice, and beans and peas — several of these also appear in the food checklist on the main page." }
+          { type: "p", text: "Fiber is present in plant foods: vegetables, fruits, whole grains, legumes, nuts, and seeds. Processed foods usually contain less fiber than their whole-food counterparts, though some are fortified with added fiber. Foods particularly high in fiber include flax seeds, chia seeds, wheat and oat bran, whole grain pasta, bread and rice, and beans and peas." }
         ]
       },
       {
         heading: "What problems can fiber cause?",
         blocks: [
-          { type: "p", text: "Overconsumption from supplements carries real risks for anyone: in rare cases, ileus (a blockage of the bowel), constipation (especially combined with low water intake), gas, and bloating." },
-          { type: "p", text: "Overconsumption from whole foods is gentler, but can still reduce appetite and lead to unintended weight loss if taken to an extreme." },
+          { type: "p", text: "Overconsumption from supplements carries real risks for anyone: in rare cases, ileus (a bowel blockage), constipation (especially combined with low water intake), gas, and bloating. Overconsumption from whole foods is gentler, but can still reduce appetite and lead to unintended weight loss if taken to an extreme." }
+        ]
+      },
+      {
+        heading: "Who is more sensitive?",
+        blocks: [
           { type: "p", text: "Fiber can cause more pronounced symptoms in people with certain sensitivities — IBS, reflux, slowed gastric emptying, short bowel syndrome, or small intestinal bacterial overgrowth (SIBO), among others." }
+        ]
+      },
+      {
+        heading: null,
+        blocks: [
+          { type: "note", text: "Don't stick to a low-fiber, low-variety diet for more than a couple of weeks unless it's clearly necessary." }
         ]
       }
     ]
@@ -183,21 +126,15 @@ const ARTICLES = {
         ]
       },
       {
-        heading: "Why can FODMAPs cause symptoms?",
+        heading: "Why they cause symptoms",
         blocks: [
-          { type: "p", text: "Because they aren't well absorbed, FODMAPs draw extra water into the bowel and get fermented by gut bacteria, producing gas. The number one commonality of FODMAP-containing foods is that this fermentation and water-drawing effect can cause mild or moderate gastrointestinal discomfort for anyone going from a low intake to a high intake." }
-        ]
-      },
-      {
-        heading: "How most people experience it",
-        blocks: [
-          { type: "p", text: "For most people, symptoms from a high FODMAP intake are mild and tend to improve over time even if the intake stays high — the gut microbiome is the main driver of these symptoms, and it adapts to a new diet." }
+          { type: "p", text: "Because they aren't well absorbed, FODMAPs draw extra water into the bowel and are fermented by gut bacteria, producing gas. For most people this fermentation effect is mild and tends to improve over time as the gut microbiome adapts, even without reducing intake." }
         ]
       },
       {
         heading: "Who is more sensitive?",
         blocks: [
-          { type: "p", text: "For sensitive individuals — like people with Irritable Bowel Syndrome (IBS) — moderate symptoms can occur at a relatively low intake, and the gut microbiome takes longer to adapt. At a high daily intake, symptoms can become severe, causing acute diarrhea and severe abdominal pain." }
+          { type: "p", text: "For sensitive individuals — such as people with Irritable Bowel Syndrome (IBS) — moderate symptoms can occur even at a relatively low intake, and the microbiome adapts more slowly. At a high daily intake, symptoms can become severe, causing acute diarrhea and pain." }
         ]
       },
       {
@@ -209,7 +146,13 @@ const ARTICLES = {
       {
         heading: "The low-FODMAP approach",
         blocks: [
-          { type: "p", text: "A structured low-FODMAP elimination-and-reintroduction approach (most known from Monash University's research) is commonly used to identify individual triggers. It's meant to be short-term and systematic rather than an indefinite restriction, and is best done with guidance from a dietitian or other healthcare professional rather than as a self-directed long-term diet." }
+          { type: "p", text: "A structured elimination-and-reintroduction approach (most known from Monash University's research) is commonly used to identify individual triggers. It's meant to be short-term and systematic rather than an indefinite restriction." }
+        ]
+      },
+      {
+        heading: null,
+        blocks: [
+          { type: "note", text: "Best done with guidance from a dietitian or other healthcare professional, rather than as a self-directed long-term diet." }
         ]
       }
     ]
@@ -425,6 +368,12 @@ const ARTICLES = {
         blocks: [
           { type: "p", text: "OAS is typically diagnosed based on the pattern of symptoms (reaction limited to the mouth/throat, tied to specific fresh foods) plus a known pollen allergy, sometimes confirmed with skin prick testing against fresh food extracts rather than standard commercial extracts, which can miss these heat-labile proteins." }
         ]
+      },
+      {
+        heading: null,
+        blocks: [
+          { type: "note", text: "Reactions are usually mild and confined to the mouth and throat, but heat-stable proteins can occasionally cause more systemic symptoms — anyone with severe or spreading reactions should be assessed by an allergist rather than relying on food avoidance alone." }
+        ]
       }
     ]
   },
@@ -473,17 +422,33 @@ const ARTICLES = {
     title: "Fructose",
     sections: [
       {
-        heading: null,
+        heading: "What is excess fructose?",
         blocks: [
-          { type: "p", text: "This article is about excess fructose specifically — more free fructose than glucose in a meal, which overwhelms small-intestine absorption and draws water into the bowel. Found in honey, apples, mangoes, and high-fructose corn syrup." }
+          { type: "p", text: "This article covers excess fructose specifically — more free fructose than glucose in a meal, which overwhelms small-intestine absorption capacity and draws water into the bowel." }
+        ]
+      },
+      {
+        heading: "Food sources",
+        blocks: [
+          { type: "p", text: "Found in honey, apples, mangoes, and high-fructose corn syrup, among other fructose-rich fruits and sweeteners." }
+        ]
+      },
+      {
+        heading: "Improving tolerance",
+        blocks: [
+          { type: "p", text: "Pairing high-fructose foods with a source of glucose (e.g. fruit with a starchy side) can improve absorption, since glucose helps transport fructose across the gut wall." }
+        ]
+      },
+      {
+        heading: "Hereditary fructose intolerance (HFI)",
+        blocks: [
+          { type: "p", text: "HFI is a rare genetic condition (roughly 1 in 20,000-30,000) causing an inability to break down fructose at all. It's present from birth, but because affected people often develop a strong natural aversion to sweet foods, it can go undiagnosed until adulthood. It's a distinct condition from the excess-fructose sensitivity covered here." }
         ]
       },
       {
         heading: null,
         blocks: [
-          { type: "note", text: "This is a FODMAP subtype. It's mainly a problem for people with IBS, though it can also cause discomfort in other GI disorders, or in anyone if consumption is high enough." },
-          { type: "note", text: "This is distinct from hereditary fructose intolerance (HFI), a rare genetic condition (roughly 1 in 20,000-30,000) causing an inability to break down fructose at all. It's present from birth, but because affected people often develop a strong natural aversion to sweet foods, it can go undiagnosed until adulthood." },
-          { type: "note", text: "Pairing high-fructose foods with a source of glucose (e.g. fruit with a starchy side) can improve absorption, since glucose helps transport fructose across the gut wall." }
+          { type: "note", text: "Excess fructose is a FODMAP subtype. It's mainly a problem for people with IBS, though it can also cause discomfort in other GI disorders, or in anyone if consumption is high enough." }
         ]
       }
     ]
@@ -493,16 +458,27 @@ const ARTICLES = {
     title: "Polyols",
     sections: [
       {
-        heading: null,
+        heading: "What are polyols?",
         blocks: [
-          { type: "p", text: "Polyols — sugar alcohols such as sorbitol and mannitol — are poorly absorbed, pulling water into the bowel osmotically and getting fermented by colon bacteria, producing gas. Common in stone fruits, mushrooms, and sugar-free sweeteners (chewing gum, \"diet\" products)." },
-          { type: "p", text: "This osmotic effect is dose-dependent and well known enough that many sugar-free products carry a laxative-effect warning label — worth checking if bloating or diarrhea follows sugar-free snacks or gum." }
+          { type: "p", text: "Polyols — sugar alcohols such as sorbitol and mannitol — are poorly absorbed. They pull water into the bowel osmotically and are fermented by colon bacteria, producing gas." }
+        ]
+      },
+      {
+        heading: "Food sources",
+        blocks: [
+          { type: "p", text: "Common in apples, pears, stone fruits (apricots, plums, peaches), mushrooms, and sugar-free sweeteners used in chewing gum and \"diet\" products." }
+        ]
+      },
+      {
+        heading: "A well-documented, dose-dependent effect",
+        blocks: [
+          { type: "p", text: "This osmotic effect is well known enough that many sugar-free products carry a laxative-effect warning label — worth checking if bloating or diarrhea follows sugar-free snacks or gum." }
         ]
       },
       {
         heading: null,
         blocks: [
-          { type: "note", text: "This is a FODMAP subtype. It's mainly a problem for people with IBS, though it can also cause discomfort in other GI disorders, or in anyone if consumption is high enough." }
+          { type: "note", text: "Polyols are a FODMAP subtype. Mainly a problem for people with IBS, though it can also cause discomfort in other GI disorders, or in anyone if consumption is high enough." }
         ]
       }
     ]
@@ -512,16 +488,27 @@ const ARTICLES = {
     title: "Fructans",
     sections: [
       {
-        heading: null,
+        heading: "What are fructans?",
         blocks: [
-          { type: "p", text: "Chains of fructose molecules humans can't digest; fermented by colon bacteria. Found in wheat, onion, and garlic — among the most common FODMAP triggers." },
+          { type: "p", text: "Chains of fructose molecules that humans can't digest; fermented by colon bacteria in the same way as other FODMAPs." }
+        ]
+      },
+      {
+        heading: "Food sources",
+        blocks: [
+          { type: "p", text: "Found in wheat, onion, and garlic — among the most common FODMAP triggers, since these are staple ingredients in many cuisines." }
+        ]
+      },
+      {
+        heading: "A practical substitution",
+        blocks: [
           { type: "p", text: "Fructans aren't oil-soluble, which is why garlic-infused oil is a common low-FODMAP substitute for cooking with garlic — it carries the flavor without the fructans." }
         ]
       },
       {
         heading: null,
         blocks: [
-          { type: "note", text: "This is a FODMAP subtype. It's mainly a problem for people with IBS, though it can also cause discomfort in other GI disorders, or in anyone if consumption is high enough." }
+          { type: "note", text: "Fructans are a FODMAP subtype. Mainly a problem for people with IBS, though it can also cause discomfort in other GI disorders, or in anyone if consumption is high enough." }
         ]
       }
     ]
@@ -531,16 +518,27 @@ const ARTICLES = {
     title: "Galacto-oligosaccharides",
     sections: [
       {
-        heading: null,
+        heading: "What are galacto-oligosaccharides?",
         blocks: [
-          { type: "p", text: "Galacto-oligosaccharides (GOS) are short galactose chains the small intestine can't break down, fermented in the colon. Main sources: legumes and some nuts." },
-          { type: "p", text: "Symptoms are typical FODMAP fermentation symptoms — gas and bloating, dose-dependent. Soaking or sprouting legumes before cooking reduces their GOS content and is a common practical tip for better tolerance." }
+          { type: "p", text: "Galacto-oligosaccharides (GOS) are short chains of galactose that the small intestine can't break down; they're fermented in the colon like other FODMAPs." }
+        ]
+      },
+      {
+        heading: "Food sources",
+        blocks: [
+          { type: "p", text: "Main sources are legumes and some nuts. Symptoms follow the typical FODMAP pattern — gas and bloating, dose-dependent." }
+        ]
+      },
+      {
+        heading: "Reducing GOS content",
+        blocks: [
+          { type: "p", text: "Soaking or sprouting legumes before cooking reduces their GOS content and is a common practical tip for better tolerance." }
         ]
       },
       {
         heading: null,
         blocks: [
-          { type: "note", text: "This is a FODMAP subtype. It's mainly a problem for people with IBS, though it can also cause discomfort in other GI disorders, or in anyone if consumption is high enough." }
+          { type: "note", text: "GOS is a FODMAP subtype. Mainly a problem for people with IBS, though it can also cause discomfort in other GI disorders, or in anyone if consumption is high enough." }
         ]
       }
     ]
@@ -569,6 +567,12 @@ const ARTICLES = {
         heading: "After gallbladder removal",
         blocks: [
           { type: "p", text: "After cholecystectomy, bile drips continuously into the gut instead of being released in a controlled burst with meals. Fat-rich meals can then cause bile acid diarrhea, a different mechanism from the pain caused by an intact but diseased gallbladder." }
+        ]
+      },
+      {
+        heading: null,
+        blocks: [
+          { type: "note", text: "Foods are tagged here based on fat/protein content thresholds rather than a formal clinical classification — treat this as a starting point rather than a diagnostic label." }
         ]
       }
     ]
