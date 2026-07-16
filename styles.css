@@ -927,6 +927,22 @@ footer p { color: var(--linen); }
     .articleLayout { flex-direction: column; margin: 6vw; box-sizing: border-box; }
     .articleIndex { position: static; flex: none; width: 100%; box-sizing: border-box; }
 
+    /* Collapsible article menu — nav.js starts it collapsed and toggles
+       the class on tap; the heading gets a rotating chevron. */
+    .articleIndex h2 {
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .articleIndex h2::after {
+        content: "\25B8";
+        font-size: 16px;
+        transition: transform 0.2s ease;
+    }
+    .articleIndex:not(.collapsed) h2::after { transform: rotate(90deg); }
+    .articleIndex.collapsed ul { display: none; }
+
     /* Article/about body text: fixed-minimum size so it doesn't shrink
        below ~16px on narrow phones like the old pure-vw sizing did. */
     .articleContent p, .neck p, .articleContent li, .articleNote { font-size: clamp(18px, 4.5vw, 19px); }
@@ -1034,6 +1050,13 @@ footer p { color: var(--linen); }
 .demoTraitList li:hover,
 .demoTraitList li:focus-visible {
     color: var(--clay-dark);
+}
+
+.demoHint {
+    margin: 6px 0 0;
+    font-size: 14px;
+    font-style: italic;
+    opacity: 0.7;
 }
 
 .demoDisclaimer {
