@@ -555,6 +555,30 @@ const ARTICLES = {
     ]
   },
 
+  refined_carbs: {
+    title: "Refined Carbohydrates",
+    sections: [
+      {
+        heading: "What counts as a refined carb?",
+        blocks: [
+          { type: "p", text: "This trait is assigned by food type and processing, not carbohydrate content — white bread, sugar, refined grains, and other ultra-processed carb sources. Whole grains, legumes, and vegetables are never tagged with it, no matter how carb-heavy they are." }
+        ]
+      },
+      {
+        heading: "Why processing, not content",
+        blocks: [
+          { type: "p", text: "A gram-per-100g cutoff can't tell refined and unrefined foods apart — a lentil and a slice of white bread can have similar carbohydrate counts, but behave very differently in the body. Tagging by food type instead keeps the trait meaningful." }
+        ]
+      },
+      {
+        heading: null,
+        blocks: [
+          { type: "note", text: "This is a categorical judgment call, not a lab measurement — see the About page for the reasoning behind it." }
+        ]
+      }
+    ]
+  },
+
   allergen: {
     title: "Allergens",
     sections: [

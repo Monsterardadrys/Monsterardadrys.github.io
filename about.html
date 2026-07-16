@@ -75,25 +75,47 @@
                     content, allergens, GI irritant mechanisms, and more. When you select a group of foods, the
                     tool counts how many of them share each trait and ranks traits by how common they are across
                     your selection.</p>
-                <p>Fat, protein, and carbohydrate content are tracked too, but handled differently: they're rarely
-                    the direct cause of GI symptoms on their own, so instead of competing for a top spot in the
-                    trait ranking, they only appear as a side note when they're extremely common across your
-                    selection (over 90% of foods) — a signal that they may be worsening symptoms driven by
-                    something else.</p>
-                <p>Some traits, like <strong>Bile Stimulant</strong>, are only assigned to foods that clearly
-                    cross certain thresholds — currently over 17.5g fat or over 20g protein per 100g (based on
-                    EU food-labeling "high fat"/"high protein" categories) for the trait Bile Stimulant. That's
-                    why you'll see foods like sour cream, ground meat, and Greek yogurt split into separate
-                    low-fat, medium-fat, and full-fat entries: the fat content genuinely changes whether the
-                    trait applies.</p>
+
+                <p>Traits are tagged one of two ways. Some use a fixed threshold per 100g, with a minimum
+                    typical serving size so foods only eaten in tiny amounts don't get flagged:</p>
+                <ul>
+                    <li><strong>Lactose:</strong> over 0.1g/100g</li>
+                    <li><strong>Alcohol:</strong> over 0.5% ABV</li>
+                    <li><strong>Fiber:</strong> over 6g/100g (skipped if a typical serving is under 10g)</li>
+                    <li><strong>Fat:</strong> over 10g/100g (skipped if a typical serving is under 10g)</li>
+                    <li><strong>Protein:</strong> over 20g/100g (skipped if a typical serving is under 10g)</li>
+                </ul>
+                <p><strong>Bile Stimulant</strong> uses either the fat or protein threshold above, but raised
+                    higher — over 17.5g fat or over 20g protein per 100g, matching EU food-labeling "high
+                    fat"/"high protein" categories. That's why foods like sour cream, ground meat, and Greek
+                    yogurt are split into separate low-fat, medium-fat, and full-fat entries: the fat content
+                    genuinely changes whether the trait applies. Turmeric is the one exception, tagged for its
+                    known effect on bile release despite not meeting either threshold.</p>
+
+                <p>Other traits have no numeric threshold — they're categorical, based on established
+                    classifications rather than a gram cutoff: histamine (SIGHI levels 1-3), allergens, oral
+                    allergy syndrome, GI irritants, and FODMAPs (Monash University classifications).</p>
+
+                <p><strong>Refined Carbohydrates</strong> works the same way: it's assigned by food type and
+                    processing — white bread, sugar, and other ultra-processed or refined-grain foods — not by
+                    carb content. Whole grains, legumes, and vegetables are never tagged with it, no matter how
+                    carb-heavy they are.</p>
+
+                <p>Fat and protein content are also tracked passively in the background: since they're rarely
+                    the direct cause of GI symptoms on their own, instead of competing for a top spot in the
+                    trait ranking, they only appear as a side note when extremely common across your selection
+                    (over 90% of foods) — a signal they may be worsening symptoms driven by something else.</p>
             </section>
 
             <section id="sources">
                 <h2>Data sources</h2>
                 <p>Histamine content is cross-referenced against the SIGHI histamine food lists. FODMAP subtypes
-                    are cross-referenced against the Monash University FODMAP database. Everything else —
-                    allergens, GI irritants, bile stimulants, cross-reactivity, alpha-gal — draws on clinical
-                    literature and practice experience, and is reviewed for accuracy before being added.</p>
+                    are cross-referenced against the Monash University FODMAP database. Threshold-based traits
+                    (lactose, alcohol, fiber, fat, protein, bile stimulant) use standard nutrition data per
+                    100g. Refined Carbohydrates is tagged by food type and processing rather than a database,
+                    loosely following the same logic as the NOVA food-processing classification. Everything
+                    else — allergens, GI irritants, cross-reactivity, alpha-gal — draws on clinical literature
+                    and practice experience, and is reviewed for accuracy before being added.</p>
                 <p>The food list is still growing, with new additions prioritizing foods common in European and
                     Scandinavian diets.</p>
             </section>
@@ -110,7 +132,7 @@
 
     <footer>
         <p>Built by a dietitian, for dietitians (and the curious).</p>
-        <p>Pre-beta v0.11 — updated 16 July 2026</p>
+        <p>Pre-beta v0.12 — updated 16 July 2026</p>
     </footer>
 
     <script src="nav.js"></script>
