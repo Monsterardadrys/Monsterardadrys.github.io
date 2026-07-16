@@ -313,6 +313,32 @@ header.header--hidden {
     margin-top: 0;
 }
 
+.clearSelectionBox {
+    max-width: 640px;
+    margin: 24px auto;
+    padding: 18px 26px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    text-align: center;
+}
+
+.clearSelectionBox h2 {
+    margin-top: 0;
+    margin-bottom: 4px;
+}
+
+.clearButtonRow {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.clearButtonRow .button2 {
+    margin: 5px;
+}
+
 .stepsList {
     list-style: none;
     counter-reset: step;

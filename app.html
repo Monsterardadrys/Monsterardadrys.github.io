@@ -140,10 +140,17 @@
         <div id="printArticlesList" class="printOnly"></div>
 
         <button class="button2 noPrint" id="showAnalysisButton" name="Show Analysis Popup">Show Analysis</button>
-        <button class="button2 noPrint" id="restartButton" name="Restart">Restart</button>
+
+        <div class="clearSelectionBox noPrint" id="clearSelectionBox">
+            <h2>Clear selection</h2>
+            <div class="clearButtonRow">
+                <button class="button2" id="clearFoodsButton" type="button">Foods</button>
+                <button class="button2" id="clearFiltersButton" type="button">Filter</button>
+                <button class="button2" id="restartButton" type="button">All</button>
+            </div>
+        </div>
 
         <h2 class="noPrint">Filter Analysis</h2>
-        <button class="button2 noPrint" id="clearFiltersButton" name="Clear Filters">Clear Filters</button>
         <p class="noPrint">Select one or more factors to exclude from the analysis. Filters update the analysis immediately, even
             after foods are already selected.</p>
 
@@ -158,7 +165,7 @@
     <p>Did you find any errors or have ideas for improvement?</p>
     <p>Email: Monsterardadrys@duck.com</p>
     <p>Uppsala, Sweden, 2026</p>
-    <p>Pre-beta v0.9 — updated 16 July 2026</p>
+    <p>Pre-beta v0.10 — updated 16 July 2026</p>
 </footer>
 
 <script src="foods-data.js"></script>
