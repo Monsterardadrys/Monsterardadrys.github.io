@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const demoFoodsContainer = document.getElementById("demoFoods");
   const demoResultText = document.getElementById("demoResultText");
   const demoTraitList = document.getElementById("demoTraitList");
+  const demoHint = document.getElementById("demoHint");
   const demoPopupOverlay = document.getElementById("demoPopupOverlay");
   const demoPopupTitle = document.getElementById("demoPopupTitle");
   const demoPopupText = document.getElementById("demoPopupText");
@@ -77,6 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function recomputeDemo() {
     const checked = Array.from(demoFoodsContainer.querySelectorAll("input:checked")).map(function (cb) { return cb.value; });
     demoTraitList.innerHTML = "";
+    demoHint.hidden = true;
 
     if (checked.length < 2) {
       demoResultText.textContent = "Select at least two foods to see what they share.";
@@ -89,6 +91,8 @@ document.addEventListener("DOMContentLoaded", function () {
       demoResultText.textContent = "These foods don't share a tracked trait — try a different combination.";
       return;
     }
+
+    demoHint.hidden = false;
 
     demoResultText.textContent = "Top shared traits among these " + checked.length + " foods:";
     topTraits.forEach(function (t) {

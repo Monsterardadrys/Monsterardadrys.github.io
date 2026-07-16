@@ -77,4 +77,37 @@ document.addEventListener("DOMContentLoaded", function () {
       ticking = true;
     }
   }, { passive: true });
+
+  // ---- Collapsible article menu (mobile only — see the .collapsed rules
+  // scoped inside the mobile media query in styles.css) --------------------
+  document.querySelectorAll(".articleIndex").forEach(function (articleNav) {
+    const heading = articleNav.querySelector("h2");
+    const list = articleNav.querySelector("ul");
+    if (!heading || !list) return;
+
+    articleNav.classList.add("collapsed");
+    heading.setAttribute("role", "button");
+    heading.setAttribute("tabindex", "0");
+    heading.setAttribute("aria-expanded", "false");
+
+    function toggle() {
+      const collapsed = articleNav.classList.toggle("collapsed");
+      heading.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    }
+
+    heading.addEventListener("click", toggle);
+    heading.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggle();
+      }
+    });
+
+    list.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") {
+        articleNav.classList.add("collapsed");
+        heading.setAttribute("aria-expanded", "false");
+      }
+    });
+  });
 });
