@@ -43,8 +43,11 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Header is fixed, so reserve the equivalent space at the top of the page.
+  // The --header-height variable lets .disclaimerBar (see styles.css) extend
+  // its own background up behind the header instead of leaving a gap.
   function syncHeaderHeight() {
     document.body.style.paddingTop = header.offsetHeight + "px";
+    document.documentElement.style.setProperty("--header-height", header.offsetHeight + "px");
   }
   syncHeaderHeight();
   window.addEventListener("resize", syncHeaderHeight);
