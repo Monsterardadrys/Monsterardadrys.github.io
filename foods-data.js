@@ -25,7 +25,7 @@
        `cross_birch` / `cross_grass` / `cross_latex`
 
    The broad trait is what's most likely to surface in the top-3 shared
-   traits for a typical selection (keeping fat/fiber/fodmaps/protein/carbs
+   traits for a typical selection (keeping fat/fiber/fodmaps/protein
    from getting drowned out by dozens of narrow traits). The specific
    traits exist for filtering/drilling down once a user has noticed the
    broad trait is shared.
@@ -71,7 +71,7 @@
    ---------------------------------------------------------------------
    Add an object to that category's `foods` array:
 
-     { name: "Jackfruit", traits: ["fiber", "carbs"] }
+     { name: "Jackfruit", traits: ["fiber"] }
 
    That's it — no HTML, CSS, or JS changes needed anywhere else.
 
@@ -103,11 +103,16 @@
    sections (via `group` or `items`) to actually show up in the filter
    list — TRAITS alone only makes it filterable in principle.
 
-   Fat, Protein and Carbohydrates are deliberately NOT filterable and
-   don't appear in any section — they're tracked in the background and
-   only ever surface as an automatic side note in the analysis popup when
-   over 90% of the selected foods share one (see MACRO_TRAIT_IDS in
-   script.js). Leave them out of FILTER_SECTIONS.
+   Fat and Protein are deliberately NOT filterable and don't appear in any
+   section — they're tracked in the background and only ever surface as an
+   automatic side note in the analysis popup when over 90% of the selected
+   foods share one (see MACRO_TRAIT_IDS in script.js). Leave them out of
+   FILTER_SECTIONS.
+
+   Refined Carbohydrates (`refined_carbs`) used to be part of that passive
+   macro group, but it's a categorical tag (assigned by food type/processing,
+   not a g/100g cutoff) rather than a continuous macro, so it's filterable
+   like any other trait — see "Other Digestive Factors" in FILTER_SECTIONS.
    ========================================================================= */
 
 const TRAITS = {
@@ -206,12 +211,14 @@ const TRAITS = {
       "These foods are protein-rich. Protein moderately stimulates bile release and can add to digestive workload in large amounts. Symptoms are more often linked to what accompanies the protein (lactose, allergens, histamine) than protein itself, though pancreatitis, pancreatic tumors, and true food allergy can cause direct reactions."
     ]
   },
-  carbs: {
-    order: 3,
-    label: "Carbohydrates",
-    articleId: "carbs",
+  refined_carbs: {
+    order: 6,
+    label: "Refined carbs",
+    filter: true,
+    articleId: "refined_carbs",
     analysis: [
-      "These foods are carbohydrate-rich. Symptoms attributed to carbs are usually driven by a specific subtype — FODMAPs, lactose, or excess fructose — rather than carbohydrate content as a whole. Check the more specific traits (FODMAPs, lactose) for the likely mechanism."
+      "These foods are refined or ultra-processed carb sources — white bread, sugar, refined grains, and similar — rather than whole grains, legumes, or vegetables.",
+      "This is a categorical tag based on food type and processing, not carbohydrate content."
     ]
   },
   over_3g_lactose: {
@@ -476,7 +483,7 @@ const FILTER_SECTIONS = [
   },
   {
     title: "Other Digestive Factors",
-    items: ["fiber", "histamine", "bile_stimulant"]
+    items: ["fiber", "histamine", "bile_stimulant", "refined_carbs"]
   },
   {
     title: "Allergens",
@@ -497,16 +504,16 @@ const CATEGORIES = [
     id: "roots",
     label: "Roots",
     foods: [
-      { name: "Beet Root", traits: ["fiber", "carbs", "fodmaps", "fructans"] },
-      { name: "Carrot", traits: ["fiber", "carbs", "cross_reactive", "cross_birch"] },
+      { name: "Beet Root", traits: ["fiber", "fodmaps", "fructans"] },
+      { name: "Carrot", traits: ["fiber", "cross_reactive", "cross_birch"] },
       { name: "Celeriac Root", traits: ["fiber", "cross_reactive", "cross_birch"] },
-      { name: "Jerusalem Artichoke", traits: ["fiber", "carbs", "fodmaps", "fructans"] },
-      { name: "Parsnip", traits: ["fiber", "carbs"] },
-      { name: "Potato", traits: ["fiber", "carbs", "cross_reactive", "cross_birch", "cross_grass"] },
+      { name: "Jerusalem Artichoke", traits: ["fiber", "fodmaps", "fructans"] },
+      { name: "Parsnip", traits: ["fiber"] },
+      { name: "Potato", traits: ["fiber", "cross_reactive", "cross_birch", "cross_grass"] },
       { name: "Suede", traits: ["fiber"] },
-      { name: "Sweet Potato", traits: ["fiber", "carbs"] },
+      { name: "Sweet Potato", traits: ["fiber"] },
       { name: "Radish", traits: ["fiber", "irritant"] },
-      { name: "Turnip", traits: ["fiber", "carbs", "histamine"] },
+      { name: "Turnip", traits: ["fiber", "histamine"] },
       { name: "Horseradish", traits: ["irritant", "histamine"] },
       { name: "Black Salsify", traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Kohlrabi", traits: ["fiber", "histamine"] }
@@ -535,7 +542,7 @@ const CATEGORIES = [
       { name: "Brussels Sprouts", traits: ["fiber", "fodmaps", "fructans", "galactans", "histamine"] },
       { name: "Green Beans", traits: ["fiber", "histamine"] },
       { name: "Zucchini", traits: ["fiber"] },
-      { name: "Pumpkin", traits: ["fiber", "carbs"] },
+      { name: "Pumpkin", traits: ["fiber"] },
       { name: "Swiss Chard", traits: ["fiber", "histamine"] },
       { name: "Romaine Lettuce", traits: ["fiber"] },
       { name: "Rocket", traits: ["fiber", "irritant"] },
@@ -549,7 +556,7 @@ const CATEGORIES = [
     id: "fruits",
     label: "Fruits",
     foods: [
-      { name: "Apples", traits: ["fiber", "carbs", "fodmaps", "fructose", "polyols", "irritant", "peel_skin", "cross_reactive", "cross_birch"] },
+      { name: "Apples", traits: ["fiber", "fodmaps", "fructose", "polyols", "irritant", "peel_skin", "cross_reactive", "cross_birch"] },
       { name: "Oranges", traits: ["fiber", "histamine", "cross_reactive", "cross_grass"] },
       { name: "Pears", traits: ["fiber", "fodmaps", "fructose", "polyols", "irritant", "peel_skin", "cross_reactive", "cross_birch", "histamine"] },
       { name: "Mangos", traits: ["fiber", "fodmaps", "fructose", "histamine"] },
@@ -565,7 +572,7 @@ const CATEGORIES = [
       { name: "Melon", traits: ["fiber", "cross_reactive", "cross_grass"] },
       { name: "Apricot", traits: ["fiber", "cross_reactive", "cross_birch", "fodmaps", "polyols"] },
       { name: "Plum", traits: ["fiber", "histamine", "cross_reactive", "cross_birch", "fodmaps", "polyols"] },
-      { name: "Dates", traits: ["carbs", "fiber", "fructose"] },
+      { name: "Dates", traits: ["fiber", "fructose"] },
       { name: "Figs", traits: ["fiber", "fodmaps", "fructose"] },
       { name: "Pomegranate", traits: ["fiber"] },
       { name: "Lychee", traits: ["fructose", "fodmaps", "polyols"] },
@@ -598,65 +605,65 @@ const CATEGORIES = [
     id: "nuts",
     label: "Nuts/Seeds",
     foods: [
-      { name: "Almond", traits: ["fiber", "over_10g_fat", "bile_stimulant", "carbs", "protein", "fodmaps", "galactans", "cross_reactive", "cross_birch", "allergen", "allergen_treenut", "histamine"] },
-      { name: "Brazil Nut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "carbs", "protein", "fodmaps", "galactans", "allergen", "allergen_treenut"] },
-      { name: "Cashew Nut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "carbs", "protein", "fodmaps", "galactans", "fructans", "allergen", "allergen_treenut", "histamine"] },
+      { name: "Almond", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "cross_reactive", "cross_birch", "allergen", "allergen_treenut", "histamine"] },
+      { name: "Brazil Nut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "allergen", "allergen_treenut"] },
+      { name: "Cashew Nut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "fructans", "allergen", "allergen_treenut", "histamine"] },
       { name: "Chiaseeds (whole)", traits: ["fiber"] },
-      { name: "Chiaseeds (ground)", traits: ["fiber", "over_10g_fat", "bile_stimulant", "carbs", "protein"] },
+      { name: "Chiaseeds (ground)", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein"] },
       { name: "Flaxseed (whole)", traits: ["fiber", "fodmaps", "fructans"] },
-      { name: "Flaxseed (ground)", traits: ["fiber", "over_10g_fat", "bile_stimulant", "carbs", "protein", "fodmaps", "fructans"] },
-      { name: "Hazelnut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "carbs", "protein", "fodmaps", "fructans", "allergen", "allergen_treenut", "cross_reactive", "cross_birch", "histamine"] },
-      { name: "Peanut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "carbs", "protein", "fodmaps", "galactans", "allergen", "allergen_peanut", "cross_reactive", "cross_grass", "histamine"] },
-      { name: "Pumpkin Seeds", traits: ["fiber", "over_10g_fat", "bile_stimulant", "carbs", "protein"] },
-      { name: "Sunflower Seeds", traits: ["fiber", "over_10g_fat", "bile_stimulant", "carbs", "protein", "histamine"] },
-      { name: "Walnut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "carbs", "histamine", "allergen", "allergen_treenut"] },
+      { name: "Flaxseed (ground)", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "fructans"] },
+      { name: "Hazelnut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "fructans", "allergen", "allergen_treenut", "cross_reactive", "cross_birch", "histamine"] },
+      { name: "Peanut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "allergen", "allergen_peanut", "cross_reactive", "cross_grass", "histamine"] },
+      { name: "Pumpkin Seeds", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein"] },
+      { name: "Sunflower Seeds", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "histamine"] },
+      { name: "Walnut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "histamine", "allergen", "allergen_treenut"] },
       { name: "Sesame Seeds", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_sesame", "histamine"] },
-      { name: "Macadamia", traits: ["fiber", "over_10g_fat", "bile_stimulant", "carbs", "protein", "allergen", "allergen_treenut"] },
-      { name: "Pecan", traits: ["fiber", "over_10g_fat", "bile_stimulant", "carbs", "protein", "allergen", "allergen_treenut"] }
+      { name: "Macadamia", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_treenut"] },
+      { name: "Pecan", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_treenut"] }
     ]
   },
   {
     id: "grains",
     label: "Grains/pseudo grains",
     foods: [
-      { name: "Oats", traits: ["fiber", "carbs", "protein"] },
-      { name: "Wheat", traits: ["fiber", "carbs", "protein", "fodmaps", "fructans", "allergen", "allergen_wheat", "histamine"] },
-      { name: "Rye", traits: ["fiber", "carbs", "protein", "fodmaps", "fructans", "histamine"] },
-      { name: "Barley", traits: ["fiber", "carbs", "protein", "fodmaps", "fructans", "histamine"] },
-      { name: "Quinoa", traits: ["fiber", "carbs", "protein"] },
-      { name: "Buckwheat", traits: ["fiber", "carbs", "protein", "histamine"] },
-      { name: "Rice", traits: ["fiber", "carbs", "protein"] },
-      { name: "Couscous", traits: ["carbs", "allergen", "allergen_wheat", "fodmaps", "fructans"] },
-      { name: "Bulgur", traits: ["carbs", "fiber", "allergen", "allergen_wheat", "fodmaps", "fructans", "histamine"] },
-      { name: "Freekeh", traits: ["fiber", "carbs", "allergen", "allergen_wheat", "fodmaps", "fructans", "histamine"] },
-      { name: "Pita Bread", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "carbs", "histamine"] },
-      { name: "Naan Bread", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "carbs", "over_10g_fat", "histamine"] },
-      { name: "Soba Noodles", traits: ["carbs", "allergen", "allergen_wheat", "fodmaps", "fructans"] },
-      { name: "Rice Noodles", traits: ["carbs"] },
-      { name: "White Bread", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "carbs", "histamine"] },
-      { name: "Pasta (no egg)", traits: ["carbs", "allergen", "allergen_wheat", "fodmaps", "fructans"] },
-      { name: "Teff", traits: ["fiber", "carbs", "protein"] },
-      { name: "Sorghum/Durra", traits: ["fiber", "carbs", "protein"] }
+      { name: "Oats", traits: ["fiber", "protein"] },
+      { name: "Wheat", traits: ["fiber", "protein", "fodmaps", "fructans", "allergen", "allergen_wheat", "histamine"] },
+      { name: "Rye", traits: ["fiber", "protein", "fodmaps", "fructans", "histamine"] },
+      { name: "Barley", traits: ["fiber", "protein", "fodmaps", "fructans", "histamine"] },
+      { name: "Quinoa", traits: ["fiber", "protein"] },
+      { name: "Buckwheat", traits: ["fiber", "protein", "histamine"] },
+      { name: "Rice", traits: ["fiber", "protein"] },
+      { name: "Couscous", traits: ["refined_carbs", "allergen", "allergen_wheat", "fodmaps", "fructans"] },
+      { name: "Bulgur", traits: ["fiber", "allergen", "allergen_wheat", "fodmaps", "fructans", "histamine"] },
+      { name: "Freekeh", traits: ["fiber", "allergen", "allergen_wheat", "fodmaps", "fructans", "histamine"] },
+      { name: "Pita Bread", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "refined_carbs", "histamine"] },
+      { name: "Naan Bread", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "refined_carbs", "over_10g_fat", "histamine"] },
+      { name: "Soba Noodles", traits: ["refined_carbs", "allergen", "allergen_wheat", "fodmaps", "fructans"] },
+      { name: "Rice Noodles", traits: ["refined_carbs"] },
+      { name: "White Bread", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "refined_carbs", "histamine"] },
+      { name: "Pasta (no egg)", traits: ["refined_carbs", "allergen", "allergen_wheat", "fodmaps", "fructans"] },
+      { name: "Teff", traits: ["fiber", "protein"] },
+      { name: "Sorghum/Durra", traits: ["fiber", "protein"] }
     ]
   },
   {
     id: "legumes",
     label: "Legumes",
     foods: [
-      { name: "Black Bean", traits: ["fiber", "carbs", "protein", "fodmaps", "galactans", "histamine"] },
-      { name: "Chickpea (whole/flour)", traits: ["fiber", "carbs", "protein", "fodmaps", "galactans", "histamine"] },
-      { name: "Common Peas", traits: ["fiber", "carbs", "protein", "fodmaps", "fructans", "histamine"] },
-      { name: "Lentils", traits: ["fiber", "carbs", "protein", "fodmaps", "galactans", "histamine"] },
-      { name: "Tempeh", traits: ["fiber", "carbs", "protein", "allergen", "allergen_soy", "histamine"] },
-      { name: "Tofu (firm)", traits: ["fiber", "carbs", "protein", "allergen", "allergen_soy", "cross_reactive", "cross_birch", "histamine"] },
-      { name: "Tofu (silken)", traits: ["fiber", "carbs", "protein", "fodmaps", "galactans", "allergen", "allergen_soy", "cross_reactive", "cross_birch", "histamine"] },
-      { name: "Soybeans", traits: ["fiber", "carbs", "protein", "over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen", "allergen_soy", "cross_reactive", "cross_birch", "histamine"] },
-      { name: "Edamame", traits: ["fiber", "carbs", "protein", "allergen", "allergen_soy", "cross_reactive", "cross_birch", "histamine"] },
-      { name: "Falafel", traits: ["fiber", "carbs", "protein", "fodmaps", "galactans", "histamine"] },
-      { name: "Fava Beans", traits: ["fiber", "carbs", "protein", "fodmaps", "galactans", "histamine"] },
-      { name: "Kidney Beans", traits: ["fiber", "carbs", "protein", "fodmaps", "galactans", "histamine"] },
-      { name: "Pinto Beans", traits: ["fiber", "carbs", "protein", "fodmaps", "galactans", "histamine"] },
-      { name: "Split Peas", traits: ["fiber", "carbs", "protein", "fodmaps", "galactans", "histamine"] }
+      { name: "Black Bean", traits: ["fiber", "protein", "fodmaps", "galactans", "histamine"] },
+      { name: "Chickpea (whole/flour)", traits: ["fiber", "protein", "fodmaps", "galactans", "histamine"] },
+      { name: "Common Peas", traits: ["fiber", "protein", "fodmaps", "fructans", "histamine"] },
+      { name: "Lentils", traits: ["fiber", "protein", "fodmaps", "galactans", "histamine"] },
+      { name: "Tempeh", traits: ["fiber", "protein", "allergen", "allergen_soy", "histamine"] },
+      { name: "Tofu (firm)", traits: ["fiber", "protein", "allergen", "allergen_soy", "cross_reactive", "cross_birch", "histamine"] },
+      { name: "Tofu (silken)", traits: ["fiber", "protein", "fodmaps", "galactans", "allergen", "allergen_soy", "cross_reactive", "cross_birch", "histamine"] },
+      { name: "Soybeans", traits: ["fiber", "protein", "over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen", "allergen_soy", "cross_reactive", "cross_birch", "histamine"] },
+      { name: "Edamame", traits: ["fiber", "protein", "allergen", "allergen_soy", "cross_reactive", "cross_birch", "histamine"] },
+      { name: "Falafel", traits: ["fiber", "protein", "fodmaps", "galactans", "histamine"] },
+      { name: "Fava Beans", traits: ["fiber", "protein", "fodmaps", "galactans", "histamine"] },
+      { name: "Kidney Beans", traits: ["fiber", "protein", "fodmaps", "galactans", "histamine"] },
+      { name: "Pinto Beans", traits: ["fiber", "protein", "fodmaps", "galactans", "histamine"] },
+      { name: "Split Peas", traits: ["fiber", "protein", "fodmaps", "galactans", "histamine"] }
     ]
   },
   {
@@ -773,8 +780,8 @@ const CATEGORIES = [
       { name: "Red Wine", traits: ["alcohol", "histamine", "irritant"] },
       { name: "White Wine", traits: ["alcohol", "histamine", "irritant"] },
       { name: "Champagne", traits: ["alcohol", "histamine", "irritant", "carbonation"] },
-      { name: "Beer", traits: ["alcohol", "carbs", "histamine", "irritant", "carbonation"] },
-      { name: "Cider", traits: ["alcohol", "carbs", "irritant", "carbonation", "histamine"] },
+      { name: "Beer", traits: ["alcohol", "histamine", "irritant", "carbonation"] },
+      { name: "Cider", traits: ["alcohol", "irritant", "carbonation", "histamine"] },
       { name: "Spirits (Liquor)", traits: ["alcohol", "irritant", "histamine"] },
       { name: "Coffee", traits: ["caffeine", "irritant", "histamine"] },
       { name: "Espresso", traits: ["caffeine", "irritant", "histamine"] },
@@ -782,8 +789,8 @@ const CATEGORIES = [
       { name: "Green Tea", traits: ["caffeine", "histamine"] },
       { name: "Mate Tea", traits: ["caffeine", "histamine"] },
       { name: "Energy Drinks", traits: ["caffeine", "irritant", "carbonation", "histamine"] },
-      { name: "Soy Milk", traits: ["protein", "carbs", "allergen", "allergen_soy", "histamine", "fodmaps", "galactans"] },
-      { name: "Oat Drink", traits: ["carbs", "fiber", "histamine"] },
+      { name: "Soy Milk", traits: ["protein", "allergen", "allergen_soy", "histamine", "fodmaps", "galactans"] },
+      { name: "Oat Drink", traits: ["fiber", "histamine"] },
       { name: "Coconut Milk", traits: ["over_10g_fat", "fodmaps", "polyols", "histamine"] },
       { name: "Matcha", traits: ["caffeine", "histamine"] },
       { name: "Chai Tea", traits: ["caffeine", "histamine"] },
@@ -794,16 +801,16 @@ const CATEGORIES = [
     id: "ultraProcessed",
     label: "Processed Foods",
     foods: [
-      { name: "Frozen pizza", traits: ["over_10g_fat", "bile_stimulant", "carbs"] },
-      { name: "French Fries", traits: ["over_10g_fat", "carbs"] },
+      { name: "Frozen pizza", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs"] },
+      { name: "French Fries", traits: ["over_10g_fat", "refined_carbs"] },
       { name: "Instant Ramen", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "histamine"] },
       { name: "Margarine", traits: ["over_10g_fat", "bile_stimulant"] },
       { name: "Instant Soup / Bouillon Cubes", traits: ["fodmaps", "fructans", "histamine"] },
-      { name: "Flavored Yogurt", traits: ["over_3g_lactose", "fodmaps", "carbs", "allergen", "allergen_milk", "histamine"] },
-      { name: "Pretzels", traits: ["allergen", "allergen_wheat", "carbs", "histamine"] },
-      { name: "Instant Mashed Potato", traits: ["carbs"] },
+      { name: "Flavored Yogurt", traits: ["over_3g_lactose", "fodmaps", "refined_carbs", "allergen", "allergen_milk", "histamine"] },
+      { name: "Pretzels", traits: ["allergen", "allergen_wheat", "refined_carbs", "histamine"] },
+      { name: "Instant Mashed Potato", traits: ["refined_carbs"] },
       { name: "Dumplings", traits: ["allergen", "allergen_wheat", "protein", "over_10g_fat"] },
-      { name: "Fresh Pasta (w/ egg)", traits: ["carbs", "protein", "allergen", "allergen_wheat", "allergen_egg", "fodmaps", "fructans"] }
+      { name: "Fresh Pasta (w/ egg)", traits: ["refined_carbs", "protein", "allergen", "allergen_wheat", "allergen_egg", "fodmaps", "fructans"] }
     ]
   },
   {
@@ -816,10 +823,10 @@ const CATEGORIES = [
       { name: "Aioli", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "irritant", "allyl_compounds", "histamine"] },
       { name: "Pesto", traits: ["over_10g_fat", "allergen", "allergen_treenut", "allergen_milk", "histamine", "fodmaps", "fructans"] },
       { name: "Tzatziki", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk", "histamine"] },
-      { name: "Hummus", traits: ["fiber", "carbs", "protein", "fodmaps", "galactans", "histamine"] },
+      { name: "Hummus", traits: ["fiber", "protein", "fodmaps", "galactans", "histamine"] },
       { name: "Guacamole", traits: ["over_10g_fat", "fiber", "histamine", "cross_reactive", "cross_latex"] },
-      { name: "Mango Chutney", traits: ["carbs", "histamine"] },
-      { name: "Cranberry Sauce", traits: ["carbs", "fructose"] },
+      { name: "Mango Chutney", traits: ["refined_carbs", "histamine"] },
+      { name: "Cranberry Sauce", traits: ["refined_carbs", "fructose"] },
       { name: "Fish Roe Spread", traits: ["histamine", "allergen", "allergen_fish"] },
       { name: "Yeast Extract", traits: ["histamine"] },
       { name: "Ajvar", traits: ["irritant", "histamine"] },
@@ -842,7 +849,7 @@ const CATEGORIES = [
     foods: [
       { name: "Ketchup", traits: ["histamine", "aceticAcid", "irritant"] },
       { name: "Mayonnaise", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg"] },
-      { name: "Barbecue Sauce", traits: ["histamine", "aceticAcid", "irritant", "carbs"] },
+      { name: "Barbecue Sauce", traits: ["histamine", "aceticAcid", "irritant", "refined_carbs"] },
       { name: "Hot Sauce", traits: ["histamine", "irritant", "capsaicin"] },
       { name: "Worcestershire Sauce", traits: ["histamine", "allergen", "allergen_fish"] },
       { name: "Horseradish Sauce", traits: ["irritant", "over_10g_fat", "histamine"] },
@@ -850,10 +857,10 @@ const CATEGORIES = [
       { name: "Salsa", traits: ["histamine", "irritant"] },
       { name: "Ranch Dressing", traits: ["over_10g_fat", "allergen", "allergen_milk", "allergen_egg", "histamine"] },
       { name: "Thousand Island Dressing", traits: ["over_10g_fat", "allergen", "allergen_egg", "histamine"] },
-      { name: "Teriyaki Sauce", traits: ["histamine", "allergen", "allergen_soy", "allergen_wheat", "carbs"] },
+      { name: "Teriyaki Sauce", traits: ["histamine", "allergen", "allergen_soy", "allergen_wheat", "refined_carbs"] },
       { name: "Fish Sauce", traits: ["histamine", "allergen", "allergen_fish"] },
       { name: "Oyster Sauce", traits: ["histamine", "allergen", "allergen_shellfish"] },
-      { name: "Hoisin Sauce", traits: ["histamine", "allergen", "allergen_soy", "allergen_wheat", "carbs"] },
+      { name: "Hoisin Sauce", traits: ["histamine", "allergen", "allergen_soy", "allergen_wheat", "refined_carbs"] },
       { name: "Brown Gravy", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_wheat", "histamine"] },
       { name: "Béarnaise Sauce", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "allergen_milk", "histamine"] },
       { name: "Hollandaise Sauce", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "allergen_milk", "histamine"] },
@@ -881,19 +888,19 @@ const CATEGORIES = [
     label: "Snacks & Sweets",
     foods: [
       { name: "Potato chips", traits: ["over_10g_fat", "bile_stimulant"] },
-      { name: "Candy bars", traits: ["over_10g_fat", "bile_stimulant", "carbs"] },
-      { name: "Milk chocolate", traits: ["over_10g_fat", "bile_stimulant", "carbs", "over_3g_lactose", "fodmaps", "caffeine", "allergen", "allergen_milk", "histamine"] },
-      { name: "Dark Chocolate", traits: ["over_10g_fat", "bile_stimulant", "carbs", "fiber", "caffeine", "histamine"] },
+      { name: "Candy bars", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs"] },
+      { name: "Milk chocolate", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "over_3g_lactose", "fodmaps", "caffeine", "allergen", "allergen_milk", "histamine"] },
+      { name: "Dark Chocolate", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "fiber", "caffeine", "histamine"] },
       { name: "Cheese Puffs / Snacks", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_milk"] },
-      { name: "Granola Bar", traits: ["carbs", "fiber", "allergen", "allergen_treenut"] },
-      { name: "Protein Bar", traits: ["protein", "carbs", "allergen", "allergen_milk"] },
+      { name: "Granola Bar", traits: ["refined_carbs", "fiber", "allergen", "allergen_treenut"] },
+      { name: "Protein Bar", traits: ["protein", "refined_carbs", "allergen", "allergen_milk"] },
       { name: "Microwave Popcorn", traits: ["over_10g_fat", "bile_stimulant"] },
-      { name: "Sugary Breakfast Cereal", traits: ["carbs", "allergen", "allergen_wheat"] },
-      { name: "Sugary soft drinks", traits: ["carbs", "carbonation", "irritant", "histamine"] },
-      { name: "Cola", traits: ["caffeine", "carbs", "carbonation", "irritant", "histamine"] },
-      { name: "Ice Cream", traits: ["over_10g_fat", "carbs", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
-      { name: "Halva", traits: ["over_10g_fat", "allergen", "allergen_sesame", "carbs", "histamine"] },
-      { name: "Baklava", traits: ["over_10g_fat", "carbs", "allergen", "allergen_treenut", "allergen_wheat"] }
+      { name: "Sugary Breakfast Cereal", traits: ["refined_carbs", "allergen", "allergen_wheat"] },
+      { name: "Sugary soft drinks", traits: ["refined_carbs", "carbonation", "irritant", "histamine"] },
+      { name: "Cola", traits: ["caffeine", "refined_carbs", "carbonation", "irritant", "histamine"] },
+      { name: "Ice Cream", traits: ["over_10g_fat", "refined_carbs", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
+      { name: "Halva", traits: ["over_10g_fat", "allergen", "allergen_sesame", "refined_carbs", "histamine"] },
+      { name: "Baklava", traits: ["over_10g_fat", "refined_carbs", "allergen", "allergen_treenut", "allergen_wheat"] }
     ]
   },
   {

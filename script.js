@@ -252,7 +252,7 @@
     }));
   }
 
-  const MACRO_TRAIT_IDS = ["over_10g_fat", "protein", "carbs"];
+  const MACRO_TRAIT_IDS = ["over_10g_fat", "protein"];
 
   function getRankedTraits(counts, totalSelected, limit) {
     const list = Object.keys(counts)
