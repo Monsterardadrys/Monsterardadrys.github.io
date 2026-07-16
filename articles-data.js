@@ -402,12 +402,12 @@ const ARTICLES = {
   },
 
   cross_reactive: {
-    title: "Pollen-Food Cross-Reactivity (OAS)",
+    title: "Pollen-Food Cross-Reactivity",
     sections: [
       {
         heading: "What is OAS?",
         blocks: [
-          { type: "p", text: "Oral allergy syndrome occurs when foods contain proteins structurally similar to pollen allergens, causing mild tingling or itching in the mouth in people already allergic to that pollen. Most of these proteins are heat-labile, so symptoms often resolve once the food is cooked — but some (like certain lipid transfer proteins) are heat-stable and can still trigger reactions, occasionally more severe ones, even when cooked." }
+          { type: "p", text: "Oral allergy syndrome (OAS) occurs when foods contain proteins structurally similar to pollen allergens, causing mild tingling or itching in the mouth in people already allergic to that pollen. Most of these proteins are heat-labile, so symptoms often resolve once the food is cooked — but some (like certain lipid transfer proteins) are heat-stable and can still trigger reactions, occasionally more severe ones, even when cooked." }
         ]
       },
       {
@@ -470,12 +470,12 @@ const ARTICLES = {
   },
 
   fructose: {
-    title: "Fructose (Excess)",
+    title: "Fructose",
     sections: [
       {
         heading: null,
         blocks: [
-          { type: "p", text: "Excess free fructose relative to glucose overwhelms small-intestine absorption, drawing water into the bowel. Found in honey, apples, mangoes, and high-fructose corn syrup." }
+          { type: "p", text: "This article is about excess fructose specifically — more free fructose than glucose in a meal, which overwhelms small-intestine absorption and draws water into the bowel. Found in honey, apples, mangoes, and high-fructose corn syrup." }
         ]
       },
       {
@@ -490,12 +490,12 @@ const ARTICLES = {
   },
 
   polyols: {
-    title: "Polyols (Sugar Alcohols)",
+    title: "Polyols",
     sections: [
       {
         heading: null,
         blocks: [
-          { type: "p", text: "Sorbitol and mannitol are poorly absorbed, pulling water into the bowel osmotically and getting fermented by colon bacteria, producing gas. Common in stone fruits, mushrooms, and sugar-free sweeteners (chewing gum, \"diet\" products)." },
+          { type: "p", text: "Polyols — sugar alcohols such as sorbitol and mannitol — are poorly absorbed, pulling water into the bowel osmotically and getting fermented by colon bacteria, producing gas. Common in stone fruits, mushrooms, and sugar-free sweeteners (chewing gum, \"diet\" products)." },
           { type: "p", text: "This osmotic effect is dose-dependent and well known enough that many sugar-free products carry a laxative-effect warning label — worth checking if bloating or diarrhea follows sugar-free snacks or gum." }
         ]
       },
@@ -528,12 +528,12 @@ const ARTICLES = {
   },
 
   galactans: {
-    title: "Galacto-oligosaccharides (GOS)",
+    title: "Galacto-oligosaccharides",
     sections: [
       {
         heading: null,
         blocks: [
-          { type: "p", text: "Short galactose chains the small intestine can't break down, fermented in the colon. Main sources: legumes and some nuts." },
+          { type: "p", text: "Galacto-oligosaccharides (GOS) are short galactose chains the small intestine can't break down, fermented in the colon. Main sources: legumes and some nuts." },
           { type: "p", text: "Symptoms are typical FODMAP fermentation symptoms — gas and bloating, dose-dependent. Soaking or sprouting legumes before cooking reduces their GOS content and is a common practical tip for better tolerance." }
         ]
       },
