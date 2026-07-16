@@ -64,6 +64,15 @@
 
         <p class="demoDisclaimer">This mini-demo is for illustration only, not medical advice.
             <a href="app.html">Read the full disclaimer</a> in the app.</p>
+
+        <div class="demoPopupOverlay" id="demoPopupOverlay">
+            <div class="demoPopupBox" role="dialog" aria-modal="true" aria-labelledby="demoPopupTitle">
+                <button class="demoPopupClose" id="demoPopupClose" aria-label="Close">&times;</button>
+                <h3 id="demoPopupTitle"></h3>
+                <p id="demoPopupText"></p>
+                <a class="demoPopupLink" href="app.html">See the full analysis in the app →</a>
+            </div>
+        </div>
     </section>
 
     <section class="linksOut">
@@ -86,7 +95,7 @@
 
     <footer>
         <p>Built by a dietitian, for dietitians (and the curious).</p>
-        <p>Pre-beta v0.6 — updated 16 July 2026</p>
+        <p>Pre-beta v0.7 — updated 16 July 2026</p>
     </footer>
 
     <script src="foods-data.js"></script>
