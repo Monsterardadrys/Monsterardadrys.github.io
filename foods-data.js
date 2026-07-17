@@ -632,9 +632,7 @@ const CATEGORIES = [
       { name: "Dried Kiwi (Added Sugar)", traits: ["histamine", "cross_reactive", "cross_birch", "cross_grass", "cross_latex", "refined_carbs"] },
       { name: "Dried Kiwi (No Sugar Added)", traits: ["fiber", "histamine", "cross_reactive", "cross_birch", "cross_grass", "cross_latex"] },
       { name: "Currants (dried)", traits: ["fiber", "fodmaps", "fructans"] },
-      { name: "Dried Lychee", traits: ["fructose", "fodmaps", "polyols"] },
-      { name: "Golden Berries (dried)", traits: ["fiber"] },
-      { name: "Dried Blackcurrant", traits: ["fiber"] }
+      { name: "Dried Lychee", traits: ["fructose", "fodmaps", "polyols"] }
     ]
   },
   {
