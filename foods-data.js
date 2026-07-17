@@ -572,7 +572,6 @@ const CATEGORIES = [
       { name: "Melon", traits: ["cross_reactive", "cross_grass"] },
       { name: "Apricot", traits: ["cross_reactive", "cross_birch", "fodmaps", "polyols"] },
       { name: "Plum", traits: ["histamine", "cross_reactive", "cross_birch", "fodmaps", "polyols"] },
-      { name: "Dates", traits: ["fiber", "fructose"] },
       { name: "Figs", traits: ["fodmaps", "fructose"] },
       { name: "Pomegranate", traits: [] },
       { name: "Lychee", traits: ["fructose", "fodmaps", "polyols"] },
@@ -599,6 +598,37 @@ const CATEGORIES = [
       { name: "Gooseberry", traits: [] },
       { name: "Elderberry", traits: ["fiber"] },
       { name: "Cranberry", traits: [] }
+    ]
+  },
+  {
+    id: "driedFruits",
+    label: "Dried Fruits/Berries",
+    foods: [
+      { name: "Dates", traits: ["fiber", "fructose"] },
+      { name: "Raisins", traits: [] },
+      { name: "Sultanas", traits: [] },
+      { name: "Dried Apricot", traits: ["fiber", "cross_reactive", "cross_birch", "fodmaps", "polyols"] },
+      { name: "Dried Fig", traits: ["fiber", "fodmaps", "fructose"] },
+      { name: "Prunes", traits: ["fiber", "histamine", "cross_reactive", "cross_birch", "fodmaps", "polyols"] },
+      { name: "Dried Cranberry", traits: ["refined_carbs"] },
+      { name: "Dried Cherry", traits: ["fodmaps", "polyols", "fructose", "cross_reactive", "cross_birch", "refined_carbs"] },
+      { name: "Dried Mango", traits: ["fodmaps", "fructose", "histamine", "refined_carbs"] },
+      { name: "Dried Pineapple", traits: ["histamine", "refined_carbs"] },
+      { name: "Dried Papaya", traits: ["histamine", "cross_reactive", "cross_latex", "refined_carbs"] },
+      { name: "Dried Banana", traits: ["fiber", "histamine", "cross_reactive", "cross_latex"] },
+      { name: "Dried Apple", traits: ["fiber", "fodmaps", "fructose", "polyols", "irritant", "peel_skin", "cross_reactive", "cross_birch"] },
+      { name: "Dried Pear", traits: ["fiber", "fodmaps", "fructose", "polyols", "irritant", "peel_skin", "cross_reactive", "cross_birch", "histamine"] },
+      { name: "Dried Blueberries", traits: ["fiber", "refined_carbs"] },
+      { name: "Dried Strawberries", traits: ["fiber", "histamine"] },
+      { name: "Dried Peach", traits: ["fiber", "fodmaps", "polyols", "cross_reactive", "cross_birch"] },
+      { name: "Dried Nectarine", traits: ["fiber", "fodmaps", "polyols", "cross_reactive", "cross_birch"] },
+      { name: "Dried Coconut", traits: ["fiber", "over_10g_fat", "bile_stimulant"] },
+      { name: "Dried Goji Berry", traits: ["fiber"] },
+      { name: "Dried Kiwi", traits: ["fiber", "histamine", "cross_reactive", "cross_birch", "cross_grass", "cross_latex", "refined_carbs"] },
+      { name: "Currants (dried)", traits: ["fiber"] },
+      { name: "Dried Lychee", traits: ["fructose", "fodmaps", "polyols"] },
+      { name: "Golden Berries (dried)", traits: ["fiber"] },
+      { name: "Dried Blackcurrant", traits: ["fiber"] }
     ]
   },
   {
@@ -744,7 +774,7 @@ const CATEGORIES = [
       { name: "Cheddar", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine"] },
       { name: "Aged Gouda", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine"] },
       { name: "Whey Protein", traits: ["protein", "allergen", "allergen_milk", "over_3g_lactose"] },
-      { name: "Feta Cheese", traits: ["over_10g_fat", "allergen", "allergen_milk", "histamine", "over_3g_lactose"] },
+      { name: "Feta Cheese", traits: ["over_10g_fat", "allergen", "allergen_milk", "histamine"] },
       { name: "Labneh", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk", "histamine"] },
       { name: "Paneer", traits: ["protein", "allergen", "allergen_milk", "over_3g_lactose"] },
       { name: "Skyr", traits: ["over_3g_lactose", "allergen", "allergen_milk", "histamine"] },
@@ -924,7 +954,7 @@ const CATEGORIES = [
 const CATEGORY_GROUPS = [
   {
     title: "Produce",
-    categories: ["roots", "veggies", "fruits", "berries", "mushrooms"]
+    categories: ["roots", "veggies", "fruits", "berries", "driedFruits", "mushrooms"]
   },
   {
     title: "Grains, Legumes & Nuts",
