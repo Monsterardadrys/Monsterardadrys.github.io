@@ -621,7 +621,6 @@ const CATEGORIES = [
       { name: "Dried Blueberries", traits: ["fiber", "refined_carbs"] },
       { name: "Dried Strawberries", traits: ["fiber", "histamine"] },
       { name: "Dried Peach", traits: ["fiber", "fodmaps", "polyols", "cross_reactive", "cross_birch"] },
-      { name: "Dried Nectarine", traits: ["fiber", "fodmaps", "polyols", "cross_reactive", "cross_birch"] },
       { name: "Dried Coconut", traits: ["fiber", "over_10g_fat", "bile_stimulant"] },
       { name: "Dried Goji Berry", traits: ["fiber"] },
       { name: "Dried Kiwi", traits: ["fiber", "histamine", "cross_reactive", "cross_birch", "cross_grass", "cross_latex", "refined_carbs"] },
