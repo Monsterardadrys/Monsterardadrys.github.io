@@ -293,6 +293,27 @@
     return showingPercentages ? base + " They still count in the percentages above." : base;
   }
 
+  const UNTRACKED_LABEL = "No tracked traits";
+
+  // Weaves an untracked-foods row into the ranked traits so every percentage
+  // in a list adds up against the same denominator. It's a display row only —
+  // it has no trait id, so it can't be filtered, excluded or linked to an
+  // article, and callers must keep it out of anything that expects real traits
+  // (the printed article list, for one).
+  function withUntrackedRow(rankedTraits, untracked, total) {
+    if (untracked === 0 || total === 0) return rankedTraits.slice();
+    const row = {
+      untracked: true,
+      label: UNTRACKED_LABEL,
+      percent: Math.floor((untracked / total) * 100)
+    };
+    return rankedTraits.concat([row]).sort(function (a, b) { return b.percent - a.percent; });
+  }
+
+  function rowLabel(item) {
+    return item.untracked ? item.label : TRAITS[item.traitId].label;
+  }
+
   function getMacroNotes(counts, totalSelected) {
     if (totalSelected === 0) return [];
     return MACRO_TRAIT_IDS
@@ -348,19 +369,27 @@
       return;
     }
 
-    setNote(untrackedNoteText(untracked, total, true));
+    // The count now lives in the list as its own row, so the note only has to
+    // explain what it means rather than repeat the number.
+    setNote(untracked > 0
+      ? "Foods with no tracked traits still count toward every percentage."
+      : "");
 
     summaryText.textContent = "You have chosen " + foodCount(total) + " from the list. Shared traits:";
     summaryTraitList.innerHTML = "";
     summaryTraitList.classList.remove("expanded");
-    allTraits.forEach(function (t, i) {
+    const rows = withUntrackedRow(allTraits, untracked, total);
+    rows.forEach(function (t, i) {
       const li = document.createElement("li");
-      li.textContent = t.percent + "% — " + TRAITS[t.traitId].label;
-      if (i >= visibleCount) li.className = "extraTrait";
+      li.textContent = t.percent + "% — " + rowLabel(t);
+      const classes = [];
+      if (i >= visibleCount) classes.push("extraTrait");
+      if (t.untracked) classes.push("untrackedRow");
+      if (classes.length) li.className = classes.join(" ");
       summaryTraitList.appendChild(li);
     });
 
-    const extraCount = allTraits.length - visibleCount;
+    const extraCount = rows.length - visibleCount;
     if (extraCount > 0) {
       summaryToggle.style.display = "inline-block";
       summaryToggle.textContent = "Show " + extraCount + " more ▾";
@@ -481,19 +510,29 @@
       return;
     }
 
-    if (untracked > 0) {
-      const note = document.createElement("p");
-      note.className = "popupMacroNote";
-      note.textContent = untrackedNoteText(untracked, activeFoods.length, true);
-      popupTextContainer.appendChild(note);
-    }
-
-    topTraits.forEach(function (item, index) {
+    withUntrackedRow(topTraits, untracked, activeFoods.length).forEach(function (item, index) {
       if (index > 0) {
         const hr = document.createElement("hr");
         hr.className = "popupDivider";
         popupTextContainer.appendChild(hr);
       }
+
+      // The untracked row is informational: percentage plus one line of
+      // explanation, no Exclude button and no article to read.
+      if (item.untracked) {
+        const heading = document.createElement("p");
+        heading.className = "popupTraitHeading";
+        heading.textContent = item.percent + "% — " + item.label;
+        popupTextContainer.appendChild(heading);
+
+        const p = document.createElement("p");
+        p.className = "popupText";
+        p.textContent = untracked + " of these " + foodCount(activeFoods.length) +
+          " carry no trait this tool tracks. They still count toward every percentage above.";
+        popupTextContainer.appendChild(p);
+        return;
+      }
+
       const trait = TRAITS[item.traitId];
 
       const headingRow = document.createElement("div");

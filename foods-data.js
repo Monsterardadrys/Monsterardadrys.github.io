@@ -682,11 +682,11 @@ const CATEGORIES = [
       { name: "Pasta (no egg)", traits: ["refined_carbs", "allergen", "allergen_wheat", "fodmaps", "fructans"] },
       { name: "Teff", traits: [] },
       { name: "Sorghum/Durra", traits: [] },
-      { name: "Crispbread (rye)", traits: ["fiber", "fodmaps", "fructans"] },
+      { name: "Crispbread (rye)", traits: ["fiber", "fodmaps", "fructans", "histamine"] },
       { name: "Rice Cakes", traits: ["refined_carbs"] },
       { name: "Polenta", traits: [] },
       { name: "Millet", traits: [] },
-      { name: "Seitan", traits: ["protein", "allergen", "allergen_wheat"] },
+      { name: "Seitan", traits: ["protein", "allergen", "allergen_wheat", "histamine"] },
       { name: "Tapioca", traits: [] },
       { name: "Cornstarch", traits: ["refined_carbs"] }
     ]

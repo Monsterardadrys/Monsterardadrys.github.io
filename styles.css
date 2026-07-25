@@ -610,6 +610,13 @@ input[type="checkbox"]:hover { cursor: pointer; }
     font-size: 15px;
 }
 
+/* The "% — No tracked traits" row. Sits among the trait percentages so the
+   shares add up honestly, but muted so it doesn't read as a filterable trait. */
+.untrackedRow {
+    font-style: italic;
+    opacity: 0.75;
+}
+
 /* Explains that some chosen foods carry no tracked traits, so the shares
    above read lower than they otherwise would. */
 .untrackedNote {
