@@ -280,15 +280,17 @@
     return n + (n === 1 ? " food" : " foods");
   }
 
-  function untrackedNoteText(untracked, total) {
+  // `showingPercentages` is false when every trait has been filtered out, so
+  // the note doesn't point at percentages that aren't on screen.
+  function untrackedNoteText(untracked, total, showingPercentages) {
     if (untracked === 0) return "";
     if (untracked === total) {
       return total === 1
         ? "This food has no tracked traits yet, so there's nothing to compare."
         : "None of these " + total + " foods have tracked traits yet, so there's nothing to compare.";
     }
-    return untracked + " of these " + foodCount(total) + " have no tracked traits yet. " +
-      "They still count in the percentages above.";
+    const base = untracked + " of these " + foodCount(total) + " have no tracked traits yet.";
+    return showingPercentages ? base + " They still count in the percentages above." : base;
   }
 
   function getMacroNotes(counts, totalSelected) {
@@ -342,11 +344,11 @@
         : "You have chosen " + foodCount(total) + " from the list, but they don't share a tracked trait right now (or every relevant filter is excluded).";
       summaryTraitList.innerHTML = "";
       summaryToggle.style.display = "none";
-      setNote(untrackedNoteText(untracked, total));
+      setNote(untrackedNoteText(untracked, total, false));
       return;
     }
 
-    setNote(untrackedNoteText(untracked, total));
+    setNote(untrackedNoteText(untracked, total, true));
 
     summaryText.textContent = "You have chosen " + foodCount(total) + " from the list. Shared traits:";
     summaryTraitList.innerHTML = "";
@@ -464,16 +466,25 @@
       const p = document.createElement("p");
       p.className = "popupText";
       p.textContent = untracked === activeFoods.length
-        ? untrackedNoteText(untracked, activeFoods.length)
+        ? untrackedNoteText(untracked, activeFoods.length, false)
         : "These foods don't share a tracked trait right now (or every relevant factor is excluded).";
       popupTextContainer.appendChild(p);
+
+      // Some (but not all) foods being untracked is still worth saying here —
+      // otherwise the popup stays silent about it while the summary explains it.
+      if (untracked > 0 && untracked !== activeFoods.length) {
+        const note = document.createElement("p");
+        note.className = "popupMacroNote";
+        note.textContent = untrackedNoteText(untracked, activeFoods.length, false);
+        popupTextContainer.appendChild(note);
+      }
       return;
     }
 
     if (untracked > 0) {
       const note = document.createElement("p");
       note.className = "popupMacroNote";
-      note.textContent = untrackedNoteText(untracked, activeFoods.length);
+      note.textContent = untrackedNoteText(untracked, activeFoods.length, true);
       popupTextContainer.appendChild(note);
     }
 
