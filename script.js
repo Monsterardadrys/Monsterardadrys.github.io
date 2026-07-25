@@ -264,6 +264,33 @@
     return typeof limit === "number" ? list.slice(0, limit) : list;
   }
 
+  // Foods carrying no trait the tool actually tracks. They still count in the
+  // percentage denominator (which is correct — the user chose them), but that
+  // silently drags every share down, so the analysis says so out loud.
+  // Deliberately ignores filters: this is about gaps in the data, not about
+  // what the user is excluding right now, so the note shouldn't flicker as
+  // filter checkboxes are toggled.
+  function countUntrackedFoods(foods) {
+    return foods.filter(function (food) {
+      return !food.traits.some(function (traitId) { return TRAITS[traitId]; });
+    }).length;
+  }
+
+  function foodCount(n) {
+    return n + (n === 1 ? " food" : " foods");
+  }
+
+  function untrackedNoteText(untracked, total) {
+    if (untracked === 0) return "";
+    if (untracked === total) {
+      return total === 1
+        ? "This food has no tracked traits yet, so there's nothing to compare."
+        : "None of these " + total + " foods have tracked traits yet, so there's nothing to compare.";
+    }
+    return untracked + " of these " + foodCount(total) + " have no tracked traits yet. " +
+      "They still count in the percentages above.";
+  }
+
   function getMacroNotes(counts, totalSelected) {
     if (totalSelected === 0) return [];
     return MACRO_TRAIT_IDS
@@ -288,29 +315,40 @@
     });
 
     const allTraits = getRankedTraits(counts, selectedFoods.length);
-    updateSummaryText(selectedFoods.length, allTraits);
+    updateSummaryText(selectedFoods.length, allTraits, countUntrackedFoods(selectedFoods));
   }
 
-  function updateSummaryText(total, allTraits) {
+  function updateSummaryText(total, allTraits, untracked) {
     const summaryTraitList = document.getElementById("summaryTraitList");
     const summaryToggle = document.getElementById("summaryToggle");
+    const untrackedNote = document.getElementById("untrackedNote");
     const visibleCount = 3;
+
+    function setNote(text) {
+      untrackedNote.textContent = text;
+      untrackedNote.hidden = !text;
+    }
 
     if (total === 0) {
       summaryText.textContent = "Select foods to see a summary.";
       summaryTraitList.innerHTML = "";
       summaryToggle.style.display = "none";
+      setNote("");
       return;
     }
     if (allTraits.length === 0) {
-      summaryText.textContent =
-        "You have chosen " + total + " foods from the list, but they don't share a tracked trait right now (or every relevant filter is excluded).";
+      summaryText.textContent = untracked === total
+        ? "You have chosen " + foodCount(total) + " from the list."
+        : "You have chosen " + foodCount(total) + " from the list, but they don't share a tracked trait right now (or every relevant filter is excluded).";
       summaryTraitList.innerHTML = "";
       summaryToggle.style.display = "none";
+      setNote(untrackedNoteText(untracked, total));
       return;
     }
 
-    summaryText.textContent = "You have chosen " + total + " foods from the list. Shared traits:";
+    setNote(untrackedNoteText(untracked, total));
+
+    summaryText.textContent = "You have chosen " + foodCount(total) + " from the list. Shared traits:";
     summaryTraitList.innerHTML = "";
     summaryTraitList.classList.remove("expanded");
     allTraits.forEach(function (t, i) {
@@ -420,12 +458,23 @@
       return;
     }
 
+    const untracked = countUntrackedFoods(activeFoods);
+
     if (topTraits.length === 0) {
       const p = document.createElement("p");
       p.className = "popupText";
-      p.textContent = "These foods don't share a tracked trait right now (or every relevant factor is excluded).";
+      p.textContent = untracked === activeFoods.length
+        ? untrackedNoteText(untracked, activeFoods.length)
+        : "These foods don't share a tracked trait right now (or every relevant factor is excluded).";
       popupTextContainer.appendChild(p);
       return;
+    }
+
+    if (untracked > 0) {
+      const note = document.createElement("p");
+      note.className = "popupMacroNote";
+      note.textContent = untrackedNoteText(untracked, activeFoods.length);
+      popupTextContainer.appendChild(note);
     }
 
     topTraits.forEach(function (item, index) {

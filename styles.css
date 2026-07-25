@@ -610,6 +610,15 @@ input[type="checkbox"]:hover { cursor: pointer; }
     font-size: 15px;
 }
 
+/* Explains that some chosen foods carry no tracked traits, so the shares
+   above read lower than they otherwise would. */
+.untrackedNote {
+    font-style: italic;
+    opacity: 0.8;
+    font-size: 15px;
+    margin: 8px 0 0;
+}
+
 .popupContainer {
     visibility: hidden;
     width: 90%;
