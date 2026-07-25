@@ -549,7 +549,8 @@ const CATEGORIES = [
       { name: "Celery", traits: ["fodmaps", "polyols", "cross_reactive", "cross_birch"] },
       { name: "Bok Choy", traits: [] },
       { name: "Daikon Radish", traits: ["irritant"] },
-      { name: "Rhubarb", traits: ["histamine"] }
+      { name: "Rhubarb", traits: ["histamine"] },
+      { name: "Sweetcorn", traits: ["fodmaps", "polyols", "fructans"] }
     ]
   },
   {
@@ -653,7 +654,10 @@ const CATEGORIES = [
       { name: "Walnut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "histamine", "allergen", "allergen_treenut"] },
       { name: "Sesame Seeds", traits: ["fiber", "over_10g_fat", "bile_stimulant", "allergen", "allergen_sesame", "histamine"] },
       { name: "Macadamia", traits: ["fiber", "over_10g_fat", "bile_stimulant", "allergen", "allergen_treenut"] },
-      { name: "Pecan", traits: ["fiber", "over_10g_fat", "bile_stimulant", "allergen", "allergen_treenut"] }
+      { name: "Pecan", traits: ["fiber", "over_10g_fat", "bile_stimulant", "allergen", "allergen_treenut"] },
+      // Chestnut is the odd one out here: ~2g fat, so no fat/bile tags. It is a
+      // classic latex-fruit syndrome cross-reactor alongside banana/avocado/kiwi.
+      { name: "Chestnut", traits: ["cross_reactive", "cross_latex"] }
     ]
   },
   {
@@ -677,7 +681,14 @@ const CATEGORIES = [
       { name: "White Bread", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "refined_carbs", "histamine"] },
       { name: "Pasta (no egg)", traits: ["refined_carbs", "allergen", "allergen_wheat", "fodmaps", "fructans"] },
       { name: "Teff", traits: [] },
-      { name: "Sorghum/Durra", traits: [] }
+      { name: "Sorghum/Durra", traits: [] },
+      { name: "Crispbread (rye)", traits: ["fiber", "fodmaps", "fructans"] },
+      { name: "Rice Cakes", traits: ["refined_carbs"] },
+      { name: "Polenta", traits: [] },
+      { name: "Millet", traits: [] },
+      { name: "Seitan", traits: ["protein", "allergen", "allergen_wheat"] },
+      { name: "Tapioca", traits: [] },
+      { name: "Cornstarch", traits: ["refined_carbs"] }
     ]
   },
   {
@@ -708,8 +719,10 @@ const CATEGORIES = [
       { name: "Pork (lean cut)", traits: ["protein", "alpha_gal"] },
       { name: "Pork (fatty cut)", traits: ["over_10g_fat", "bile_stimulant", "protein", "alpha_gal"] },
       { name: "Elk Meat", traits: ["protein", "alpha_gal"] },
+      { name: "Chicken", traits: ["protein"] },
       { name: "Egg White", traits: ["allergen", "allergen_egg"] },
       { name: "Egg Yolk", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg"] },
+      { name: "Whole Egg", traits: ["over_10g_fat", "allergen", "allergen_egg"] },
       { name: "Salami", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
       { name: "Dry-Cured Ham (lean)", traits: ["protein", "histamine", "alpha_gal"] },
       { name: "Dry-Cured Ham (fatty cut)", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
@@ -785,6 +798,11 @@ const CATEGORIES = [
       { name: "Skyr", traits: ["over_3g_lactose", "allergen", "allergen_milk", "histamine"] },
       { name: "Buttermilk", traits: ["over_3g_lactose", "allergen", "allergen_milk", "histamine"] },
       { name: "Kefir", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk", "histamine"] },
+      // Lactase-treated dairy: lactose <0.1g/100g and Monash-tested low FODMAP,
+      // but the milk protein and (for yogurt) the fermentation are unchanged.
+      // That split is the point — it separates lactose from casein/histamine.
+      { name: "Lactose-free Milk", traits: ["allergen", "allergen_milk"] },
+      { name: "Lactose-free Yogurt", traits: ["allergen", "allergen_milk", "histamine"] },
     ]
   },
   {
@@ -805,7 +823,16 @@ const CATEGORIES = [
       { name: "Wasabi", traits: ["irritant", "allyl_compounds"] },
       { name: "Curry Powder", traits: ["irritant", "capsaicin", "histamine"] },
       { name: "Sichuan Peppercorn", traits: ["irritant"] },
-      { name: "Nutmeg", traits: ["histamine"] }
+      { name: "Nutmeg", traits: ["histamine"] },
+      // Herbs sit under the 10g typical-serving gate, so no macro tags apply
+      // however fiber-dense they look per 100g. All rated 0 by SIGHI and
+      // unrestricted by Monash.
+      { name: "Basil", traits: [] },
+      { name: "Oregano", traits: [] },
+      { name: "Thyme", traits: [] },
+      { name: "Rosemary", traits: [] },
+      { name: "Mint", traits: [] },
+      { name: "Cinnamon", traits: [] }
     ]
   },
   {
@@ -829,7 +856,9 @@ const CATEGORIES = [
       { name: "Coconut Milk", traits: ["over_10g_fat", "fodmaps", "polyols", "histamine"] },
       { name: "Matcha", traits: ["caffeine", "histamine"] },
       { name: "Chai Tea", traits: ["caffeine", "histamine"] },
-      { name: "Kombucha", traits: ["histamine", "carbonation"] }
+      { name: "Kombucha", traits: ["histamine", "carbonation"] },
+      { name: "Almond Milk", traits: ["allergen", "allergen_treenut"] },
+      { name: "Rice Milk", traits: [] }
     ]
   },
   {
@@ -875,7 +904,13 @@ const CATEGORIES = [
       { name: "Rapeseed Oil", traits: ["over_10g_fat"] },
       { name: "Coconut Oil", traits: ["over_10g_fat"] },
       { name: "Ghee", traits: ["over_10g_fat", "bile_stimulant", "histamine"] },
-      { name: "Tamarind", traits: ["aceticAcid"] }
+      { name: "Tamarind", traits: ["aceticAcid"] },
+      // Honey is high FODMAP at a normal tablespoon — excess fructose is the
+      // main driver, with fructans secondary. Not a "safe" pantry staple.
+      { name: "Honey", traits: ["fodmaps", "fructose", "fructans"] },
+      { name: "White Sugar", traits: ["refined_carbs"] },
+      { name: "Maple Syrup", traits: [] },
+      { name: "Salt", traits: [] }
     ]
   },
   {
