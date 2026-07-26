@@ -169,25 +169,34 @@
 
     <main>
         <section>
-            <h2><span class="stepNum">1</span>Fetch the data</h2>
-            <p>Paste the address of a Livsmedelsverket endpoint that returns the foods with their nutrients,
-                then press Fetch. You can find the exact address on the
-                <a href="https://dataportal.livsmedelsverket.se/livsmedel/swagger/index.html" target="_blank"
-                   rel="noopener">API documentation page</a>.</p>
-            <input type="url" id="apiUrl" placeholder="https://dataportal.livsmedelsverket.se/livsmedel/api/v1/..."
-                   autocapitalize="off" autocorrect="off" spellcheck="false">
-            <button id="fetchBtn">Fetch</button>
-            <p class="note">This may not work: a browser can only read another site's data if that site
-                allows it. If it fails, use step 2 instead — that always works.</p>
-            <div class="status" id="fetchStatus"></div>
+            <h2><span class="stepNum">1</span>Download the whole database</h2>
+            <p>Open <a href="https://soknaringsinnehall.livsmedelsverket.se/" target="_blank"
+                   rel="noopener">Sök näringsinnehåll</a> and use <em>Ladda ner Livsmedelsdatabasen</em> —
+                the link at the bottom of the search page, or the icon under the search field. That gives you
+                every food and every nutrient in one Excel file.</p>
+            <p class="note">Don't use the API for this. It returns one page of food names at a time and needs a
+                separate request per food to get the nutrients, which is thousands of requests for the same data
+                the single file already contains.</p>
         </section>
 
         <section>
-            <h2><span class="stepNum">2</span>Or open a downloaded file</h2>
-            <p>Open the address above in a normal browser tab and save the result, then pick the saved file
-                here. JSON and CSV both work.</p>
-            <input type="file" id="fileInput" accept=".json,.csv,.txt,application/json,text/csv,text/plain">
+            <h2><span class="stepNum">2</span>Open the file here</h2>
+            <p>Pick the file you just saved. Excel (.xlsx), CSV and JSON all work, and it is read on this
+                device — nothing is uploaded.</p>
+            <input type="file" id="fileInput"
+                   accept=".xlsx,.json,.csv,.txt,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/json,text/csv,text/plain">
             <div class="status" id="fileStatus"></div>
+        </section>
+
+        <section>
+            <h2>Or fetch an address directly</h2>
+            <p class="note">Only useful if you have a single URL that returns foods <em>with</em> their
+                nutrients. A browser can also only read another site's data if that site allows it, so this
+                often fails where step 2 works.</p>
+            <input type="url" id="apiUrl" placeholder="https://…"
+                   autocapitalize="off" autocorrect="off" spellcheck="false">
+            <button id="fetchBtn">Fetch</button>
+            <div class="status" id="fetchStatus"></div>
         </section>
 
         <section id="results">
@@ -312,12 +321,7 @@
                     show(statusEl, "bad", "Could not read that file: " + e.message);
                     return;
                 }
-                if (!lmv.length) {
-                    show(statusEl, "bad", "No food records found — no entry had a recognisable name field.");
-                    return;
-                }
-                show(statusEl, "good", "Read " + lmv.length + " records.");
-                render(LMV.runAudit(ours, lmv, aliases), lmv.length);
+                finish(lmv, statusEl);
             }
 
             document.getElementById("fetchBtn").addEventListener("click", function () {
@@ -342,15 +346,37 @@
                     .then(function () { btn.disabled = false; });
             });
 
+            function finish(lmv, statusEl) {
+                if (!lmv.length) {
+                    show(statusEl, "bad", "No food records found — no row had a recognisable name column.");
+                    return;
+                }
+                show(statusEl, "good", "Read " + lmv.length + " records.");
+                render(LMV.runAudit(ours, lmv, aliases), lmv.length);
+            }
+
             document.getElementById("fileInput").addEventListener("change", function (e) {
                 const file = e.target.files[0];
                 const status = document.getElementById("fileStatus");
                 if (!file) return;
                 show(status, "info", "Reading " + file.name + "…");
+
                 const reader = new FileReader();
-                reader.onload = function () { runOn(String(reader.result), status); };
                 reader.onerror = function () { show(status, "bad", "Could not read the file."); };
-                reader.readAsText(file);
+
+                if (/\.xlsx$/i.test(file.name)) {
+                    reader.onload = function () {
+                        LMV.parseXlsx(reader.result)
+                            .then(function (lmv) { finish(lmv, status); })
+                            .catch(function (err) {
+                                show(status, "bad", "Could not read that spreadsheet: " + err.message);
+                            });
+                    };
+                    reader.readAsArrayBuffer(file);
+                } else {
+                    reader.onload = function () { runOn(String(reader.result), status); };
+                    reader.readAsText(file);
+                }
             });
 
             function copy(text, label) {

@@ -44,8 +44,22 @@ function main() {
     const showUnmatched = args.indexOf("--unmatched") !== -1;
 
     const ours = loadOurFoods();
-    const lmv = LMV.parseExport(fs.readFileSync(file, "utf8"));
     const aliases = loadAliases();
+
+    // .xlsx has to be unzipped, which is async
+    const load = /\.xlsx$/i.test(file)
+        ? LMV.parseXlsx(fs.readFileSync(file).buffer)
+        : Promise.resolve(LMV.parseExport(fs.readFileSync(file, "utf8")));
+
+    load.then(function (lmv) {
+        report(ours, lmv, aliases, showAll, showUnmatched);
+    }).catch(function (err) {
+        console.error("Could not read " + file + ": " + err.message);
+        process.exit(1);
+    });
+}
+
+function report(ours, lmv, aliases, showAll, showUnmatched) {
     const result = LMV.runAudit(ours, lmv, aliases);
 
     const detected = Object.keys(result.detected);
