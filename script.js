@@ -633,6 +633,16 @@
         " (over 90% of foods) — these rarely cause symptoms directly but can worsen other GI issues.";
       popupTextContainer.appendChild(note);
     }
+
+    // Closes every analysis that produced findings. Deliberately not marked
+    // noPrint: the printout is what a patient takes home, which is exactly
+    // where the distinction between a pattern and a cause matters most.
+    const caveat = document.createElement("p");
+    caveat.className = "popupCaveat";
+    caveat.textContent = "This tool shows what the chosen foods have in common — not what is " +
+      "causing the symptoms. A pattern is a hypothesis to test through structured elimination " +
+      "and reintroduction, not a finding.";
+    popupTextContainer.appendChild(caveat);
   }
 
   showAnalysisButton.addEventListener("click", function () {

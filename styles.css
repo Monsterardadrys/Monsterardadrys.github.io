@@ -610,6 +610,16 @@ input[type="checkbox"]:hover { cursor: pointer; }
     font-size: 15px;
 }
 
+/* Closing frame on every analysis: a shared trait is a hypothesis, not a cause. */
+.popupCaveat {
+    margin: 24px 5% 0;
+    padding-top: 14px;
+    border-top: 2px solid var(--border);
+    font-style: italic;
+    font-size: 15px;
+    color: var(--primary);
+}
+
 /* How well-grounded a trait is. Deliberately muted rather than colour-coded
    as a warning — a weak evidence base is a caveat, not an alert. */
 .evidenceLine {
