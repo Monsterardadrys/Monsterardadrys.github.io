@@ -1,0 +1,3 @@
+{
+  "_comment": "Maps our English food names to the exact Livsmedelsverket name, e.g. \"Feta Cheese\": \"Fetaost\". Only confirmed pairs belong here — the audit treats everything listed as certain. Start empty: run tools/lmv-audit.js against an export, and it prints suggested pairs in exactly this format for you to paste in."
+}

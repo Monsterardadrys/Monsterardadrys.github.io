@@ -848,7 +848,9 @@ const CATEGORIES = [
       { name: "Cheddar", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
       { name: "Aged Gouda", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
       { name: "Whey Protein", traits: ["protein", "allergen", "allergen_milk", "over_3g_lactose"] },
-      { name: "Feta Cheese", traits: ["over_10g_fat", "allergen", "allergen_milk", "histamine"] },
+      // 21.3g fat/100g, so it clears the 17.5g bile threshold like the other
+      // full-fat cheeses. Protein is only ~14g, so no protein tag.
+      { name: "Feta Cheese", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_milk", "histamine"] },
       { name: "Labneh", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Paneer", traits: ["protein", "allergen", "allergen_milk", "over_3g_lactose"] },
       { name: "Skyr", traits: ["over_3g_lactose", "allergen", "allergen_milk"] },
@@ -911,7 +913,7 @@ const CATEGORIES = [
       { name: "Energy Drinks", traits: ["caffeine", "irritant", "carbonation"] },
       { name: "Soy Milk", traits: ["allergen", "allergen_soy", "fodmaps", "galactans", "dao_competitor"] },
       { name: "Oat Drink", traits: [] },
-      { name: "Coconut Milk", traits: ["over_10g_fat", "fodmaps", "polyols"] },
+      { name: "Coconut Milk", traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "polyols"] },
       { name: "Matcha", traits: ["caffeine"] },
       { name: "Chai Tea", traits: ["caffeine"] },
       // Added for the salicylate work; carries no histamine per the review.
@@ -948,7 +950,7 @@ const CATEGORIES = [
       { name: "Vinegar", traits: ["aceticAcid", "irritant"] },
       { name: "Balsamic Vinegar", traits: ["aceticAcid", "irritant", "histamine"] },
       { name: "Aioli", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "irritant", "allyl_compounds"] },
-      { name: "Pesto", traits: ["over_10g_fat", "allergen", "allergen_treenut", "allergen_milk", "fodmaps", "fructans"] },
+      { name: "Pesto", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_treenut", "allergen_milk", "fodmaps", "fructans"] },
       { name: "Tzatziki", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Hummus", traits: ["fodmaps", "galactans"] },
       { name: "Guacamole", traits: ["over_10g_fat", "fiber", "cross_reactive", "cross_latex"] },
@@ -958,14 +960,14 @@ const CATEGORIES = [
       { name: "Yeast Extract", traits: [] },
       { name: "Ajvar", traits: ["irritant"] },
       { name: "Harissa", traits: ["irritant", "capsaicin"] },
-      { name: "Tahini", traits: ["over_10g_fat", "allergen", "allergen_sesame"] },
+      { name: "Tahini", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_sesame"] },
       { name: "Baba Ganoush", traits: ["histamine"] },
       { name: "Preserved Lemon", traits: ["histamine", "aceticAcid"] },
-      { name: "Sesame Oil", traits: ["over_10g_fat", "allergen", "allergen_sesame"] },
-      { name: "Olive Oil", traits: ["over_10g_fat"] },
-      { name: "Sunflower Oil", traits: ["over_10g_fat"] },
-      { name: "Rapeseed Oil", traits: ["over_10g_fat"] },
-      { name: "Coconut Oil", traits: ["over_10g_fat"] },
+      { name: "Sesame Oil", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_sesame"] },
+      { name: "Olive Oil", traits: ["over_10g_fat", "bile_stimulant"] },
+      { name: "Sunflower Oil", traits: ["over_10g_fat", "bile_stimulant"] },
+      { name: "Rapeseed Oil", traits: ["over_10g_fat", "bile_stimulant"] },
+      { name: "Coconut Oil", traits: ["over_10g_fat", "bile_stimulant"] },
       { name: "Ghee", traits: ["over_10g_fat", "bile_stimulant"] },
       { name: "Tamarind", traits: ["aceticAcid"] },
       // Honey is high FODMAP at a normal tablespoon — excess fructose is the
@@ -1032,8 +1034,8 @@ const CATEGORIES = [
       { name: "Sugary soft drinks", traits: ["refined_carbs", "carbonation", "irritant"] },
       { name: "Cola", traits: ["caffeine", "refined_carbs", "carbonation", "irritant"] },
       { name: "Ice Cream", traits: ["over_10g_fat", "refined_carbs", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
-      { name: "Halva", traits: ["over_10g_fat", "allergen", "allergen_sesame", "refined_carbs"] },
-      { name: "Baklava", traits: ["over_10g_fat", "refined_carbs", "allergen", "allergen_treenut", "allergen_wheat"] }
+      { name: "Halva", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_sesame", "refined_carbs"] },
+      { name: "Baklava", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "allergen", "allergen_treenut", "allergen_wheat"] }
     ]
   },
   {
