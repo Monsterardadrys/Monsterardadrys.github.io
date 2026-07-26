@@ -21,7 +21,11 @@
         { trait: "over_10g_fat",    nutrient: "fat",     min: 10 },
         { trait: "protein",         nutrient: "protein", min: 20 },
         { trait: "fiber",           nutrient: "fiber",   min: 6 },
-        { trait: "over_3g_lactose", nutrient: "sugars",  min: 1, soft: true },
+        // Gated on allergen_milk: the database reports total sugars, not
+        // lactose, so without this every piece of fruit reports a missing
+        // lactose tag. Still soft — for anything with added sugar the two
+        // numbers are not the same.
+        { trait: "over_3g_lactose", nutrient: "sugars",  min: 1, soft: true, requires: "allergen_milk" },
         { trait: "alcohol",         nutrient: "alcohol", min: 0.5 }
     ];
 
@@ -112,7 +116,7 @@
         };
     }
 
-    function parseCsv(text) {
+    function csvToRows(text) {
         // Livsmedelsverket exports are semicolon-separated; handle comma too.
         const firstLine = text.slice(0, text.indexOf("\n"));
         const sep = (firstLine.match(/;/g) || []).length >= (firstLine.match(/,/g) || []).length ? ";" : ",";
@@ -130,13 +134,165 @@
             else if (c !== "\r") field += c;
         }
         if (field || row.length) { row.push(field); rows.push(row); }
+        return rows;
+    }
+
+    /* Turns a grid of cells into objects.
+
+       The header is not assumed to be row 1: Livsmedelsverket's Excel export
+       opens with a few lines of title and version info. So every row in the
+       first stretch of the file is tried as a header, and the one that yields
+       the most recognisable nutrient columns wins. */
+    function tableToObjects(rows) {
+        rows = rows.filter(function (r) { return r.some(function (c) { return String(c || "").trim(); }); });
         if (!rows.length) return [];
 
-        const header = rows.shift().map(function (h) { return h.trim(); });
-        return rows.filter(function (r) { return r.some(Boolean); }).map(function (r) {
+        let headerIndex = 0, bestScore = -1;
+        const limit = Math.min(rows.length, 30);
+        for (let i = 0; i < limit; i++) {
+            const cells = rows[i].map(function (c) { return String(c == null ? "" : c).trim(); });
+            let score = 0;
+            const seen = {};
+            cells.forEach(function (c) {
+                const key = matchNutrient(c);
+                if (key && !seen[key]) { seen[key] = true; score += 2; }
+                if (NAME_KEYS.indexOf(norm(c)) !== -1) score += 3;
+            });
+            if (score > bestScore) { bestScore = score; headerIndex = i; }
+        }
+
+        const header = rows[headerIndex].map(function (h) { return String(h == null ? "" : h).trim(); });
+        return rows.slice(headerIndex + 1).map(function (r) {
             const o = {};
-            header.forEach(function (h, i) { o[h] = r[i]; });
+            header.forEach(function (h, i) { if (h) o[h] = r[i]; });
             return o;
+        });
+    }
+
+    function parseCsv(text) {
+        return tableToObjects(csvToRows(text));
+    }
+
+    /* ---- .xlsx ------------------------------------------------------- */
+
+    /* An .xlsx is a ZIP of XML. Rather than pull in a library, the two parts
+       we need are unzipped by hand: the browser's DecompressionStream does
+       the actual inflating. Only the first worksheet is read, which is all
+       Livsmedelsverket's export has. */
+
+    function findZipEntries(buf) {
+        const view = new DataView(buf);
+        const bytes = new Uint8Array(buf);
+
+        // end-of-central-directory record, scanned backwards from the tail
+        let eocd = -1;
+        for (let i = bytes.length - 22; i >= 0 && i > bytes.length - 66000; i--) {
+            if (view.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+        }
+        if (eocd < 0) throw new Error("not a zip file");
+
+        const count = view.getUint16(eocd + 10, true);
+        let p = view.getUint32(eocd + 16, true);
+        const entries = {};
+        const decoder = new TextDecoder();
+
+        for (let i = 0; i < count; i++) {
+            if (view.getUint32(p, true) !== 0x02014b50) break;
+            const method = view.getUint16(p + 10, true);
+            const compressedSize = view.getUint32(p + 20, true);
+            const nameLen = view.getUint16(p + 28, true);
+            const extraLen = view.getUint16(p + 30, true);
+            const commentLen = view.getUint16(p + 32, true);
+            const localOffset = view.getUint32(p + 42, true);
+            const name = decoder.decode(bytes.subarray(p + 46, p + 46 + nameLen));
+
+            // the local header repeats the name/extra lengths, and its extra
+            // field can differ from the central one — always read it here
+            const lNameLen = view.getUint16(localOffset + 26, true);
+            const lExtraLen = view.getUint16(localOffset + 28, true);
+            const dataStart = localOffset + 30 + lNameLen + lExtraLen;
+
+            entries[name] = {
+                method: method,
+                data: bytes.subarray(dataStart, dataStart + compressedSize)
+            };
+            p += 46 + nameLen + extraLen + commentLen;
+        }
+        return entries;
+    }
+
+    function inflateEntry(entry) {
+        if (entry.method === 0) return Promise.resolve(new TextDecoder().decode(entry.data));
+        if (typeof DecompressionStream === "undefined") {
+            return Promise.reject(new Error("this browser cannot unzip .xlsx — save the file as CSV instead"));
+        }
+        const stream = new Blob([entry.data]).stream()
+            .pipeThrough(new DecompressionStream("deflate-raw"));
+        return new Response(stream).text();
+    }
+
+    function unescapeXml(s) {
+        return s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"')
+            .replace(/&apos;/g, "'")
+            .replace(/&#(\d+);/g, function (_, d) { return String.fromCharCode(+d); })
+            .replace(/&amp;/g, "&");
+    }
+
+    function sharedStringsFrom(xml) {
+        if (!xml) return [];
+        // each <si> is one string, possibly split across several <t> runs
+        return (xml.match(/<si>[\s\S]*?<\/si>/g) || []).map(function (si) {
+            return (si.match(/<t[^>]*>([\s\S]*?)<\/t>/g) || []).map(function (t) {
+                return unescapeXml(t.replace(/<t[^>]*>/, "").replace(/<\/t>/, ""));
+            }).join("");
+        });
+    }
+
+    function colToIndex(ref) {
+        const letters = (ref.match(/^[A-Z]+/) || [""])[0];
+        let n = 0;
+        for (let i = 0; i < letters.length; i++) n = n * 26 + (letters.charCodeAt(i) - 64);
+        return n - 1;
+    }
+
+    function sheetToRows(xml, shared) {
+        const rows = [];
+        (xml.match(/<row[^>]*>[\s\S]*?<\/row>|<row[^>]*\/>/g) || []).forEach(function (rowXml) {
+            const cells = [];
+            (rowXml.match(/<c[^>]*>[\s\S]*?<\/c>|<c[^>]*\/>/g) || []).forEach(function (cellXml) {
+                const ref = (cellXml.match(/ r="([A-Z]+\d+)"/) || [])[1];
+                const type = (cellXml.match(/ t="([^"]+)"/) || [])[1];
+                let value = "";
+                if (type === "inlineStr") {
+                    const t = cellXml.match(/<t[^>]*>([\s\S]*?)<\/t>/);
+                    value = t ? unescapeXml(t[1]) : "";
+                } else {
+                    const v = cellXml.match(/<v>([\s\S]*?)<\/v>/);
+                    value = v ? unescapeXml(v[1]) : "";
+                    if (type === "s") value = shared[parseInt(value, 10)] || "";
+                }
+                cells[ref ? colToIndex(ref) : cells.length] = value;
+            });
+            for (let i = 0; i < cells.length; i++) if (cells[i] === undefined) cells[i] = "";
+            rows.push(cells);
+        });
+        return rows;
+    }
+
+    function parseXlsx(arrayBuffer) {
+        const entries = findZipEntries(arrayBuffer);
+        const sheetName = Object.keys(entries)
+            .filter(function (n) { return /^xl\/worksheets\/sheet\d+\.xml$/.test(n); })
+            .sort()[0];
+        if (!sheetName) throw new Error("no worksheet found in the file");
+
+        const sharedEntry = entries["xl/sharedStrings.xml"];
+        return Promise.all([
+            sharedEntry ? inflateEntry(sharedEntry) : Promise.resolve(""),
+            inflateEntry(entries[sheetName])
+        ]).then(function (parts) {
+            const rows = sheetToRows(parts[1], sharedStringsFrom(parts[0]));
+            return tableToObjects(rows).map(normalizeRecord).filter(Boolean);
         });
     }
 
@@ -209,6 +365,7 @@
         RULES.forEach(function (rule) {
             const value = n[rule.nutrient];
             if (value == null) return;
+            if (rule.requires && food.traits.indexOf(rule.requires) === -1) return;
             const has = food.traits.indexOf(rule.trait) !== -1;
             const expected = value > rule.min;
             if (has === expected) return;
@@ -304,6 +461,7 @@
         RULES: RULES,
         parseExport: parseExport,
         parseCsv: parseCsv,
+        parseXlsx: parseXlsx,
         score: score,
         auditFood: auditFood,
         runAudit: runAudit,
