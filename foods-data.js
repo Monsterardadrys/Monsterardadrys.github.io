@@ -624,8 +624,9 @@ const CATEGORIES = [
       { name: "Peach", traits: ["fodmaps", "polyols", "cross_reactive", "cross_birch"] },
       { name: "Nectarine", traits: ["fodmaps", "polyols", "cross_reactive", "cross_birch", "salicylate"] },
       { name: "Passion Fruit", traits: ["fiber"] },
-      // Added for the salicylate work. TODO: verify its other traits.
-      { name: "Persimmon", traits: ["salicylate"] }
+      // Monash: low FODMAP up to 64g, moderate fructans above that — a whole
+      // persimmon is ~170g, so a normal serving is over the line.
+      { name: "Persimmon", traits: ["fodmaps", "fructans", "salicylate"] }
     ]
   },
   {
@@ -704,8 +705,9 @@ const CATEGORIES = [
       // classic latex-fruit syndrome cross-reactor alongside banana/avocado/kiwi.
       { name: "Chestnut", traits: ["cross_reactive", "cross_latex"] },
       // From the SIGHI review (cleared there — SIGHI gave no mechanism).
-      // TODO: tiger nut is very high in fiber; verify against the 6g threshold.
-      { name: "Tiger Nut (roasted)", traits: [] }
+      // Sources vary a lot (fiber 10-33g, fat 18-25g per 100g) but every one
+      // of them clears both thresholds. Protein is only ~5g, so no protein tag.
+      { name: "Tiger Nut (roasted)", traits: ["fiber", "over_10g_fat", "bile_stimulant"] }
     ]
   },
   {
@@ -837,8 +839,8 @@ const CATEGORIES = [
       { name: "Mozzarella", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk"] },
       { name: "Blue Cheese", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
       // Added from the SIGHI review — named there as histamine sources.
-      // TODO: their non-histamine traits are copied from comparable cheeses
-      // and still need verifying against real nutrition data.
+      // Fat/protein checked against nutrition data: Roquefort 30.6/21.5,
+      // Fontina 31.1/25.6, Raclette ~29/23 per 100g. All clear both thresholds.
       { name: "Roquefort", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
       { name: "Fontina", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
       { name: "Raclette", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
@@ -895,7 +897,7 @@ const CATEGORIES = [
     foods: [
       { name: "Red Wine", traits: ["alcohol", "histamine", "irritant"] },
       { name: "White Wine", traits: ["alcohol", "histamine", "irritant"] },
-      // From the SIGHI review. TODO: verify non-histamine traits.
+      // From the SIGHI review. Styrian rosé, 11-12% ABV under Schilcherland DAC.
       { name: "Schilcherwein", traits: ["alcohol", "histamine", "irritant"] },
       { name: "Champagne", traits: ["alcohol", "histamine", "irritant", "carbonation"] },
       { name: "Beer", traits: ["alcohol", "histamine", "irritant", "carbonation"] },
@@ -913,8 +915,10 @@ const CATEGORIES = [
       { name: "Matcha", traits: ["caffeine"] },
       { name: "Chai Tea", traits: ["caffeine"] },
       // Added for the salicylate work; carries no histamine per the review.
-      // TODO: verify its other traits.
-      { name: "Chamomile Tea", traits: ["salicylate"] },
+      // Caffeine-free. Cross-reacts with mugwort/ragweed pollen (Asteraceae) —
+      // tagged with the general cross-reaction trait, since we track only the
+      // birch, grass and latex groups as subtypes.
+      { name: "Chamomile Tea", traits: ["salicylate", "cross_reactive"] },
       { name: "Kombucha", traits: ["histamine", "carbonation"] },
       { name: "Almond Milk", traits: ["allergen", "allergen_treenut"] },
       { name: "Rice Milk", traits: [] }
