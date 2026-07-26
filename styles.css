@@ -610,6 +610,37 @@ input[type="checkbox"]:hover { cursor: pointer; }
     font-size: 15px;
 }
 
+/* How well-grounded a trait is. Deliberately muted rather than colour-coded
+   as a warning — a weak evidence base is a caveat, not an alert. */
+.evidenceLine {
+    font-size: 15px;
+    opacity: 0.85;
+    margin: 4px 0 12px;
+}
+
+.evidenceBadge {
+    display: inline-block;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1px 10px;
+    margin-right: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    background: var(--linen);
+    color: var(--primary);
+}
+
+.evidenceBadge.evidence--well-established {
+    border-color: var(--sage-dark);
+    color: var(--sage-dark);
+}
+
+.evidenceBadge.evidence--preliminary {
+    border-color: var(--clay-dark);
+    color: var(--clay-dark);
+}
+
 /* The "% — No tracked traits" row. Sits among the trait percentages so the
    shares add up honestly, but muted so it doesn't read as a filterable trait. */
 .untrackedRow {

@@ -239,6 +239,10 @@ const TRAITS = {
     label: "Histamine",
     filter: true,
     articleId: "histamine",
+    evidence: {
+      level: "Well established",
+      detail: "Measured histamine levels in food, and a well-characterised enzyme mechanism (DAO) for why it affects some people and not others."
+    },
     analysis: [
       "These foods are high in histamine, trigger histamine release, or block its breakdown — all producing similar symptoms (flushing, headache, hives, gut discomfort) in sensitive individuals.",
       "See the Histamine article for mechanisms, diagnosis, and dietary management."
@@ -252,6 +256,10 @@ const TRAITS = {
     label: "DAO competitor",
     filter: true,
     modifierOf: "histamine",
+    evidence: {
+      level: "Preliminary",
+      detail: "Test-tube enzyme assays and animal models only. No human studies, and no threshold for an effect has been established."
+    },
     analysis: [
       "These foods contain putrescine or cadaverine — diamines that compete with histamine for the same enzyme, DAO. They add no histamine of their own, but may in theory slow the breakdown of whatever histamine the meal does contain.",
       "This is the weakest-evidenced trait in the tool. It rests on enzyme assays in test tubes and on animal models; there are no human studies. No threshold for an effect has been established, and the effect appears to depend on the ratio between the amines rather than on the amount in any one food.",
@@ -265,6 +273,10 @@ const TRAITS = {
     order: 13,
     label: "Salicylates",
     filter: true,
+    evidence: {
+      level: "Limited",
+      detail: "One blinded dietary trial, negative overall, with a clear response in a single participant. Food levels come from one country's measurements and conflict with another's."
+    },
     analysis: [
       "These foods carry at least 1 mg of salicylic acid per normal portion. Salicylic acid is the same active principle as in aspirin, and sensitivity to it shows up as hives, itching, headache and gut symptoms.",
       "The only blinded dietary trial (Tuck 2021, n=10 in IBS) was negative overall. Clear symptom provocation appeared in a single participant — the one with known aspirin-induced urticaria — and a trend in one other. Estimated prevalence is around 2.5%.",
