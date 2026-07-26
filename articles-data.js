@@ -480,13 +480,24 @@ const ARTICLES = {
         ]
       },
       {
-        heading: "Three ways foods raise histamine load",
+        heading: "How foods come to carry histamine",
         blocks: [
+          { type: "p", text: "Bacteria make histamine by decarboxylating free histidine. For that to happen in quantity, three things have to line up at once, and it is worth separating them — \"fermented\" is a rule of thumb that hides three different processes." },
           { type: "list", items: [
-            "**High histamine content:** aged, fermented, or spoiled foods (aged cheese, cured meat, sauerkraut, wine)",
-            "**Histamine liberators:** foods that trigger mast cells to release stored histamine (citrus, strawberries, chocolate, some nuts)",
-            "**DAO/MAO blockers:** foods or drinks that inhibit these breakdown enzymes (alcohol, energy drinks)"
-          ]}
+            "**Substrate.** Free histidine is released by proteolysis. Cheese ripening *is* proteolysis, running for weeks to years. Yogurt undergoes almost none — the casein is largely intact after four to eight hours of acidification.",
+            "**Flora.** Yogurt uses defined starter cultures that are screened for amine-forming ability. In cheese, a secondary flora establishes itself during ripening, and several of the most prolific histamine formers belong to it.",
+            "**Time.** Yogurt is chilled immediately and eaten within weeks. Cheese ripens at temperatures that allow microbial activity to continue throughout storage."
+          ]},
+          { type: "p", text: "That is why the spread in cheese is enormous — from undetectable to close to 400 mg/kg — while measured histamine in yogurt is undetectable. It also explains why fresh cheese and hard cheese end up at opposite ends despite identical raw material and the same lactic acid bacteria." },
+          { type: "p", text: "Beyond fermentation, histamine accumulates as freshness declines. That is the mechanism behind fish, shellfish, minced meat and offal, where storage and handling matter more than the food itself." }
+        ]
+      },
+      {
+        heading: "The mechanism that was never demonstrated",
+        blocks: [
+          { type: "p", text: "Many lists split foods into histamine-rich and *histamine-liberating*. The second group takes in strawberries, pineapple, kiwi, papaya and citrus — foods where histamine often cannot be measured at all." },
+          { type: "p", text: "A review of ten published low-histamine diets found that 68% of the excluded foods had no detectable histamine. For a large share of them, the release hypothesis is the only explanation on offer — and it does not rest on human studies. The only systematic review of the area concluded that the support consists of a handful of inconclusive test-tube and animal experiments." },
+          { type: "note", text: "Foods whose only justification was the release mechanism are no longer tagged in this tool. That does not mean someone reacting to strawberries is imagining it — it means the explanation probably lies elsewhere, such as birch pollen cross-reactivity or salicylates, both of which this tool covers under other traits." }
         ]
       },
       {
@@ -516,6 +527,99 @@ const ARTICLES = {
         heading: null,
         blocks: [
           { type: "note", text: "Work with a dietitian or physician experienced in histamine intolerance before starting an elimination diet — it's easy to over-restrict and end up with unnecessary nutrient gaps." }
+        ]
+      }
+    ]
+  },
+
+  dao_competitor: {
+    title: "DAO Competitors",
+    sections: [
+      {
+        heading: "What this trait means",
+        blocks: [
+          { type: "p", text: "Putrescine and cadaverine are diamines broken down by the same enzyme as histamine: DAO. When they are present in a meal they occupy the enzyme, and histamine may pass through less degraded than it otherwise would." },
+          { type: "p", text: "These foods therefore add no histamine of their own. They are tagged as a possible modifier of how much histamine gets through — which is why the tool only reports the trait when the selection also contains histamine. A food high in putrescine but carrying no histamine has nothing to compete with." }
+        ]
+      },
+      {
+        heading: "Competitor, not inhibitor",
+        blocks: [
+          { type: "p", text: "These are two different mechanisms, and lists that merge them cause confusion. A competing substrate occupies the enzyme by being processed alongside histamine. True DAO inhibition means binding to the active site, and the substances that do that are drugs — chloroquine, clavulanic acid, verapamil, cimetidine — not foods." },
+          { type: "p", text: "Alcohol is a third thing again: it competes downstream at a different enzyme, ALDH, and is tracked separately under its own trait." }
+        ]
+      },
+      {
+        heading: "What the evidence actually shows",
+        blocks: [
+          { type: "p", text: "One study tested this directly, mixing histamine with each amine at ratios from 1:0.25 up to 1:20. Putrescine and cadaverine both delayed histamine breakdown significantly at every ratio tested — including when the competitor was only a quarter of the histamine present. At 1:20 the reduction was 70% and 80% respectively." },
+          { type: "p", text: "Tyramine, spermidine and spermine only interfered at the most extreme 1:20 ratio, and they act on different enzymes. That fits the underlying division of labour: DAO handles diamines, MAO handles monoamines, PAO handles polyamines. Only the diamines are tagged here." }
+        ]
+      },
+      {
+        heading: "Why this is the weakest trait in the tool",
+        blocks: [
+          { type: "list", items: [
+            "**No human studies.** Everything is enzyme assays in test tubes or animal tissue.",
+            "**No threshold for an effect exists.** Thresholds are established for histamine and for tyramine, but not for putrescine or cadaverine. The 10 mg/kg cutoff used here separates trace levels from meaningful ones — it does not mark a level at which anything is known to happen.",
+            "**The effect is a ratio, not a level.** Competition happens across the whole meal in the gut, not inside one food."
+          ]},
+          { type: "note", text: "Reasonable reading: likely relevant only for particularly sensitive people, and only when the food is eaten alongside histamine-rich food." }
+        ]
+      },
+      {
+        heading: "Mushrooms are the clearest case",
+        blocks: [
+          { type: "p", text: "Mushrooms carry this trait and never the histamine one. Histamine is consistently undetectable in them, while putrescine can exceed 150 mg/kg fresh weight — highest in the bolete family (porcini and its relatives)." },
+          { type: "p", text: "This matters practically: poison information centres have logged stomach complaints after meals of demonstrably edible mushroom species, with no explanation. Putrescine is the only amine present in amounts that could plausibly account for it." },
+          { type: "note", text: "Cooking lowers the level substantially — stewing reduces all the amines measured. Raw or lightly cooked mushroom is the worst case. This is the one place in the whole dataset where preparation method is a documented modifier of the tag itself." }
+        ]
+      },
+      {
+        heading: null,
+        blocks: [
+          { type: "note", text: "Concentration and processing drive these levels more than the vegetable does. Ketchup and tomato purée measure well above fresh tomato, and fresh vegetables generally sit far below the threshold." }
+        ]
+      }
+    ]
+  },
+
+  salicylate: {
+    title: "Salicylates",
+    sections: [
+      {
+        heading: "What salicylates are",
+        blocks: [
+          { type: "p", text: "Salicylic acid is the same active principle as in aspirin. Plants make it as a defence compound, so it turns up across fruit, vegetables, herbs and spices. Sensitivity to it produces hives, itching, headache and gut symptoms." },
+          { type: "p", text: "Foods are tagged here when a normal portion carries at least 1 mg. Portion size rather than concentration is what matters: cumin measures 605 mg/kg, but a portion is 2 g — which puts it below a serving of green peas." }
+        ]
+      },
+      {
+        heading: "Who this is actually for",
+        blocks: [
+          { type: "p", text: "The single blinded dietary trial in this area (n=10, in IBS) was negative overall. Clear symptom provocation appeared in one participant — the one with known aspirin-induced urticaria — with a dose-response within that individual and the blinding intact, plus a trend in one other." },
+          { type: "note", text: "The phenotype is the marker, not the food pattern. Ask about reactions to aspirin or NSAIDs — that is where the signal sits. Estimated prevalence is around 2.5%." }
+        ]
+      },
+      {
+        heading: "Preparation changes the level more than food choice does",
+        blocks: [
+          { type: "list", items: [
+            "**Peeling lowers it sharply** — three to fourfold for pears and apples. This is the single most replicated finding in the area.",
+            "**Boiling lowers it** — salicylic acid is volatile and sublimates on heating.",
+            "**Pickling and marinating raise it.**",
+            "**Concentrating raises it** — tomato purée measures above fresh tomato."
+          ]},
+          { type: "p", text: "Apples and pears are tagged here on their unpeeled values, since that is how they are usually eaten. Peeling them is a real option before avoiding them." },
+          { type: "note", text: "Oils and sugar measure at essentially zero in every source." }
+        ]
+      },
+      {
+        heading: "How reliable the numbers are",
+        blocks: [
+          { type: "p", text: "Two modern studies, both careful, both covering 112 foods, disagree about which foods are high. The Australian study puts apples at 9.7 mg/kg; the European study found no salicylates at all in three Polish apple varieties. Watermelon is low in one and the highest of all fruits in the other." },
+          { type: "p", text: "This tool uses the Australian data for one reason: it has been tested clinically. The blinded trial above built its diets on those values and achieved a real measured contrast. The European study is an analytical survey without clinical validation." },
+          { type: "note", text: "What has been validated is the ranking, not absolute values for northern European produce. That the Polish varieties measured zero is relevant — Polish growing conditions are closer to Swedish ones than Australian conditions are. No Nordic measurements exist at all." }
         ]
       }
     ]
@@ -689,6 +793,104 @@ const ARTICLES = {
         heading: "Diagnosis",
         blocks: [
           { type: "p", text: "A specific alpha-gal IgE blood test can confirm the diagnosis. Given the delayed and inconsistent symptom pattern, AGS is worth considering in unexplained nighttime allergic reactions or GI symptoms, especially in people with a known tick bite history." }
+        ]
+      }
+    ]
+  },
+
+  // Method article rather than a topic one — it explains how every other
+  // article's data was selected, so it sits last.
+  uncertainty: {
+    title: "How Certain Is Any of This?",
+    sections: [
+      {
+        heading: null,
+        blocks: [
+          { type: "p", text: "Every trait in this tool rests on published measurements of what foods contain. Compare two such sources and you quickly find they rarely agree — sometimes about orders of magnitude, sometimes about which foods count as high at all." },
+          { type: "p", text: "That is not sloppiness. It follows from measuring biological material that varies with variety, growing conditions, season, storage and preparation, using methods that do not quite measure the same thing." },
+          { type: "p", text: "This article describes where the uncertainty sits, how it has been handled here, and what it means for reading the results." }
+        ]
+      },
+      {
+        heading: "Four sources of disagreement",
+        blocks: [
+          { type: "list", items: [
+            "**The analytical method.** Older studies used HPLC with UV detection, which is sensitive to interference from related phenolic compounds and tends to overestimate. Newer work uses mass spectrometry with an internal standard. The difference is not marginal: blueberries have been reported at 27.6 mg salicylic acid per kilo in one study and 0.57 in another.",
+            "**Biological variation.** Two apples of different varieties can differ threefold. Organically grown vegetables have measured higher in salicylic acid than conventionally grown ones. Cumin from two suppliers differed by 649 mg per kilo within a single study.",
+            "**What is being measured.** Salicylic acid occurs free and bound to sugars or esters. Measure only the free fraction and you get values an order of magnitude lower — cherry tomato contains 7 mg per kilo total but only 0.3 mg free. The same applies to histamine, where freshness and degree of proteolysis decide how much free histidine is available for bacteria to convert.",
+            "**Preparation.** Peeling, boiling, fermenting and concentrating all change the content, sometimes in opposite directions for different substances."
+          ]}
+        ]
+      },
+      {
+        heading: "Case 1: fermentation is not a mechanism",
+        blocks: [
+          { type: "p", text: "Almost every histamine list groups foods by whether they are fermented. It is a useful rule of thumb that conceals three separate processes — substrate, flora and time — which happen to coincide in cheese but not in yogurt." },
+          { type: "p", text: "Cheese ripening is proteolysis as its main process, running for weeks to years, with a secondary flora that includes several of the most prolific histamine formers. Yogurt undergoes almost no proteolysis, uses defined starters screened for amine-forming ability, and is chilled immediately." },
+          { type: "note", text: "So this tool does not tag fermentation as such, but proteolytic ripening and long fermentation with undefined flora. Yogurt, kefir, sour cream and buttermilk carry no histamine tag. See the Histamine article for the detail." }
+        ]
+      },
+      {
+        heading: "Case 2: the mechanism that was never demonstrated",
+        blocks: [
+          { type: "p", text: "A review of ten published low-histamine diets found that 68% of the excluded foods had no detectable histamine. For many of them the release hypothesis is the only explanation offered, and it does not rest on human studies." },
+          { type: "note", text: "Foods whose only justification was that mechanism have been removed — strawberry, pineapple, kiwi, papaya and avocado among them. Avocado is the starkest: measurements show neither histamine nor putrescine, directly contradicting the list that flagged it." },
+          { type: "p", text: "This does not mean patients who react to strawberries are imagining it. It means the explanation probably lies somewhere else — birch pollen cross-reactivity, salicylates, or something this tool covers under a different trait. Strawberry is a good example: it lost its histamine tag and gained a salicylate one." }
+        ]
+      },
+      {
+        heading: "Case 3: two modern studies, opposite answers",
+        blocks: [
+          { type: "p", text: "Salicylates show the problem at its sharpest. Two studies from the same year, both with 112 foods, both methodologically careful, disagree about which foods are high — not about scale, but about direction." },
+          { type: "list", items: [
+            "**Apple:** 9.7 mg/kg in the Australian study; no salicylates detected in the European one",
+            "**Pear:** 12.9 mg/kg versus none detected",
+            "**Watermelon:** low in one, the highest of all fruits in the other",
+            "**Rice and buckwheat:** undetectable in one, high in the other"
+          ]},
+          { type: "p", text: "This tool uses the Australian data for a single reason: it has been tested clinically. A blinded dietary intervention built on those values produced a real contrast and a clear symptom response in the right patient. The European study is an analytical survey without clinical validation." },
+          { type: "note", text: "What has been validated is the ranking, not absolute values for Nordic produce. That Polish apples and pears measured zero is relevant — Polish varieties and growing conditions are closer to Swedish ones than Australian conditions are. No Nordic data exists." }
+        ]
+      },
+      {
+        heading: "Preparation replicates better than levels do",
+        blocks: [
+          { type: "p", text: "One pattern stands out: sources that disagree about numbers often agree about what preparation does." },
+          { type: "list", items: [
+            "**Peeling lowers salicylate** three to fourfold — shown in both studies, for different foods",
+            "**Boiling lowers it** — salicylic acid is volatile and sublimates on heating",
+            "**Pickling and marinating raise it**",
+            "**Concentrating raises it** — tomato purée measures above fresh tomato",
+            "**Stewing substantially lowers putrescine in mushrooms**, which may explain complaints reported after meals of demonstrably edible species",
+            "**Cooking and peeling reduce birch pollen cross-reactivity**, since the proteins involved are heat-labile"
+          ]},
+          { type: "p", text: "For several traits, then, *how* a food was prepared predicts more than *which* food it is. That is often also the more useful clinical angle, since it opens the door to adjustment rather than exclusion." }
+        ]
+      },
+      {
+        heading: "What this means for reading the results",
+        blocks: [
+          { type: "p", text: "The tool shows what the chosen foods have in common. It is a hypothesis generator, not an answer." },
+          { type: "list", items: [
+            "**A pattern is a starting point.** It is confirmed or rejected through structured elimination and reintroduction with a symptom diary, not by the list.",
+            "**Traits are not equally well grounded.** Histamine rests on measured data and an established enzyme mechanism. DAO competition rests on test-tube work with no human studies. Salicylate rests on a negative intervention trial with one clear responder. That difference is shown with each result and should be weighed in.",
+            "**Absence of a tag is not a clean bill of health.** That strawberry carries no histamine tag means the histamine explanation is weak — not that the patient tolerates strawberries.",
+            "**Several traits can point at the same food.** Apple, carrot and hazelnut appear both as salicylate sources and as birch cross-reactive. The same food recurring under two traits is not two independent findings.",
+            "**Portion size changes the ranking.** Cumin is high in salicylate per kilo but low per portion. Traits built on portion data say so."
+          ]}
+        ]
+      },
+      {
+        heading: "The principles behind the selection",
+        blocks: [
+          { type: "list", items: [
+            "Measured data takes precedence over lists built on experience",
+            "Mechanism takes precedence over association",
+            "Foods without measured data are not tagged, however plausible they seem",
+            "Where sources contradict each other, the clinically tested one is used and the disagreement is stated",
+            "The evidence level is given for each trait"
+          ]},
+          { type: "p", text: "The result is shorter lists than most published ones. That is deliberate. A short list that points in the right direction is more useful than a long one that points everywhere." }
         ]
       }
     ]

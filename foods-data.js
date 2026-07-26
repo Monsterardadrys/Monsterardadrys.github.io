@@ -244,8 +244,9 @@ const TRAITS = {
       detail: "Measured histamine levels in food, and a well-characterised enzyme mechanism (DAO) for why it affects some people and not others."
     },
     analysis: [
-      "These foods are high in histamine, trigger histamine release, or block its breakdown — all producing similar symptoms (flushing, headache, hives, gut discomfort) in sensitive individuals.",
-      "See the Histamine article for mechanisms, diagnosis, and dietary management."
+      "These foods either contain histamine or form it during fermentation, ripening or as freshness declines. The mechanism is well established: histamine is broken down by DAO in the gut, and where that enzyme activity is reduced, more of it reaches the bloodstream.",
+      "Levels vary enormously between products and between batches — aged cheese runs from undetectable to nearly 400 mg/kg. Freshness and storage time often matter more than which food it is.",
+      "Fermentation on its own is not enough of an explanation. Yogurt and fresh cheese are not tagged, because a short set with a defined starter culture never releases the free histidine that bacteria need as substrate."
     ]
   },
   // Putrescine and cadaverine occupy DAO so histamine passes through — a
@@ -255,6 +256,7 @@ const TRAITS = {
     order: 12,
     label: "DAO competitor",
     filter: true,
+    articleId: "dao_competitor",
     modifierOf: "histamine",
     evidence: {
       level: "Preliminary",
@@ -273,6 +275,7 @@ const TRAITS = {
     order: 13,
     label: "Salicylates",
     filter: true,
+    articleId: "salicylate",
     evidence: {
       level: "Limited",
       detail: "One blinded dietary trial, negative overall, with a clear response in a single participant. Food levels come from one country's measurements and conflict with another's."
