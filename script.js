@@ -575,6 +575,21 @@
 
       popupTextContainer.appendChild(headingRow);
 
+      // How well-grounded this trait is. Only carried by the traits that have
+      // been through a source review so far, so it's rendered only when
+      // present rather than defaulting to a level we haven't actually judged.
+      if (trait.evidence) {
+        const ev = document.createElement("p");
+        ev.className = "evidenceLine";
+        const badge = document.createElement("span");
+        badge.className = "evidenceBadge evidence--" +
+          trait.evidence.level.toLowerCase().replace(/[^a-z]+/g, "-");
+        badge.textContent = trait.evidence.level;
+        ev.appendChild(badge);
+        ev.appendChild(document.createTextNode(" " + trait.evidence.detail));
+        popupTextContainer.appendChild(ev);
+      }
+
       const paragraphs = (trait.analysis && trait.analysis.length)
         ? trait.analysis
         : ["The most common shared trait among these foods is " + trait.label + "."];
