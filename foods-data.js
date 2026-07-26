@@ -258,6 +258,20 @@ const TRAITS = {
       "Likely relevant only for particularly sensitive people, and only alongside histamine-rich food — which is why it is shown only when the selection also contains histamine. A food high in putrescine but without histamine has nothing to compete with."
     ]
   },
+  // Tagged from portion data, not concentration: cumin runs 605 mg/kg but a
+  // portion is 2g, which puts it below a serving of green peas. The <10g
+  // serving rule is therefore already built into the measure.
+  salicylate: {
+    order: 13,
+    label: "Salicylates",
+    filter: true,
+    analysis: [
+      "These foods carry at least 1 mg of salicylic acid per normal portion. Salicylic acid is the same active principle as in aspirin, and sensitivity to it shows up as hives, itching, headache and gut symptoms.",
+      "The only blinded dietary trial (Tuck 2021, n=10 in IBS) was negative overall. Clear symptom provocation appeared in a single participant — the one with known aspirin-induced urticaria — and a trend in one other. Estimated prevalence is around 2.5%.",
+      "Ask about reactions to aspirin or NSAIDs. That is the phenotype where the signal actually sits, and a better way in than the food pattern itself.",
+      "Preparation matters more than which food is chosen: peeling lowers the level three to fourfold and boiling lowers it, while pickling, marinating and concentrating raise it. The figures come from Australian measurements — a European study found no salicylates at all in Polish apple and pear varieties, and no Nordic data exists."
+    ]
+  },
 
   /* ---- Alcohol / caffeine ---- */
   alcohol: {
@@ -497,7 +511,7 @@ const FILTER_SECTIONS = [
   },
   {
     title: "Other Digestive Factors",
-    items: ["fiber", "histamine", "dao_competitor", "bile_stimulant", "refined_carbs"]
+    items: ["fiber", "histamine", "dao_competitor", "salicylate", "bile_stimulant", "refined_carbs"]
   },
   {
     title: "Allergens",
@@ -518,14 +532,14 @@ const CATEGORIES = [
     id: "roots",
     label: "Roots",
     foods: [
-      { name: "Beet Root", traits: ["fodmaps", "fructans"] },
+      { name: "Beet Root", traits: ["fodmaps", "fructans", "salicylate"] },
       { name: "Carrot", traits: ["cross_reactive", "cross_birch"] },
       { name: "Celeriac Root", traits: ["cross_reactive", "cross_birch"] },
       { name: "Jerusalem Artichoke", traits: ["fodmaps", "fructans"] },
       { name: "Parsnip", traits: [] },
       { name: "Potato", traits: ["cross_reactive", "cross_birch", "cross_grass"] },
       { name: "Suede", traits: [] },
-      { name: "Sweet Potato", traits: [] },
+      { name: "Sweet Potato", traits: ["salicylate"] },
       { name: "Radish", traits: ["irritant"] },
       { name: "Turnip", traits: [] },
       { name: "Horseradish", traits: ["irritant"] },
@@ -546,7 +560,7 @@ const CATEGORIES = [
       { name: "Parsley", traits: [] },
       { name: "Leek", traits: ["fodmaps", "fructans"] },
       { name: "Spinach", traits: ["histamine"] },
-      { name: "Avocado", traits: ["over_10g_fat", "fiber", "cross_reactive", "cross_latex", "fodmaps", "polyols"] },
+      { name: "Avocado", traits: ["over_10g_fat", "fiber", "cross_reactive", "cross_latex", "fodmaps", "polyols", "salicylate"] },
       { name: "Cucumber", traits: ["irritant", "peel_skin"] },
       { name: "Bell Pepper (sweet)", traits: ["irritant"] },
       { name: "Bell Pepper (hot)", traits: ["irritant", "capsaicin"] },
@@ -554,7 +568,7 @@ const CATEGORIES = [
       { name: "Fennel Bulb", traits: ["fodmaps", "fructans"] },
       { name: "Broccoli", traits: ["fodmaps", "fructans"] },
       { name: "Brussels Sprouts", traits: ["fodmaps", "fructans", "galactans"] },
-      { name: "Green Beans", traits: [] },
+      { name: "Green Beans", traits: ["salicylate"] },
       { name: "Zucchini", traits: [] },
       { name: "Pumpkin", traits: ["dao_competitor"] },
       { name: "Swiss Chard", traits: [] },
@@ -564,39 +578,39 @@ const CATEGORIES = [
       { name: "Bok Choy", traits: [] },
       { name: "Daikon Radish", traits: ["irritant"] },
       { name: "Rhubarb", traits: [] },
-      { name: "Sweetcorn", traits: ["fodmaps", "polyols", "fructans"] }
+      { name: "Sweetcorn", traits: ["fodmaps", "polyols", "fructans", "salicylate"] }
     ]
   },
   {
     id: "fruits",
     label: "Fruits",
     foods: [
-      { name: "Apples", traits: ["fodmaps", "fructose", "polyols", "irritant", "peel_skin", "cross_reactive", "cross_birch"] },
+      { name: "Apples", traits: ["fodmaps", "fructose", "polyols", "irritant", "peel_skin", "cross_reactive", "cross_birch", "salicylate"] },
       { name: "Oranges", traits: ["cross_reactive", "cross_grass", "dao_competitor"] },
-      { name: "Pears", traits: ["fodmaps", "fructose", "polyols", "irritant", "peel_skin", "cross_reactive", "cross_birch"] },
+      { name: "Pears", traits: ["fodmaps", "fructose", "polyols", "irritant", "peel_skin", "cross_reactive", "cross_birch", "salicylate"] },
       { name: "Mangos", traits: ["fodmaps", "fructose"] },
       { name: "Lemon", traits: ["dao_competitor"] },
       { name: "Lime", traits: ["dao_competitor"] },
       { name: "Grapefruit", traits: ["dao_competitor"] },
-      { name: "Grapes", traits: [] },
+      { name: "Grapes", traits: ["salicylate"] },
       { name: "Banana", traits: ["cross_reactive", "cross_latex", "dao_competitor"] },
-      { name: "Kiwi", traits: ["cross_reactive", "cross_birch", "cross_grass", "cross_latex"] },
+      { name: "Kiwi", traits: ["cross_reactive", "cross_birch", "cross_grass", "cross_latex", "salicylate"] },
       { name: "Pineapple", traits: [] },
       { name: "Papaya", traits: ["cross_reactive", "cross_latex"] },
-      { name: "Watermelon", traits: ["fodmaps", "fructose", "cross_reactive", "cross_grass"] },
+      { name: "Watermelon", traits: ["fodmaps", "fructose", "cross_reactive", "cross_grass", "salicylate"] },
       { name: "Melon", traits: ["cross_reactive", "cross_grass"] },
       { name: "Apricot", traits: ["cross_reactive", "cross_birch", "fodmaps", "polyols"] },
       { name: "Plum", traits: ["cross_reactive", "cross_birch", "fodmaps", "polyols"] },
       { name: "Figs", traits: ["fodmaps", "fructose"] },
-      { name: "Pomegranate", traits: [] },
+      { name: "Pomegranate", traits: ["salicylate"] },
       { name: "Lychee", traits: ["fructose", "fodmaps", "polyols"] },
       { name: "Star Fruit", traits: [] },
       { name: "Durian", traits: ["over_10g_fat", "fodmaps", "fructose"] },
       { name: "Peach", traits: ["fodmaps", "polyols", "cross_reactive", "cross_birch"] },
-      { name: "Nectarine", traits: ["fodmaps", "polyols", "cross_reactive", "cross_birch"] },
+      { name: "Nectarine", traits: ["fodmaps", "polyols", "cross_reactive", "cross_birch", "salicylate"] },
       { name: "Passion Fruit", traits: ["fiber"] },
       // Added for the salicylate work. TODO: verify its other traits.
-      { name: "Persimmon", traits: [] }
+      { name: "Persimmon", traits: ["salicylate"] }
     ]
   },
   {
@@ -604,7 +618,7 @@ const CATEGORIES = [
     label: "Berries",
     foods: [
       { name: "Blueberry", traits: [] },
-      { name: "Strawberry", traits: [] },
+      { name: "Strawberry", traits: ["salicylate"] },
       { name: "Cherries", traits: ["fodmaps", "polyols", "fructose", "cross_reactive", "cross_birch"] },
       { name: "Blackberries", traits: ["fodmaps", "polyols"] },
       { name: "Raspberries", traits: ["fiber"] },
@@ -621,7 +635,7 @@ const CATEGORIES = [
     id: "driedFruits",
     label: "Dried Fruits/Berries",
     foods: [
-      { name: "Dates", traits: ["fiber", "polyols", "fructans"] },
+      { name: "Dates", traits: ["fiber", "polyols", "fructans", "salicylate"] },
       { name: "Raisins", traits: ["fructans"] },
       { name: "Sultanas", traits: ["fructans"] },
       { name: "Dried Apricot", traits: ["fiber", "cross_reactive", "cross_birch", "fodmaps", "polyols", "fructans"] },
@@ -656,7 +670,7 @@ const CATEGORIES = [
     id: "nuts",
     label: "Nuts/Seeds",
     foods: [
-      { name: "Almond", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "cross_reactive", "cross_birch", "allergen", "allergen_treenut"] },
+      { name: "Almond", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "cross_reactive", "cross_birch", "allergen", "allergen_treenut", "salicylate"] },
       { name: "Brazil Nut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen", "allergen_treenut"] },
       { name: "Cashew Nut", traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "fructans", "allergen", "allergen_treenut"] },
       { name: "Chiaseeds (whole)", traits: ["fiber"] },
@@ -716,7 +730,7 @@ const CATEGORIES = [
     foods: [
       { name: "Black Bean", traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Chickpea (whole/flour)", traits: ["fiber", "fodmaps", "galactans"] },
-      { name: "Common Peas", traits: ["fodmaps", "fructans", "dao_competitor"] },
+      { name: "Common Peas", traits: ["fodmaps", "fructans", "dao_competitor", "salicylate"] },
       { name: "Lentils", traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Tempeh", traits: ["protein", "allergen", "allergen_soy", "histamine"] },
       { name: "Tofu (firm)", traits: ["allergen", "allergen_soy", "cross_reactive", "cross_birch", "dao_competitor"] },
@@ -843,7 +857,7 @@ const CATEGORIES = [
       { name: "Black Pepper", traits: [] },
       { name: "Za'atar", traits: ["irritant"] },
       { name: "Sumac", traits: ["irritant", "aceticAcid"] },
-      { name: "Cumin", traits: [] },
+      { name: "Cumin", traits: ["salicylate"] },
       { name: "Shawarma Spice Mix", traits: ["irritant"] },
       { name: "Wasabi", traits: ["irritant", "allyl_compounds"] },
       { name: "Curry Powder", traits: ["irritant", "capsaicin"] },
@@ -885,7 +899,7 @@ const CATEGORIES = [
       { name: "Chai Tea", traits: ["caffeine"] },
       // Added for the salicylate work; carries no histamine per the review.
       // TODO: verify its other traits.
-      { name: "Chamomile Tea", traits: [] },
+      { name: "Chamomile Tea", traits: ["salicylate"] },
       { name: "Kombucha", traits: ["histamine", "carbonation"] },
       { name: "Almond Milk", traits: ["allergen", "allergen_treenut"] },
       { name: "Rice Milk", traits: [] }
