@@ -244,6 +244,20 @@ const TRAITS = {
       "See the Histamine article for mechanisms, diagnosis, and dietary management."
     ]
   },
+  // Putrescine and cadaverine occupy DAO so histamine passes through — a
+  // modifier, not a trigger. `modifierOf` keeps it out of the results whenever
+  // the trait it modifies isn't in play; see getRankedTraits in script.js.
+  dao_competitor: {
+    order: 12,
+    label: "DAO competitor",
+    filter: true,
+    modifierOf: "histamine",
+    analysis: [
+      "These foods contain putrescine or cadaverine — diamines that compete with histamine for the same enzyme, DAO. They add no histamine of their own, but may in theory slow the breakdown of whatever histamine the meal does contain.",
+      "This is the weakest-evidenced trait in the tool. It rests on enzyme assays in test tubes and on animal models; there are no human studies. No threshold for an effect has been established, and the effect appears to depend on the ratio between the amines rather than on the amount in any one food.",
+      "Likely relevant only for particularly sensitive people, and only alongside histamine-rich food — which is why it is shown only when the selection also contains histamine. A food high in putrescine but without histamine has nothing to compete with."
+    ]
+  },
 
   /* ---- Alcohol / caffeine ---- */
   alcohol: {
@@ -483,7 +497,7 @@ const FILTER_SECTIONS = [
   },
   {
     title: "Other Digestive Factors",
-    items: ["fiber", "histamine", "bile_stimulant", "refined_carbs"]
+    items: ["fiber", "histamine", "dao_competitor", "bile_stimulant", "refined_carbs"]
   },
   {
     title: "Allergens",
@@ -526,9 +540,9 @@ const CATEGORIES = [
       { name: "Cabbage", traits: ["fodmaps", "fructans"] },
       { name: "Kale", traits: [] },
       { name: "Onion", traits: ["fodmaps", "fructans", "irritant", "allyl_compounds"] },
-      { name: "Tomato", traits: ["histamine", "irritant", "cross_reactive", "cross_grass", "cross_latex"] },
+      { name: "Tomato", traits: ["histamine", "irritant", "cross_reactive", "cross_grass", "cross_latex", "dao_competitor"] },
       { name: "Cauliflower", traits: ["fodmaps", "fructans"] },
-      { name: "Aubergine", traits: ["histamine", "fodmaps", "fructans"] },
+      { name: "Aubergine", traits: ["histamine", "fodmaps", "fructans", "dao_competitor"] },
       { name: "Parsley", traits: [] },
       { name: "Leek", traits: ["fodmaps", "fructans"] },
       { name: "Spinach", traits: ["histamine"] },
@@ -542,7 +556,7 @@ const CATEGORIES = [
       { name: "Brussels Sprouts", traits: ["fodmaps", "fructans", "galactans"] },
       { name: "Green Beans", traits: [] },
       { name: "Zucchini", traits: [] },
-      { name: "Pumpkin", traits: [] },
+      { name: "Pumpkin", traits: ["dao_competitor"] },
       { name: "Swiss Chard", traits: [] },
       { name: "Romaine Lettuce", traits: [] },
       { name: "Rocket", traits: ["irritant"] },
@@ -558,14 +572,14 @@ const CATEGORIES = [
     label: "Fruits",
     foods: [
       { name: "Apples", traits: ["fodmaps", "fructose", "polyols", "irritant", "peel_skin", "cross_reactive", "cross_birch"] },
-      { name: "Oranges", traits: ["cross_reactive", "cross_grass"] },
+      { name: "Oranges", traits: ["cross_reactive", "cross_grass", "dao_competitor"] },
       { name: "Pears", traits: ["fodmaps", "fructose", "polyols", "irritant", "peel_skin", "cross_reactive", "cross_birch"] },
       { name: "Mangos", traits: ["fodmaps", "fructose"] },
-      { name: "Lemon", traits: [] },
-      { name: "Lime", traits: [] },
-      { name: "Grapefruit", traits: [] },
+      { name: "Lemon", traits: ["dao_competitor"] },
+      { name: "Lime", traits: ["dao_competitor"] },
+      { name: "Grapefruit", traits: ["dao_competitor"] },
       { name: "Grapes", traits: [] },
-      { name: "Banana", traits: ["cross_reactive", "cross_latex"] },
+      { name: "Banana", traits: ["cross_reactive", "cross_latex", "dao_competitor"] },
       { name: "Kiwi", traits: ["cross_reactive", "cross_birch", "cross_grass", "cross_latex"] },
       { name: "Pineapple", traits: [] },
       { name: "Papaya", traits: ["cross_reactive", "cross_latex"] },
@@ -702,12 +716,12 @@ const CATEGORIES = [
     foods: [
       { name: "Black Bean", traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Chickpea (whole/flour)", traits: ["fiber", "fodmaps", "galactans"] },
-      { name: "Common Peas", traits: ["fodmaps", "fructans"] },
+      { name: "Common Peas", traits: ["fodmaps", "fructans", "dao_competitor"] },
       { name: "Lentils", traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Tempeh", traits: ["protein", "allergen", "allergen_soy", "histamine"] },
-      { name: "Tofu (firm)", traits: ["allergen", "allergen_soy", "cross_reactive", "cross_birch"] },
-      { name: "Tofu (silken)", traits: ["fodmaps", "galactans", "allergen", "allergen_soy", "cross_reactive", "cross_birch"] },
-      { name: "Soybeans", traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen", "allergen_soy", "cross_reactive", "cross_birch"] },
+      { name: "Tofu (firm)", traits: ["allergen", "allergen_soy", "cross_reactive", "cross_birch", "dao_competitor"] },
+      { name: "Tofu (silken)", traits: ["fodmaps", "galactans", "allergen", "allergen_soy", "cross_reactive", "cross_birch", "dao_competitor"] },
+      { name: "Soybeans", traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen", "allergen_soy", "cross_reactive", "cross_birch", "dao_competitor"] },
       { name: "Edamame", traits: ["allergen", "allergen_soy", "cross_reactive", "cross_birch"] },
       { name: "Falafel", traits: ["fodmaps", "galactans"] },
       { name: "Fava Beans", traits: ["fodmaps", "galactans"] },
@@ -728,9 +742,9 @@ const CATEGORIES = [
       { name: "Egg White", traits: ["allergen", "allergen_egg"] },
       { name: "Egg Yolk", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg"] },
       { name: "Whole Egg", traits: ["over_10g_fat", "allergen", "allergen_egg"] },
-      { name: "Salami", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
-      { name: "Dry-Cured Ham (lean)", traits: ["protein", "histamine", "alpha_gal"] },
-      { name: "Dry-Cured Ham (fatty cut)", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
+      { name: "Salami", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal", "dao_competitor"] },
+      { name: "Dry-Cured Ham (lean)", traits: ["protein", "histamine", "alpha_gal", "dao_competitor"] },
+      { name: "Dry-Cured Ham (fatty cut)", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal", "dao_competitor"] },
       { name: "Sausages (lean)", traits: ["protein", "histamine"] },
       { name: "Sausages (regular)", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal"] },
       { name: "Minced Meat (~5% fat)", traits: ["protein", "histamine", "alpha_gal"] },
@@ -748,15 +762,15 @@ const CATEGORIES = [
     id: "seafood",
     label: "Seafood",
     foods: [
-      { name: "Salmon", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_fish", "histamine"] },
+      { name: "Salmon", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_fish", "histamine", "dao_competitor"] },
       { name: "Cod", traits: ["protein", "allergen", "allergen_fish", "histamine"] },
       { name: "Oysters", traits: ["allergen", "allergen_shellfish", "histamine"] },
       { name: "Lobsters", traits: ["protein", "allergen", "allergen_shellfish", "histamine"] },
       { name: "Crayfish", traits: ["protein", "allergen", "allergen_shellfish", "histamine"] },
       { name: "Shrimp", traits: ["protein", "allergen", "allergen_shellfish", "histamine"] },
-      { name: "Tuna", traits: ["protein", "allergen", "allergen_fish", "histamine"] },
-      { name: "Anchovies", traits: ["protein", "allergen", "allergen_fish", "histamine"] },
-      { name: "Smoked Salmon", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_fish", "histamine"] },
+      { name: "Tuna", traits: ["protein", "allergen", "allergen_fish", "histamine", "dao_competitor"] },
+      { name: "Anchovies", traits: ["protein", "allergen", "allergen_fish", "histamine", "dao_competitor"] },
+      { name: "Smoked Salmon", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_fish", "histamine", "dao_competitor"] },
       { name: "Crab", traits: ["allergen", "allergen_shellfish", "histamine"] },
       { name: "Mussels", traits: ["protein", "allergen", "allergen_shellfish", "histamine"] },
       { name: "Fish Balls", traits: ["allergen", "allergen_fish", "histamine"] },
@@ -773,8 +787,8 @@ const CATEGORIES = [
       { name: "Sheeps Milk", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Cream Cheese (<10% fat)", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Cream Cheese (>10% fat)", traits: ["over_10g_fat", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
-      { name: "Hard Cheese (~15% fat)", traits: ["over_10g_fat", "protein", "allergen", "allergen_milk", "histamine"] },
-      { name: "Hard Cheese (~28-35% fat)", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine"] },
+      { name: "Hard Cheese (~15% fat)", traits: ["over_10g_fat", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
+      { name: "Hard Cheese (~28-35% fat)", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
       { name: "White Cheese (~0% fat)", traits: ["allergen", "allergen_milk", "over_3g_lactose"] },
       { name: "Yogurt", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Greek Yogurt (0% fat)", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
@@ -789,19 +803,19 @@ const CATEGORIES = [
       { name: "Sour Cream (~20% fat)", traits: ["over_10g_fat", "bile_stimulant", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Ricotta Cheese", traits: ["over_10g_fat", "allergen", "allergen_milk", "over_3g_lactose"] },
       { name: "Mascarpone", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_milk", "over_3g_lactose"] },
-      { name: "Parmesan", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine"] },
+      { name: "Parmesan", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
       { name: "Halloumi", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk"] },
       { name: "Mozzarella", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk"] },
-      { name: "Blue Cheese", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine"] },
+      { name: "Blue Cheese", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
       // Added from the SIGHI review — named there as histamine sources.
       // TODO: their non-histamine traits are copied from comparable cheeses
       // and still need verifying against real nutrition data.
-      { name: "Roquefort", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine"] },
-      { name: "Fontina", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine"] },
-      { name: "Raclette", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine"] },
-      { name: "Camembert", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine"] },
-      { name: "Cheddar", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine"] },
-      { name: "Aged Gouda", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine"] },
+      { name: "Roquefort", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
+      { name: "Fontina", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
+      { name: "Raclette", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
+      { name: "Camembert", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
+      { name: "Cheddar", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
+      { name: "Aged Gouda", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
       { name: "Whey Protein", traits: ["protein", "allergen", "allergen_milk", "over_3g_lactose"] },
       { name: "Feta Cheese", traits: ["over_10g_fat", "allergen", "allergen_milk", "histamine"] },
       { name: "Labneh", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
@@ -864,7 +878,7 @@ const CATEGORIES = [
       { name: "Green Tea", traits: ["caffeine"] },
       { name: "Mate Tea", traits: ["caffeine"] },
       { name: "Energy Drinks", traits: ["caffeine", "irritant", "carbonation"] },
-      { name: "Soy Milk", traits: ["allergen", "allergen_soy", "fodmaps", "galactans"] },
+      { name: "Soy Milk", traits: ["allergen", "allergen_soy", "fodmaps", "galactans", "dao_competitor"] },
       { name: "Oat Drink", traits: [] },
       { name: "Coconut Milk", traits: ["over_10g_fat", "fodmaps", "polyols"] },
       { name: "Matcha", traits: ["caffeine"] },
@@ -897,7 +911,7 @@ const CATEGORIES = [
     id: "condiments",
     label: "Condiments",
     foods: [
-      { name: "Soy Sauce", traits: ["histamine", "allergen", "allergen_soy", "allergen_wheat"] },
+      { name: "Soy Sauce", traits: ["histamine", "allergen", "allergen_soy", "allergen_wheat", "dao_competitor"] },
       { name: "Vinegar", traits: ["aceticAcid", "irritant"] },
       { name: "Balsamic Vinegar", traits: ["aceticAcid", "irritant", "histamine"] },
       { name: "Aioli", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "irritant", "allyl_compounds"] },
@@ -933,7 +947,7 @@ const CATEGORIES = [
     id: "sauces",
     label: "Sauces",
     foods: [
-      { name: "Ketchup", traits: ["aceticAcid", "irritant"] },
+      { name: "Ketchup", traits: ["aceticAcid", "irritant", "dao_competitor"] },
       { name: "Mayonnaise", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg"] },
       { name: "Barbecue Sauce", traits: ["aceticAcid", "irritant", "refined_carbs"] },
       { name: "Hot Sauce", traits: ["histamine", "irritant", "capsaicin"] },
@@ -957,16 +971,16 @@ const CATEGORIES = [
     id: "mushrooms",
     label: "Mushrooms",
     foods: [
-      { name: "Shiitake Mushrooms", traits: ["fodmaps", "polyols"] },
-      { name: "Oyster Mushrooms", traits: [] },
-      { name: "White Button Mushrooms", traits: ["fodmaps", "polyols"] },
-      { name: "Portobello Mushrooms", traits: ["fodmaps", "polyols"] },
-      { name: "Cremini Mushrooms", traits: ["fodmaps", "polyols"] },
-      { name: "Enoki Mushrooms", traits: ["fodmaps", "polyols"] },
-      { name: "Chanterelle Mushrooms", traits: ["fodmaps", "polyols"] },
-      { name: "Porcini Mushrooms", traits: ["fodmaps", "polyols"] },
-      { name: "Morel Mushrooms", traits: ["fodmaps", "polyols"] },
-      { name: "King Oyster Mushrooms", traits: [] }
+      { name: "Shiitake Mushrooms", traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Oyster Mushrooms", traits: ["dao_competitor"] },
+      { name: "White Button Mushrooms", traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Portobello Mushrooms", traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Cremini Mushrooms", traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Enoki Mushrooms", traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Chanterelle Mushrooms", traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Porcini Mushrooms", traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Morel Mushrooms", traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "King Oyster Mushrooms", traits: ["dao_competitor"] }
     ]
   },
   {
@@ -994,11 +1008,11 @@ const CATEGORIES = [
     label: "Pickles & Ferments",
     foods: [
       { name: "Kimchi", traits: ["histamine", "fodmaps", "fructans", "irritant"] },
-      { name: "Sauerkraut", traits: ["histamine"] },
+      { name: "Sauerkraut", traits: ["histamine", "dao_competitor"] },
       { name: "Pickled Cucumber", traits: ["histamine", "aceticAcid", "irritant"] },
       { name: "Pickle Relish", traits: ["histamine", "aceticAcid", "irritant"] },
       { name: "Olives", traits: ["over_10g_fat", "histamine"] },
-      { name: "Miso Paste", traits: ["histamine", "allergen", "allergen_soy", "fodmaps"] }
+      { name: "Miso Paste", traits: ["histamine", "allergen", "allergen_soy", "fodmaps", "dao_competitor"] }
     ]
   }
 ];

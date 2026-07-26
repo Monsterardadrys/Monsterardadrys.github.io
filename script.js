@@ -254,9 +254,23 @@
 
   const MACRO_TRAIT_IDS = ["over_10g_fat", "protein"];
 
+  // A trait with `modifierOf` only means something alongside the trait it
+  // modifies — dao_competitor is about competing for an enzyme, so with no
+  // histamine in the selection there is nothing to compete with. Drop it
+  // rather than report it as a finding. Filtering out the target trait counts
+  // as taking it out of play too, which is the behaviour we want.
+  function modifierIsIdle(traitId, counts) {
+    const target = TRAITS[traitId].modifierOf;
+    return Boolean(target) && !(counts[target] > 0);
+  }
+
   function getRankedTraits(counts, totalSelected, limit) {
     const list = Object.keys(counts)
-      .filter(function (id) { return counts[id] > 0 && MACRO_TRAIT_IDS.indexOf(id) === -1; })
+      .filter(function (id) {
+        return counts[id] > 0 &&
+          MACRO_TRAIT_IDS.indexOf(id) === -1 &&
+          !modifierIsIdle(id, counts);
+      })
       .sort(function (a, b) { return counts[b] - counts[a]; })
       .map(function (id) {
         return { traitId: id, count: counts[id], percent: Math.floor((counts[id] / totalSelected) * 100) };
