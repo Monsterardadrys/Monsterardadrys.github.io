@@ -1,0 +1,374 @@
+<!--
+    Livsmedelsverket audit — the browser version of tools/lmv-audit.js.
+
+    Internal tool, not linked from the site. It runs entirely in your browser,
+    so it works on a phone and nothing is uploaded anywhere.
+
+    Two ways in: fetch the API directly (only works if Livsmedelsverket allows
+    cross-origin requests — try it and see), or pick a file you already
+    downloaded. The file route always works.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livsmedelsverket audit — Food Intolerance Guide</title>
+    <link rel="icon" href="../favicon.ico" sizes="any">
+
+    <style>
+        :root {
+            --ink: #232b27;
+            --primary: #15414c;
+            --sage-dark: #5c7a59;
+            --clay: #c98a5e;
+            --clay-dark: #a96b41;
+            --linen: #f6f1e6;
+            --paper: #fffdf8;
+            --border: #ddd6c6;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0 0 3rem;
+            background: var(--linen);
+            color: var(--ink);
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        header {
+            background: var(--primary);
+            color: var(--paper);
+            padding: 1rem 1.25rem;
+        }
+
+        header h1 { margin: 0; font-size: 1.25rem; }
+        header p { margin: 0.35rem 0 0; font-size: 0.85rem; opacity: 0.85; }
+
+        main { padding: 1.25rem; max-width: 46rem; margin: 0 auto; }
+
+        section {
+            background: var(--paper);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem 1.1rem;
+            margin-bottom: 1.1rem;
+        }
+
+        h2 {
+            margin: 0 0 0.6rem;
+            font-size: 1.05rem;
+            color: var(--primary);
+        }
+
+        .stepNum {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--paper);
+            width: 1.6rem; height: 1.6rem;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 1.6rem;
+            font-size: 0.9rem;
+            margin-right: 0.4rem;
+        }
+
+        p, li { font-size: 0.95rem; }
+        p { margin: 0.5rem 0; }
+
+        a { color: var(--clay-dark); }
+
+        input[type="url"], input[type="file"] {
+            width: 100%;
+            font-size: 16px; /* stops iOS zooming on focus */
+            font-family: inherit;
+            padding: 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #fff;
+            margin: 0.4rem 0;
+        }
+
+        button {
+            font-family: inherit;
+            font-size: 1rem;
+            padding: 0.65rem 1.1rem;
+            border: none;
+            border-radius: 8px;
+            background: var(--clay);
+            color: #fff;
+            cursor: pointer;
+            margin: 0.3rem 0.3rem 0.3rem 0;
+        }
+
+        button:hover { background: var(--clay-dark); }
+        button:disabled { background: #bbb; cursor: default; }
+        button.secondary { background: var(--primary); }
+
+        .status {
+            margin-top: 0.6rem;
+            padding: 0.6rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .status.show { display: block; }
+        .status.info { background: #eaf1f2; }
+        .status.bad { background: #f8e8e0; }
+        .status.good { background: #e9f0e6; }
+
+        pre {
+            background: #1e2a2e;
+            color: #e8e4d8;
+            padding: 0.9rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.8rem;
+            line-height: 1.45;
+            white-space: pre;
+            margin: 0.6rem 0;
+        }
+
+        .counts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.6rem 0;
+        }
+
+        .count {
+            flex: 1 1 6.5rem;
+            background: var(--linen);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+        .count b { display: block; font-size: 1.35rem; color: var(--primary); }
+        .count span { font-size: 0.75rem; }
+
+        .note { font-size: 0.85rem; color: #5a615c; }
+
+        #results { display: none; }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Livsmedelsverket audit</h1>
+        <p>Checks every food in the app against the food database. Runs on your device — nothing is uploaded.</p>
+    </header>
+
+    <main>
+        <section>
+            <h2><span class="stepNum">1</span>Fetch the data</h2>
+            <p>Paste the address of a Livsmedelsverket endpoint that returns the foods with their nutrients,
+                then press Fetch. You can find the exact address on the
+                <a href="https://dataportal.livsmedelsverket.se/livsmedel/swagger/index.html" target="_blank"
+                   rel="noopener">API documentation page</a>.</p>
+            <input type="url" id="apiUrl" placeholder="https://dataportal.livsmedelsverket.se/livsmedel/api/v1/..."
+                   autocapitalize="off" autocorrect="off" spellcheck="false">
+            <button id="fetchBtn">Fetch</button>
+            <p class="note">This may not work: a browser can only read another site's data if that site
+                allows it. If it fails, use step 2 instead — that always works.</p>
+            <div class="status" id="fetchStatus"></div>
+        </section>
+
+        <section>
+            <h2><span class="stepNum">2</span>Or open a downloaded file</h2>
+            <p>Open the address above in a normal browser tab and save the result, then pick the saved file
+                here. JSON and CSV both work.</p>
+            <input type="file" id="fileInput" accept=".json,.csv,.txt,application/json,text/csv,text/plain">
+            <div class="status" id="fileStatus"></div>
+        </section>
+
+        <section id="results">
+            <h2>Result</h2>
+            <div class="counts" id="counts"></div>
+            <p class="note" id="detected"></p>
+            <button id="copyBtn" class="secondary">Copy full report</button>
+            <button id="copyAliasBtn" class="secondary">Copy suggested aliases</button>
+            <div class="status" id="copyStatus"></div>
+            <pre id="report"></pre>
+        </section>
+    </main>
+
+    <script src="../foods-data.js"></script>
+    <script src="lmv-core.js"></script>
+    <script>
+        (function () {
+            "use strict";
+
+            const ours = LMV.flattenCategories(CATEGORIES);
+            let aliases = {};
+            let lastReport = "";
+            let lastAliases = "";
+
+            // Aliases are optional — the audit still runs (as suggestions only) without them.
+            fetch("lmv-aliases.json")
+                .then(function (r) { return r.ok ? r.json() : {}; })
+                .then(function (raw) {
+                    Object.keys(raw).forEach(function (k) { if (k[0] !== "_") aliases[k] = raw[k]; });
+                })
+                .catch(function () { /* fine — treat every food as unconfirmed */ });
+
+            function show(el, kind, msg) {
+                el.className = "status show " + kind;
+                el.textContent = msg;
+            }
+
+            function buildReport(result, lmvCount) {
+                const lines = [];
+                const detected = Object.keys(result.detected);
+
+                lines.push("Livsmedelsverket records: " + lmvCount);
+                lines.push("Nutrients detected: " + (detected.length
+                    ? detected.map(function (k) { return k + " (" + result.detected[k] + ")"; }).join(", ")
+                    : "NONE — the column names were not recognised"));
+                lines.push("Our foods: " + ours.length + ", aliases on file: " + Object.keys(aliases).length);
+                lines.push("");
+
+                if (result.disagreements.length) {
+                    lines.push("=== Disagreements on confirmed matches (" + result.disagreements.length + ") ===");
+                    result.disagreements.forEach(function (d) {
+                        lines.push("");
+                        lines.push(d.food.name + "  <-  " + d.record.name);
+                        d.findings.forEach(function (f) {
+                            lines.push("   " + (f.soft ? "[check] " : "        ") + f.trait + ": " + f.text);
+                        });
+                    });
+                    lines.push("");
+                } else if (result.confirmed) {
+                    lines.push("No disagreements on the " + result.confirmed + " confirmed matches.");
+                    lines.push("");
+                }
+
+                if (result.suggestions.length) {
+                    lines.push("=== Suggested matches to confirm (" + result.suggestions.length + ") ===");
+                    lines.push("");
+                    result.suggestions.forEach(function (s) {
+                        const n = s.record.nutrients;
+                        lines.push("  \"" + s.food.name + "\": \"" + s.record.name + "\",   (" +
+                            s.score.toFixed(2) + ")  fat " + n.fat + " protein " + n.protein +
+                            " fiber " + n.fiber + " sugars " + n.sugars);
+                    });
+                    lines.push("");
+                }
+
+                lines.push("Unmatched (" + result.unmatched.length + " of " + ours.length + "):");
+                result.unmatched.forEach(function (f) { lines.push("  " + f.name); });
+
+                return lines.join("\n");
+            }
+
+            function buildAliasBlock(result) {
+                if (!result.suggestions.length) return "";
+                const lines = result.suggestions.map(function (s) {
+                    return "  \"" + s.food.name + "\": \"" + s.record.name + "\",";
+                });
+                return "{\n" + lines.join("\n").replace(/,$/, "") + "\n}";
+            }
+
+            function render(result, lmvCount) {
+                const counts = document.getElementById("counts");
+                counts.innerHTML = "";
+                [
+                    [result.confirmed, "confirmed"],
+                    [result.disagreements.length, "disagreements"],
+                    [result.suggestions.length, "to confirm"],
+                    [result.unmatched.length, "unmatched"]
+                ].forEach(function (pair) {
+                    const d = document.createElement("div");
+                    d.className = "count";
+                    d.innerHTML = "<b>" + pair[0] + "</b><span>" + pair[1] + "</span>";
+                    counts.appendChild(d);
+                });
+
+                const detected = Object.keys(result.detected);
+                document.getElementById("detected").textContent = detected.length
+                    ? "Nutrients read from the file: " + detected.join(", ")
+                    : "No nutrient columns were recognised — this file may not be the right export.";
+
+                lastReport = buildReport(result, lmvCount);
+                lastAliases = buildAliasBlock(result);
+                document.getElementById("report").textContent = lastReport;
+                document.getElementById("results").style.display = "block";
+                document.getElementById("results").scrollIntoView({ behavior: "smooth" });
+            }
+
+            function runOn(text, statusEl) {
+                let lmv;
+                try {
+                    lmv = LMV.parseExport(text);
+                } catch (e) {
+                    show(statusEl, "bad", "Could not read that file: " + e.message);
+                    return;
+                }
+                if (!lmv.length) {
+                    show(statusEl, "bad", "No food records found — no entry had a recognisable name field.");
+                    return;
+                }
+                show(statusEl, "good", "Read " + lmv.length + " records.");
+                render(LMV.runAudit(ours, lmv, aliases), lmv.length);
+            }
+
+            document.getElementById("fetchBtn").addEventListener("click", function () {
+                const url = document.getElementById("apiUrl").value.trim();
+                const status = document.getElementById("fetchStatus");
+                if (!url) { show(status, "bad", "Paste an address first."); return; }
+
+                const btn = this;
+                btn.disabled = true;
+                show(status, "info", "Fetching…");
+
+                fetch(url)
+                    .then(function (r) {
+                        if (!r.ok) throw new Error("the server answered " + r.status);
+                        return r.text();
+                    })
+                    .then(function (text) { runOn(text, status); })
+                    .catch(function (e) {
+                        show(status, "bad", "Fetch failed (" + e.message +
+                            "). Livsmedelsverket most likely blocks cross-origin requests — use step 2.");
+                    })
+                    .then(function () { btn.disabled = false; });
+            });
+
+            document.getElementById("fileInput").addEventListener("change", function (e) {
+                const file = e.target.files[0];
+                const status = document.getElementById("fileStatus");
+                if (!file) return;
+                show(status, "info", "Reading " + file.name + "…");
+                const reader = new FileReader();
+                reader.onload = function () { runOn(String(reader.result), status); };
+                reader.onerror = function () { show(status, "bad", "Could not read the file."); };
+                reader.readAsText(file);
+            });
+
+            function copy(text, label) {
+                const status = document.getElementById("copyStatus");
+                if (!text) { show(status, "info", "Nothing to copy — there were no " + label.toLowerCase() + "."); return; }
+                navigator.clipboard.writeText(text)
+                    .then(function () { show(status, "good", label + " copied."); })
+                    .catch(function () { show(status, "bad", "Copy failed — select the text below instead."); });
+            }
+
+            document.getElementById("copyBtn").addEventListener("click", function () {
+                copy(lastReport, "Report");
+            });
+            document.getElementById("copyAliasBtn").addEventListener("click", function () {
+                copy(lastAliases, "Suggestions");
+            });
+        })();
+    </script>
+</body>
+
+</html>
