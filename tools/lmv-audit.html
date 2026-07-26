@@ -4,9 +4,12 @@
     Internal tool, not linked from the site. It runs entirely in your browser,
     so it works on a phone and nothing is uploaded anywhere.
 
-    Two ways in: fetch the API directly (only works if Livsmedelsverket allows
-    cross-origin requests — try it and see), or pick a file you already
-    downloaded. The file route always works.
+    The intended route is the full-database Excel download — one file with
+    every food and nutrient. Fetching a URL is kept as a fallback, but the API
+    needs a request per food, so it is the wrong tool for this.
+
+    Results download as markdown; lmv-swedish.json is what lets English food
+    names match Swedish database entries at all.
 -->
 
 <!DOCTYPE html>
@@ -203,8 +206,8 @@
             <h2>Result</h2>
             <div class="counts" id="counts"></div>
             <p class="note" id="detected"></p>
-            <button id="copyBtn" class="secondary">Copy full report</button>
-            <button id="copyAliasBtn" class="secondary">Copy suggested aliases</button>
+            <button id="downloadBtn">Download report (.md)</button>
+            <button id="copyBtn" class="secondary">Copy as text</button>
             <div class="status" id="copyStatus"></div>
             <pre id="report"></pre>
         </section>
@@ -218,16 +221,25 @@
 
             const ours = LMV.flattenCategories(CATEGORIES);
             let aliases = {};
+            let swedish = {};
             let lastReport = "";
-            let lastAliases = "";
+            let lastMarkdown = "";
+            let lastSource = "pasted data";
 
-            // Aliases are optional — the audit still runs (as suggestions only) without them.
-            fetch("lmv-aliases.json")
-                .then(function (r) { return r.ok ? r.json() : {}; })
-                .then(function (raw) {
-                    Object.keys(raw).forEach(function (k) { if (k[0] !== "_") aliases[k] = raw[k]; });
-                })
-                .catch(function () { /* fine — treat every food as unconfirmed */ });
+            // Both files are optional — without them the audit still runs, just
+            // with fewer matches. Loaded up front so a file picked immediately
+            // still sees them.
+            function loadMap(url, target) {
+                return fetch(url)
+                    .then(function (r) { return r.ok ? r.json() : {}; })
+                    .then(function (raw) {
+                        Object.keys(raw).forEach(function (k) { if (k[0] !== "_") target[k] = raw[k]; });
+                    })
+                    .catch(function () { /* fine — carry on without it */ });
+            }
+
+            loadMap("lmv-aliases.json", aliases);
+            loadMap("lmv-swedish.json", swedish);
 
             function show(el, kind, msg) {
                 el.className = "status show " + kind;
@@ -278,12 +290,80 @@
                 return lines.join("\n");
             }
 
-            function buildAliasBlock(result) {
-                if (!result.suggestions.length) return "";
-                const lines = result.suggestions.map(function (s) {
-                    return "  \"" + s.food.name + "\": \"" + s.record.name + "\",";
-                });
-                return "{\n" + lines.join("\n").replace(/,$/, "") + "\n}";
+            function num(v) { return v == null ? "—" : v; }
+
+            /* The markdown version is the one meant to be handed back — tables
+               so it stays readable, and the alias block as a fenced code block
+               so it can be pasted straight into lmv-aliases.json. */
+            function buildMarkdown(result, lmvCount, sourceName) {
+                const out = [];
+                const detected = Object.keys(result.detected);
+
+                out.push("# Livsmedelsverket audit");
+                out.push("");
+                out.push("- Source file: `" + sourceName + "`");
+                out.push("- Livsmedelsverket records: " + lmvCount);
+                out.push("- Our foods: " + ours.length);
+                out.push("- Nutrients detected: " + (detected.length ? detected.join(", ") : "**none**"));
+                out.push("- Confirmed matches: " + result.confirmed +
+                    " · disagreements: " + result.disagreements.length +
+                    " · to confirm: " + result.suggestions.length +
+                    " · unmatched: " + result.unmatched.length);
+                out.push("");
+
+                out.push("## Disagreements (" + result.disagreements.length + ")");
+                out.push("");
+                if (result.disagreements.length) {
+                    out.push("| Food | Matched to | Trait | Finding |");
+                    out.push("| --- | --- | --- | --- |");
+                    result.disagreements.forEach(function (d) {
+                        d.findings.forEach(function (f) {
+                            out.push("| " + d.food.name + " | " + d.record.name + " | " +
+                                (f.soft ? "*" : "") + f.trait + " | " + f.text + " |");
+                        });
+                    });
+                    out.push("");
+                    out.push("Traits marked `*` are soft — total sugars is not the same as lactose.");
+                } else {
+                    out.push("None.");
+                }
+                out.push("");
+
+                out.push("## Suggested matches to confirm (" + result.suggestions.length + ")");
+                out.push("");
+                if (result.suggestions.length) {
+                    out.push("| Food | Suggested match | Score | Fat | Protein | Fiber | Sugars |");
+                    out.push("| --- | --- | --- | --- | --- | --- | --- |");
+                    result.suggestions.forEach(function (s) {
+                        const n = s.record.nutrients;
+                        out.push("| " + s.food.name + " | " + s.record.name + " | " + s.score.toFixed(2) +
+                            " | " + num(n.fat) + " | " + num(n.protein) + " | " + num(n.fiber) +
+                            " | " + num(n.sugars) + " |");
+                    });
+                    out.push("");
+                    out.push("Paste the correct ones into `tools/lmv-aliases.json`:");
+                    out.push("");
+                    out.push("```json");
+                    result.suggestions.forEach(function (s) {
+                        out.push("  \"" + s.food.name + "\": \"" + s.record.name + "\",");
+                    });
+                    out.push("```");
+                } else {
+                    out.push("None.");
+                }
+                out.push("");
+
+                out.push("## Unmatched (" + result.unmatched.length + ")");
+                out.push("");
+                if (result.unmatched.length) {
+                    result.unmatched.forEach(function (f) {
+                        out.push("- " + f.name + "  _(" + f.category + ")_");
+                    });
+                } else {
+                    out.push("None.");
+                }
+                out.push("");
+                return out.join("\n");
             }
 
             function render(result, lmvCount) {
@@ -307,7 +387,7 @@
                     : "No nutrient columns were recognised — this file may not be the right export.";
 
                 lastReport = buildReport(result, lmvCount);
-                lastAliases = buildAliasBlock(result);
+                lastMarkdown = buildMarkdown(result, lmvCount, lastSource);
                 document.getElementById("report").textContent = lastReport;
                 document.getElementById("results").style.display = "block";
                 document.getElementById("results").scrollIntoView({ behavior: "smooth" });
@@ -352,13 +432,14 @@
                     return;
                 }
                 show(statusEl, "good", "Read " + lmv.length + " records.");
-                render(LMV.runAudit(ours, lmv, aliases), lmv.length);
+                render(LMV.runAudit(ours, lmv, aliases, swedish), lmv.length);
             }
 
             document.getElementById("fileInput").addEventListener("change", function (e) {
                 const file = e.target.files[0];
                 const status = document.getElementById("fileStatus");
                 if (!file) return;
+                lastSource = file.name;
                 show(status, "info", "Reading " + file.name + "…");
 
                 const reader = new FileReader();
@@ -390,8 +471,26 @@
             document.getElementById("copyBtn").addEventListener("click", function () {
                 copy(lastReport, "Report");
             });
-            document.getElementById("copyAliasBtn").addEventListener("click", function () {
-                copy(lastAliases, "Suggestions");
+
+            document.getElementById("downloadBtn").addEventListener("click", function () {
+                const status = document.getElementById("copyStatus");
+                if (!lastMarkdown) { show(status, "info", "Nothing to download yet."); return; }
+
+                const stamp = new Date().toISOString().slice(0, 10);
+                const name = "lmv-audit-" + stamp + ".md";
+                const blob = new Blob([lastMarkdown], { type: "text/markdown" });
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = name;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                // give the download a moment to start before dropping the blob
+                setTimeout(function () { URL.revokeObjectURL(url); }, 30000);
+
+                show(status, "good", "Saved as " + name + ".");
             });
         })();
     </script>

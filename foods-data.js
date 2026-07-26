@@ -553,7 +553,7 @@ const CATEGORIES = [
       { name: "Jerusalem Artichoke", traits: ["fodmaps", "fructans"] },
       { name: "Parsnip", traits: [] },
       { name: "Potato", traits: ["cross_reactive", "cross_birch", "cross_grass"] },
-      { name: "Suede", traits: [] },
+      { name: "Swede", traits: [] },
       { name: "Sweet Potato", traits: ["salicylate"] },
       { name: "Radish", traits: ["irritant"] },
       { name: "Turnip", traits: [] },
