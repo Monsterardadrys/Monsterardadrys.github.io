@@ -321,12 +321,27 @@
         "whole", "ground", "fat", "free", "low", "full", "added", "sugar",
         "cheese", "of", "and", "the"];
 
+    /* Swedish preparation and state words. These stay in the bigram
+       comparison, where they usefully separate "Fikon" from "Fikon torkade",
+       but they never earn the shared-token boost on their own — otherwise
+       every dried food matches every other dried food. */
+    const WEAK_TOKENS = ["rått", "råa", "kokt", "kokta", "kokad", "torkad",
+        "torkat", "torkade", "stekt", "stekta", "färsk", "färska", "fryst",
+        "frysta", "inlagd", "inlagda", "rökt", "rökta", "saltad", "saltat",
+        "normalsaltat", "osaltat", "berikad", "berikat", "med", "utan", "och",
+        "fett", "fetthalt", "ekologisk", "hel", "hela", "malen", "malet"];
+
     function tokens(name) {
-        return norm(name)
+        const cleaned = norm(name)
             .replace(/\([^)]*\)/g, " ")
             .replace(/[^a-zåäöéü0-9]+/g, " ")
             .split(" ")
-            .filter(function (t) { return t.length > 2 && STOPWORDS.indexOf(t) === -1; });
+            .filter(Boolean);
+        const kept = cleaned.filter(function (t) {
+            return t.length > 2 && STOPWORDS.indexOf(t) === -1;
+        });
+        // short Swedish names ("Öl", "Te", "Ris") would otherwise vanish entirely
+        return kept.length ? kept : cleaned;
     }
 
     function bigrams(s) {
@@ -351,7 +366,9 @@
         let s = dice(a, b);
         // a full token appearing in both is strong evidence across languages
         // ("roquefort", "halloumi", "quinoa" are spelled the same in Swedish)
-        const shared = ta.filter(function (t) { return tb.indexOf(t) !== -1; });
+        const shared = ta.filter(function (t) {
+            return tb.indexOf(t) !== -1 && WEAK_TOKENS.indexOf(t) === -1;
+        });
         if (shared.length) s = Math.max(s, 0.6 + 0.1 * shared.length);
         return Math.min(s, 1);
     }
@@ -397,9 +414,18 @@
 
     /* ours:    [{ name, category, traits }]
        lmv:     normalized records from parseExport
-       aliases: { "our name": "Livsmedelsverket name" } */
-    function runAudit(ours, lmv, aliases) {
+       aliases: { "our name": "exact Livsmedelsverket name" } — treated as certain
+       swedish: { "our name": "Swedish term" | [terms] } — only steers the fuzzy
+                match, so a wrong term shows up as an obviously wrong suggestion */
+    function runAudit(ours, lmv, aliases, swedish) {
         aliases = aliases || {};
+        swedish = swedish || {};
+
+        function searchTerms(name) {
+            const extra = swedish[name];
+            if (!extra) return [name];
+            return [name].concat(Array.isArray(extra) ? extra : [extra]);
+        }
 
         const detected = {};
         lmv.forEach(function (r) {
@@ -424,13 +450,16 @@
                 return;
             }
 
+            const terms = searchTerms(food.name);
             let best = null, bestScore = 0;
             lmv.forEach(function (r) {
-                const s = score(food.name, r.name);
-                if (s > bestScore) { bestScore = s; best = r; }
+                terms.forEach(function (term) {
+                    const s = score(term, r.name);
+                    if (s > bestScore) { bestScore = s; best = r; }
+                });
             });
 
-            if (best && bestScore >= 0.55) suggestions.push({ food: food, record: best, score: bestScore });
+            if (best && bestScore >= 0.62) suggestions.push({ food: food, record: best, score: bestScore });
             else unmatched.push(food);
         });
 
