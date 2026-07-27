@@ -420,6 +420,8 @@
             if (value == null) return;
             if (rule.requires && food.traits.indexOf(rule.requires) === -1) return;
             if (food.smallServing && servingRules.indexOf(rule.trait) !== -1) return;
+            // whole seeds are tagged on fiber alone — the fat stays in the shell
+            if (food.wholeSeed && rule.trait !== "fiber") return;
             // lactose-free dairy still reports those sugars as glucose and galactose
             if (rule.trait === "over_3g_lactose" && /lactose-free/i.test(food.name)) return;
             const has = food.traits.indexOf(rule.trait) !== -1;
@@ -434,7 +436,7 @@
             });
         });
 
-        if (!food.smallServing && (n.fat != null || n.protein != null)) {
+        if (!food.smallServing && !food.wholeSeed && (n.fat != null || n.protein != null)) {
             const has = food.traits.indexOf("bile_stimulant") !== -1;
             const expected = bileExpected(n);
             if (has !== expected) {
@@ -523,7 +525,8 @@
                     name: food.name,
                     category: cat.label,
                     traits: food.traits,
-                    smallServing: Boolean(food.smallServing || cat.smallServing)
+                    smallServing: Boolean(food.smallServing || cat.smallServing),
+                    wholeSeed: Boolean(food.wholeSeed)
                 });
             });
         });

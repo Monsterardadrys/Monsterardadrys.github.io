@@ -227,7 +227,9 @@
   "Red Wine": "Vin rött vol. % 14",
   "Spirits (Liquor)": "Whisky vol. % 40",
   "Beer": "Öl starköl el. exportöl vol. % 5,4",
-  "Cream Cheese (<10% fat)": "Färskost fett 33%",
   "Sour Cream (~20% fat)": "Crème fraiche fett 34%",
-  "Mascarpone": "Färskost fett 33%"
+  "Mascarpone": "Färskost fett 33%",
+  "Dried Banana": "Banan torkad",
+  "Pinto Beans": "Bruna bönor torkade kokta m. salt",
+  "Edamame": "Sojabönor torkade kokta u. salt"
 }
