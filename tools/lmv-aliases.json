@@ -174,7 +174,6 @@
   "Sauerkraut": "Surkål konserv. m. lag",
   "Pickled Cucumber": "Gurka inlagd",
   "Olives": "Oliver gröna m. paprikafyllning avrunna",
-  "Barley": "Korngryn kokt u. salt",
   "Rice Noodles": "Nudlar risnudlar kokta",
   "Falafel": "Falafel kikärtskroketter stekta",
   "Prunes": "Katrinplommon torkade",
@@ -228,5 +227,11 @@
   "Dried Banana": "Banan torkad",
   "Pinto Beans": "Bruna bönor torkade kokta m. salt",
   "Edamame": "Sojabönor torkade kokta u. salt",
-  "French Fries (oven-baked)": "Pommes frites friterad potatis värmd i ugn fett ca 7% frysvara"
+  "French Fries (oven-baked)": "Pommes frites friterad potatis värmd i ugn fett ca 7% frysvara",
+  "Duck (with skin)": "Anka rå m. skinn",
+  "Béarnaise Sauce": "Bearnaisesås hemlagad",
+  "French Fries (deep-fried)": "Pommes frites friterad potatis fett ca 11% frysvara",
+  "Psyllium Husk (whole)": "Psylliumfröskal",
+  "Psyllium Husk (ground)": "Psylliumfröskal",
+  "Pearl Barley (cooked)": "Korngryn kokt u. salt"
 }

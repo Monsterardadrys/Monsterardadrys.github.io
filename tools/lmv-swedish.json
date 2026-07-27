@@ -575,5 +575,23 @@
   "French Fries (oven-baked)": [
     "Pommes frites ugn",
     "Pommes frites värmd i ugn"
-  ]
+  ],
+  "Oat Porridge": [
+    "Havregrynsgröt",
+    "Gröt havre"
+  ],
+  "Oat Crispbread": [
+    "Hårt bröd havre",
+    "Knäckebröd havre"
+  ],
+  "Oat Bran": "Havrekli",
+  "Muesli (no added sugar)": [
+    "Müsli osötad",
+    "Frukostflingor müsli"
+  ],
+  "Rye Bread (whole grain)": [
+    "Bröd fullkorn råg",
+    "Rågbröd"
+  ],
+  "Pearl Barley (cooked)": "Korngryn kokt"
 }
