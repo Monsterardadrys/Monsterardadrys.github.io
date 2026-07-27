@@ -213,13 +213,22 @@
         </section>
     </main>
 
-    <script src="../foods-data.js"></script>
     <script src="lmv-core.js"></script>
     <script>
         (function () {
             "use strict";
 
-            const ours = LMV.flattenCategories(CATEGORIES);
+            /* foods-data.js is fetched rather than script-tagged, and with
+               cache: "no-store", because the service worker serves the app's
+               copy stale-while-revalidate — an audit run against yesterday's
+               tags draws the wrong conclusions. */
+            let ours = [];
+            const dataReady = fetch("../foods-data.js", { cache: "no-store" })
+                .then(function (r) { return r.text(); })
+                .then(function (src) {
+                    const CATEGORIES = new Function(src + "; return CATEGORIES;")();
+                    ours = LMV.flattenCategories(CATEGORIES);
+                });
             let aliases = {};
             let swedish = {};
             let lastReport = "";
@@ -440,6 +449,7 @@
                 const status = document.getElementById("fileStatus");
                 if (!file) return;
                 lastSource = file.name;
+                if (!ours.length) { show(status, "bad", "Still loading the food list — try again in a moment."); return; }
                 show(status, "info", "Reading " + file.name + "…");
 
                 const reader = new FileReader();

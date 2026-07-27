@@ -386,12 +386,20 @@
         const clutter = Math.max(0, strongB.length - shared.length);
         const coverage = shared.length / Math.max(1, Math.min(ta.length, strongB.length));
 
+        /* A state word we asked for and did not get is a mismatch, not clutter:
+           searching "Mango torkad" and being handed fresh "Mango" is wrong, and
+           so is "Linser kokta" answered with "Linser torkade". Weak words are
+           ignored when the candidate has them and we did not — "Lax rå" is
+           still salmon — but never the other way round. */
+        const wantedState = ta.filter(function (t) { return WEAK_TOKENS.indexOf(t) !== -1; });
+        const missingState = wantedState.filter(function (t) { return tb.indexOf(t) === -1; });
+
         /* Livsmedelsverket names lead with the ingredient — "Lax rå", "Ägg
            hönsägg", "Ost halloumi" — while dishes bury it: "Våffla m. ägg".
            So a match on the first word counts for more. */
         const headMatch = shared.indexOf(tb[0]) !== -1 ? 0.05 : 0;
 
-        const s = 0.55 + 0.35 * coverage - 0.06 * clutter + headMatch;
+        const s = 0.55 + 0.35 * coverage - 0.06 * clutter + headMatch - 0.25 * missingState.length;
         return Math.max(0, Math.min(s, 1));
     }
 
@@ -412,6 +420,8 @@
             if (value == null) return;
             if (rule.requires && food.traits.indexOf(rule.requires) === -1) return;
             if (food.smallServing && servingRules.indexOf(rule.trait) !== -1) return;
+            // lactose-free dairy still reports those sugars as glucose and galactose
+            if (rule.trait === "over_3g_lactose" && /lactose-free/i.test(food.name)) return;
             const has = food.traits.indexOf(rule.trait) !== -1;
             const expected = value > rule.min;
             if (has === expected) return;

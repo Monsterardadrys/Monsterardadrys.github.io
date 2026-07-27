@@ -689,9 +689,12 @@ const CATEGORIES = [
       { name: "Almond", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "cross_reactive", "cross_birch", "allergen", "allergen_treenut", "salicylate"] },
       { name: "Brazil Nut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen", "allergen_treenut"] },
       { name: "Cashew Nut", traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "fructans", "allergen", "allergen_treenut"] },
-      { name: "Chiaseeds (whole)", traits: ["over_10g_fat", "bile_stimulant", "fiber"] },
+      // Whole seeds pass largely intact, so the fiber is what acts on the gut
+      // while most of the fat stays locked inside. Ground versions release it,
+      // which is why only they carry the fat and bile tags.
+      { name: "Chiaseeds (whole)", traits: ["fiber"] },
       { name: "Chiaseeds (ground)", traits: ["fiber", "over_10g_fat", "bile_stimulant"] },
-      { name: "Flaxseed (whole)", traits: ["over_10g_fat", "bile_stimulant", "fiber", "fodmaps", "fructans"] },
+      { name: "Flaxseed (whole)", traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Flaxseed (ground)", traits: ["fiber", "over_10g_fat", "bile_stimulant", "fodmaps", "fructans"] },
       { name: "Hazelnut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "allergen", "allergen_treenut", "cross_reactive", "cross_birch"] },
       { name: "Peanut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "allergen", "allergen_peanut", "cross_reactive", "cross_grass"] },
