@@ -363,14 +363,36 @@
         const ta = tokens(ourName), tb = tokens(lmvName);
         const a = ta.join(" "), b = tb.join(" ");
         if (!a || !b) return 0;
-        let s = dice(a, b);
+
         // a full token appearing in both is strong evidence across languages
         // ("roquefort", "halloumi", "quinoa" are spelled the same in Swedish)
         const shared = ta.filter(function (t) {
             return tb.indexOf(t) !== -1 && WEAK_TOKENS.indexOf(t) === -1;
         });
-        if (shared.length) s = Math.max(s, 0.6 + 0.1 * shared.length);
-        return Math.min(s, 1);
+        /* No word in common — fall back to letter-pattern similarity, but
+           capped below the shared-word range. "Ättika" and "Rättika" differ by
+           one letter and would otherwise outrank the real "Ättika 12%". */
+        if (!shared.length) return Math.min(dice(a, b), 0.8);
+
+        /* How much of each name the shared words actually account for.
+
+           Without this, "Lax" and "Bagel m. rökt lax färskost sallad" score
+           the same for "Salmon" — both contain "lax" — and the composite dish
+           wins on iteration order. The database is full of prepared dishes, so
+           a candidate carrying a pile of unrelated words has to rank below the
+           plain ingredient. Weak words (rå, kokt, torkad) are not counted as
+           clutter, since "Lax rå" is still just salmon. */
+        const strongB = tb.filter(function (t) { return WEAK_TOKENS.indexOf(t) === -1; });
+        const clutter = Math.max(0, strongB.length - shared.length);
+        const coverage = shared.length / Math.max(1, Math.min(ta.length, strongB.length));
+
+        /* Livsmedelsverket names lead with the ingredient — "Lax rå", "Ägg
+           hönsägg", "Ost halloumi" — while dishes bury it: "Våffla m. ägg".
+           So a match on the first word counts for more. */
+        const headMatch = shared.indexOf(tb[0]) !== -1 ? 0.05 : 0;
+
+        const s = 0.55 + 0.35 * coverage - 0.06 * clutter + headMatch;
+        return Math.max(0, Math.min(s, 1));
     }
 
     /* ---- the audit ---------------------------------------------------- */
@@ -379,10 +401,17 @@
         const n = record.nutrients;
         const findings = [];
 
+        /* Foods eaten in gram amounts are exempt from the per-100g fat,
+           protein and fiber thresholds — cinnamon is 53g fiber per 100g, but
+           nobody eats 100g of cinnamon. Only the concentration-based traits
+           (lactose, alcohol) still apply. */
+        const servingRules = ["over_10g_fat", "protein", "fiber"];
+
         RULES.forEach(function (rule) {
             const value = n[rule.nutrient];
             if (value == null) return;
             if (rule.requires && food.traits.indexOf(rule.requires) === -1) return;
+            if (food.smallServing && servingRules.indexOf(rule.trait) !== -1) return;
             const has = food.traits.indexOf(rule.trait) !== -1;
             const expected = value > rule.min;
             if (has === expected) return;
@@ -395,7 +424,7 @@
             });
         });
 
-        if (n.fat != null || n.protein != null) {
+        if (!food.smallServing && (n.fat != null || n.protein != null)) {
             const has = food.traits.indexOf("bile_stimulant") !== -1;
             const expected = bileExpected(n);
             if (has !== expected) {
@@ -480,7 +509,12 @@
         const out = [];
         categories.forEach(function (cat) {
             cat.foods.forEach(function (food) {
-                out.push({ name: food.name, category: cat.label, traits: food.traits });
+                out.push({
+                    name: food.name,
+                    category: cat.label,
+                    traits: food.traits,
+                    smallServing: Boolean(food.smallServing || cat.smallServing)
+                });
             });
         });
         return out;
