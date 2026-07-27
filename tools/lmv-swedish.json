@@ -147,8 +147,8 @@
   "Macadamia": "Macadamianöt",
   "Tiger Nut (roasted)": "Jordmandel",
   "Oats": [
-    "Havregryn",
-    "Havre"
+    "Havregrynsgröt",
+    "Havregryn fullkorn"
   ],
   "Wheat": "Vete",
   "Rye": "Råg",
@@ -180,38 +180,59 @@
     "Majsstärkelse",
     "Maizena"
   ],
-  "Quinoa": "Quinoa",
-  "Rice": "Ris",
+  "Quinoa": [
+    "Quinoa kokt",
+    "Mjölmålla quinoa kokt"
+  ],
+  "Rice": [
+    "Ris kokt",
+    "Ris"
+  ],
   "Sorghum/Durra": [
-    "Durra",
-    "Sorghum"
+    "Durra kokt",
+    "Durra"
   ],
   "White Bread": "Vitt bröd",
   "Pasta": "Pasta",
-  "Couscous": "Couscous",
-  "Bulgur": "Bulgur",
+  "Couscous": [
+    "Couscous kokt",
+    "Couscous"
+  ],
+  "Bulgur": [
+    "Bulgur kokt",
+    "Bulgur"
+  ],
   "Spelt": "Dinkel",
   "Black Bean": "Svarta bönor",
   "Chickpea (whole/flour)": [
-    "Kikärter",
-    "Kikärtsmjöl"
+    "Kikärter kokta",
+    "Kikärter"
   ],
   "Common Peas": [
-    "Ärter gröna",
-    "Gröna ärter"
+    "Ärter gröna kokta",
+    "Spritärter kokta"
   ],
-  "Lentils": "Linser",
-  "Soybeans": "Sojabönor",
+  "Lentils": [
+    "Linser kokta",
+    "Linser"
+  ],
+  "Soybeans": [
+    "Sojabönor kokta",
+    "Sojabönor"
+  ],
   "Edamame": [
-    "Edamame",
-    "Sojabönor omogna"
+    "Sojabönor omogna kokta",
+    "Edamame"
   ],
   "Fava Beans": "Bondbönor",
   "Pinto Beans": [
-    "Pintobönor",
-    "Bruna bönor"
+    "Bruna bönor kokta",
+    "Pintobönor kokta"
   ],
-  "Kidney Beans": "Kidneybönor",
+  "Kidney Beans": [
+    "Kidneybönor kokta",
+    "Kidney bönor kokta"
+  ],
   "White Beans": "Vita bönor",
   "Tofu": "Tofu",
   "Tempeh": "Tempeh",
@@ -522,5 +543,13 @@
     "Russin sultana"
   ],
   "Teff": "Teff",
-  "Tamarind": "Tamarind"
+  "Tamarind": "Tamarind",
+  "Pasta (no egg)": [
+    "Pasta kokt",
+    "Spaghetti kokt"
+  ],
+  "Fresh Pasta (w/ egg)": [
+    "Pasta färsk kokt",
+    "Pasta ägg kokt"
+  ]
 }
