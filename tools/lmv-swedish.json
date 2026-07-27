@@ -260,7 +260,6 @@
   "Minced Meat (~12% fat)": "Köttfärs",
   "Minced Meat (~20% fat)": "Köttfärs",
   "Lamb": "Lammkött",
-  "Duck": "Anka",
   "Turkey": "Kalkon",
   "Frozen Meatballs": "Köttbullar",
   "Hot Dog Sausage": [
@@ -408,7 +407,6 @@
   "Rice Milk": "Risdryck",
   "Coffee": "Kaffe",
   "Espresso": "Espresso",
-  "French Fries": "Pommes frites",
   "Instant Ramen": [
     "Nudlar snabbnudlar",
     "Snabbnudlar"
@@ -422,7 +420,10 @@
     "Saltstänger",
     "Saltkringlor"
   ],
-  "Instant Mashed Potato": "Potatismospulver",
+  "Instant Mashed Potato": [
+    "Potatismos berett",
+    "Potatismos pulver berett"
+  ],
   "Dumplings": [
     "Dumplings",
     "Degknyten"
@@ -466,7 +467,10 @@
   "Thousand Island Dressing": "Dressing",
   "Remoulade": "Remouladsås",
   "Horseradish Sauce": "Pepparrotssås",
-  "Béarnaise Sauce": "Bearnaisesås",
+  "Béarnaise Sauce": [
+    "Bearnaisesås hemlagad",
+    "Bearnaisesås"
+  ],
   "Hollandaise Sauce": "Hollandaisesås",
   "Shiitake Mushrooms": "Shiitake",
   "Oyster Mushrooms": "Ostronskivling",
@@ -559,5 +563,17 @@
   "Psyllium Husk (ground)": [
     "Psylliumfröskal",
     "Loppfröskal"
+  ],
+  "Duck (with skin)": [
+    "Anka m. skinn",
+    "Anka helstekt"
+  ],
+  "French Fries (deep-fried)": [
+    "Pommes frites friterad",
+    "Pommes frites restaurang"
+  ],
+  "French Fries (oven-baked)": [
+    "Pommes frites ugn",
+    "Pommes frites värmd i ugn"
   ]
 }
