@@ -1,6 +1,5 @@
 {
   "_comment": "Swedish search terms for our English food names, so the audit can match against Livsmedelsverket. Bigram similarity cannot cross languages — 'Onion' and 'Lök' share nothing — so without this most foods never match. These only steer the fuzzy matcher; every hit is still reported as a suggestion to confirm, so a wrong term here shows up as an obviously wrong suggestion rather than bad data. Use an array where several Swedish names are plausible.",
-
   "Beet Root": "Rödbeta",
   "Jerusalem Artichoke": "Jordärtskocka",
   "Parsnip": "Palsternacka",
@@ -11,22 +10,40 @@
   "Black Salsify": "Svartrot",
   "Cabbage": "Vitkål",
   "Kale": "Grönkål",
-  "Onion": ["Lök gul", "Gul lök"],
+  "Onion": [
+    "Lök gul",
+    "Gul lök"
+  ],
   "Cauliflower": "Blomkål",
   "Parsley": "Persilja",
   "Leek": "Purjolök",
   "Spinach": "Spenat",
   "Bell Pepper (sweet)": "Paprika",
-  "Bell Pepper (hot)": ["Chilipeppar", "Chili"],
+  "Bell Pepper (hot)": [
+    "Chilipeppar",
+    "Chili"
+  ],
   "Asparagus": "Sparris",
   "Fennel Bulb": "Fänkål",
   "Brussels Sprouts": "Brysselkål",
-  "Green Beans": ["Haricots verts", "Gröna bönor"],
+  "Green Beans": [
+    "Haricots verts",
+    "Gröna bönor"
+  ],
   "Swiss Chard": "Mangold",
-  "Romaine Lettuce": ["Romansallat", "Sallat"],
-  "Celery": ["Blekselleri", "Selleri"],
+  "Romaine Lettuce": [
+    "Romansallat",
+    "Sallat"
+  ],
+  "Celery": [
+    "Blekselleri",
+    "Selleri"
+  ],
   "Bok Choy": "Pak choi",
-  "Daikon Radish": ["Rättika", "Daikon"],
+  "Daikon Radish": [
+    "Rättika",
+    "Daikon"
+  ],
   "Rhubarb": "Rabarber",
   "Sweetcorn": "Majs",
   "Cucumber": "Gurka",
@@ -40,7 +57,6 @@
   "Zucchini": "Zucchini",
   "Aubergine": "Aubergine",
   "Pumpkin": "Pumpa",
-
   "Apples": "Äpple",
   "Oranges": "Apelsin",
   "Pears": "Päron",
@@ -51,7 +67,10 @@
   "Figs": "Fikon",
   "Pomegranate": "Granatäpple",
   "Lychee": "Litchi",
-  "Star Fruit": ["Stjärnfrukt", "Carambola"],
+  "Star Fruit": [
+    "Stjärnfrukt",
+    "Carambola"
+  ],
   "Durian": "Durian",
   "Peach": "Persika",
   "Nectarine": "Nektarin",
@@ -61,9 +80,11 @@
   "Grapes": "Vindruvor",
   "Watermelon": "Vattenmelon",
   "Melon": "Melon",
-  "Persimmon": ["Persimon", "Sharonfrukt"],
+  "Persimmon": [
+    "Persimon",
+    "Sharonfrukt"
+  ],
   "Passion Fruit": "Passionsfrukt",
-
   "Blueberry": "Blåbär",
   "Strawberry": "Jordgubbe",
   "Cherries": "Körsbär",
@@ -75,7 +96,6 @@
   "Gooseberry": "Krusbär",
   "Elderberry": "Fläderbär",
   "Cranberry": "Tranbär",
-
   "Dates": "Dadlar",
   "Raisins": "Russin",
   "Dried Apricot": "Aprikos torkad",
@@ -93,23 +113,31 @@
   "Dried Blueberries (No Sugar Added)": "Blåbär torkade",
   "Dried Strawberries": "Jordgubbar torkade",
   "Dried Peach": "Persika torkad",
-  "Dried Coconut": ["Kokos torkad", "Kokosflingor"],
+  "Dried Coconut": [
+    "Kokos torkad",
+    "Kokosflingor"
+  ],
   "Dried Goji Berry": "Gojibär",
   "Currants (dried)": "Korinter",
   "Dried Lychee": "Litchi torkad",
   "Dried Mango": "Mango torkad",
   "Dried Banana": "Banan torkad",
-
   "Almond": "Mandel",
   "Brazil Nut": "Paranöt",
-  "Cashew Nut": "Cashewnöt",
+  "Cashew Nut": [
+    "Cashewnötter",
+    "Cashewnöt"
+  ],
   "Chiaseeds (whole)": "Chiafrön",
   "Chiaseeds (ground)": "Chiafrön",
   "Flaxseed (whole)": "Linfrö",
   "Flaxseed (ground)": "Linfrö",
   "Hazelnut": "Hasselnöt",
   "Peanut": "Jordnöt",
-  "Pumpkin Seeds": "Pumpakärnor",
+  "Pumpkin Seeds": [
+    "Pumpafrö",
+    "Pumpakärnor"
+  ],
   "Sunflower Seeds": "Solrosfrön",
   "Walnut": "Valnöt",
   "Sesame Seeds": "Sesamfrön",
@@ -118,51 +146,93 @@
   "Pistachio": "Pistagenöt",
   "Macadamia": "Macadamianöt",
   "Tiger Nut (roasted)": "Jordmandel",
-
-  "Oats": ["Havregryn", "Havre"],
+  "Oats": [
+    "Havregryn",
+    "Havre"
+  ],
   "Wheat": "Vete",
   "Rye": "Råg",
-  "Barley": ["Korngryn", "Korn"],
+  "Barley": [
+    "Korngryn",
+    "Korn"
+  ],
   "Buckwheat": "Bovete",
   "Freekeh": "Freekeh",
   "Pita Bread": "Pitabröd",
   "Naan Bread": "Naanbröd",
-  "Soba Noodles": "Sobanudlar",
+  "Soba Noodles": [
+    "Nudlar bovete",
+    "Sobanudlar"
+  ],
   "Rice Noodles": "Risnudlar",
-  "Crispbread (rye)": "Knäckebröd",
+  "Crispbread (rye)": [
+    "Hårt bröd fullkorn råg",
+    "Knäckebröd"
+  ],
   "Rice Cakes": "Riskakor",
   "Millet": "Hirs",
   "Seitan": "Seitan",
-  "Tapioca": "Tapioka",
-  "Cornstarch": ["Majsstärkelse", "Maizena"],
+  "Tapioca": [
+    "Tapioka",
+    "Kassava"
+  ],
+  "Cornstarch": [
+    "Majsstärkelse",
+    "Maizena"
+  ],
   "Quinoa": "Quinoa",
   "Rice": "Ris",
-  "Sorghum/Durra": ["Durra", "Sorghum"],
+  "Sorghum/Durra": [
+    "Durra",
+    "Sorghum"
+  ],
   "White Bread": "Vitt bröd",
   "Pasta": "Pasta",
   "Couscous": "Couscous",
   "Bulgur": "Bulgur",
   "Spelt": "Dinkel",
-
   "Black Bean": "Svarta bönor",
-  "Chickpea (whole/flour)": "Kikärter",
-  "Common Peas": ["Ärter gröna", "Gröna ärter"],
+  "Chickpea (whole/flour)": [
+    "Kikärter",
+    "Kikärtsmjöl"
+  ],
+  "Common Peas": [
+    "Ärter gröna",
+    "Gröna ärter"
+  ],
   "Lentils": "Linser",
   "Soybeans": "Sojabönor",
-  "Edamame": ["Edamame", "Sojabönor omogna"],
+  "Edamame": [
+    "Edamame",
+    "Sojabönor omogna"
+  ],
   "Fava Beans": "Bondbönor",
-  "Pinto Beans": ["Pintobönor", "Brunbönor"],
+  "Pinto Beans": [
+    "Pintobönor",
+    "Bruna bönor"
+  ],
   "Kidney Beans": "Kidneybönor",
   "White Beans": "Vita bönor",
   "Tofu": "Tofu",
   "Tempeh": "Tempeh",
-
   "Cows Meat": "Nötkött",
-  "Elk Meat": "Älgkött",
+  "Elk Meat": [
+    "Älg kött",
+    "Älgkött"
+  ],
   "Egg Yolk": "Äggula",
-  "Whole Egg": ["Ägg", "Hönsägg"],
-  "Dry-Cured Ham (lean)": ["Lufttorkad skinka", "Serranoskinka"],
-  "Dry-Cured Ham (fatty cut)": ["Lufttorkad skinka", "Parmaskinka"],
+  "Whole Egg": [
+    "Ägg",
+    "Hönsägg"
+  ],
+  "Dry-Cured Ham (lean)": [
+    "Lufttorkad skinka",
+    "Serranoskinka"
+  ],
+  "Dry-Cured Ham (fatty cut)": [
+    "Lufttorkad skinka",
+    "Parmaskinka"
+  ],
   "Sausages (lean)": "Korv",
   "Sausages (regular)": "Korv",
   "Minced Meat (~5% fat)": "Köttfärs",
@@ -172,13 +242,15 @@
   "Duck": "Anka",
   "Turkey": "Kalkon",
   "Frozen Meatballs": "Köttbullar",
-  "Hot Dog Sausage": ["Varmkorv", "Falukorv"],
+  "Hot Dog Sausage": [
+    "Varmkorv",
+    "Falukorv"
+  ],
   "Pork": "Fläskkött",
   "Chicken": "Kyckling",
   "Bacon": "Bacon",
   "Liver": "Lever",
   "Salami": "Salami",
-
   "Salmon": "Lax",
   "Cod": "Torsk",
   "Oysters": "Ostron",
@@ -189,14 +261,22 @@
   "Anchovies": "Ansjovis",
   "Smoked Salmon": "Lax rökt",
   "Crab": "Krabba",
-  "Mussels": ["Blåmusslor", "Musslor"],
+  "Mussels": [
+    "Blåmusslor",
+    "Musslor"
+  ],
   "Fish Balls": "Fiskbullar",
   "Fish Fingers": "Fiskpinnar",
-  "Nori": ["Nori", "Sjögräs"],
+  "Nori": [
+    "Sjögräs nori",
+    "Alger nori"
+  ],
   "Herring": "Sill",
   "Mackerel": "Makrill",
-
-  "Cows Milk": ["Mjölk", "Komjölk"],
+  "Cows Milk": [
+    "Mjölk",
+    "Komjölk"
+  ],
   "Goats Milk": "Getmjölk",
   "Sheeps Milk": "Fårmjölk",
   "Hard Cheese (~15% fat)": "Hårdost",
@@ -208,14 +288,26 @@
   "Butter": "Smör",
   "Quark Cheese (~0.2% fat)": "Kvarg",
   "Quark Cheese (~11% fat)": "Kvarg",
-  "Mascarpone": "Mascarpone",
+  "Mascarpone": [
+    "Färskost mascarpone",
+    "Mascarpone"
+  ],
   "Blue Cheese": "Ädelost",
   "Roquefort": "Roquefort",
   "Fontina": "Fontina",
   "Raclette": "Raclette",
-  "Cheddar": "Cheddar",
-  "Aged Gouda": "Gouda",
-  "Whey Protein": "Vassleprotein",
+  "Cheddar": [
+    "Ost cheddar",
+    "Cheddar"
+  ],
+  "Aged Gouda": [
+    "Ost gouda",
+    "Gouda"
+  ],
+  "Whey Protein": [
+    "Vasslepulver",
+    "Proteinpulver vassle"
+  ],
   "Feta Cheese": "Fetaost",
   "Labneh": "Labneh",
   "Buttermilk": "Kärnmjölk",
@@ -235,7 +327,6 @@
   "Skyr": "Skyr",
   "Kefir": "Kefir",
   "Paneer": "Paneer",
-
   "Garlic": "Vitlök",
   "Ginger": "Ingefära",
   "Turmeric": "Gurkmeja",
@@ -250,20 +341,37 @@
   "Oregano": "Oregano",
   "Thyme": "Timjan",
   "Rosemary": "Rosmarin",
-  "Mint": "Mynta",
+  "Mint": [
+    "Mynta",
+    "Pepparmynta"
+  ],
   "Cinnamon": "Kanel",
   "Chili Powder": "Chilipulver",
   "Paprika Powder": "Paprikapulver",
   "Basil": "Basilika",
   "Dill": "Dill",
-
-  "Red Wine": "Rödvin",
+  "Red Wine": [
+    "Vin rött",
+    "Rödvin"
+  ],
   "White Wine": "Vitt vin",
-  "Schilcherwein": ["Schilcher", "Rosévin"],
-  "Champagne": "Champagne",
-  "Beer": "Öl",
+  "Schilcherwein": [
+    "Schilcher",
+    "Rosévin"
+  ],
+  "Champagne": [
+    "Vin mousserande",
+    "Champagne"
+  ],
+  "Beer": [
+    "Öl starköl",
+    "Öl"
+  ],
   "Cider": "Cider",
-  "Spirits (Liquor)": ["Starksprit", "Sprit"],
+  "Spirits (Liquor)": [
+    "Sprit",
+    "Whisky"
+  ],
   "Black Tea": "Te svart",
   "Green Tea": "Te grönt",
   "Mate Tea": "Mate",
@@ -279,20 +387,39 @@
   "Rice Milk": "Risdryck",
   "Coffee": "Kaffe",
   "Espresso": "Espresso",
-
   "French Fries": "Pommes frites",
-  "Instant Ramen": "Snabbnudlar",
-  "Instant Soup / Bouillon Cubes": ["Buljongtärning", "Buljong"],
+  "Instant Ramen": [
+    "Nudlar snabbnudlar",
+    "Snabbnudlar"
+  ],
+  "Instant Soup / Bouillon Cubes": [
+    "Buljongtärning",
+    "Buljong"
+  ],
   "Flavored Yogurt": "Fruktyoghurt",
-  "Pretzels": "Saltkringlor",
+  "Pretzels": [
+    "Saltstänger",
+    "Saltkringlor"
+  ],
   "Instant Mashed Potato": "Potatismospulver",
-  "Dumplings": "Dumplings",
-  "Chicken Nuggets": "Kycklingnuggets",
+  "Dumplings": [
+    "Dumplings",
+    "Degknyten"
+  ],
+  "Chicken Nuggets": [
+    "Kyckling nuggets",
+    "Kycklingnuggets"
+  ],
   "Potato Chips": "Potatischips",
-
   "Vinegar": "Ättika",
-  "Balsamic Vinegar": "Balsamvinäger",
-  "Fish Roe Spread": ["Kaviar", "Romkräm"],
+  "Balsamic Vinegar": [
+    "Vinäger balsamico",
+    "Balsamvinäger"
+  ],
+  "Fish Roe Spread": [
+    "Kaviar torskrom",
+    "Romkräm"
+  ],
   "Yeast Extract": "Jästextrakt",
   "Harissa": "Harissa",
   "Baba Ganoush": "Baba ganoush",
@@ -305,43 +432,95 @@
   "Honey": "Honung",
   "Maple Syrup": "Lönnsirap",
   "Mayonnaise": "Majonnäs",
-  "Tahini": ["Sesampasta", "Tahini"],
+  "Tahini": [
+    "Sesampasta",
+    "Tahini"
+  ],
   "Pesto": "Pesto",
   "Guacamole": "Guacamole",
   "Tzatziki": "Tzatziki",
   "Hummus": "Hummus",
   "Ketchup": "Ketchup",
-
   "Ranch Dressing": "Dressing ranch",
   "Thousand Island Dressing": "Dressing",
   "Remoulade": "Remouladsås",
   "Horseradish Sauce": "Pepparrotssås",
   "Béarnaise Sauce": "Bearnaisesås",
   "Hollandaise Sauce": "Hollandaisesås",
-
   "Shiitake Mushrooms": "Shiitake",
   "Oyster Mushrooms": "Ostronskivling",
-  "Portobello Mushrooms": "Portabello",
-  "Cremini Mushrooms": ["Kastanjchampinjon", "Champinjon"],
-  "Enoki Mushrooms": "Enoki",
+  "Portobello Mushrooms": [
+    "Champinjon portabello",
+    "Portabello"
+  ],
+  "Cremini Mushrooms": [
+    "Kastanjchampinjon",
+    "Champinjon"
+  ],
+  "Enoki Mushrooms": "Enokisvamp",
   "Chanterelle Mushrooms": "Kantarell",
-  "Porcini Mushrooms": ["Karljohansvamp", "Stensopp"],
-  "Morel Mushrooms": "Murkla",
+  "Porcini Mushrooms": [
+    "Stensopp",
+    "Karljohansvamp"
+  ],
+  "Morel Mushrooms": [
+    "Murkla",
+    "Toppmurkla"
+  ],
   "Button Mushrooms": "Champinjon",
-
-  "Candy bars": ["Chokladbit", "Godis"],
+  "Candy bars": [
+    "Chokladbit",
+    "Godis"
+  ],
   "Sugary Breakfast Cereal": "Frukostflingor",
   "Sugary soft drinks": "Läsk",
-  "Halva": "Halva",
+  "Halva": [
+    "Halva sesam",
+    "Halva"
+  ],
   "Ice Cream": "Glass",
   "Milk chocolate": "Mjölkchoklad",
   "Dark Chocolate": "Mörk choklad",
   "Baklava": "Baklava",
-
   "Kimchi": "Kimchi",
   "Sauerkraut": "Surkål",
   "Pickled Cucumber": "Inlagd gurka",
   "Olives": "Oliver",
   "Miso": "Miso",
-  "Soy Sauce": "Sojasås"
+  "Soy Sauce": "Sojasås",
+  "Egg White": "Äggvita",
+  "White Sugar": [
+    "Strösocker",
+    "Socker vitt"
+  ],
+  "White Button Mushrooms": "Champinjon vit",
+  "White Cheese (~0% fat)": "Kvarg",
+  "Split Peas": [
+    "Ärter gula",
+    "Spritärter"
+  ],
+  "Margarine": "Margarin",
+  "Cheese Puffs / Snacks": [
+    "Ostbågar",
+    "Snacks ost"
+  ],
+  "Curry Powder": "Curry",
+  "Salsa": [
+    "Salsa tomatsås",
+    "Tomatsalsa"
+  ],
+  "Cranberry Sauce": "Tranbärssås",
+  "Fish Sauce": "Fisksås",
+  "King Oyster Mushrooms": "Ostronskivling kung",
+  "Kohlrabi": "Kålrabbi",
+  "Rocket": [
+    "Ruccola",
+    "Rucola"
+  ],
+  "Sultanas": [
+    "Sultanrussin",
+    "Russin sultana"
+  ],
+  "Teff": "Teff",
+  "Tamarind": "Tamarind"
 }
