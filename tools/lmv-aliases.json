@@ -101,7 +101,6 @@
   "Tempeh": "Tempeh",
   "Cows Meat": "Nöt kött rå",
   "Lamb": "Lamm kött rå",
-  "Duck": "Anka bröst rå",
   "Turkey": "Kalkon kokt",
   "Dry-Cured Ham (lean)": "Gris skinka lufttorkad italiensk",
   "Hot Dog Sausage": "Korv varmkorv kokt",
@@ -150,7 +149,6 @@
   "Mayonnaise": "Majonnäs fett 80%",
   "Remoulade": "Remouladsås",
   "Hollandaise Sauce": "Hollandaisesås hemlagad",
-  "Béarnaise Sauce": "Bearnaisesås fett 8%",
   "Tzatziki": "Tzatziki",
   "Guacamole": "Guacamole",
   "Hummus": "Hummus kikärtsröra",
@@ -165,8 +163,6 @@
   "Sunflower Oil": "Solrosolja",
   "Rapeseed Oil": "Rapsolja",
   "Coconut Oil": "Kokosolja",
-  "Instant Mashed Potato": "Potatismos pulver",
-  "French Fries": "Pommes frites friterad potatis värmd i ugn fett ca 7% frysvara",
   "Microwave Popcorn": "Popcorn mikropopcorn poppade fett ca 22%",
   "Milk chocolate": "Mjölkchoklad",
   "Dark Chocolate": "Mörk choklad kakao ≥ 70%",
@@ -231,5 +227,6 @@
   "Mascarpone": "Färskost fett 33%",
   "Dried Banana": "Banan torkad",
   "Pinto Beans": "Bruna bönor torkade kokta m. salt",
-  "Edamame": "Sojabönor torkade kokta u. salt"
+  "Edamame": "Sojabönor torkade kokta u. salt",
+  "French Fries (oven-baked)": "Pommes frites friterad potatis värmd i ugn fett ca 7% frysvara"
 }

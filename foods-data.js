@@ -790,7 +790,9 @@ const CATEGORIES = [
       { name: "Minced Meat (~12% fat)", traits: ["over_10g_fat", "protein", "histamine", "alpha_gal"] },
       { name: "Minced Meat (~20% fat)", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
       { name: "Lamb", traits: ["alpha_gal"] },
-      { name: "Duck", traits: ["over_10g_fat", "bile_stimulant"] },
+      // Named for the skin, because that is where the fat is: skinless
+      // breast is ~4g/100g and would not carry either tag.
+      { name: "Duck (with skin)", traits: ["over_10g_fat", "bile_stimulant", "alpha_gal"] },
       { name: "Turkey", traits: ["bile_stimulant", "protein"] },
       { name: "Frozen Meatballs", traits: ["over_10g_fat", "histamine", "alpha_gal"] },
       { name: "Hot Dog Sausage", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal"] },
@@ -942,7 +944,8 @@ const CATEGORIES = [
     label: "Processed Foods",
     foods: [
       { name: "Frozen pizza", traits: ["refined_carbs"] },
-      { name: "French Fries", traits: ["over_10g_fat", "refined_carbs"] },
+      { name: "French Fries (deep-fried)", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs"] },
+      { name: "French Fries (oven-baked)", traits: ["refined_carbs"] },
       { name: "Instant Ramen", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans"] },
       { name: "Margarine", traits: ["over_10g_fat", "bile_stimulant"] },
       { name: "Instant Soup / Bouillon Cubes", traits: ["fodmaps", "fructans"] },
