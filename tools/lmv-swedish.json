@@ -159,7 +159,10 @@
   "Buckwheat": "Bovete",
   "Freekeh": "Freekeh",
   "Pita Bread": "Pitabröd",
-  "Naan Bread": "Naanbröd",
+  "Naan Bread": [
+    "Bröd naan",
+    "Naanbröd"
+  ],
   "Soba Noodles": [
     "Nudlar bovete",
     "Sobanudlar"
@@ -169,7 +172,10 @@
     "Hårt bröd fullkorn råg",
     "Knäckebröd"
   ],
-  "Rice Cakes": "Riskakor",
+  "Rice Cakes": [
+    "Riskaka",
+    "Kaka ris puffat"
+  ],
   "Millet": "Hirs",
   "Seitan": "Seitan",
   "Tapioca": [
@@ -205,12 +211,14 @@
   "Spelt": "Dinkel",
   "Black Bean": "Svarta bönor",
   "Chickpea (whole/flour)": [
-    "Kikärter kokta",
-    "Kikärter"
+    "Kikärtor kokta",
+    "Kikärtor",
+    "Kikärtsmjöl"
   ],
   "Common Peas": [
-    "Ärter gröna kokta",
-    "Spritärter kokta"
+    "Ärtor gröna kokta",
+    "Spritärtor kokta",
+    "Gröna ärtor"
   ],
   "Lentils": [
     "Linser kokta",
@@ -297,8 +305,14 @@
     "Mjölk",
     "Komjölk"
   ],
-  "Goats Milk": "Getmjölk",
-  "Sheeps Milk": "Fårmjölk",
+  "Goats Milk": [
+    "Mjölk get",
+    "Getmjölk"
+  ],
+  "Sheeps Milk": [
+    "Mjölk får",
+    "Fårmjölk"
+  ],
   "Hard Cheese (~15% fat)": "Hårdost",
   "Hard Cheese (~28-35% fat)": "Hårdost",
   "Yogurt": "Yoghurt",
@@ -330,7 +344,10 @@
   ],
   "Feta Cheese": "Fetaost",
   "Labneh": "Labneh",
-  "Buttermilk": "Kärnmjölk",
+  "Buttermilk": [
+    "Filmjölk",
+    "Kärnmjölk"
+  ],
   "Lactose-free Milk": "Laktosfri mjölk",
   "Lactose-free Yogurt": "Laktosfri yoghurt",
   "Cream": "Grädde",
@@ -351,18 +368,30 @@
   "Ginger": "Ingefära",
   "Turmeric": "Gurkmeja",
   "Mustard": "Senap",
-  "Black Pepper": "Svartpeppar",
+  "Black Pepper": [
+    "Peppar svart",
+    "Svartpeppar malen"
+  ],
   "Za'atar": "Zaatar",
   "Sumac": "Sumak",
   "Cumin": "Spiskummin",
   "Shawarma Spice Mix": "Shawarmakrydda",
   "Sichuan Peppercorn": "Sichuanpeppar",
   "Nutmeg": "Muskotnöt",
-  "Oregano": "Oregano",
-  "Thyme": "Timjan",
-  "Rosemary": "Rosmarin",
+  "Oregano": [
+    "Oregano torkad",
+    "Oregano"
+  ],
+  "Thyme": [
+    "Timjan torkad",
+    "Timjan"
+  ],
+  "Rosemary": [
+    "Rosmarin torkad",
+    "Rosmarin"
+  ],
   "Mint": [
-    "Mynta",
+    "Mynta torkad",
     "Pepparmynta"
   ],
   "Cinnamon": "Kanel",
@@ -404,7 +433,10 @@
   "Chamomile Tea": "Kamomillte",
   "Kombucha": "Kombucha",
   "Almond Milk": "Mandeldryck",
-  "Rice Milk": "Risdryck",
+  "Rice Milk": [
+    "Dryck ris",
+    "Risdryck"
+  ],
   "Coffee": "Kaffe",
   "Espresso": "Espresso",
   "Instant Ramen": [
@@ -418,7 +450,7 @@
   "Flavored Yogurt": "Fruktyoghurt",
   "Pretzels": [
     "Saltstänger",
-    "Saltkringlor"
+    "Kringlor salta"
   ],
   "Instant Mashed Potato": [
     "Potatismos berett",
@@ -439,10 +471,13 @@
     "Balsamvinäger"
   ],
   "Fish Roe Spread": [
-    "Kaviar torskrom",
-    "Romkräm"
+    "Kaviar smörgåskaviar",
+    "Smörgåskaviar"
   ],
-  "Yeast Extract": "Jästextrakt",
+  "Yeast Extract": [
+    "Jästextrakt",
+    "Extrakt jäst"
+  ],
   "Harissa": "Harissa",
   "Baba Ganoush": "Baba ganoush",
   "Preserved Lemon": "Saltcitron",
@@ -452,7 +487,10 @@
   "Rapeseed Oil": "Rapsolja",
   "Coconut Oil": "Kokosolja",
   "Honey": "Honung",
-  "Maple Syrup": "Lönnsirap",
+  "Maple Syrup": [
+    "Sirap lönn",
+    "Lönnsirap"
+  ],
   "Mayonnaise": "Majonnäs",
   "Tahini": [
     "Sesampasta",
@@ -521,8 +559,8 @@
   "White Button Mushrooms": "Champinjon vit",
   "White Cheese (~0% fat)": "Kvarg",
   "Split Peas": [
-    "Ärter gula",
-    "Spritärter"
+    "Gula ärtor kokta",
+    "Ärtor gula kokta"
   ],
   "Margarine": "Margarin",
   "Cheese Puffs / Snacks": [
@@ -593,5 +631,21 @@
     "Bröd fullkorn råg",
     "Rågbröd"
   ],
-  "Pearl Barley (cooked)": "Korngryn kokt"
+  "Pearl Barley (cooked)": "Korngryn kokt",
+  "Brown Gravy": [
+    "Brunsås",
+    "Sås brun"
+  ],
+  "Hot Sauce": [
+    "Chilisås stark",
+    "Sås chili"
+  ],
+  "Barbecue Sauce": [
+    "Barbecuesås",
+    "BBQ-sås"
+  ],
+  "Tartar Sauce": [
+    "Tartarsås",
+    "Sås tartar"
+  ]
 }
