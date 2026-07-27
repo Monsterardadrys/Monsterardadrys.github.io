@@ -725,14 +725,14 @@ const CATEGORIES = [
       // Oats, rye and barley are almost never eaten as bare grain, so the
       // products are what people actually recognise and react to. Wheat
       // already had its own spread of products further down this list.
-      { name: "Oats", traits: ["fodmaps", "fructans"] },
+      { name: "Oats", lmv: "Havregryn fullkorn", traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Oat Porridge", traits: ["fodmaps", "fructans"] },
       { name: "Oat Crispbread", traits: ["fiber", "fodmaps", "fructans"] },
-      { name: "Oat Bran", traits: ["fiber", "fodmaps", "fructans"] },
-      { name: "Muesli (no added sugar)", traits: ["fiber", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
+      { name: "Oat Bran", lmv: "Havrekli", traits: ["fiber", "fodmaps", "fructans"] },
+      { name: "Muesli (no added sugar)", lmv: "Frukostflingor müsli fullkorn m. frukt", traits: ["fiber", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
       { name: "Wheat", traits: ["fodmaps", "fructans", "allergen", "allergen_wheat"] },
       { name: "Rye", traits: ["fodmaps", "fructans"] },
-      { name: "Rye Bread (whole grain)", traits: ["fiber", "fodmaps", "fructans"] },
+      { name: "Rye Bread (whole grain)", lmv: "Bröd fullkorn råg fibrer ca 7%", traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Pearl Barley (cooked)", lmv: "Korngryn kokt u. salt", traits: ["fodmaps", "fructans"] },
       { name: "Barley", traits: ["fodmaps", "fructans"] },
       { name: "Quinoa", traits: [] },
