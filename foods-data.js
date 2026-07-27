@@ -653,7 +653,7 @@ const CATEGORIES = [
     foods: [
       { name: "Dates", traits: ["fiber", "polyols", "fructans", "salicylate"] },
       { name: "Raisins", traits: ["fiber", "fructans"] },
-      { name: "Sultanas", traits: ["fructans"] },
+      { name: "Sultanas", traits: ["fiber", "fructans"] },
       { name: "Dried Apricot", traits: ["cross_reactive", "cross_birch", "fodmaps", "polyols", "fructans"] },
       { name: "Dried Fig", traits: ["fiber", "fodmaps", "polyols", "fructans"] },
       { name: "Prunes", traits: ["cross_reactive", "cross_birch", "fodmaps", "polyols"] },
@@ -688,13 +688,18 @@ const CATEGORIES = [
     foods: [
       { name: "Almond", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "cross_reactive", "cross_birch", "allergen", "allergen_treenut", "salicylate"] },
       { name: "Brazil Nut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen", "allergen_treenut"] },
-      { name: "Cashew Nut", traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "fructans", "allergen", "allergen_treenut"] },
-      // Whole seeds pass largely intact, so the fiber is what acts on the gut
-      // while most of the fat stays locked inside. Ground versions release it,
-      // which is why only they carry the fat and bile tags.
-      { name: "Chiaseeds (whole)", traits: ["fiber"] },
+      { name: "Cashew Nut", traits: ["over_10g_fat", "bile_stimulant", "fiber", "fodmaps", "galactans", "fructans", "allergen", "allergen_treenut"] },
+      /* wholeSeed marks the seeds small and tough enough to be swallowed
+         intact: the fiber is what acts on the gut while most of the fat stays
+         locked inside the shell. Only flaxseed, chia and psyllium qualify.
+         Pumpkin seeds are too large to swallow whole, and both they and sesame
+         turn brittle when roasted, so both are tagged on their full content.
+         Ground versions release everything and carry the fat tags. */
+      { name: "Chiaseeds (whole)", wholeSeed: true, traits: ["fiber"] },
       { name: "Chiaseeds (ground)", traits: ["fiber", "over_10g_fat", "bile_stimulant"] },
-      { name: "Flaxseed (whole)", traits: ["fiber", "fodmaps", "fructans"] },
+      { name: "Flaxseed (whole)", wholeSeed: true, traits: ["fiber", "fodmaps", "fructans"] },
+      { name: "Psyllium Husk (whole)", wholeSeed: true, traits: ["fiber"] },
+      { name: "Psyllium Husk (ground)", traits: ["fiber"] },
       { name: "Flaxseed (ground)", traits: ["fiber", "over_10g_fat", "bile_stimulant", "fodmaps", "fructans"] },
       { name: "Hazelnut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "allergen", "allergen_treenut", "cross_reactive", "cross_birch"] },
       { name: "Peanut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "allergen", "allergen_peanut", "cross_reactive", "cross_grass"] },
@@ -771,7 +776,7 @@ const CATEGORIES = [
       { name: "Cows Meat", traits: ["bile_stimulant", "protein", "alpha_gal"] },
       { name: "Pork (lean cut)", traits: ["protein", "alpha_gal"] },
       { name: "Pork (fatty cut)", traits: ["over_10g_fat", "bile_stimulant", "protein", "alpha_gal"] },
-      { name: "Elk Meat", traits: ["protein", "alpha_gal", "histamine"] },
+      { name: "Elk Meat", traits: ["bile_stimulant", "protein", "alpha_gal", "histamine"] },
       { name: "Chicken", traits: ["bile_stimulant", "protein"] },
       { name: "Egg White", traits: ["allergen", "allergen_egg"] },
       { name: "Egg Yolk", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg"] },

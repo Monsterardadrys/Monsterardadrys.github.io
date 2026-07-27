@@ -550,6 +550,14 @@
   ],
   "Fresh Pasta (w/ egg)": [
     "Pasta färsk kokt",
-    "Pasta ägg kokt"
+    "Äggnudlar kokta"
+  ],
+  "Psyllium Husk (whole)": [
+    "Psylliumfrö",
+    "Loppfrö"
+  ],
+  "Psyllium Husk (ground)": [
+    "Psylliumfröskal",
+    "Loppfröskal"
   ]
 }
