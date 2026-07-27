@@ -1,6 +1,5 @@
 {
-  "_comment": "Maps our English food names to the exact Livsmedelsverket name. Only confirmed pairs belong here — the audit treats everything listed as certain. Confirmed by hand from the first full-database run (LivsmedelsDB_202607270043, 2606 records); suggestions that pointed at a prepared dish rather than the ingredient were rejected rather than accepted.",
-
+  "_comment": "Maps our English food names to the exact Livsmedelsverket name. Only confirmed pairs belong here — the audit treats everything listed as certain. Confirmed by hand from the full-database runs. Two rules were applied throughout: prefer the plain ingredient over a prepared dish, and for anything never eaten dry (legumes, pasta, rice, grains) use the cooked entry — an alias pointing at a dried or flour entry was dropped rather than kept.",
   "Beet Root": "Rödbeta",
   "Carrot": "Morot",
   "Celeriac Root": "Rotselleri",
@@ -34,7 +33,6 @@
   "Spinach": "Spenat frysvara",
   "Bell Pepper (sweet)": "Paprika röd",
   "Bell Pepper (hot)": "Chilipeppar färsk",
-
   "Apples": "Äpple m. skal",
   "Oranges": "Apelsin",
   "Pears": "Päron",
@@ -59,7 +57,6 @@
   "Passion Fruit": "Passionsfrukt",
   "Star Fruit": "Carambole stjärnfrukt",
   "Persimmon": "Sharon",
-
   "Blueberry": "Blåbär",
   "Strawberry": "Jordgubbar",
   "Blackberries": "Björnbär",
@@ -71,7 +68,6 @@
   "Elderberry": "Fläderbär",
   "Cranberry": "Tranbär",
   "Lingonberry": "Lingon",
-
   "Dates": "Dadlar torkade",
   "Raisins": "Russin",
   "Dried Apricot": "Aprikos torkad",
@@ -85,7 +81,6 @@
   "Dried Peach": "Persika torkad",
   "Dried Coconut": "Kokosflingor",
   "Dried Goji Berry": "Gojibär torkade",
-
   "Almond": "Sötmandel",
   "Brazil Nut": "Paranötter",
   "Hazelnut": "Hasselnötter",
@@ -97,23 +92,13 @@
   "Sesame Seeds": "Sesamfrö m. skal",
   "Chiaseeds (whole)": "Chiafrö",
   "Chiaseeds (ground)": "Chiafrö",
-
-  "Couscous": "Couscous",
-  "Bulgur": "Bulgur",
   "Polenta": "Majsgryn polenta kokt m. salt",
-  "Millet": "Hirs hela el. krossade korn fullkorn",
-  "Sorghum/Durra": "Durra el. andra sorghumarter mjöl fullkorn",
   "Cornstarch": "Majsstärkelse",
   "Pita Bread": "Bröd vitt vete vatten fibrer ca 3,5% typ pitabröd",
-
   "Black Bean": "Svarta bönor konserv. u. lag",
-  "Kidney Beans": "Kidney bönor torkade",
   "Fava Beans": "Bondbönor färska kokta u. salt",
-  "Lentils": "Linser torkade",
-  "Soybeans": "Sojabönor torkade",
   "Tofu (firm)": "Tofu fast",
   "Tempeh": "Tempeh",
-
   "Cows Meat": "Nöt kött rå",
   "Lamb": "Lamm kött rå",
   "Duck": "Anka bröst rå",
@@ -121,7 +106,6 @@
   "Dry-Cured Ham (lean)": "Gris skinka lufttorkad italiensk",
   "Hot Dog Sausage": "Korv varmkorv kokt",
   "Egg Yolk": "Äggula rå",
-
   "Cod": "Torsk rå",
   "Oysters": "Ostron",
   "Lobsters": "Hummer kokt",
@@ -130,7 +114,6 @@
   "Anchovies": "Ansjovis skarpsill konserv. ",
   "Fish Balls": "Fiskbullar konserv. u. buljong",
   "Fish Fingers": "Fiskpinnar stekta",
-
   "Butter": "Smör fett 80%",
   "Ghee": "Klarnat smör ghee",
   "Cottage Cheese": "Färskost cottage cheese naturell fett 4%",
@@ -145,7 +128,6 @@
   "Sour Cream (~10% fat)": "Gräddfil fett 12%",
   "Lactose-free Yogurt": "Yoghurt naturell lätt laktosfri fett ca 0,4% berikad",
   "Flavored Yogurt": "Fruktyoghurt fett 2%",
-
   "Garlic": "Vitlök",
   "Ginger": "Ingefära färsk",
   "Turmeric": "Gurkmeja torkad",
@@ -156,14 +138,12 @@
   "Basil": "Basilika färsk",
   "Dill": "Dill färsk",
   "Wasabi": "Wasabirot",
-
   "Soy Milk": "Sojadryck",
   "Almond Milk": "Mandeldryck berikad",
   "Espresso": "Kaffe espresso bryggt drickf.",
   "Energy Drinks": "Energidryck m. socker berikad",
   "Cola": "Läsk cola",
   "Sugary soft drinks": "Läsk",
-
   "Soy Sauce": "Sojasås",
   "Ketchup": "Ketchup",
   "Aioli": "Aioli",
@@ -185,20 +165,45 @@
   "Sunflower Oil": "Solrosolja",
   "Rapeseed Oil": "Rapsolja",
   "Coconut Oil": "Kokosolja",
-
   "Instant Mashed Potato": "Potatismos pulver",
   "French Fries": "Pommes frites friterad potatis värmd i ugn fett ca 7% frysvara",
   "Microwave Popcorn": "Popcorn mikropopcorn poppade fett ca 22%",
   "Milk chocolate": "Mjölkchoklad",
   "Dark Chocolate": "Mörk choklad kakao ≥ 70%",
   "Baklava": "Baklava ",
-
   "Oyster Mushrooms": "Ostronskivling",
   "Cremini Mushrooms": "Champinjon",
   "Chanterelle Mushrooms": "Kantarell gul rå",
   "Shiitake Mushrooms": "Shiitakesvamp",
-
   "Sauerkraut": "Surkål konserv. m. lag",
   "Pickled Cucumber": "Gurka inlagd",
-  "Olives": "Oliver gröna m. paprikafyllning avrunna"
+  "Olives": "Oliver gröna m. paprikafyllning avrunna",
+  "Barley": "Korngryn kokt u. salt",
+  "Rice Noodles": "Nudlar risnudlar kokta",
+  "Falafel": "Falafel kikärtskroketter stekta",
+  "Prunes": "Katrinplommon torkade",
+  "Flaxseed (whole)": "Linfrö hela",
+  "Flaxseed (ground)": "Linfrö hela",
+  "Whole Egg": "Ägg rått",
+  "Chicken": "Kyckling kokt m. salt",
+  "Salami": "Påläggskorv salami rökt",
+  "Sausages (regular)": "Korv frukostkorv stekt",
+  "Frozen Meatballs": "Köttbullar frysvara",
+  "Smoked Salmon": "Lax kallrökt",
+  "Tuna": "Tonfisk stekt m. salt",
+  "Cows Milk": "Mjölk fett 3% berikad",
+  "Lactose-free Milk": "Mjölk fett 3% berikad",
+  "Yogurt": "Yoghurt naturell fett 3% berikad",
+  "Blue Cheese": "Ädelost grönmögelost fett 17%",
+  "Mozzarella": "Ost mozzarella fett 18%",
+  "Ice Cream": "Glass fett ca 10%",
+  "Oat Drink": "Havredryck fett 1,5% berikad",
+  "Coconut Milk": "Kokosmjölk fett ca 6%",
+  "Coffee": "Kaffe bryggt",
+  "White Bread": "Bröd vitt fibrer 3,5%",
+  "Parsley": "Persilja blad",
+  "Rhubarb": "Rabarber tillagad u. socker",
+  "Frozen pizza": "Pizza orientalisk",
+  "Granola Bar": "Bar müslibar m. choklad berikad",
+  "Salt": "Salt m. jod"
 }
