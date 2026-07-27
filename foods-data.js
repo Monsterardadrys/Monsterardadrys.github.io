@@ -663,7 +663,7 @@ const CATEGORIES = [
       { name: "Dried Cherry (No Sugar Added)", traits: ["fiber", "fodmaps", "polyols", "fructose", "cross_reactive", "cross_birch"] },
       { name: "Dried Mango (Added Sugar)", traits: ["fodmaps", "fructose", "refined_carbs"] },
       { name: "Dried Mango (No Sugar Added)", traits: ["fodmaps", "fructose"] },
-      { name: "Dried Pineapple (Added Sugar)", traits: ["fodmaps", "fructose", "refined_carbs"] },
+      { name: "Dried Pineapple (Added Sugar)", traits: ["fiber", "fodmaps", "fructose", "refined_carbs"] },
       { name: "Dried Pineapple (No Sugar Added)", traits: ["fodmaps", "fructose", "fiber"] },
       { name: "Dried Papaya (Added Sugar)", traits: ["cross_reactive", "cross_latex", "refined_carbs"] },
       { name: "Dried Papaya (No Sugar Added)", traits: ["cross_reactive", "cross_latex"] },
@@ -698,8 +698,8 @@ const CATEGORIES = [
       { name: "Chiaseeds (whole)", wholeSeed: true, lmv: "Chiafrö", traits: ["fiber"] },
       { name: "Chiaseeds (ground)", lmv: "Chiafrö", traits: ["fiber", "over_10g_fat", "bile_stimulant"] },
       { name: "Flaxseed (whole)", wholeSeed: true, lmv: "Linfrö hela", traits: ["fiber", "fodmaps", "fructans"] },
-      { name: "Psyllium Husk (whole)", wholeSeed: true, traits: ["fiber"] },
-      { name: "Psyllium Husk (ground)", traits: ["fiber"] },
+      { name: "Psyllium Husk (whole)", wholeSeed: true, lmv: "Psylliumfröskal", traits: ["fiber"] },
+      { name: "Psyllium Husk (ground)", lmv: "Psylliumfröskal", traits: ["fiber"] },
       { name: "Flaxseed (ground)", lmv: "Linfrö hela", traits: ["fiber", "over_10g_fat", "bile_stimulant", "fodmaps", "fructans"] },
       { name: "Hazelnut", lmv: "Hasselnötter", traits: ["fiber", "over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "allergen", "allergen_treenut", "cross_reactive", "cross_birch"] },
       { name: "Peanut", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "allergen", "allergen_peanut", "cross_reactive", "cross_grass"] },
@@ -722,10 +722,19 @@ const CATEGORIES = [
     id: "grains",
     label: "Grains/pseudo grains",
     foods: [
-      { name: "Oats", traits: [] },
+      // Oats, rye and barley are almost never eaten as bare grain, so the
+      // products are what people actually recognise and react to. Wheat
+      // already had its own spread of products further down this list.
+      { name: "Oats", traits: ["fodmaps", "fructans"] },
+      { name: "Oat Porridge", traits: ["fodmaps", "fructans"] },
+      { name: "Oat Crispbread", traits: ["fiber", "fodmaps", "fructans"] },
+      { name: "Oat Bran", traits: ["fiber", "fodmaps", "fructans"] },
+      { name: "Muesli (no added sugar)", traits: ["fiber", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
       { name: "Wheat", traits: ["fodmaps", "fructans", "allergen", "allergen_wheat"] },
       { name: "Rye", traits: ["fodmaps", "fructans"] },
-      { name: "Barley", lmv: "Korngryn kokt u. salt", traits: ["fodmaps", "fructans"] },
+      { name: "Rye Bread (whole grain)", traits: ["fiber", "fodmaps", "fructans"] },
+      { name: "Pearl Barley (cooked)", lmv: "Korngryn kokt u. salt", traits: ["fodmaps", "fructans"] },
+      { name: "Barley", traits: ["fodmaps", "fructans"] },
       { name: "Quinoa", traits: [] },
       { name: "Buckwheat", traits: [] },
       { name: "Rice", traits: [] },
@@ -792,7 +801,7 @@ const CATEGORIES = [
       { name: "Lamb", lmv: "Lamm kött rå", traits: ["alpha_gal"] },
       // Named for the skin, because that is where the fat is: skinless
       // breast is ~4g/100g and would not carry either tag.
-      { name: "Duck (with skin)", traits: ["over_10g_fat", "bile_stimulant", "alpha_gal"] },
+      { name: "Duck (with skin)", lmv: "Anka rå m. skinn", traits: ["over_10g_fat", "bile_stimulant", "alpha_gal"] },
       { name: "Turkey", lmv: "Kalkon kokt", traits: ["bile_stimulant", "protein"] },
       { name: "Frozen Meatballs", lmv: "Köttbullar frysvara", traits: ["over_10g_fat", "histamine", "alpha_gal"] },
       { name: "Hot Dog Sausage", lmv: "Korv varmkorv kokt", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal"] },
@@ -944,7 +953,7 @@ const CATEGORIES = [
     label: "Processed Foods",
     foods: [
       { name: "Frozen pizza", lmv: "Pizza orientalisk", traits: ["refined_carbs"] },
-      { name: "French Fries (deep-fried)", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs"] },
+      { name: "French Fries (deep-fried)", lmv: "Pommes frites friterad potatis fett ca 11% frysvara", traits: ["over_10g_fat", "refined_carbs"] },
       { name: "French Fries (oven-baked)", lmv: "Pommes frites friterad potatis värmd i ugn fett ca 7% frysvara", traits: ["refined_carbs"] },
       { name: "Instant Ramen", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans"] },
       { name: "Margarine", lmv: "Flytande margarin fett 70%", traits: ["over_10g_fat", "bile_stimulant"] },
@@ -1011,7 +1020,7 @@ const CATEGORIES = [
       { name: "Oyster Sauce", traits: ["histamine", "allergen", "allergen_shellfish"] },
       { name: "Hoisin Sauce", traits: ["histamine", "allergen", "allergen_soy", "allergen_wheat", "refined_carbs"] },
       { name: "Brown Gravy", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_wheat"] },
-      { name: "Béarnaise Sauce", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "allergen_milk"] },
+      { name: "Béarnaise Sauce", lmv: "Bearnaisesås hemlagad", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "allergen_milk"] },
       { name: "Hollandaise Sauce", lmv: "Hollandaisesås hemlagad", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "allergen_milk"] },
       { name: "Remoulade", lmv: "Remouladsås", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "irritant"] }
     ]
@@ -1041,7 +1050,7 @@ const CATEGORIES = [
       { name: "Milk chocolate", lmv: "Mjölkchoklad", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "over_3g_lactose", "fodmaps", "caffeine", "allergen", "allergen_milk"] },
       // Livsmedelsverket lists 0g fiber, which is a gap in the source rather
       // than a real zero — 70% chocolate is around 11g. Tag kept.
-      { name: "Dark Chocolate", lmv: "Mörk choklad kakao ≥ 70%", lmvNote: "fiber differs", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "fiber", "caffeine"] },
+      { name: "Dark Chocolate", lmvNote: "fiber differs", lmv: "Mörk choklad kakao ≥ 70%", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "fiber", "caffeine"] },
       { name: "Cheese Puffs / Snacks", lmv: "Ostbågar", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_milk"] },
       { name: "Granola Bar", lmv: "Bar müslibar m. choklad berikad", traits: ["refined_carbs", "allergen", "allergen_treenut"] },
       { name: "Protein Bar", traits: ["protein", "refined_carbs", "allergen", "allergen_milk"] },
