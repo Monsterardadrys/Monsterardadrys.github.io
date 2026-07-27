@@ -153,8 +153,8 @@
   "Wheat": "Vete",
   "Rye": "Råg",
   "Barley": [
-    "Korngryn",
-    "Korn"
+    "Korn hela korn",
+    "Kornmjöl"
   ],
   "Buckwheat": "Bovete",
   "Freekeh": "Freekeh",
@@ -577,11 +577,11 @@
     "Pommes frites värmd i ugn"
   ],
   "Oat Porridge": [
-    "Havregrynsgröt",
-    "Gröt havre"
+    "Havregrynsgröt kokt",
+    "Gröt havregryn"
   ],
   "Oat Crispbread": [
-    "Hårt bröd havre",
+    "Hårt bröd havregryn",
     "Knäckebröd havre"
   ],
   "Oat Bran": "Havrekli",
