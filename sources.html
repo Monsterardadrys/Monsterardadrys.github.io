@@ -1,0 +1,149 @@
+<!--
+    Food Intolerance Guide — data sources page.
+
+    Lists every food and whether its nutrition figures were checked against
+    Livsmedelsverket's food database. Built from the `lmv` field in
+    foods-data.js, so it can never drift out of sync with the actual data —
+    marking a food verified there is what puts it on this page.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Data sources — Food Intolerance Guide</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Installable + offline: see manifest.webmanifest, sw.js and pwa.js -->
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#15414c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Intolerance">
+</head>
+
+<body>
+    <header>
+        <div class="headerBar">
+            <h1>Data sources</h1>
+            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <nav class="navDrawer" id="navDrawer" aria-hidden="true">
+            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu">&times;</button>
+            <a class="backToMain" href="index.html">Home</a>
+            <ul>
+                <li><a href="app.html">Launch App</a></li>
+                <li><a href="articles.html">Articles</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="navOverlay" id="navOverlay"></div>
+    </header>
+
+    <div class="articleLayout">
+        <div class="articleContent">
+            <section>
+                <h2>Where the numbers come from</h2>
+                <p><strong>Livsmedelsverket's food database</strong> — the Swedish Food Agency's national food
+                    composition database, roughly 2 600 foods with over 50 nutrients each — is the main
+                    reference for fat, protein, fiber, sugar and alcohol content in this tool. Every food below
+                    that is marked as checked has had its threshold-based traits compared against that database
+                    entry by entry.</p>
+
+                <p>Not every food is in it. Cheeses like Roquefort and Fontina, spice blends like za'atar,
+                    and most Asian sauces have no Swedish entry, so their figures come from published nutrition
+                    data and clinical literature instead. Those foods are listed here too, marked as such —
+                    the point of this page is that you can tell which is which.</p>
+
+                <p>FODMAP subtypes come from the Monash University database rather than Livsmedelsverket, and
+                    allergens, cross-reactivity and GI irritant mechanisms come from clinical literature. Those
+                    are not what this page tracks. See <a href="about.html#sources">How the analysis works</a>
+                    for the full picture, and <a href="articles.html#uncertainty">How Certain Is Any of
+                    This?</a> for where the uncertainty sits.</p>
+
+                <div class="sourceCounts" id="sourceCounts"></div>
+            </section>
+
+            <section id="sourceList">
+                <!-- built from foods-data.js -->
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>Food composition data from Livsmedelsverket, used under CC BY 4.0.</p>
+        <p>Pre-beta v0.42 — updated 27 July 2026</p>
+    </footer>
+
+    <script src="foods-data.js"></script>
+    <script src="nav.js"></script>
+    <script src="pwa.js"></script>
+    <script>
+        (function () {
+            "use strict";
+
+            let total = 0, verified = 0;
+            const listEl = document.getElementById("sourceList");
+
+            CATEGORIES.forEach(function (cat) {
+                const wrap = document.createElement("div");
+                wrap.className = "sourceCategory";
+
+                const heading = document.createElement("h3");
+                const checked = cat.foods.filter(function (f) { return f.lmv; }).length;
+                heading.textContent = cat.label + " — " + checked + " of " + cat.foods.length + " checked";
+                wrap.appendChild(heading);
+
+                const ul = document.createElement("ul");
+                ul.className = "sourceItems";
+
+                cat.foods.forEach(function (food) {
+                    total++;
+                    const li = document.createElement("li");
+
+                    const name = document.createElement("span");
+                    name.className = "sourceName";
+                    name.textContent = food.name;
+                    li.appendChild(name);
+
+                    const detail = document.createElement("span");
+                    if (food.lmv) {
+                        verified++;
+                        li.className = "isVerified";
+                        detail.className = "sourceDetail";
+                        detail.textContent = food.lmv;
+                        if (food.lmvNote) {
+                            const note = document.createElement("em");
+                            note.textContent = " — " + food.lmvNote;
+                            detail.appendChild(note);
+                        }
+                    } else {
+                        detail.className = "sourceDetail sourceMissing";
+                        detail.textContent = "not in the database";
+                    }
+                    li.appendChild(detail);
+                    ul.appendChild(li);
+                });
+
+                wrap.appendChild(ul);
+                listEl.appendChild(wrap);
+            });
+
+            const pct = Math.round((verified / total) * 100);
+            document.getElementById("sourceCounts").innerHTML =
+                '<div class="sourceCount"><b>' + verified + '</b><span>checked against Livsmedelsverket</span></div>' +
+                '<div class="sourceCount"><b>' + (total - verified) + '</b><span>from other sources</span></div>' +
+                '<div class="sourceCount"><b>' + pct + '%</b><span>of ' + total + ' foods</span></div>';
+        })();
+    </script>
+</body>
+
+</html>

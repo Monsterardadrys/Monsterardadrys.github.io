@@ -1357,3 +1357,80 @@ footer p { color: var(--linen); }
     .demo { margin: 30px 15px; padding: 20px; }
     .linksOut { margin: 30px 15px; }
 }
+
+/* ---- Data sources page ---- */
+
+.sourceCounts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 1.4rem 0 0.5rem;
+}
+
+.sourceCount {
+    flex: 1 1 8rem;
+    background: var(--linen);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+}
+
+.sourceCount b {
+    display: block;
+    font-family: 'Lora', serif;
+    font-size: 1.6rem;
+    color: var(--primary);
+}
+
+.sourceCount span {
+    font-size: 0.85rem;
+    line-height: 1.3;
+    display: block;
+}
+
+.sourceCategory { margin-bottom: 1.8rem; }
+
+.sourceCategory h3 {
+    font-family: 'Lora', serif;
+    color: var(--primary);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.6rem;
+}
+
+.sourceItems {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sourceItems li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.6rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid rgba(221, 214, 198, 0.5);
+}
+
+.sourceName { font-weight: 600; }
+
+/* the check mark carries the meaning, so it needs a text label for screen
+   readers — the detail text next to it already says which source was used */
+.sourceItems li.isVerified .sourceName::before {
+    content: "✓ ";
+    color: var(--sage-dark);
+    font-weight: 700;
+}
+
+.sourceDetail {
+    color: #5a615c;
+    font-size: 0.9rem;
+}
+
+.sourceMissing { font-style: italic; }
+
+@media (min-width: 40rem) {
+    .sourceItems li { justify-content: space-between; }
+    .sourceDetail { text-align: right; }
+}
