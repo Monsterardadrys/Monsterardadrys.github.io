@@ -329,6 +329,7 @@
         "torkat", "torkade", "stekt", "stekta", "färsk", "färska", "fryst",
         "frysta", "inlagd", "inlagda", "rökt", "rökta", "saltad", "saltat",
         "normalsaltat", "osaltat", "berikad", "berikat", "med", "utan", "och",
+        "okokt", "otillagad", "obehandlad",
         "fett", "fetthalt", "ekologisk", "hel", "hela", "malen", "malet"];
 
     function tokens(name) {
@@ -359,15 +360,31 @@
         return (2 * hits) / (ka.length + kb.length);
     }
 
+    /* Swedish glues nouns together — majskorn, kikärtsmjöl, havregryn — so
+       "majs" and "majskorn" are the same word for our purposes even though
+       they are not the same token. A prefix of five letters or more counts. */
+    function sameWord(a, b) {
+        if (a === b) return true;
+        const short = a.length < b.length ? a : b;
+        const long = a.length < b.length ? b : a;
+        return short.length >= 4 && long.indexOf(short) === 0;
+    }
+
     function score(ourName, lmvName) {
         const ta = tokens(ourName), tb = tokens(lmvName);
-        const a = ta.join(" "), b = tb.join(" ");
-        if (!a || !b) return 0;
+        if (!ta.length || !tb.length) return 0;
+
+        // Qualifiers are dropped from the letter-pattern comparison too, or
+        // "Timjan torkad" and "Banan torkad" look alike on the strength of
+        // "torkad" alone — which is how thyme ended up matching dried banana.
+        const a = ta.filter(function (t) { return WEAK_TOKENS.indexOf(t) === -1; }).join(" ") || ta.join(" ");
+        const b = tb.filter(function (t) { return WEAK_TOKENS.indexOf(t) === -1; }).join(" ") || tb.join(" ");
 
         // a full token appearing in both is strong evidence across languages
         // ("roquefort", "halloumi", "quinoa" are spelled the same in Swedish)
         const shared = ta.filter(function (t) {
-            return tb.indexOf(t) !== -1 && WEAK_TOKENS.indexOf(t) === -1;
+            if (WEAK_TOKENS.indexOf(t) !== -1) return false;
+            return tb.some(function (u) { return sameWord(t, u); });
         });
         /* No word in common — fall back to letter-pattern similarity, but
            capped below the shared-word range. "Ättika" and "Rättika" differ by
@@ -382,9 +399,12 @@
            a candidate carrying a pile of unrelated words has to rank below the
            plain ingredient. Weak words (rå, kokt, torkad) are not counted as
            clutter, since "Lax rå" is still just salmon. */
-        const strongB = tb.filter(function (t) { return WEAK_TOKENS.indexOf(t) === -1; });
-        const clutter = Math.max(0, strongB.length - shared.length);
-        const coverage = shared.length / Math.max(1, Math.min(ta.length, strongB.length));
+        const strongB = tb.filter(function (t) {
+            return WEAK_TOKENS.indexOf(t) === -1 &&
+                !shared.some(function (u) { return sameWord(t, u); });
+        });
+        const clutter = strongB.length;
+        const coverage = shared.length / Math.max(1, Math.min(ta.length, shared.length + clutter));
 
         /* A state word we asked for and did not get is a mismatch, not clutter:
            searching "Mango torkad" and being handed fresh "Mango" is wrong, and
@@ -392,12 +412,14 @@
            ignored when the candidate has them and we did not — "Lax rå" is
            still salmon — but never the other way round. */
         const wantedState = ta.filter(function (t) { return WEAK_TOKENS.indexOf(t) !== -1; });
-        const missingState = wantedState.filter(function (t) { return tb.indexOf(t) === -1; });
+        const missingState = wantedState.filter(function (t) {
+            return !tb.some(function (u) { return sameWord(t, u); });
+        });
 
         /* Livsmedelsverket names lead with the ingredient — "Lax rå", "Ägg
            hönsägg", "Ost halloumi" — while dishes bury it: "Våffla m. ägg".
            So a match on the first word counts for more. */
-        const headMatch = shared.indexOf(tb[0]) !== -1 ? 0.05 : 0;
+        const headMatch = shared.some(function (t) { return sameWord(t, tb[0]); }) ? 0.05 : 0;
 
         const s = 0.55 + 0.35 * coverage - 0.06 * clutter + headMatch - 0.25 * missingState.length;
         return Math.max(0, Math.min(s, 1));
@@ -462,10 +484,14 @@
         aliases = aliases || {};
         swedish = swedish || {};
 
+        /* Where curated Swedish terms exist they replace our English name
+           rather than joining it. The English name carries no preparation
+           word, so keeping it as a fallback let it match an uncooked entry
+           with no penalty and beat the cooked term we actually asked for. */
         function searchTerms(name) {
             const extra = swedish[name];
             if (!extra) return [name];
-            return [name].concat(Array.isArray(extra) ? extra : [extra]);
+            return Array.isArray(extra) ? extra : [extra];
         }
 
         const detected = {};
@@ -494,8 +520,8 @@
             const terms = searchTerms(food.name);
             let best = null, bestScore = 0;
             lmv.forEach(function (r) {
-                terms.forEach(function (term) {
-                    const s = score(term, r.name);
+                terms.forEach(function (term, rank) {
+                    const s = score(term, r.name) - 0.04 * rank;
                     if (s > bestScore) { bestScore = s; best = r; }
                 });
             });

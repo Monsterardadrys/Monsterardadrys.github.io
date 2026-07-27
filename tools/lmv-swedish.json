@@ -45,7 +45,10 @@
     "Daikon"
   ],
   "Rhubarb": "Rabarber",
-  "Sweetcorn": "Majs",
+  "Sweetcorn": [
+    "Majskorn",
+    "Majs konserv"
+  ],
   "Cucumber": "Gurka",
   "Tomato": "Tomat",
   "Potato": "Potatis",
@@ -156,7 +159,9 @@
     "Korn hela korn",
     "Kornmjöl"
   ],
-  "Buckwheat": "Bovete",
+  "Buckwheat": [
+    "Bovete kokt"
+  ],
   "Freekeh": "Freekeh",
   "Pita Bread": "Pitabröd",
   "Naan Bread": [
@@ -164,8 +169,7 @@
     "Naanbröd"
   ],
   "Soba Noodles": [
-    "Nudlar bovete",
-    "Sobanudlar"
+    "Nudlar bovete kokta"
   ],
   "Rice Noodles": "Risnudlar",
   "Crispbread (rye)": [
@@ -176,7 +180,9 @@
     "Riskaka",
     "Kaka ris puffat"
   ],
-  "Millet": "Hirs",
+  "Millet": [
+    "Hirs kokt"
+  ],
   "Seitan": "Seitan",
   "Tapioca": [
     "Tapioka",
@@ -191,42 +197,33 @@
     "Mjölmålla quinoa kokt"
   ],
   "Rice": [
-    "Ris kokt",
-    "Ris"
+    "Ris kokt"
   ],
   "Sorghum/Durra": [
-    "Durra kokt",
-    "Durra"
+    "Durra kokt"
   ],
   "White Bread": "Vitt bröd",
   "Pasta": "Pasta",
   "Couscous": [
-    "Couscous kokt",
-    "Couscous"
+    "Couscous kokt"
   ],
   "Bulgur": [
-    "Bulgur kokt",
-    "Bulgur"
+    "Bulgur kokt"
   ],
   "Spelt": "Dinkel",
   "Black Bean": "Svarta bönor",
   "Chickpea (whole/flour)": [
-    "Kikärtor kokta",
-    "Kikärtor",
-    "Kikärtsmjöl"
+    "Kikärtor kokta"
   ],
   "Common Peas": [
     "Ärtor gröna kokta",
-    "Spritärtor kokta",
-    "Gröna ärtor"
+    "Spritärtor kokta"
   ],
   "Lentils": [
-    "Linser kokta",
-    "Linser"
+    "Linser kokta"
   ],
   "Soybeans": [
-    "Sojabönor kokta",
-    "Sojabönor"
+    "Sojabönor kokta"
   ],
   "Edamame": [
     "Sojabönor omogna kokta",
@@ -234,8 +231,7 @@
   ],
   "Fava Beans": "Bondbönor",
   "Pinto Beans": [
-    "Bruna bönor kokta",
-    "Pintobönor kokta"
+    "Bruna bönor kokta"
   ],
   "Kidney Beans": [
     "Kidneybönor kokta",
@@ -559,8 +555,7 @@
   "White Button Mushrooms": "Champinjon vit",
   "White Cheese (~0% fat)": "Kvarg",
   "Split Peas": [
-    "Gula ärtor kokta",
-    "Ärtor gula kokta"
+    "Gula ärtor kokta"
   ],
   "Margarine": "Margarin",
   "Cheese Puffs / Snacks": [
@@ -591,8 +586,7 @@
     "Spaghetti kokt"
   ],
   "Fresh Pasta (w/ egg)": [
-    "Pasta färsk kokt",
-    "Äggnudlar kokta"
+    "Pasta färsk kokt"
   ],
   "Psyllium Husk (whole)": [
     "Psylliumfrö",
@@ -615,12 +609,10 @@
     "Pommes frites värmd i ugn"
   ],
   "Oat Porridge": [
-    "Havregrynsgröt kokt",
-    "Gröt havregryn"
+    "Havregrynsgröt"
   ],
   "Oat Crispbread": [
-    "Hårt bröd havregryn",
-    "Knäckebröd havre"
+    "Hårt bröd havre"
   ],
   "Oat Bran": "Havrekli",
   "Muesli (no added sugar)": [
