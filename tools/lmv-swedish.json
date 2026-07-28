@@ -40,7 +40,7 @@
   ],
   "Celery": [
     "Blekselleri",
-    "Selleri"
+    "Stjälkselleri"
   ],
   "Bok Choy": "Pak choi",
   "Daikon Radish": [
@@ -179,9 +179,6 @@
   "Naan Bread": [
     "Naanbröd"
   ],
-  "Soba Noodles": [
-    "Nudlar bovete kokta"
-  ],
   "Rice Noodles": "Risnudlar",
   "Crispbread (rye)": [
     "Hårt bröd fullkorn råg",
@@ -275,19 +272,18 @@
     "Falukorv fett 15%"
   ],
   "Sausages (regular)": "Korv",
-  "Minced Meat (~5% fat)": [
-    "Nöt färs fett 5%",
-    "Nöt färs",
-    "Blandfärs"
+  "Minced Meat (~10% fat)": [
+    "Nöt färs fett 10%",
+    "Nöt färs rå"
   ],
-  "Minced Meat (~12% fat)": [
-    "Nöt färs fett 12%",
-    "Nöt färs",
+  "Minced Meat (~15% fat)": [
+    "Blandfärs rå",
+    "Nöt färs fett 15%",
     "Blandfärs"
   ],
   "Minced Meat (~20% fat)": [
     "Nöt färs fett 20%",
-    "Nöt färs",
+    "Blandfärs rå",
     "Blandfärs"
   ],
   "Lamb": "Lammkött",
@@ -524,10 +520,6 @@
   "Rapeseed Oil": "Rapsolja",
   "Coconut Oil": "Kokosolja",
   "Honey": "Honung",
-  "Maple Syrup": [
-    "Sirap lönn",
-    "Lönnsirap"
-  ],
   "Mayonnaise": "Majonnäs",
   "Tahini": [
     "Sesampasta",

@@ -795,8 +795,8 @@ const CATEGORIES = [
       { name: "Dry-Cured Ham (fatty cut)", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal", "dao_competitor"] },
       { name: "Sausages (lean)", traits: ["protein", "histamine"] },
       { name: "Sausages (regular)", lmv: "Korv frukostkorv stekt", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal"] },
-      { name: "Minced Meat (~5% fat)", traits: ["protein", "histamine", "alpha_gal"] },
-      { name: "Minced Meat (~12% fat)", lmv: "Nöt färs rå fett 10%", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
+      { name: "Minced Meat (~10% fat)", lmv: "Nöt färs rå fett 10%", traits: ["protein", "histamine", "alpha_gal"] },
+      { name: "Minced Meat (~15% fat)", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
       { name: "Minced Meat (~20% fat)", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
       { name: "Lamb", lmv: "Lamm kött rå", traits: ["alpha_gal"] },
       // Named for the skin, because that is where the fat is: skinless
