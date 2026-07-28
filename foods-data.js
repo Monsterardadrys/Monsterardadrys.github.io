@@ -747,8 +747,8 @@ const CATEGORIES = [
       { name: "Rice Noodles", lmv: "Nudlar risnudlar kokta", traits: ["refined_carbs"] },
       { name: "White Bread", lmv: "Bröd vitt fibrer 3,5%", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "refined_carbs"] },
       { name: "Pasta (no egg)", lmv: "Pasta kokt u. salt", traits: ["refined_carbs", "allergen", "allergen_wheat", "fodmaps", "fructans"] },
-      { name: "Teff", traits: [] },
-      { name: "Sorghum/Durra", traits: [] },
+      { name: "Teff", lmv: "Teffmjöl", lmvNote: "flour", traits: ["fiber"] },
+      { name: "Sorghum/Durra", lmv: "Durra el. andra sorghumarter mjöl", lmvNote: "flour", traits: [] },
       { name: "Crispbread (rye)", lmv: "Hårt bröd fullkorn råg fibrer ca 13%", traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Rice Cakes", traits: ["refined_carbs"] },
       { name: "Polenta", lmv: "Majsgryn polenta kokt m. salt", traits: [] },
@@ -962,7 +962,7 @@ const CATEGORIES = [
       { name: "Pretzels", lmv: "Salta pinnar", traits: ["fiber", "allergen", "allergen_wheat", "refined_carbs"] },
       { name: "Instant Mashed Potato", lmv: "Potatismos hemlagad", traits: ["refined_carbs"] },
       { name: "Dumplings", traits: ["allergen", "allergen_wheat", "over_10g_fat"] },
-      { name: "Fresh Pasta (w/ egg)", traits: ["refined_carbs", "allergen", "allergen_wheat", "allergen_egg", "fodmaps", "fructans"] }
+      { name: "Fresh Pasta (w/ egg)", lmv: "Pasta färsk m. ägg kokt u. salt", traits: ["refined_carbs", "allergen", "allergen_wheat", "allergen_egg", "fodmaps", "fructans"] }
     ]
   },
   {
@@ -979,7 +979,7 @@ const CATEGORIES = [
       { name: "Guacamole", lmv: "Guacamole", traits: ["over_10g_fat", "cross_reactive", "cross_latex"] },
       { name: "Mango Chutney", lmv: "Mango chutney", traits: ["refined_carbs"] },
       { name: "Cranberry Sauce", traits: ["refined_carbs", "fructose"] },
-      { name: "Fish Roe Spread", traits: ["histamine", "allergen", "allergen_fish"] },
+      { name: "Fish Roe Spread", lmv: "Påläggskaviar original", traits: ["histamine", "allergen", "allergen_fish"] },
       { name: "Yeast Extract", smallServing: true, traits: [] },
       { name: "Ajvar", lmv: "Ajvar relish", traits: ["irritant"] },
       { name: "Harissa", traits: ["irritant", "capsaicin"] },
@@ -1050,7 +1050,7 @@ const CATEGORIES = [
       { name: "Milk chocolate", lmv: "Mjölkchoklad", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "over_3g_lactose", "fodmaps", "caffeine", "allergen", "allergen_milk"] },
       // Livsmedelsverket lists 0g fiber, which is a gap in the source rather
       // than a real zero — 70% chocolate is around 11g. Tag kept.
-      { name: "Dark Chocolate", lmvNote: "fiber differs", lmv: "Mörk choklad kakao ≥ 70%", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "fiber", "caffeine"] },
+      { name: "Dark Chocolate", lmv: "Mörk choklad kakao ≥ 70%", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "fiber", "caffeine"] },
       { name: "Cheese Puffs / Snacks", lmv: "Ostbågar", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_milk"] },
       { name: "Granola Bar", lmv: "Bar müslibar m. choklad berikad", traits: ["refined_carbs", "allergen", "allergen_treenut"] },
       { name: "Protein Bar", traits: ["protein", "refined_carbs", "allergen", "allergen_milk"] },

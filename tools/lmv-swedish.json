@@ -23,7 +23,10 @@
     "Chilipeppar",
     "Chili"
   ],
-  "Asparagus": "Sparris",
+  "Asparagus": [
+    "Sparris rå",
+    "Sparris"
+  ],
   "Fennel Bulb": "Fänkål",
   "Brussels Sprouts": "Brysselkål",
   "Green Beans": [
@@ -265,11 +268,23 @@
     "Lufttorkad skinka",
     "Parmaskinka"
   ],
-  "Sausages (lean)": "Korv",
+  "Sausages (lean)": [
+    "Korv fett 10%",
+    "Falukorv fett 15%"
+  ],
   "Sausages (regular)": "Korv",
-  "Minced Meat (~5% fat)": "Köttfärs",
-  "Minced Meat (~12% fat)": "Köttfärs",
-  "Minced Meat (~20% fat)": "Köttfärs",
+  "Minced Meat (~5% fat)": [
+    "Köttfärs nöt fett 5%",
+    "Köttfärs nöt"
+  ],
+  "Minced Meat (~12% fat)": [
+    "Köttfärs nöt fett 12%",
+    "Köttfärs nöt"
+  ],
+  "Minced Meat (~20% fat)": [
+    "Köttfärs nöt fett 20%",
+    "Köttfärs nöt"
+  ],
   "Lamb": "Lammkött",
   "Turkey": "Kalkon",
   "Frozen Meatballs": "Köttbullar",
@@ -287,7 +302,10 @@
   "Oysters": "Ostron",
   "Lobsters": "Hummer",
   "Crayfish": "Kräfta",
-  "Shrimp": "Räkor",
+  "Shrimp": [
+    "Räka",
+    "Räkor"
+  ],
   "Tuna": "Tonfisk",
   "Anchovies": "Ansjovis",
   "Smoked Salmon": "Lax rökt",
@@ -358,7 +376,10 @@
   "Sour Cream (~20% fat)": "Crème fraiche",
   "Cottage Cheese": "Keso",
   "Ricotta Cheese": "Ricotta",
-  "Cream Cheese (<10% fat)": "Färskost",
+  "Cream Cheese (<10% fat)": [
+    "Färskost fett 5%",
+    "Färskost lätt"
+  ],
   "Cream Cheese (>10% fat)": "Färskost",
   "Halloumi": "Halloumi",
   "Mozzarella": "Mozzarella",
