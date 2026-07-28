@@ -330,6 +330,10 @@
         "frysta", "inlagd", "inlagda", "rökt", "rökta", "saltad", "saltat",
         "normalsaltat", "osaltat", "berikad", "berikat", "med", "utan", "och",
         "okokt", "otillagad", "obehandlad",
+        // packaging and seasoning notes: "u. salt", "konserv.", "frysvara"
+        // describe how an entry was recorded, not what the food is
+        "salt", "socker", "kryddad", "kryddor", "konserv", "avrunna", "lag",
+        "frysvara", "hemlagad", "tillagad", "restaurang", "naturell",
         "fett", "fetthalt", "ekologisk", "hel", "hela", "malen", "malet"];
 
     function tokens(name) {
@@ -372,8 +376,21 @@
         if (a === b) return true;
         const short = a.length < b.length ? a : b;
         const long = a.length < b.length ? b : a;
-        if (short.length < 4 || long.indexOf(short) !== 0) return false;
-        return ENDINGS.indexOf(long.slice(short.length)) !== -1;
+        if (short.length >= 4 && long.indexOf(short) === 0 &&
+            ENDINGS.indexOf(long.slice(short.length)) !== -1) return true;
+        // räka/räkor and kaka/kakor replace the ending rather than add to it,
+        // so compare the stems once each has had its ending taken off
+        return short.length >= 4 && stem(a) === stem(b);
+    }
+
+    function stem(w) {
+        for (let i = 0; i < ENDINGS.length; i++) {
+            const e = ENDINGS[i];
+            if (w.length - e.length >= 3 && w.slice(-e.length) === e) {
+                return w.slice(0, w.length - e.length);
+            }
+        }
+        return w;
     }
 
     function score(ourName, lmvName) {
@@ -410,7 +427,9 @@
                 !shared.some(function (u) { return sameWord(t, u); });
         });
         const clutter = strongB.length;
-        const coverage = shared.length / Math.max(1, Math.min(ta.length, shared.length + clutter));
+        const strongA = ta.filter(function (t) { return WEAK_TOKENS.indexOf(t) === -1; });
+        const coverage = shared.length /
+            Math.max(1, strongA.length, shared.length + clutter);
 
         /* A state word we asked for and did not get is a mismatch, not clutter:
            searching "Mango torkad" and being handed fresh "Mango" is wrong, and
@@ -427,7 +446,7 @@
            So a match on the first word counts for more. */
         const headMatch = shared.some(function (t) { return sameWord(t, tb[0]); }) ? 0.05 : 0;
 
-        const s = 0.55 + 0.35 * coverage - 0.06 * clutter + headMatch - 0.25 * missingState.length;
+        const s = 0.45 + 0.45 * coverage - 0.04 * clutter + headMatch - 0.25 * missingState.length;
         return Math.max(0, Math.min(s, 1));
     }
 
