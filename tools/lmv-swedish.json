@@ -339,8 +339,14 @@
     "Mjölk får",
     "Fårmjölk"
   ],
-  "Hard Cheese (~15% fat)": "Hårdost",
-  "Hard Cheese (~28-35% fat)": "Hårdost",
+  "Hard Cheese (~15% fat)": [
+    "Ost hårdost fett 17%",
+    "Ost hårdost fett 10%"
+  ],
+  "Hard Cheese (~28-35% fat)": [
+    "Ost hårdost fett 31%",
+    "Ost hårdost fett 28%"
+  ],
   "Yogurt": "Yoghurt",
   "Greek Yogurt (0% fat)": "Grekisk yoghurt",
   "Greek Yogurt (2% fat)": "Grekisk yoghurt",
@@ -357,12 +363,12 @@
   "Fontina": "Fontina",
   "Raclette": "Raclette",
   "Cheddar": [
-    "Ost cheddar",
-    "Cheddar"
+    "Ost cheddar fett 31%",
+    "Ost hårdost fett 31%"
   ],
   "Aged Gouda": [
-    "Ost gouda",
-    "Gouda"
+    "Ost gouda fett 31%",
+    "Ost hårdost fett 31%"
   ],
   "Whey Protein": [
     "Vasslepulver",
