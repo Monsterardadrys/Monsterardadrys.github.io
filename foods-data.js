@@ -123,6 +123,10 @@ const TRAITS = {
     label: "FODMAPs",
     filter: true,
     articleId: "fodmaps",
+    evidence: {
+      level: "Well established",
+      detail: "Multiple randomised trials in IBS, backed by breath testing and MRI work that shows the fermentation and water-drawing effects directly."
+    },
     analysis: [
       "These foods are high in FODMAPs — fermentable carbs that can cause gas, bloating, and discomfort. Usually mild, but more pronounced and slower to resolve in IBS.",
       "See the FODMAPs article for the specific subtypes and the low-FODMAP approach."
@@ -134,6 +138,10 @@ const TRAITS = {
     label: "Fructose",
     filter: true,
     articleId: "fructose",
+    evidence: {
+      level: "Well established",
+      detail: "Breath testing and randomised low-FODMAP trials. How much is tolerated varies between people and depends on the glucose eaten alongside it."
+    },
     analysis: [
       "These foods are high in free fructose relative to glucose, which can exceed the small intestine's absorption capacity and draw extra water into the bowel.",
       "This is one of several FODMAP subtypes tracked alongside the broader FODMAPs trait."
@@ -145,6 +153,10 @@ const TRAITS = {
     label: "Polyols",
     filter: true,
     articleId: "polyols",
+    evidence: {
+      level: "Well established",
+      detail: "Randomised low-FODMAP trials, plus a plainly measurable osmotic effect — sorbitol and mannitol are used as laxatives at higher doses."
+    },
     analysis: [
       "These foods naturally contain sugar alcohols such as sorbitol and mannitol, which are poorly absorbed and have an osmotic, water-drawing effect in the bowel.",
       "Stone fruits and mushrooms are common sources. This is one of several FODMAP subtypes tracked alongside the broader FODMAPs trait."
@@ -156,6 +168,10 @@ const TRAITS = {
     label: "Fructans",
     filter: true,
     articleId: "fructans",
+    evidence: {
+      level: "Well established",
+      detail: "The most-tested subtype. Blinded re-challenge trials point to fructans rather than gluten behind most symptoms blamed on wheat in people without celiac disease."
+    },
     analysis: [
       "Fructans are chains of fructose molecules that humans lack the enzymes to digest, so they pass intact to the colon where gut bacteria ferment them.",
       "Wheat, onion and garlic are classic sources. This is one of several FODMAP subtypes tracked alongside the broader FODMAPs trait."
@@ -167,6 +183,10 @@ const TRAITS = {
     label: "GOS",
     filter: true,
     articleId: "galactans",
+    evidence: {
+      level: "Well established",
+      detail: "Humans lack the enzyme entirely, so the fermentation is certain. The symptom trials are smaller than for the other subtypes."
+    },
     analysis: [
       "Galacto-oligosaccharides are short chains of galactose the small intestine can't break down, so they reach the colon largely intact and get fermented by gut bacteria.",
       "Legumes and some nuts are the main sources. This is one of several FODMAP subtypes tracked alongside the broader FODMAPs trait."
@@ -178,6 +198,10 @@ const TRAITS = {
     order: 1,
     label: "Fat",
     articleId: "fat",
+    evidence: {
+      level: "Well established",
+      detail: "Fat measurably slows gastric emptying and lowers the pressure of the lower esophageal sphincter. Symptom provocation is best documented in reflux and functional dyspepsia."
+    },
     analysis: [
       "These foods contain more than 10g fat per 100g, which can worsen symptoms in GERD, IBS, gallbladder disease, and pancreatic insufficiency (EPI).",
       "See the Fat article for warning signs of malabsorption and who is most affected."
@@ -188,6 +212,10 @@ const TRAITS = {
     label: "Bile stimulant",
     filter: true,
     articleId: "bile_stimulant",
+    evidence: {
+      level: "Limited",
+      detail: "The CCK response to fat and protein is well measured, but the step from there to symptoms is inferred rather than trialled. The 17.5 g fat / 20 g protein cut-off is ours, not a published one."
+    },
     analysis: [
       "These foods strongly stimulate bile release via CCK, mainly through fat and protein content. Most relevant for gallstones or a history of gallbladder attacks.",
       "See the Bile Stimulants article for clinical detail."
@@ -198,6 +226,10 @@ const TRAITS = {
     label: "Fiber",
     filter: true,
     articleId: "fiber",
+    evidence: {
+      level: "Well established",
+      detail: "A large trial base that cuts both ways: fiber relieves constipation and provokes bloating, and which one happens depends on the type and the person."
+    },
     analysis: [
       "These foods are high in fiber, which can cause gas and bloating at high intake, especially with dehydration or gut-microbial dysbiosis.",
       "See the Fiber article for benefits, sources, and the risks of a low-fiber diet."
@@ -207,6 +239,10 @@ const TRAITS = {
     order: 2,
     label: "Protein",
     articleId: "protein",
+    evidence: {
+      level: "Limited",
+      detail: "Tracked as context rather than as a trigger. Protein itself rarely causes gut symptoms — what travels with it usually does."
+    },
     analysis: [
       "These foods are protein-rich. Protein moderately stimulates bile release and can add to digestive workload in large amounts. Symptoms are more often linked to what accompanies the protein (lactose, allergens, histamine) than protein itself, though pancreatitis, pancreatic tumors, and true food allergy can cause direct reactions."
     ]
@@ -216,6 +252,10 @@ const TRAITS = {
     label: "Refined carbs",
     filter: true,
     articleId: "refined_carbs",
+    evidence: {
+      level: "Limited",
+      detail: "A categorical tag by food type, not a measured threshold. The evidence links ultra-processed diets to gut symptoms at the level of the whole diet, not any single food."
+    },
     analysis: [
       "These foods are refined or ultra-processed carb sources — white bread, sugar, refined grains, and similar — rather than whole grains, legumes, or vegetables.",
       "This is a categorical tag based on food type and processing, not carbohydrate content."
@@ -227,6 +267,10 @@ const TRAITS = {
     label: "Lactose",
     filter: true,
     articleId: "lactose",
+    evidence: {
+      level: "Well established",
+      detail: "Hydrogen breath testing, genetic testing for lactase persistence and blinded dose-response trials. One of the best-characterised food intolerances there is."
+    },
     analysis: [
       "These foods are high in lactose, a milk sugar that can cause gas, bloating, and diarrhea in lactose-intolerant individuals, and discomfort in anyone at high intake.",
       "See the Lactose article for types, IBS overlap, and why new-onset intolerance in adults deserves investigation."
@@ -294,6 +338,10 @@ const TRAITS = {
     order: 6,
     label: "Alcohol",
     filter: true,
+    evidence: {
+      level: "Well established",
+      detail: "The mucosal effect and the sphincter relaxation are both measured. How much it takes to produce symptoms is less settled than the mechanism."
+    },
     analysis: [
       "These foods or drinks contain alcohol, which can directly irritate the gut lining, relax the lower esophageal sphincter (worsening reflux), and affect liver and pancreatic function with regular high intake."
     ]
@@ -303,6 +351,10 @@ const TRAITS = {
     order: 7,
     label: "Caffeine",
     filter: true,
+    evidence: {
+      level: "Well established",
+      detail: "Measured effects on colonic motility and acid secretion. Whether that becomes a symptom varies widely between people."
+    },
     analysis: [
       "These foods or drinks contain caffeine, which stimulates gut motility and acid secretion and can worsen symptoms in people with IBS, GERD, or general gut sensitivity."
     ]
@@ -314,6 +366,10 @@ const TRAITS = {
     label: "Irritant",
     filter: true,
     articleId: "irritant",
+    evidence: {
+      level: "Limited",
+      detail: "An umbrella over mechanisms that range from well measured to clinical experience alone. The specific traits underneath carry their own levels."
+    },
     analysis: [
       "These foods can worsen symptoms across GERD, IBS, gallbladder disease, and general gut sensitivity through varied mechanisms — some well-established, others based on clinical experience.",
       "See the GI Irritants article for the specific mechanisms tracked separately."
@@ -324,6 +380,10 @@ const TRAITS = {
     order: 1,
     label: "Capsaicin",
     filter: true,
+    evidence: {
+      level: "Well established",
+      detail: "TRPV1 activation is well characterised, and capsaicin provocation reproduces pain in IBS. Regular exposure desensitises, which is why tolerance differs so much."
+    },
     analysis: [
       "Capsaicin, the compound responsible for the heat in chili peppers, directly activates pain/heat receptors (TRPV1) in the gut lining and can also stimulate CCK release.",
       "Sweet (non-hot) bell peppers contain little to no capsaicin and are not covered by this trait."
@@ -334,6 +394,10 @@ const TRAITS = {
     order: 2,
     label: "Peel/skin",
     filter: true,
+    evidence: {
+      level: "Preliminary",
+      detail: "Plausible from the fiber and the compounds involved, but barely studied directly. Easy to test on your own — remove the peel and see."
+    },
     analysis: [
       "The peel or skin of these foods is harder to digest than the flesh — it concentrates insoluble fiber and, in some cases, specific irritant compounds (like cucurbitacins in cucumber skin) that the inner flesh has much less of.",
       "Removing the peel/skin is a simple way to test whether it's the trigger rather than the food as a whole."
@@ -344,6 +408,10 @@ const TRAITS = {
     order: 3,
     label: "Allyl/sulfur compounds",
     filter: true,
+    evidence: {
+      level: "Preliminary",
+      detail: "The mechanism is shown in cell and animal work. In real food these compounds travel with fructans, so what someone reacts to is hard to separate."
+    },
     analysis: [
       "Raw garlic, raw onion, mustard and similar foods contain pungent sulfur-based compounds (allicin, isothiocyanates) that directly irritate the gut lining through a different pathway than capsaicin.",
       "Cooking can reduce, but doesn't always eliminate, this effect."
@@ -354,6 +422,10 @@ const TRAITS = {
     order: 4,
     label: "Carbonation",
     filter: true,
+    evidence: {
+      level: "Limited",
+      detail: "The gastric distension from CO2 is measurable and small trials show more belching and reflux. Effects further down the gut are less clear."
+    },
     analysis: [
       "Carbon dioxide in carbonated drinks causes gastric distension and can worsen bloating, belching and reflux symptoms, independent of the drink's sugar or caffeine content."
     ]
@@ -363,6 +435,10 @@ const TRAITS = {
     order: 5,
     label: "Acetic acid",
     filter: true,
+    evidence: {
+      level: "Preliminary",
+      detail: "Largely clinical experience. There are no trials of vinegar in gut symptoms, and the acid in a normal portion is small next to stomach acid."
+    },
     analysis: [
       "Acetic acid (the active component in vinegar) is acidic enough to directly irritate the gut lining and esophagus in some individuals, especially undiluted or in large amounts."
     ]
@@ -374,6 +450,10 @@ const TRAITS = {
     label: "Allergy",
     filter: true,
     articleId: "allergen",
+    evidence: {
+      level: "Well established",
+      detail: "IgE testing and double-blind placebo-controlled food challenge — the strongest evidence base in this tool. The tag marks known allergens; it says nothing about whether a given person is allergic."
+    },
     analysis: [
       "These foods belong to the \"Big 9\" group responsible for the large majority of true, IgE-mediated food allergies: milk, egg, wheat, fish, shellfish, peanut, tree nuts, soy and sesame.",
       "This reflects known common allergens, not a dose-dependent intolerance. Allergen reactions can be severe or systemic. If a true allergy is suspected, refer for formal allergy testing rather than relying on this tool."
@@ -384,6 +464,10 @@ const TRAITS = {
     order: 1,
     label: "Milk",
     filter: true,
+    evidence: {
+      level: "Well established",
+      detail: "Casein and whey are well-characterised allergens with standardised diagnostic testing."
+    },
     analysis: [
       "Cow's milk allergy is mediated mainly by casein and whey proteins — distinct from lactose intolerance, which is a digestive enzyme issue, not an immune one."
     ]
@@ -393,6 +477,10 @@ const TRAITS = {
     order: 2,
     label: "Egg",
     filter: true,
+    evidence: {
+      level: "Well established",
+      detail: "Ovalbumin and ovomucoid are well characterised, and ovomucoid testing predicts whether baked egg is tolerated."
+    },
     analysis: [
       "Egg allergy is mediated mainly by proteins in the egg white (ovalbumin, ovomucoid). The yolk is less allergenic but not necessarily safe for someone with an egg allergy."
     ]
@@ -402,6 +490,10 @@ const TRAITS = {
     order: 3,
     label: "Wheat",
     filter: true,
+    evidence: {
+      level: "Well established",
+      detail: "Well-characterised allergen proteins with standardised testing, distinct from celiac disease and from gluten sensitivity."
+    },
     analysis: [
       "Wheat allergy is an immune reaction to wheat proteins — distinct from celiac disease and from non-celiac gluten sensitivity, which are not classic IgE-mediated allergies."
     ]
@@ -411,6 +503,10 @@ const TRAITS = {
     order: 4,
     label: "Fish",
     filter: true,
+    evidence: {
+      level: "Well established",
+      detail: "Parvalbumin is well characterised, and component testing separates fish from shellfish allergy."
+    },
     analysis: [
       "Fish allergy is mediated mainly by parvalbumin, a muscle protein — a different allergen than shellfish tropomyosin, so an allergy to one doesn't necessarily mean an allergy to the other."
     ]
@@ -420,6 +516,10 @@ const TRAITS = {
     order: 5,
     label: "Shellfish",
     filter: true,
+    evidence: {
+      level: "Well established",
+      detail: "Tropomyosin is well characterised and testable."
+    },
     analysis: [
       "Shellfish allergy is mediated mainly by tropomyosin, found in crustaceans and molluscs."
     ]
@@ -429,6 +529,10 @@ const TRAITS = {
     order: 6,
     label: "Peanut",
     filter: true,
+    evidence: {
+      level: "Well established",
+      detail: "Among the most studied of all allergens, with component testing (Ara h 2) and an established immunotherapy."
+    },
     analysis: [
       "Peanut allergy is one of the most common severe food allergies. Peanut is a legume, not a tree nut, and peanut allergy doesn't reliably predict tree nut allergy."
     ]
@@ -438,6 +542,10 @@ const TRAITS = {
     order: 7,
     label: "Tree nut",
     filter: true,
+    evidence: {
+      level: "Well established",
+      detail: "Well-characterised proteins, with component testing that separates the individual nuts."
+    },
     analysis: [
       "Tree nut allergy (almond, cashew, walnut, hazelnut, Brazil nut, etc.) is botanically and clinically distinct from peanut allergy."
     ]
@@ -447,6 +555,10 @@ const TRAITS = {
     order: 8,
     label: "Soy",
     filter: true,
+    evidence: {
+      level: "Well established",
+      detail: "Well characterised, though soy allergy is diagnosed less consistently than the other Big 9 allergens."
+    },
     analysis: [
       "Soy allergy is mediated by several soy proteins and can occasionally cross-react with peanut, since both are legumes."
     ]
@@ -456,6 +568,10 @@ const TRAITS = {
     order: 9,
     label: "Sesame",
     filter: true,
+    evidence: {
+      level: "Well established",
+      detail: "A recognised major allergen with standardised testing. The labelling requirement is newer than the evidence behind it."
+    },
     analysis: [
       "Sesame is one of the more recently recognized \"Big 9\" allergens and can cause severe reactions."
     ]
@@ -467,6 +583,10 @@ const TRAITS = {
     label: "Cross-reaction",
     filter: true,
     articleId: "cross_reactive",
+    evidence: {
+      level: "Well established",
+      detail: "Oral allergy syndrome is well documented and the shared protein families are identified and testable. Which foods trigger it varies by person and by pollen season."
+    },
     analysis: [
       "These foods can trigger oral allergy syndrome (OAS) in people allergic to certain pollens, due to structurally similar proteins. Reactions are usually mild and often resolve with cooking.",
       "See the Cross-Reactivity article for the three pollen groups."
@@ -477,6 +597,10 @@ const TRAITS = {
     label: "Alpha-gal syndrome",
     filter: true,
     articleId: "alpha_gal",
+    evidence: {
+      level: "Well established",
+      detail: "IgE to alpha-gal is measurable, the tick-bite route is established, and the delayed reaction has been reproduced under challenge."
+    },
     analysis: [
       "These foods are mammalian meat, which can trigger a delayed allergic reaction (alpha-gal syndrome) in people sensitized by a prior tick bite. Reactions often appear 3-8 hours after eating, making the food link easy to miss.",
       "See the Alpha-Gal Syndrome article for the tick-bite mechanism and diagnostic testing."
@@ -487,6 +611,10 @@ const TRAITS = {
     order: 1,
     label: "Birch pollen",
     filter: true,
+    evidence: {
+      level: "Well established",
+      detail: "PR-10 cross-reactivity is well documented, and component testing (Bet v 1) is routine."
+    },
     analysis: [
       "Relevant for people with a birch pollen allergy, due to a shared protein family (PR-10) between birch pollen and these foods — classically apples, stone fruits, carrots, celery/celeriac, hazelnuts and soy."
     ]
@@ -496,6 +624,10 @@ const TRAITS = {
     order: 2,
     label: "Grass pollen",
     filter: true,
+    evidence: {
+      level: "Limited",
+      detail: "Documented, but less consistent than the birch pattern — the proteins involved are more varied and the food list less settled."
+    },
     analysis: [
       "Relevant for people with a grass pollen allergy. Cross-reactive proteins are found in foods like melon, watermelon, tomato, orange, peanut and potato."
     ]
@@ -505,6 +637,10 @@ const TRAITS = {
     order: 3,
     label: "Latex",
     filter: true,
+    evidence: {
+      level: "Well established",
+      detail: "Latex-fruit syndrome is well documented, with the chitinase proteins identified and testable."
+    },
     analysis: [
       "Relevant for people with a latex allergy (e.g. healthcare workers). Cross-reactive proteins (mainly chitinases) are found in foods like banana, avocado, kiwi and papaya."
     ]
