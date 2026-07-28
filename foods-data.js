@@ -730,7 +730,7 @@ const CATEGORIES = [
       { name: "Oat Bran", lmv: "Havrekli", traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Muesli (no added sugar)", lmv: "Frukostflingor müsli fullkorn m. frukt", traits: ["fiber", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
       { name: "Wheat", lmv: "Matvete kokt m. salt", traits: ["fiber", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
-      { name: "Rye", traits: ["fodmaps", "fructans"] },
+      { name: "Rye", lmv: "Rågkross ångprep. fullkorn", lmvNote: "cracked whole grain — rye is not listed as a cooked whole grain", traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Rye Bread (whole grain)", lmv: "Bröd fullkorn råg fibrer ca 7%", traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Pearl Barley (cooked)", lmv: "Korngryn kokt u. salt", traits: ["fodmaps", "fructans"] },
       { name: "Barley", lmv: "Korngryn kokt u. salt", traits: ["fodmaps", "fructans"] },
