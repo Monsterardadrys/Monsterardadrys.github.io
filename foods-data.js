@@ -835,7 +835,7 @@ const CATEGORIES = [
       { name: "Cows Milk", lmv: "Mjölk fett 3% berikad", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Goats Milk", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Sheeps Milk", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
-      { name: "Cream Cheese (<10% fat)", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
+      { name: "Cream Cheese (<10% fat)", lmv: "Färskost cream cheese extra light fett 5%", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Cream Cheese (>10% fat)", lmv: "Färskost fett 33%", traits: ["over_10g_fat", "bile_stimulant", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Hard Cheese (~15% fat)", traits: ["over_10g_fat", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
       { name: "Hard Cheese (~28-35% fat)", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
