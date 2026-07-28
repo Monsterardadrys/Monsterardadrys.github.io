@@ -792,7 +792,7 @@ const CATEGORIES = [
       { name: "Salami", lmv: "Påläggskorv salami rökt", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal", "dao_competitor"] },
       { name: "Dry-Cured Ham (lean)", lmv: "Gris skinka lufttorkad italiensk", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal", "dao_competitor"] },
       { name: "Dry-Cured Ham (fatty cut)", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal", "dao_competitor"] },
-      { name: "Chicken Sausage", lmv: "Korv kycklingkorv mager", traits: ["protein", "histamine"] },
+      { name: "Chicken Sausage", lmv: "Korv kycklingkorv mager", traits: ["histamine"] },
       { name: "Sausages (regular)", lmv: "Korv frukostkorv stekt", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal"] },
       { name: "Minced Meat (~10% fat)", lmv: "Nöt färs rå fett 10%", lmvNote: "entry measures 11.3 g fat", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
       { name: "Minced Meat (~15% fat)", lmv: "Nöt färs rå fett 15%", traits: ["over_10g_fat", "histamine", "alpha_gal"] },
