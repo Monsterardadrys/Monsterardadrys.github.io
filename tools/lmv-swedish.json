@@ -46,8 +46,7 @@
   ],
   "Rhubarb": "Rabarber",
   "Sweetcorn": [
-    "Majskorn",
-    "Majs konserv"
+    "Majskorn"
   ],
   "Cucumber": "Gurka",
   "Tomato": "Tomat",
@@ -90,7 +89,10 @@
   "Passion Fruit": "Passionsfrukt",
   "Blueberry": "Blåbär",
   "Strawberry": "Jordgubbe",
-  "Cherries": "Körsbär",
+  "Cherries": [
+    "Körsbär söta",
+    "Körsbär"
+  ],
   "Blackberries": "Björnbär",
   "Raspberries": "Hallon",
   "Cloudberries": "Hjortron",
@@ -136,7 +138,9 @@
   "Flaxseed (whole)": "Linfrö",
   "Flaxseed (ground)": "Linfrö",
   "Hazelnut": "Hasselnöt",
-  "Peanut": "Jordnöt",
+  "Peanut": [
+    "Jordnötter"
+  ],
   "Pumpkin Seeds": [
     "Pumpafrö",
     "Pumpakärnor"
@@ -153,11 +157,13 @@
     "Havregrynsgröt",
     "Havregryn fullkorn"
   ],
-  "Wheat": "Vete",
+  "Wheat": [
+    "Vetekorn",
+    "Vete"
+  ],
   "Rye": "Råg",
   "Barley": [
-    "Korn hela korn",
-    "Kornmjöl"
+    "Korngryn"
   ],
   "Buckwheat": [
     "Bovete kokt"
@@ -165,7 +171,6 @@
   "Freekeh": "Freekeh",
   "Pita Bread": "Pitabröd",
   "Naan Bread": [
-    "Bröd naan",
     "Naanbröd"
   ],
   "Soba Noodles": [
@@ -177,8 +182,7 @@
     "Knäckebröd"
   ],
   "Rice Cakes": [
-    "Riskaka",
-    "Kaka ris puffat"
+    "Riskaka"
   ],
   "Millet": [
     "Hirs kokt"
@@ -365,8 +369,7 @@
   "Turmeric": "Gurkmeja",
   "Mustard": "Senap",
   "Black Pepper": [
-    "Peppar svart",
-    "Svartpeppar malen"
+    "Svartpeppar"
   ],
   "Za'atar": "Zaatar",
   "Sumac": "Sumak",
@@ -449,8 +452,7 @@
     "Kringlor salta"
   ],
   "Instant Mashed Potato": [
-    "Potatismos berett",
-    "Potatismos pulver berett"
+    "Potatismos"
   ],
   "Dumplings": [
     "Dumplings",
@@ -467,12 +469,10 @@
     "Balsamvinäger"
   ],
   "Fish Roe Spread": [
-    "Kaviar smörgåskaviar",
     "Smörgåskaviar"
   ],
   "Yeast Extract": [
-    "Jästextrakt",
-    "Extrakt jäst"
+    "Jästextrakt"
   ],
   "Harissa": "Harissa",
   "Baba Ganoush": "Baba ganoush",

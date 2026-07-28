@@ -47,6 +47,7 @@ function main() {
     const ours = loadOurFoods();
     const aliases = loadMap("lmv-aliases.json");
     const swedish = loadMap("lmv-swedish.json");
+    const absent = loadMap("lmv-absent.json");
 
     // .xlsx has to be unzipped, which is async
     const load = /\.xlsx$/i.test(file)
@@ -54,15 +55,15 @@ function main() {
         : Promise.resolve(LMV.parseExport(fs.readFileSync(file, "utf8")));
 
     load.then(function (lmv) {
-        report(ours, lmv, aliases, swedish, showAll, showUnmatched);
+        report(ours, lmv, aliases, swedish, absent, showAll, showUnmatched);
     }).catch(function (err) {
         console.error("Could not read " + file + ": " + err.message);
         process.exit(1);
     });
 }
 
-function report(ours, lmv, aliases, swedish, showAll, showUnmatched) {
-    const result = LMV.runAudit(ours, lmv, aliases, swedish);
+function report(ours, lmv, aliases, swedish, absent, showAll, showUnmatched) {
+    const result = LMV.runAudit(ours, lmv, aliases, swedish, absent);
 
     const detected = Object.keys(result.detected);
     console.log("Livsmedelsverket records: " + lmv.length);
@@ -103,6 +104,7 @@ function report(ours, lmv, aliases, swedish, showAll, showUnmatched) {
         console.log("");
     }
 
+    console.log("Known absent from the database: " + result.skipped.length);
     console.log("Unmatched: " + result.unmatched.length + " of " + ours.length +
         (showUnmatched ? "" : "  (--unmatched to list them)"));
     if (showUnmatched) result.unmatched.forEach(function (f) { console.log("  " + f.name); });
