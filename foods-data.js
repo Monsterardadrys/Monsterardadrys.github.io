@@ -1046,7 +1046,9 @@ const CATEGORIES = [
     label: "Snacks & Sweets",
     foods: [
       { name: "Potato chips", lmv: "Chips potatis naturell", traits: ["over_10g_fat", "bile_stimulant"] },
-      { name: "Candy bars", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs"] },
+      // No generic entry exists. The database has 13 chocolate-coated bars
+      // described by their filling; this is the nougat/caramel/peanut one.
+      { name: "Candy bars", lmv: "Mjuk nougat m. kolasås jordnötter mjölkchokladöverdrag", lmvNote: "one representative bar, not a generic entry", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "over_3g_lactose", "allergen", "allergen_milk"] },
       { name: "Milk chocolate", lmv: "Mjölkchoklad", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "over_3g_lactose", "fodmaps", "caffeine", "allergen", "allergen_milk"] },
       // Livsmedelsverket lists 0g fiber, which is a gap in the source rather
       // than a real zero — 70% chocolate is around 11g. Tag kept.
