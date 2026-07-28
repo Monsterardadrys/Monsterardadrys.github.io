@@ -733,6 +733,25 @@ input[type="checkbox"]:hover { cursor: pointer; }
     color: var(--clay-dark);
 }
 
+/* The three-step key on the About page: badge on its own line, then the
+   explanation, so it reads as a ladder rather than a list of tags. */
+.evidenceKey {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 16px;
+}
+
+.evidenceKey li {
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.evidenceKey .evidenceBadge {
+    display: block;
+    width: fit-content;
+    margin-bottom: 4px;
+}
+
 /* The "% — No tracked traits" row. Sits among the trait percentages so the
    shares add up honestly, but muted so it doesn't read as a filterable trait. */
 .untrackedRow {
