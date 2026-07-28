@@ -230,6 +230,8 @@
     "Spritärtor kokta"
   ],
   "Lentils": [
+    "Linser röda kokta",
+    "Linser gröna kokta",
     "Linser kokta"
   ],
   "Soybeans": [
@@ -363,7 +365,10 @@
     "Vasslepulver",
     "Proteinpulver vassle"
   ],
-  "Feta Cheese": "Fetaost",
+  "Feta Cheese": [
+    "Salladsost fett 22%",
+    "Salladsost"
+  ],
   "Labneh": "Labneh",
   "Buttermilk": [
     "Filmjölk",
@@ -666,5 +671,13 @@
   ],
   "Potato chips": [
     "Chips potatis"
+  ],
+  "Pork (lean cut)": [
+    "Gris kotlett rå",
+    "Gris skinka rå"
+  ],
+  "Pork (fatty cut)": [
+    "Gris sida rå",
+    "Gris karré rå"
   ]
 }
