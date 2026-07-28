@@ -23,10 +23,6 @@
     "Chilipeppar",
     "Chili"
   ],
-  "Asparagus": [
-    "Sparris rå",
-    "Sparris"
-  ],
   "Fennel Bulb": "Fänkål",
   "Brussels Sprouts": "Brysselkål",
   "Green Beans": [
@@ -37,10 +33,6 @@
   "Romaine Lettuce": [
     "Romansallat",
     "Sallat"
-  ],
-  "Celery": [
-    "Blekselleri",
-    "Stjälkselleri"
   ],
   "Bok Choy": "Pak choi",
   "Daikon Radish": [
@@ -164,15 +156,14 @@
     "Havregryn fullkorn"
   ],
   "Wheat": [
-    "Vetekorn",
-    "Vete"
+    "Vetekärnor kokta",
+    "Matvete kokt",
+    "Vetekorn kokta"
   ],
-  "Rye": "Råg",
-  "Barley": [
-    "Korngryn"
-  ],
-  "Buckwheat": [
-    "Bovete kokt"
+  "Rye": [
+    "Rågkärnor kokta",
+    "Rågkorn kokta",
+    "Rågkross"
   ],
   "Freekeh": "Freekeh",
   "Pita Bread": "Pitabröd",
@@ -211,9 +202,6 @@
   ],
   "White Bread": "Vitt bröd",
   "Pasta": "Pasta",
-  "Couscous": [
-    "Couscous kokt"
-  ],
   "Bulgur": [
     "Bulgur kokt"
   ],
@@ -242,10 +230,6 @@
   "Pinto Beans": [
     "Bruna bönor kokta"
   ],
-  "Kidney Beans": [
-    "Kidneybönor kokta",
-    "Kidney bönor kokta"
-  ],
   "White Beans": "Vita bönor",
   "Tofu": "Tofu",
   "Tempeh": "Tempeh",
@@ -265,21 +249,19 @@
   ],
   "Dry-Cured Ham (fatty cut)": [
     "Lufttorkad skinka",
-    "Parmaskinka"
+    "Parmaskinka",
+    "Serranoskinka"
   ],
   "Sausages (lean)": [
-    "Korv fett 10%",
-    "Falukorv fett 15%"
+    "Kycklingkorv",
+    "Korv kyckling",
+    "Falukorv lätt",
+    "Korv lätt"
   ],
   "Sausages (regular)": "Korv",
   "Minced Meat (~10% fat)": [
     "Nöt färs fett 10%",
     "Nöt färs rå"
-  ],
-  "Minced Meat (~15% fat)": [
-    "Blandfärs rå",
-    "Nöt färs fett 15%",
-    "Blandfärs"
   ],
   "Minced Meat (~20% fat)": [
     "Nöt färs fett 20%",
@@ -379,7 +361,6 @@
     "Filmjölk",
     "Kärnmjölk"
   ],
-  "Lactose-free Milk": "Laktosfri mjölk",
   "Lactose-free Yogurt": "Laktosfri yoghurt",
   "Cream": "Grädde",
   "Sour Cream (~10% fat)": "Gräddfil",
@@ -439,7 +420,10 @@
     "Vin rött",
     "Rödvin"
   ],
-  "White Wine": "Vitt vin",
+  "White Wine": [
+    "Vin vitt vol. % 11",
+    "Vin vitt"
+  ],
   "Schilcherwein": [
     "Schilcher",
     "Rosévin"
@@ -452,7 +436,10 @@
     "Öl starköl",
     "Öl"
   ],
-  "Cider": "Cider",
+  "Cider": [
+    "Cider vol. % 4",
+    "Cider"
+  ],
   "Spirits (Liquor)": [
     "Sprit",
     "Whisky"
@@ -564,7 +551,12 @@
     "Mjuk nougat m. kolasås jordnötter mjölkchokladöverdrag",
     "Chokladöverdrag"
   ],
-  "Sugary Breakfast Cereal": "Frukostflingor",
+  "Sugary Breakfast Cereal": [
+    "Frukostflingor sockrade",
+    "Chokladflingor",
+    "Honungsflingor",
+    "Flingor majs"
+  ],
   "Sugary soft drinks": "Läsk",
   "Halva": [
     "Halva sesam",
@@ -645,6 +637,7 @@
     "Havregrynsgröt"
   ],
   "Oat Crispbread": [
+    "Knäckebröd havre",
     "Hårt bröd havre"
   ],
   "Oat Bran": "Havrekli",
@@ -681,7 +674,13 @@
     "Gris kotlett rå"
   ],
   "Pork (fatty cut)": [
+    "Gris sidfläsk rå",
     "Gris karré rå",
-    "Gris sida rå"
+    "Gris kotlett rå"
+  ],
+  "Chili": [
+    "Chilipeppar",
+    "Spansk peppar röd",
+    "Chilifrukt"
   ]
 }

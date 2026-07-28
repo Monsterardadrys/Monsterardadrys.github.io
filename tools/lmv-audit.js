@@ -100,6 +100,9 @@ function report(ours, lmv, aliases, swedish, absent, showAll, showUnmatched) {
             console.log("  \"" + s.food.name + "\": \"" + s.record.name + "\",   " +
                 "(" + s.score.toFixed(2) + ")  fat " + n.fat + " protein " + n.protein +
                 " fiber " + n.fiber + " sugars " + n.sugars);
+            (s.alts || []).forEach(function (a) {
+                console.log("      or  " + a.record.name + "   (" + a.score.toFixed(2) + ")");
+            });
         });
         console.log("");
     }
