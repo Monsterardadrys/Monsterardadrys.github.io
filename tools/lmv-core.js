@@ -572,17 +572,37 @@
                 return;
             }
 
+            /*
+                Keep the runners-up, not just the winner. When the top match is
+                wrong the right entry is usually a line or two below it, and
+                seeing it beats guessing at Swedish names from the outside.
+            */
             const terms = searchTerms(food.name);
-            let best = null, bestScore = 0;
+            const ranked = {};
             lmv.forEach(function (r) {
+                let s = 0;
                 terms.forEach(function (term, rank) {
-                    const s = score(term, r.name, food.name) - 0.04 * rank;
-                    if (s > bestScore) { bestScore = s; best = r; }
+                    s = Math.max(s, score(term, r.name, food.name) - 0.04 * rank);
                 });
+                if (s > 0 && (!ranked[r.name] || ranked[r.name].score < s)) {
+                    ranked[r.name] = { record: r, score: s };
+                }
             });
 
-            if (best && bestScore >= 0.62) suggestions.push({ food: food, record: best, score: bestScore });
-            else unmatched.push(food);
+            const top = Object.keys(ranked).map(function (k) { return ranked[k]; })
+                .sort(function (a, b) { return b.score - a.score; })
+                .slice(0, 4);
+
+            if (top.length && top[0].score >= 0.62) {
+                suggestions.push({
+                    food: food,
+                    record: top[0].record,
+                    score: top[0].score,
+                    alts: top.slice(1)
+                });
+            } else {
+                unmatched.push(food);
+            }
         });
 
         suggestions.sort(function (a, b) { return b.score - a.score; });

@@ -579,7 +579,7 @@ const CATEGORIES = [
       { name: "Cucumber", lmv: "Gurka", traits: ["irritant", "peel_skin"] },
       { name: "Bell Pepper (sweet)", lmv: "Paprika röd", traits: ["irritant"] },
       { name: "Bell Pepper (hot)", lmv: "Chilipeppar färsk", traits: ["irritant", "capsaicin"] },
-      { name: "Asparagus", traits: ["fodmaps", "fructans"] },
+      { name: "Asparagus", lmv: "Sparris vit konserv. u. lag", lmvNote: "white, canned — same plant, same figures", traits: ["fodmaps", "fructans"] },
       { name: "Fennel Bulb", lmv: "Fänkål", traits: ["fodmaps", "fructans"] },
       { name: "Broccoli", lmv: "Broccoli", traits: ["fodmaps", "fructans"] },
       { name: "Brussels Sprouts", lmv: "Brysselkål", traits: ["fodmaps", "fructans", "galactans"] },
@@ -589,7 +589,7 @@ const CATEGORIES = [
       { name: "Swiss Chard", lmv: "Mangold", traits: [] },
       { name: "Romaine Lettuce", lmv: "Romansallat", traits: [] },
       { name: "Rocket", lmv: "Ruccolasallat", traits: ["irritant"] },
-      { name: "Celery", traits: ["fodmaps", "polyols", "cross_reactive", "cross_birch"] },
+      { name: "Celery", lmv: "Stjälkselleri", traits: ["fodmaps", "polyols", "cross_reactive", "cross_birch"] },
       { name: "Bok Choy", lmv: "Sellerikål pak choi", traits: [] },
       { name: "Daikon Radish", lmv: "Rättika", traits: ["irritant"] },
       { name: "Rhubarb", lmv: "Rabarber tillagad u. socker", traits: [] },
@@ -734,11 +734,11 @@ const CATEGORIES = [
       { name: "Rye", traits: ["fodmaps", "fructans"] },
       { name: "Rye Bread (whole grain)", lmv: "Bröd fullkorn råg fibrer ca 7%", traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Pearl Barley (cooked)", lmv: "Korngryn kokt u. salt", traits: ["fodmaps", "fructans"] },
-      { name: "Barley", traits: ["fodmaps", "fructans"] },
+      { name: "Barley", lmv: "Korngryn kokt u. salt", traits: ["fodmaps", "fructans"] },
       { name: "Quinoa", lmv: "Mjölmålla quinoa röd kokt m. salt", traits: ["fiber"] },
-      { name: "Buckwheat", traits: [] },
+      { name: "Buckwheat", lmv: "Bovetemjöl", lmvNote: "flour", traits: [] },
       { name: "Rice", lmv: "Ris råris kokt m. salt", traits: [] },
-      { name: "Couscous", traits: ["refined_carbs", "allergen", "allergen_wheat", "fodmaps", "fructans"] },
+      { name: "Couscous", lmv: "Couscous", lmvNote: "dry — no cooked entry", traits: ["refined_carbs", "allergen", "allergen_wheat", "fodmaps", "fructans"] },
       { name: "Bulgur", lmv: "Bulgur kokt", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans"] },
       { name: "Freekeh", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans"] },
       { name: "Pita Bread", lmv: "Bröd vitt vete vatten fibrer ca 3,5% typ pitabröd", traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "refined_carbs"] },
@@ -773,7 +773,7 @@ const CATEGORIES = [
       { name: "Edamame", lmv: "Sojabönor torkade kokta u. salt", traits: ["allergen", "allergen_soy", "cross_reactive", "cross_birch"] },
       { name: "Falafel", lmv: "Falafel kikärtskroketter stekta", traits: ["over_10g_fat", "fiber", "fodmaps", "galactans"] },
       { name: "Fava Beans", lmv: "Bondbönor färska kokta u. salt", traits: ["fiber", "fodmaps", "galactans"] },
-      { name: "Kidney Beans", traits: ["fiber", "fodmaps", "galactans"] },
+      { name: "Kidney Beans", lmv: "Kidney bönor torkade", lmvNote: "dried — cooked is roughly a third of these figures", traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Pinto Beans", lmv: "Bruna bönor torkade kokta m. salt", traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Split Peas", lmv: "Gula ärtor kokta m. salt", traits: ["fiber", "fodmaps", "galactans"] }
     ]
@@ -795,8 +795,8 @@ const CATEGORIES = [
       { name: "Dry-Cured Ham (fatty cut)", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal", "dao_competitor"] },
       { name: "Sausages (lean)", traits: ["protein", "histamine"] },
       { name: "Sausages (regular)", lmv: "Korv frukostkorv stekt", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal"] },
-      { name: "Minced Meat (~10% fat)", lmv: "Nöt färs rå fett 10%", traits: ["protein", "histamine", "alpha_gal"] },
-      { name: "Minced Meat (~15% fat)", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
+      { name: "Minced Meat (~10% fat)", lmv: "Nöt färs rå fett 10%", lmvNote: "entry measures 11.3 g fat", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
+      { name: "Minced Meat (~15% fat)", lmv: "Nöt färs rå fett 15%", lmvNote: "protein 19.4 g — kept in line with the other grades", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
       { name: "Minced Meat (~20% fat)", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
       { name: "Lamb", lmv: "Lamm kött rå", traits: ["alpha_gal"] },
       // Named for the skin, because that is where the fat is: skinless
@@ -878,7 +878,7 @@ const CATEGORIES = [
       // Lactase-treated dairy: lactose <0.1g/100g and Monash-tested low FODMAP,
       // but the milk protein and (for yogurt) the fermentation are unchanged.
       // That split is the point — it separates lactose from casein/histamine.
-      { name: "Lactose-free Milk", traits: ["allergen", "allergen_milk"] },
+      { name: "Lactose-free Milk", lmv: "Mjölk fett 3% berikad", lmvNote: "ordinary milk — the lactose-free version is not listed", traits: ["allergen", "allergen_milk"] },
       { name: "Lactose-free Yogurt", lmv: "Yoghurt naturell lätt laktosfri fett ca 0,4% berikad", traits: ["allergen", "allergen_milk"] },
     ]
   },
