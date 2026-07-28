@@ -56,7 +56,10 @@
   "Celeriac Root": "Rotselleri",
   "Broccoli": "Broccoli",
   "Avocado": "Avokado",
-  "Zucchini": "Zucchini",
+  "Zucchini": [
+    "Squash",
+    "Zucchini"
+  ],
   "Aubergine": "Aubergine",
   "Pumpkin": "Pumpa",
   "Apples": "Äpple",
