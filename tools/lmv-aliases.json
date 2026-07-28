@@ -118,7 +118,7 @@
   "Cottage Cheese": "Färskost cottage cheese naturell fett 4%",
   "Ricotta Cheese": "Färskost ricotta fett ca 10%",
   "Cream Cheese (>10% fat)": "Färskost fett 33%",
-  "Quark Cheese (~0.2% fat)": "Kvarg färskost fett 1%",
+  "Quark (~1%)": "Kvarg färskost fett 1%",
   "Parmesan": "Ost hårdost parmesan fett 30% typ Parmiggiano Reggiano",
   "Halloumi": "Ost halloumi rå fett 22%",
   "Camembert": "Vitmögelost camembert fett ca 22%",
@@ -275,6 +275,8 @@
   "Greek Yogurt (10% fat)": "Yoghurt naturell fett 10%",
   "Quark (~10%)": "Kvarg färskost fett 10%",
   "Hard Cheese (~15% fat)": "Ost hårdost fett 17%",
+  "Cheddar": "Ost hårdost fett 31%",
+  "Aged Gouda": "Ost hårdost fett 31%",
   "Hard Cheese (~28-35% fat)": "Ost hårdost fett 31%",
   "Minced Meat (~12% fat)": "Nöt färs rå fett 10%",
   "Pork (lean cut)": "Gris kött kokt m. salt"
