@@ -730,7 +730,7 @@ const CATEGORIES = [
       { name: "Oat Crispbread", traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Oat Bran", lmv: "Havrekli", traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Muesli (no added sugar)", lmv: "Frukostflingor müsli fullkorn m. frukt", traits: ["fiber", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
-      { name: "Wheat", traits: ["fodmaps", "fructans", "allergen", "allergen_wheat"] },
+      { name: "Wheat", lmv: "Matvete kokt m. salt", traits: ["fiber", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
       { name: "Rye", traits: ["fodmaps", "fructans"] },
       { name: "Rye Bread (whole grain)", lmv: "Bröd fullkorn råg fibrer ca 7%", traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Pearl Barley (cooked)", lmv: "Korngryn kokt u. salt", traits: ["fodmaps", "fructans"] },
@@ -784,7 +784,7 @@ const CATEGORIES = [
     foods: [
       { name: "Cows Meat", lmv: "Nöt kött rå", traits: ["bile_stimulant", "protein", "alpha_gal"] },
       { name: "Pork (lean cut)", lmv: "Gris kött kokt m. salt", traits: ["bile_stimulant", "protein", "alpha_gal"] },
-      { name: "Pork (fatty cut)", traits: ["over_10g_fat", "bile_stimulant", "protein", "alpha_gal"] },
+      { name: "Pork (fatty cut)", lmv: "Gris sidfläsk rökt", lmvNote: "smoked side pork — the fattiest cut listed", traits: ["over_10g_fat", "bile_stimulant", "alpha_gal"] },
       { name: "Elk Meat", lmv: "Älg högrev rå", traits: ["bile_stimulant", "protein", "alpha_gal", "histamine"] },
       { name: "Chicken", lmv: "Kyckling kokt m. salt", traits: ["bile_stimulant", "protein"] },
       { name: "Egg White", lmv: "Äggvita rå", traits: ["allergen", "allergen_egg"] },
@@ -792,12 +792,12 @@ const CATEGORIES = [
       { name: "Whole Egg", lmv: "Ägg rått", traits: ["allergen", "allergen_egg"] },
       { name: "Salami", lmv: "Påläggskorv salami rökt", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal", "dao_competitor"] },
       { name: "Dry-Cured Ham (lean)", lmv: "Gris skinka lufttorkad italiensk", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal", "dao_competitor"] },
-      { name: "Dry-Cured Ham (fatty cut)", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal", "dao_competitor"] },
+      { name: "Dry-Cured Ham (fatty cut)", lmv: "Gris skinka lufttorkad italiensk", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal", "dao_competitor"] },
       { name: "Sausages (lean)", traits: ["protein", "histamine"] },
       { name: "Sausages (regular)", lmv: "Korv frukostkorv stekt", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal"] },
       { name: "Minced Meat (~10% fat)", lmv: "Nöt färs rå fett 10%", lmvNote: "entry measures 11.3 g fat", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
-      { name: "Minced Meat (~15% fat)", lmv: "Nöt färs rå fett 15%", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal"] },
-      { name: "Minced Meat (~20% fat)", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
+      { name: "Minced Meat (~15% fat)", lmv: "Nöt färs rå fett 15%", traits: ["over_10g_fat", "histamine", "alpha_gal"] },
+      { name: "Minced Meat (~20% fat)", lmv: "Blandfärs stekt m. salt", lmvNote: "fried mixed mince — no raw 20 % entry", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
       { name: "Lamb", lmv: "Lamm kött rå", traits: ["alpha_gal"] },
       // Named for the skin, because that is where the fat is: skinless
       // breast is ~4g/100g and would not carry either tag.
@@ -889,7 +889,7 @@ const CATEGORIES = [
     // never apply here — see the serving-size rule in about.html.
     smallServing: true,
     foods: [
-      { name: "Chili", traits: ["irritant", "capsaicin"] },
+      { name: "Chili", lmv: "Chilipeppar färsk", traits: ["irritant", "capsaicin"] },
       { name: "Garlic", lmv: "Vitlök", traits: ["fodmaps", "fructans", "irritant", "allyl_compounds"] },
       { name: "Ginger", lmv: "Ingefära färsk", traits: [] },
       { name: "Dill", lmv: "Dill färsk", traits: [] },
@@ -920,12 +920,12 @@ const CATEGORIES = [
     label: "Beverages",
     foods: [
       { name: "Red Wine", lmv: "Vin rött vol. % 14", traits: ["alcohol", "histamine", "irritant"] },
-      { name: "White Wine", traits: ["alcohol", "histamine", "irritant"] },
+      { name: "White Wine", lmv: "Vin vitt vol. % 12", traits: ["alcohol", "histamine", "irritant"] },
       // From the SIGHI review. Styrian rosé, 11-12% ABV under Schilcherland DAC.
       { name: "Schilcherwein", traits: ["alcohol", "histamine", "irritant"] },
       { name: "Champagne", traits: ["alcohol", "histamine", "irritant", "carbonation"] },
       { name: "Beer", lmv: "Öl starköl el. exportöl vol. % 5,4", traits: ["alcohol", "histamine", "irritant", "carbonation"] },
-      { name: "Cider", traits: ["alcohol", "irritant", "carbonation", "histamine"] },
+      { name: "Cider", lmv: "Cider vol. % 1", lmvNote: "the 1 % grocery cider — stronger ones are not listed", traits: ["alcohol", "irritant", "carbonation", "histamine"] },
       { name: "Spirits (Liquor)", lmv: "Whisky vol. % 40", traits: ["alcohol", "irritant", "histamine"] },
       { name: "Coffee", lmv: "Kaffe bryggt", traits: ["caffeine", "irritant"] },
       { name: "Espresso", lmv: "Kaffe espresso bryggt drickf.", traits: ["caffeine", "irritant"] },
@@ -1057,7 +1057,7 @@ const CATEGORIES = [
       { name: "Granola Bar", lmv: "Bar müslibar m. choklad berikad", traits: ["refined_carbs", "allergen", "allergen_treenut"] },
       { name: "Protein Bar", traits: ["protein", "refined_carbs", "allergen", "allergen_milk"] },
       { name: "Microwave Popcorn", lmv: "Popcorn mikropopcorn poppade fett ca 22%", traits: ["over_10g_fat", "fiber"] },
-      { name: "Sugary Breakfast Cereal", traits: ["refined_carbs", "allergen", "allergen_wheat"] },
+      { name: "Sugary Breakfast Cereal", lmv: "Frukostflingor majs m. socker", traits: ["refined_carbs", "allergen", "allergen_wheat"] },
       { name: "Sugary soft drinks", lmv: "Läsk", traits: ["refined_carbs", "carbonation", "irritant"] },
       { name: "Cola", lmv: "Läsk cola", traits: ["caffeine", "refined_carbs", "carbonation", "irritant"] },
       { name: "Ice Cream", lmv: "Glass fett ca 10%", traits: ["refined_carbs", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
