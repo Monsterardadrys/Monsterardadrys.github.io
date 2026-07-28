@@ -360,14 +360,20 @@
         return (2 * hits) / (ka.length + kb.length);
     }
 
-    /* Swedish glues nouns together — majskorn, kikärtsmjöl, havregryn — so
-       "majs" and "majskorn" are the same word for our purposes even though
-       they are not the same token. A prefix of five letters or more counts. */
+    /* Swedish inflects nouns with a small closed set of endings, so "kikärt"
+       and "kikärtor" are the same word. Compounds are not: "majsolja" is an
+       oil and "pepparrot" is a root, however much they look like majs and
+       peppar. Only a known ending counts, which is the difference between
+       matching an inflection and matching a different food entirely. */
+    const ENDINGS = ["or", "orna", "er", "erna", "ar", "arna", "en", "et",
+        "na", "n", "t", "a", "s", "ter", "terna"];   // nöt -> nötter
+
     function sameWord(a, b) {
         if (a === b) return true;
         const short = a.length < b.length ? a : b;
         const long = a.length < b.length ? b : a;
-        return short.length >= 4 && long.indexOf(short) === 0;
+        if (short.length < 4 || long.indexOf(short) !== 0) return false;
+        return ENDINGS.indexOf(long.slice(short.length)) !== -1;
     }
 
     function score(ourName, lmvName) {
@@ -480,9 +486,10 @@
        aliases: { "our name": "exact Livsmedelsverket name" } — treated as certain
        swedish: { "our name": "Swedish term" | [terms] } — only steers the fuzzy
                 match, so a wrong term shows up as an obviously wrong suggestion */
-    function runAudit(ours, lmv, aliases, swedish) {
+    function runAudit(ours, lmv, aliases, swedish, absent) {
         aliases = aliases || {};
         swedish = swedish || {};
+        absent = absent || {};
 
         /* Where curated Swedish terms exist they replace our English name
            rather than joining it. The English name carries no preparation
@@ -504,9 +511,10 @@
         const byName = {};
         lmv.forEach(function (r) { byName[norm(r.name)] = r; });
 
-        const disagreements = [], suggestions = [], unmatched = [], clean = [];
+        const disagreements = [], suggestions = [], unmatched = [], clean = [], skipped = [];
 
         ours.forEach(function (food) {
+            if (absent[food.name]) { skipped.push(food); return; }
             const alias = aliases[food.name];
             const record = alias ? byName[norm(alias)] : null;
 
@@ -538,7 +546,8 @@
             disagreements: disagreements,
             clean: clean,
             suggestions: suggestions,
-            unmatched: unmatched
+            unmatched: unmatched,
+            skipped: skipped
         };
     }
 

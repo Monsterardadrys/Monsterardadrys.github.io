@@ -231,6 +231,7 @@
                 });
             let aliases = {};
             let swedish = {};
+            let absent = {};
             let lastReport = "";
             let lastMarkdown = "";
             let lastSource = "pasted data";
@@ -249,6 +250,7 @@
 
             loadMap("lmv-aliases.json", aliases);
             loadMap("lmv-swedish.json", swedish);
+            loadMap("lmv-absent.json", absent);
 
             function show(el, kind, msg) {
                 el.className = "status show " + kind;
@@ -362,6 +364,9 @@
                 }
                 out.push("");
 
+                out.push("Known absent from the database, skipped: " + result.skipped.length +
+                    " (see tools/lmv-absent.json)");
+                out.push("");
                 out.push("## Unmatched (" + result.unmatched.length + ")");
                 out.push("");
                 if (result.unmatched.length) {
@@ -382,7 +387,8 @@
                     [result.confirmed, "confirmed"],
                     [result.disagreements.length, "disagreements"],
                     [result.suggestions.length, "to confirm"],
-                    [result.unmatched.length, "unmatched"]
+                    [result.unmatched.length, "unmatched"],
+                    [result.skipped.length, "known absent"]
                 ].forEach(function (pair) {
                     const d = document.createElement("div");
                     d.className = "count";
@@ -441,7 +447,7 @@
                     return;
                 }
                 show(statusEl, "good", "Read " + lmv.length + " records.");
-                render(LMV.runAudit(ours, lmv, aliases, swedish), lmv.length);
+                render(LMV.runAudit(ours, lmv, aliases, swedish, absent), lmv.length);
             }
 
             document.getElementById("fileInput").addEventListener("change", function (e) {
