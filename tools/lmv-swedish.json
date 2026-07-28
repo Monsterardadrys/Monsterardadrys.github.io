@@ -276,16 +276,19 @@
   ],
   "Sausages (regular)": "Korv",
   "Minced Meat (~5% fat)": [
-    "Köttfärs nöt fett 5%",
-    "Köttfärs nöt"
+    "Nöt färs fett 5%",
+    "Nöt färs",
+    "Blandfärs"
   ],
   "Minced Meat (~12% fat)": [
-    "Köttfärs nöt fett 12%",
-    "Köttfärs nöt"
+    "Nöt färs fett 12%",
+    "Nöt färs",
+    "Blandfärs"
   ],
   "Minced Meat (~20% fat)": [
-    "Köttfärs nöt fett 20%",
-    "Köttfärs nöt"
+    "Nöt färs fett 20%",
+    "Nöt färs",
+    "Blandfärs"
   ],
   "Lamb": "Lammkött",
   "Turkey": "Kalkon",
@@ -385,7 +388,10 @@
     "Färskost fett 5%",
     "Färskost lätt"
   ],
-  "Cream Cheese (>10% fat)": "Färskost",
+  "Cream Cheese (>10% fat)": [
+    "Färskost cream cheese fett 27%",
+    "Färskost cream cheese fett 15%"
+  ],
   "Halloumi": "Halloumi",
   "Mozzarella": "Mozzarella",
   "Parmesan": "Parmesan",
@@ -673,11 +679,11 @@
     "Chips potatis"
   ],
   "Pork (lean cut)": [
-    "Gris innerfilé rå",
-    "Gris kotlett benfri rå"
+    "Gris kött rå",
+    "Gris kotlett rå"
   ],
   "Pork (fatty cut)": [
     "Gris karré rå",
-    "Gris sidfläsk rå"
+    "Gris sida rå"
   ]
 }
