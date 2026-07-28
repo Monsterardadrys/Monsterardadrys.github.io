@@ -727,7 +727,6 @@ const CATEGORIES = [
       // already had its own spread of products further down this list.
       { name: "Oats", lmv: "Havregryn fullkorn", traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Oat Porridge", lmv: "Havregrynsgröt fullkorn", traits: ["fodmaps", "fructans"] },
-      { name: "Oat Crispbread", traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Oat Bran", lmv: "Havrekli", traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Muesli (no added sugar)", lmv: "Frukostflingor müsli fullkorn m. frukt", traits: ["fiber", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
       { name: "Wheat", lmv: "Matvete kokt m. salt", traits: ["fiber", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
@@ -792,8 +791,8 @@ const CATEGORIES = [
       { name: "Whole Egg", lmv: "Ägg rått", traits: ["allergen", "allergen_egg"] },
       { name: "Salami", lmv: "Påläggskorv salami rökt", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal", "dao_competitor"] },
       { name: "Dry-Cured Ham (lean)", lmv: "Gris skinka lufttorkad italiensk", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal", "dao_competitor"] },
-      { name: "Dry-Cured Ham (fatty cut)", lmv: "Gris skinka lufttorkad italiensk", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal", "dao_competitor"] },
-      { name: "Sausages (lean)", traits: ["protein", "histamine"] },
+      { name: "Dry-Cured Ham (fatty cut)", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal", "dao_competitor"] },
+      { name: "Chicken Sausage", lmv: "Korv kycklingkorv mager", traits: ["protein", "histamine"] },
       { name: "Sausages (regular)", lmv: "Korv frukostkorv stekt", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal"] },
       { name: "Minced Meat (~10% fat)", lmv: "Nöt färs rå fett 10%", lmvNote: "entry measures 11.3 g fat", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
       { name: "Minced Meat (~15% fat)", lmv: "Nöt färs rå fett 15%", traits: ["over_10g_fat", "histamine", "alpha_gal"] },
