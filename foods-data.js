@@ -846,7 +846,7 @@ const CATEGORIES = [
       { name: "Greek Yogurt (10% fat)", lmv: "Yoghurt naturell fett 10%", lmvNote: "entry measures 8.3 g fat, below the 10 g threshold", traits: ["over_10g_fat", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Butter", lmv: "Smör fett 80%", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_milk"] },
       { name: "Cream", lmv: "Vispgrädde fett 40%", traits: ["over_10g_fat", "bile_stimulant", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
-      { name: "Quark Cheese (~0.2% fat)", lmv: "Kvarg färskost fett 1%", traits: ["allergen", "allergen_milk", "over_3g_lactose"] },
+      { name: "Quark (~1%)", lmv: "Kvarg färskost fett 1%", traits: ["allergen", "allergen_milk", "over_3g_lactose"] },
       { name: "Quark (~10%)", lmv: "Kvarg färskost fett 10%", lmvNote: "exactly 10 g fat — kept at the threshold", traits: ["over_10g_fat", "allergen", "allergen_milk", "over_3g_lactose"] },
       { name: "Cottage Cheese", lmv: "Färskost cottage cheese naturell fett 4%", traits: ["allergen", "allergen_milk", "over_3g_lactose"] },
       { name: "Sour Cream (~10% fat)", lmv: "Gräddfil fett 12%", traits: ["over_10g_fat", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
@@ -864,8 +864,8 @@ const CATEGORIES = [
       { name: "Fontina", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
       { name: "Raclette", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
       { name: "Camembert", lmv: "Vitmögelost camembert fett ca 22%", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
-      { name: "Cheddar", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
-      { name: "Aged Gouda", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
+      { name: "Cheddar", lmv: "Ost hårdost fett 31%", lmvNote: "generic hard cheese entry", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
+      { name: "Aged Gouda", lmv: "Ost hårdost fett 31%", lmvNote: "generic hard cheese entry", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
       { name: "Whey Protein", traits: ["protein", "allergen", "allergen_milk", "over_3g_lactose"] },
       // 21.3g fat/100g, so it clears the 17.5g bile threshold like the other
       // full-fat cheeses. Protein is only ~14g, so no protein tag.
