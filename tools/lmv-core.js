@@ -393,7 +393,30 @@
         return w;
     }
 
-    function score(ourName, lmvName) {
+    /* Fat percentages are the whole point of several of our entries — 5, 12
+       and 20 percent mince are three different foods — but they vanish in
+       tokenisation: parentheses are stripped and "5" is too short to survive.
+       Read as numbers instead, and let the closest one win. */
+    function percents(name) {
+        const out = [];
+        String(name).replace(/(\d+(?:[.,]\d+)?)\s*%/g, function (_, n) {
+            out.push(parseFloat(n.replace(",", ".")));
+            return "";
+        });
+        return out;
+    }
+
+    function percentAdjust(a, b) {
+        const pa = percents(a), pb = percents(b);
+        if (!pa.length || !pb.length) return 0;
+        let diff = Infinity;
+        pa.forEach(function (x) {
+            pb.forEach(function (y) { diff = Math.min(diff, Math.abs(x - y)); });
+        });
+        return diff <= 1 ? 0.08 : -Math.min(0.35, diff * 0.02);
+    }
+
+    function score(ourName, lmvName, hint) {
         const ta = tokens(ourName), tb = tokens(lmvName);
         if (!ta.length || !tb.length) return 0;
 
@@ -446,7 +469,12 @@
            So a match on the first word counts for more. */
         const headMatch = shared.some(function (t) { return sameWord(t, tb[0]); }) ? 0.05 : 0;
 
-        const s = 0.45 + 0.45 * coverage - 0.04 * clutter + headMatch - 0.25 * missingState.length;
+        // the hint carries the food's own name, so "(~12% fat)" still counts
+        // even when the Swedish search term omits the percentage
+        const pct = percentAdjust(percents(ourName).length ? ourName : (hint || ourName), lmvName);
+
+        const s = 0.45 + 0.45 * coverage - 0.04 * clutter + headMatch
+            - 0.25 * missingState.length + pct;
         return Math.max(0, Math.min(s, 1));
     }
 
@@ -548,7 +576,7 @@
             let best = null, bestScore = 0;
             lmv.forEach(function (r) {
                 terms.forEach(function (term, rank) {
-                    const s = score(term, r.name) - 0.04 * rank;
+                    const s = score(term, r.name, food.name) - 0.04 * rank;
                     if (s > bestScore) { bestScore = s; best = r; }
                 });
             });
