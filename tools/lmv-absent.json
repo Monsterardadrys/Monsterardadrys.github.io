@@ -1,7 +1,5 @@
 {
   "_comment": "Foods confirmed by hand to have no Livsmedelsverket entry. The audit skips them entirely, so they stop appearing as a suggestion for whatever happens to look vaguely similar — Halva was being offered sesame oil, black pepper was being offered horseradish. Only add a food here after actually searching the database for it.",
-
-  "Zucchini": true,
   "Curry Powder": true,
   "Chai Tea": true,
   "Halva": true,
