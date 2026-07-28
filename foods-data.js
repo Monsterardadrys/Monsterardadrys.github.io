@@ -765,7 +765,7 @@ const CATEGORIES = [
       { name: "Black Bean", lmv: "Svarta bönor konserv. u. lag", traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Chickpea (whole/flour)", lmv: "Kikärtor torkade kokta m. salt", traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Common Peas", lmv: "Gröna ärtor kokta m. salt frysvara", traits: ["fodmaps", "fructans", "dao_competitor", "salicylate"] },
-      { name: "Lentils", traits: ["fiber", "fodmaps", "galactans"] },
+      { name: "Lentils", lmv: "Röda linser torkade kokta m. salt", lmvNote: "red lentils", traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Tempeh", lmv: "Tempeh", traits: ["over_10g_fat", "allergen", "allergen_soy", "histamine"] },
       { name: "Tofu (firm)", lmv: "Tofu fast", traits: ["allergen", "allergen_soy", "cross_reactive", "cross_birch", "dao_competitor"] },
       { name: "Tofu (silken)", traits: ["fodmaps", "galactans", "allergen", "allergen_soy", "cross_reactive", "cross_birch", "dao_competitor"] },
@@ -869,7 +869,7 @@ const CATEGORIES = [
       { name: "Whey Protein", traits: ["protein", "allergen", "allergen_milk", "over_3g_lactose"] },
       // 21.3g fat/100g, so it clears the 17.5g bile threshold like the other
       // full-fat cheeses. Protein is only ~14g, so no protein tag.
-      { name: "Feta Cheese", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_milk", "histamine"] },
+      { name: "Feta Cheese", lmv: "Salladsost fett 22%", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_milk", "histamine"] },
       { name: "Labneh", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Paneer", lmv: "Paneer", traits: ["over_10g_fat", "allergen", "allergen_milk", "over_3g_lactose"] },
       { name: "Skyr", traits: ["over_3g_lactose", "allergen", "allergen_milk"] },
