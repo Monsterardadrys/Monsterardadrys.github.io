@@ -617,39 +617,26 @@
     "Gris kött rå",
     "Gris kotlett rå"
   ],
-  "Cassava": [
-    "Maniok",
-    "Kassava"
-  ],
-  "Shallot": [
-    "Lök schalotten",
-    "Schalottenlök"
-  ],
   "Spring Onion": [
     "Knipplök",
     "Salladslök",
     "Lök grön"
   ],
-  "Frozen Mixed Berries": [
-    "Bär frysvara",
-    "Blandade bär frysvara"
-  ],
   "Sourdough Bread (wheat)": [
     "Bröd surdeg",
     "Bröd vete surdeg"
-  ],
-  "Cinnamon Bun": [
-    "Vetebulle",
-    "Bulle vete",
-    "Kanelbulle"
-  ],
-  "Pickled Onion": [
-    "Silverlök inlagd",
-    "Lök inlagd u. lag"
   ],
   "Veggie Burger (bean-based)": [
     "Bönburgare",
     "Grönsaksburgare",
     "Burgare veg."
+  ],
+  "Soy Yogurt": [
+    "Soygurt",
+    "Soygurt naturell"
+  ],
+  "Oat Yogurt": [
+    "Havregurt",
+    "Havregurt naturell"
   ]
 }
