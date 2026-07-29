@@ -146,7 +146,11 @@
   "Sesame Seeds": "Sesamfrön",
   "Pecan": "Pekannöt",
   "Chestnut": "Kastanj",
-  "Pistachio": "Pistagenöt",
+  "Pistachio": [
+    "Pistaschnöt",
+    "Pistagenöt",
+    "Pistage"
+  ],
   "Macadamia": "Macadamianöt",
   "Tiger Nut (roasted)": "Jordmandel",
   "Oats": [
@@ -191,10 +195,6 @@
   "White Bread": "Vitt bröd",
   "Bulgur": [
     "Bulgur kokt"
-  ],
-  "Spelt": [
-    "Dinkel",
-    "Dinkelmjöl"
   ],
   "Black Bean": "Svarta bönor",
   "Chickpea (whole/flour)": [
@@ -248,14 +248,6 @@
     "Falukorv"
   ],
   "Chicken": "Kyckling",
-  "Bacon": [
-    "Bacon stekt",
-    "Bacon"
-  ],
-  "Liver": [
-    "Nöt lever",
-    "Gris lever"
-  ],
   "Salami": "Salami",
   "Salmon": "Lax",
   "Cod": "Torsk",
@@ -279,10 +271,6 @@
   "Nori": [
     "Sjögräs nori",
     "Alger nori"
-  ],
-  "Mackerel": [
-    "Makrill",
-    "Makrill i tomatsås"
   ],
   "Cows Milk": [
     "Mjölk",
@@ -391,7 +379,6 @@
     "Pepparmynta"
   ],
   "Cinnamon": "Kanel",
-  "Paprika Powder": "Paprikapulver",
   "Basil": "Basilika",
   "Dill": "Dill",
   "Red Wine": [
@@ -630,278 +617,39 @@
     "Gris kött rå",
     "Gris kotlett rå"
   ],
-  "Cassava": "Kassava",
-  "Yam": "Jamsrot",
-  "Taro": "Taro",
-  "Lotus Root": "Lotusrot",
-  "Shallot": "Schalottenlök",
+  "Cassava": [
+    "Maniok",
+    "Kassava"
+  ],
+  "Shallot": [
+    "Lök schalotten",
+    "Schalottenlök"
+  ],
   "Spring Onion": [
+    "Knipplök",
     "Salladslök",
-    "Vårlök"
+    "Lök grön"
   ],
-  "Globe Artichoke": "Kronärtskocka",
-  "Okra": "Okra",
-  "Canned Peaches in Syrup": [
-    "Persika konserv. m. socker",
-    "Persika konserv."
-  ],
-  "Sea Buckthorn": "Havtorn",
-  "Aronia": "Aronia",
-  "Mulberry": "Mullbär",
-  "Physalis": "Physalis",
   "Frozen Mixed Berries": [
-    "Bär blandade frysta",
-    "Blandade bär"
+    "Bär frysvara",
+    "Blandade bär frysvara"
   ],
-  "Pine Nuts": "Pinjenötter",
-  "Hemp Seeds": "Hampafrön",
-  "Poppy Seeds": "Vallmofrö",
-  "Sunflower Seed Butter": "Solrosfrösmör",
   "Sourdough Bread (wheat)": [
-    "Bröd surdeg vete",
-    "Surdegsbröd"
-  ],
-  "Gluten-free Bread": [
-    "Bröd glutenfritt",
-    "Glutenfritt bröd"
-  ],
-  "Gluten-free Crispbread": "Hårt bröd glutenfritt",
-  "Gluten-free Pasta": [
-    "Pasta glutenfri kokt",
-    "Pasta glutenfri"
-  ],
-  "Gluten-free Oats": [
-    "Havregryn glutenfria",
-    "Havregryn"
-  ],
-  "Semolina Porridge": [
-    "Mannagrynsgröt",
-    "Mannagryn"
-  ],
-  "Corn Tortilla": [
-    "Tortilla majs",
-    "Tortillabröd majs"
-  ],
-  "Wheat Bran": "Vetekli",
-  "Rice Flour": "Rismjöl",
-  "Potato Flour": "Potatismjöl",
-  "Almond Flour": "Mandelmjöl",
-  "White Beans in Tomato Sauce": [
-    "Vita bönor i tomatsås",
-    "Bruna bönor konserv."
-  ],
-  "Green Lentils": [
-    "Linser gröna kokta",
-    "Linser gröna"
-  ],
-  "Mung Beans": [
-    "Mungbönor kokta",
-    "Mungbönor"
-  ],
-  "Adzuki Beans": [
-    "Adzukibönor kokta",
-    "Adzukibönor"
-  ],
-  "Butter Beans": [
-    "Limabönor kokta",
-    "Smörbönor"
-  ],
-  "Liver Pate": [
-    "Leverpastej",
-    "Leverpastej mager"
-  ],
-  "Blood Pudding": "Blodpudding",
-  "Reindeer": [
-    "Ren kött",
-    "Renkött"
-  ],
-  "Sardines (canned)": [
-    "Sardiner konserv.",
-    "Sardiner"
-  ],
-  "Pickled Herring": [
-    "Sill inlagd",
-    "Inlagd sill"
-  ],
-  "Surimi / Crab Sticks": [
-    "Surimi",
-    "Krabbstickor"
-  ],
-  "Filmjolk": [
-    "Filmjölk fett 3%",
-    "Filmjölk"
-  ],
-  "Creme Fraiche": [
-    "Crème fraiche",
-    "Creme fraiche"
-  ],
-  "Brie": [
-    "Ost brie",
-    "Brie"
-  ],
-  "Emmental": [
-    "Ost emmentaler",
-    "Emmentaler"
-  ],
-  "Lactose-free Cheese": [
-    "Ost laktosfri",
-    "Hårdost laktosfri"
-  ],
-  "Lactose-free Cream": [
-    "Grädde laktosfri",
-    "Vispgrädde laktosfri"
-  ],
-  "Cardamom": "Kardemumma",
-  "Allspice": "Kryddpeppar",
-  "Orange Juice": [
-    "Apelsinjuice",
-    "Juice apelsin"
-  ],
-  "Apple Juice": [
-    "Äppeljuice",
-    "Juice äpple"
-  ],
-  "Rosehip Soup": [
-    "Nyponsoppa",
-    "Soppa nypon"
-  ],
-  "Peppermint Tea": [
-    "Te pepparmynta",
-    "Pepparmyntste"
-  ],
-  "Alcohol-free Beer": [
-    "Öl alkoholfri",
-    "Öl lättöl vol. % 0"
-  ],
-  "Squash / Cordial": [
-    "Saft",
-    "Saft koncentrerad"
-  ],
-  "Hot Chocolate": [
-    "Chokladdryck",
-    "Varm choklad"
-  ],
-  "Garlic-infused Oil": [
-    "Olja vitlök",
-    "Vitlöksolja"
-  ],
-  "Peanut Butter": [
-    "Jordnötssmör",
-    "Jordnötskräm"
-  ],
-  "Agave Syrup": [
-    "Agavesirap",
-    "Sirap agave"
-  ],
-  "Erythritol Sweetener": [
-    "Erytritol",
-    "Sötningsmedel"
-  ],
-  "Nutritional Yeast": [
-    "Näringsjäst",
-    "Jästflingor"
-  ],
-  "Tomato Pasta Sauce": [
-    "Pastasås tomat",
-    "Tomatsås"
-  ],
-  "Bechamel Sauce": [
-    "Vitsås",
-    "Bechamelsås"
-  ],
-  "Satay / Peanut Sauce": [
-    "Jordnötssås",
-    "Sataysås"
-  ],
-  "Vegan Mayonnaise": [
-    "Majonnäs vegansk",
-    "Vegomajonnäs"
-  ],
-  "Truffle": "Tryffel",
-  "Maitake Mushrooms": "Maitake",
-  "Lion's Mane Mushrooms": "Igelkottstaggsvamp",
-  "Trumpet Chanterelle": "Trattkantarell",
-  "Sugar-free Chewing Gum": [
-    "Tuggummi sockerfritt",
-    "Tuggummi"
+    "Bröd surdeg",
+    "Bröd vete surdeg"
   ],
   "Cinnamon Bun": [
-    "Kanelbulle",
-    "Bulle kanel"
-  ],
-  "Marzipan": [
-    "Mandelmassa",
-    "Marsipan"
-  ],
-  "Liquorice": [
-    "Lakrits",
-    "Godis lakrits"
-  ],
-  "Salty Liquorice": [
-    "Saltlakrits",
-    "Lakrits salt"
-  ],
-  "Pickled Beetroot": [
-    "Rödbetor inlagda",
-    "Inlagda rödbetor"
+    "Vetebulle",
+    "Bulle vete",
+    "Kanelbulle"
   ],
   "Pickled Onion": [
-    "Lök inlagd",
-    "Silverlök inlagd"
-  ],
-  "Pickled Jalapeno": [
-    "Jalapeno inlagd",
-    "Chili inlagd"
-  ],
-  "Pickled Ginger": [
-    "Ingefära inlagd",
-    "Ingefära"
-  ],
-  "Salt-brined Pickles": [
-    "Saltgurka",
-    "Gurka saltad"
-  ],
-  "Capers": "Kapris",
-  "Natto": "Natto",
-  "Kvass": "Kvass",
-  "Soy Yogurt": [
-    "Sojayoghurt",
-    "Yoghurt soja"
-  ],
-  "Coconut Yogurt": [
-    "Kokosyoghurt",
-    "Yoghurt kokos"
-  ],
-  "Oat Fraiche": [
-    "Havrefraiche",
-    "Fraiche havre"
-  ],
-  "Vegan Cheese (Coconut Oil)": [
-    "Ost vegansk kokosolja",
-    "Vegansk ost"
-  ],
-  "Vegan Cheese (Cashew)": [
-    "Ost vegansk cashew",
-    "Vegansk ost"
-  ],
-  "Plant-based Mince": [
-    "Vegofärs",
-    "Sojafärs"
-  ],
-  "Quorn": [
-    "Quorn",
-    "Mykoprotein"
+    "Silverlök inlagd",
+    "Lök inlagd u. lag"
   ],
   "Veggie Burger (bean-based)": [
-    "Vegoburgare",
-    "Burgare vegetarisk"
-  ],
-  "Pea Protein Powder": [
-    "Ärtprotein",
-    "Proteinpulver ärt"
-  ],
-  "Aquafaba": [
-    "Aquafaba",
-    "Kikärtsspad"
+    "Bönburgare",
+    "Grönsaksburgare",
+    "Burgare veg."
   ]
 }
