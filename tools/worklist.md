@@ -21,8 +21,6 @@ the uncertainty article.
 
 ## Open
 
-- **Trait articles have not been re-read against their new level.** Some may
-  claim more or less certainty than the badge beside them now says.
 - **The mince grades disagree on `bile_stimulant`.** 10% has it (protein
   20.1 g), 15% does not (19.4 g), 20% does (23.3 g). All three sit either side
   of the 20 g line, so the tag flickers across what is really one food.
