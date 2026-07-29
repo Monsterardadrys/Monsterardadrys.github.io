@@ -146,11 +146,6 @@
   "Sesame Seeds": "Sesamfrön",
   "Pecan": "Pekannöt",
   "Chestnut": "Kastanj",
-  "Pistachio": [
-    "Pistaschnöt",
-    "Pistagenöt",
-    "Pistage"
-  ],
   "Macadamia": "Macadamianöt",
   "Tiger Nut (roasted)": "Jordmandel",
   "Oats": [
@@ -616,27 +611,5 @@
   "Pork (lean cut)": [
     "Gris kött rå",
     "Gris kotlett rå"
-  ],
-  "Spring Onion": [
-    "Knipplök",
-    "Salladslök",
-    "Lök grön"
-  ],
-  "Sourdough Bread (wheat)": [
-    "Bröd surdeg",
-    "Bröd vete surdeg"
-  ],
-  "Veggie Burger (bean-based)": [
-    "Bönburgare",
-    "Grönsaksburgare",
-    "Burgare veg."
-  ],
-  "Soy Yogurt": [
-    "Soygurt",
-    "Soygurt naturell"
-  ],
-  "Oat Yogurt": [
-    "Havregurt",
-    "Havregurt naturell"
   ]
 }
