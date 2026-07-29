@@ -704,10 +704,16 @@ input[type="checkbox"]:hover { cursor: pointer; }
 
 /* How well-grounded a trait is. Deliberately muted rather than colour-coded
    as a warning — a weak evidence base is a caveat, not an alert. */
+.evidenceHeading {
+    font-weight: 600;
+    font-size: 15px;
+    margin: 16px 0 2px;
+}
+
 .evidenceLine {
     font-size: 15px;
     opacity: 0.85;
-    margin: 4px 0 12px;
+    margin: 0 0 12px;
 }
 
 .evidenceBadge {
