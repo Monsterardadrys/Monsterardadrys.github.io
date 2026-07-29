@@ -81,17 +81,14 @@
   "Pickled Ginger": true,
   "Sunflower Seed Butter": true,
   "Trumpet Chanterelle": true,
-  "Soy Yogurt": true,
   "Coconut Yogurt": true,
   "Vegan Mayonnaise": true,
-  "Gluten-free Pasta": true,
   "Garlic-infused Oil": true,
   "Corn Tortilla": true,
   "Brie": true,
   "Pea Protein Powder": true,
   "Paprika Powder": true,
   "Salty Liquorice": true,
-  "Vegan Cheese (Coconut Oil)": true,
   "Vegan Cheese (Cashew)": true,
   "Pickled Jalapeno": true,
   "Butter Beans": true,
@@ -109,5 +106,6 @@
   "Lion's Mane Mushrooms": true,
   "Capers": true,
   "Natto": true,
-  "Kvass": true
+  "Kvass": true,
+  "Cassava": true
 }
