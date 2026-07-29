@@ -695,7 +695,11 @@ const CATEGORIES = [
       { name: "Turnip", lmv: "Majrova", traits: [] },
       { name: "Horseradish", smallServing: true, lmv: "Pepparrot", traits: ["irritant"] },
       { name: "Black Salsify", lmv: "Svartrot", traits: ["fodmaps", "fructans"] },
-      { name: "Kohlrabi", lmv: "Kålrabbi", traits: ["fodmaps", "fructans"] }
+      { name: "Kohlrabi", lmv: "Kålrabbi", traits: ["fodmaps", "fructans"] },
+      { name: "Cassava", traits: [] },
+      { name: "Yam", traits: [] },
+      { name: "Taro", traits: ["fodmaps", "fructans", "fiber"] },
+      { name: "Lotus Root", traits: ["fiber"] }
     ]
   },
   {
@@ -729,7 +733,11 @@ const CATEGORIES = [
       { name: "Bok Choy", lmv: "Sellerikål pak choi", traits: [] },
       { name: "Daikon Radish", lmv: "Rättika", traits: ["irritant"] },
       { name: "Rhubarb", lmv: "Rabarber tillagad u. socker", traits: [] },
-      { name: "Sweetcorn", lmv: "Majskorn frysvara", traits: ["fodmaps", "polyols", "fructans", "salicylate"] }
+      { name: "Sweetcorn", lmv: "Majskorn frysvara", traits: ["fodmaps", "polyols", "fructans", "salicylate"] },
+      { name: "Shallot", traits: ["fodmaps", "fructans", "irritant", "allyl_compounds"] },
+      { name: "Spring Onion", traits: ["fodmaps", "fructans", "irritant", "allyl_compounds"] },
+      { name: "Globe Artichoke", traits: ["fiber", "fodmaps", "fructans"] },
+      { name: "Okra", traits: ["fiber", "fodmaps", "fructans"] }
     ]
   },
   {
@@ -762,7 +770,8 @@ const CATEGORIES = [
       { name: "Passion Fruit", lmv: "Passionsfrukt", traits: ["fiber"] },
       // Monash: low FODMAP up to 64g, moderate fructans above that — a whole
       // persimmon is ~170g, so a normal serving is over the line.
-      { name: "Persimmon", lmv: "Sharon", traits: ["fodmaps", "fructans", "salicylate"] }
+      { name: "Persimmon", lmv: "Sharon", traits: ["fodmaps", "fructans", "salicylate"] },
+      { name: "Canned Peaches in Syrup", traits: ["fodmaps", "polyols", "refined_carbs", "cross_reactive", "cross_birch"] }
     ]
   },
   {
@@ -780,7 +789,12 @@ const CATEGORIES = [
       { name: "Blackcurrant", lmv: "Vinbär svarta", traits: [] },
       { name: "Gooseberry", lmv: "Krusbär", traits: [] },
       { name: "Elderberry", lmv: "Fläderbär", traits: ["fiber"] },
-      { name: "Cranberry", lmv: "Tranbär", traits: [] }
+      { name: "Cranberry", lmv: "Tranbär", traits: [] },
+      { name: "Sea Buckthorn", traits: [] },
+      { name: "Aronia", traits: ["fiber", "fodmaps", "polyols"] },
+      { name: "Mulberry", traits: [] },
+      { name: "Physalis", traits: [] },
+      { name: "Frozen Mixed Berries", traits: ["fodmaps", "polyols"] }
     ]
   },
   {
@@ -851,7 +865,12 @@ const CATEGORIES = [
       // From the SIGHI review (cleared there — SIGHI gave no mechanism).
       // Sources vary a lot (fiber 10-33g, fat 18-25g per 100g) but every one
       // of them clears both thresholds. Protein is only ~5g, so no protein tag.
-      { name: "Tiger Nut (roasted)", traits: ["fiber", "over_10g_fat", "bile_stimulant"] }
+      { name: "Tiger Nut (roasted)", traits: ["fiber", "over_10g_fat", "bile_stimulant"] },
+      { name: "Pistachio", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "fructans", "allergen", "allergen_treenut"] },
+      { name: "Pine Nuts", traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "allergen", "allergen_treenut"] },
+      { name: "Hemp Seeds", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein"] },
+      { name: "Poppy Seeds", smallServing: true, traits: ["fiber", "over_10g_fat", "bile_stimulant"] },
+      { name: "Sunflower Seed Butter", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "fructans"] }
     ]
   },
   {
@@ -890,7 +909,19 @@ const CATEGORIES = [
       { name: "Millet", lmv: "Hirs kokt m. salt", traits: [] },
       { name: "Seitan", traits: ["protein", "allergen", "allergen_wheat"] },
       { name: "Tapioca", traits: [] },
-      { name: "Cornstarch", lmv: "Majsstärkelse", traits: ["refined_carbs"] }
+      { name: "Cornstarch", lmv: "Majsstärkelse", traits: ["refined_carbs"] },
+      { name: "Sourdough Bread (wheat)", traits: ["refined_carbs", "allergen", "allergen_wheat"] },
+      { name: "Gluten-free Bread", traits: ["refined_carbs"] },
+      { name: "Gluten-free Crispbread", traits: ["fiber", "refined_carbs"] },
+      { name: "Gluten-free Pasta", traits: ["refined_carbs"] },
+      { name: "Gluten-free Oats", traits: ["fiber", "fodmaps", "fructans"] },
+      { name: "Spelt", traits: ["fiber", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
+      { name: "Semolina Porridge", traits: ["refined_carbs", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
+      { name: "Corn Tortilla", traits: [] },
+      { name: "Wheat Bran", traits: ["fiber", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
+      { name: "Rice Flour", traits: ["refined_carbs"] },
+      { name: "Potato Flour", traits: ["refined_carbs"] },
+      { name: "Almond Flour", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "cross_reactive", "cross_birch", "allergen", "allergen_treenut", "salicylate"] }
     ]
   },
   {
@@ -910,7 +941,12 @@ const CATEGORIES = [
       { name: "Fava Beans", lmv: "Bondbönor färska kokta u. salt", traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Kidney Beans", lmv: "Kidneybönor röda bönor konserv. u. lag", traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Pinto Beans", lmv: "Bruna bönor torkade kokta m. salt", traits: ["fiber", "fodmaps", "galactans"] },
-      { name: "Split Peas", lmv: "Gula ärtor kokta m. salt", traits: ["fiber", "fodmaps", "galactans"] }
+      { name: "Split Peas", lmv: "Gula ärtor kokta m. salt", traits: ["fiber", "fodmaps", "galactans"] },
+      { name: "White Beans in Tomato Sauce", traits: ["fiber", "fodmaps", "galactans", "refined_carbs"] },
+      { name: "Green Lentils", traits: ["fiber", "fodmaps", "galactans"] },
+      { name: "Mung Beans", traits: ["fiber", "fodmaps", "galactans"] },
+      { name: "Adzuki Beans", traits: ["fiber", "fodmaps", "galactans"] },
+      { name: "Butter Beans", traits: ["fiber", "fodmaps", "galactans"] }
     ]
   },
   {
@@ -940,7 +976,12 @@ const CATEGORIES = [
       { name: "Turkey", lmv: "Kalkon kokt", traits: ["bile_stimulant", "protein"] },
       { name: "Frozen Meatballs", lmv: "Köttbullar frysvara", traits: ["over_10g_fat", "histamine", "alpha_gal"] },
       { name: "Hot Dog Sausage", lmv: "Korv varmkorv kokt", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal"] },
-      { name: "Chicken Nuggets", lmv: "Kyckling nugget friterad tillagad på restaurang", traits: ["over_10g_fat", "allergen", "allergen_wheat"] }
+      { name: "Chicken Nuggets", lmv: "Kyckling nugget friterad tillagad på restaurang", traits: ["over_10g_fat", "allergen", "allergen_wheat"] },
+      { name: "Bacon", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal", "dao_competitor"] },
+      { name: "Liver", traits: ["protein", "alpha_gal"] },
+      { name: "Liver Pate", traits: ["over_10g_fat", "bile_stimulant", "alpha_gal"] },
+      { name: "Blood Pudding", traits: ["alpha_gal", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
+      { name: "Reindeer", traits: ["protein", "alpha_gal"] }
     ]
   },
   {
@@ -960,7 +1001,11 @@ const CATEGORIES = [
       { name: "Mussels", lmv: "Mussla konserv. m. lag", traits: ["allergen", "allergen_shellfish", "histamine"] },
       { name: "Fish Balls", lmv: "Fiskbullar konserv. u. buljong", traits: ["allergen", "allergen_fish", "histamine"] },
       { name: "Fish Fingers", lmv: "Fiskpinnar stekta", traits: ["over_10g_fat", "allergen", "allergen_fish", "allergen_wheat", "histamine"] },
-      { name: "Nori", traits: ["fiber"] }
+      { name: "Nori", traits: ["fiber"] },
+      { name: "Mackerel", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "dao_competitor", "allergen", "allergen_fish"] },
+      { name: "Sardines (canned)", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "dao_competitor", "allergen", "allergen_fish"] },
+      { name: "Pickled Herring", traits: ["over_10g_fat", "bile_stimulant", "histamine", "dao_competitor", "irritant", "aceticAcid", "refined_carbs", "allergen", "allergen_fish"] },
+      { name: "Surimi / Crab Sticks", traits: ["refined_carbs", "allergen", "allergen_fish", "allergen_wheat"] }
     ]
   },
   {
@@ -1015,6 +1060,12 @@ const CATEGORIES = [
       // That split is the point — it separates lactose from casein/histamine.
       { name: "Lactose-free Milk", lmv: "Mjölk fett 3% berikad", lmvNote: "ordinary milk — the lactose-free version is not listed", traits: ["allergen", "allergen_milk"] },
       { name: "Lactose-free Yogurt", lmv: "Yoghurt naturell lätt laktosfri fett ca 0,4% berikad", traits: ["allergen", "allergen_milk"] },
+      { name: "Filmjolk", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
+      { name: "Creme Fraiche", traits: ["over_10g_fat", "bile_stimulant", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
+      { name: "Brie", traits: ["over_10g_fat", "bile_stimulant", "histamine", "dao_competitor", "allergen", "allergen_milk"] },
+      { name: "Emmental", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "dao_competitor", "allergen", "allergen_milk"] },
+      { name: "Lactose-free Cheese", traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk"] },
+      { name: "Lactose-free Cream", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_milk"] }
     ]
   },
   {
@@ -1047,7 +1098,10 @@ const CATEGORIES = [
       { name: "Thyme", traits: [] },
       { name: "Rosemary", traits: [] },
       { name: "Mint", traits: ["irritant"] },
-      { name: "Cinnamon", lmv: "Kanel", traits: [] }
+      { name: "Cinnamon", lmv: "Kanel", traits: [] },
+      { name: "Paprika Powder", traits: [] },
+      { name: "Cardamom", traits: [] },
+      { name: "Allspice", traits: [] }
     ]
   },
   {
@@ -1080,7 +1134,14 @@ const CATEGORIES = [
       { name: "Chamomile Tea", traits: ["salicylate", "cross_reactive"] },
       { name: "Kombucha", traits: ["histamine", "carbonation"] },
       { name: "Almond Milk", lmv: "Mandeldryck berikad", traits: ["allergen", "allergen_treenut"] },
-      { name: "Rice Milk", traits: [] }
+      { name: "Rice Milk", traits: [] },
+      { name: "Orange Juice", traits: ["cross_reactive", "cross_grass", "dao_competitor"] },
+      { name: "Apple Juice", traits: ["fodmaps", "fructose", "polyols", "cross_reactive", "cross_birch"] },
+      { name: "Rosehip Soup", traits: ["refined_carbs"] },
+      { name: "Peppermint Tea", traits: ["irritant"] },
+      { name: "Alcohol-free Beer", traits: ["irritant", "carbonation"] },
+      { name: "Squash / Cordial", traits: ["refined_carbs"] },
+      { name: "Hot Chocolate", traits: ["refined_carbs", "over_3g_lactose", "fodmaps", "caffeine", "allergen", "allergen_milk"] }
     ]
   },
   {
@@ -1098,6 +1159,22 @@ const CATEGORIES = [
       { name: "Instant Mashed Potato", lmv: "Potatismos hemlagad", traits: ["refined_carbs"] },
       { name: "Dumplings", traits: ["allergen", "allergen_wheat", "over_10g_fat"] },
       { name: "Fresh Pasta (w/ egg)", lmv: "Pasta färsk m. ägg kokt u. salt", traits: ["refined_carbs", "allergen", "allergen_wheat", "allergen_egg", "fodmaps", "fructans"] }
+    ]
+  },
+  {
+    id: "plantBased",
+    label: "Plant-Based Substitutes",
+    foods: [
+      { name: "Soy Yogurt", traits: ["allergen", "allergen_soy"] },
+      { name: "Coconut Yogurt", traits: ["fodmaps", "polyols"] },
+      { name: "Oat Fraiche", traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans"] },
+      { name: "Vegan Cheese (Coconut Oil)", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs"] },
+      { name: "Vegan Cheese (Cashew)", traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "fructans", "allergen", "allergen_treenut"] },
+      { name: "Plant-based Mince", traits: ["protein", "fodmaps", "galactans", "allergen", "allergen_soy"] },
+      { name: "Quorn", traits: ["fiber", "allergen", "allergen_egg"] },
+      { name: "Veggie Burger (bean-based)", traits: ["fiber", "fodmaps", "galactans", "refined_carbs"] },
+      { name: "Pea Protein Powder", traits: ["protein"] },
+      { name: "Aquafaba", traits: ["fodmaps", "galactans"] },
     ]
   },
   {
@@ -1133,7 +1210,12 @@ const CATEGORIES = [
       { name: "Honey", lmv: "Honung", traits: ["fodmaps", "fructose", "fructans"] },
       { name: "White Sugar", lmv: "Socker", traits: ["refined_carbs"] },
       { name: "Maple Syrup", traits: ["refined_carbs"] },
-      { name: "Salt", lmv: "Salt m. jod", traits: [] }
+      { name: "Salt", lmv: "Salt m. jod", traits: [] },
+      { name: "Garlic-infused Oil", traits: ["over_10g_fat", "bile_stimulant"] },
+      { name: "Peanut Butter", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "allergen", "allergen_peanut", "cross_reactive", "cross_grass"] },
+      { name: "Agave Syrup", traits: ["fodmaps", "fructose", "refined_carbs"] },
+      { name: "Erythritol Sweetener", traits: ["fodmaps", "polyols"] },
+      { name: "Nutritional Yeast", smallServing: true, traits: [] }
     ]
   },
   {
@@ -1157,7 +1239,11 @@ const CATEGORIES = [
       { name: "Brown Gravy", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_wheat"] },
       { name: "Béarnaise Sauce", lmv: "Bearnaisesås hemlagad", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "allergen_milk"] },
       { name: "Hollandaise Sauce", lmv: "Hollandaisesås hemlagad", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "allergen_milk"] },
-      { name: "Remoulade", lmv: "Remouladsås", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "irritant"] }
+      { name: "Remoulade", lmv: "Remouladsås", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "irritant"] },
+      { name: "Tomato Pasta Sauce", traits: ["fodmaps", "fructans", "refined_carbs"] },
+      { name: "Bechamel Sauce", traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk", "allergen_wheat"] },
+      { name: "Satay / Peanut Sauce", traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "refined_carbs", "allergen", "allergen_peanut"] },
+      { name: "Vegan Mayonnaise", traits: ["over_10g_fat", "bile_stimulant"] }
     ]
   },
   {
@@ -1173,7 +1259,11 @@ const CATEGORIES = [
       { name: "Chanterelle Mushrooms", lmv: "Kantarell gul rå", traits: ["fodmaps", "polyols", "dao_competitor"] },
       { name: "Porcini Mushrooms", traits: ["fodmaps", "polyols", "dao_competitor"] },
       { name: "Morel Mushrooms", traits: ["fodmaps", "polyols", "dao_competitor"] },
-      { name: "King Oyster Mushrooms", lmv: "Ostronskivling", traits: ["dao_competitor"] }
+      { name: "King Oyster Mushrooms", lmv: "Ostronskivling", traits: ["dao_competitor"] },
+      { name: "Truffle", smallServing: true, traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Maitake Mushrooms", traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Lion's Mane Mushrooms", traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Trumpet Chanterelle", traits: ["fodmaps", "polyols", "dao_competitor"] }
     ]
   },
   {
@@ -1197,7 +1287,12 @@ const CATEGORIES = [
       { name: "Cola", lmv: "Läsk cola", traits: ["caffeine", "refined_carbs", "carbonation", "irritant"] },
       { name: "Ice Cream", lmv: "Glass fett ca 10%", traits: ["refined_carbs", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Halva", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_sesame", "refined_carbs"] },
-      { name: "Baklava", lmv: "Baklava ", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "allergen", "allergen_treenut", "allergen_wheat"] }
+      { name: "Baklava", lmv: "Baklava ", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "allergen", "allergen_treenut", "allergen_wheat"] },
+      { name: "Sugar-free Chewing Gum", traits: ["fodmaps", "polyols"] },
+      { name: "Cinnamon Bun", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "fodmaps", "fructans", "allergen", "allergen_wheat", "allergen_milk"] },
+      { name: "Marzipan", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "fodmaps", "galactans", "allergen", "allergen_treenut"] },
+      { name: "Liquorice", traits: ["refined_carbs"] },
+      { name: "Salty Liquorice", traits: ["refined_carbs"] }
     ]
   },
   {
@@ -1209,7 +1304,15 @@ const CATEGORIES = [
       { name: "Pickled Cucumber", lmv: "Gurka inlagd", traits: ["histamine", "aceticAcid", "irritant"] },
       { name: "Pickle Relish", traits: ["histamine", "aceticAcid", "irritant"] },
       { name: "Olives", lmv: "Oliver gröna m. paprikafyllning avrunna", traits: ["over_10g_fat", "histamine"] },
-      { name: "Miso Paste", lmv: "Miso sojabönspasta fermenterad", traits: ["over_10g_fat", "fiber", "histamine", "allergen", "allergen_soy", "fodmaps", "dao_competitor"] }
+      { name: "Miso Paste", lmv: "Miso sojabönspasta fermenterad", traits: ["over_10g_fat", "fiber", "histamine", "allergen", "allergen_soy", "fodmaps", "dao_competitor"] },
+      { name: "Pickled Beetroot", traits: ["fodmaps", "fructans", "irritant", "aceticAcid", "refined_carbs", "salicylate"] },
+      { name: "Pickled Onion", traits: ["fodmaps", "fructans", "irritant", "aceticAcid", "allyl_compounds"] },
+      { name: "Pickled Jalapeno", traits: ["irritant", "capsaicin", "aceticAcid"] },
+      { name: "Pickled Ginger", smallServing: true, traits: ["irritant", "aceticAcid", "refined_carbs"] },
+      { name: "Salt-brined Pickles", traits: ["histamine", "dao_competitor"] },
+      { name: "Capers", smallServing: true, traits: ["histamine", "irritant", "aceticAcid"] },
+      { name: "Natto", traits: ["histamine", "dao_competitor", "fodmaps", "galactans", "allergen", "allergen_soy"] },
+      { name: "Kvass", traits: ["histamine", "carbonation", "irritant", "refined_carbs"] }
     ]
   }
 ];
@@ -1237,6 +1340,6 @@ const CATEGORY_GROUPS = [
   },
   {
     title: "Processed & Beverages",
-    categories: ["ultraProcessed", "snacksSweets", "beverages"]
+    categories: ["ultraProcessed", "plantBased", "snacksSweets", "beverages"]
   }
 ];
