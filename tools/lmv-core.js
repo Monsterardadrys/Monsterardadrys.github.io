@@ -17,6 +17,16 @@
 
     /* ---- thresholds (per 100 g) ------------------------------------- */
 
+    /*
+        Thresholds are "at or above", matching how EU nutrition claims are
+        written ("high fibre: at least 6 g"). A figure reported as exactly the
+        threshold is a rounded one — 10.0 g of fat in the database could be
+        9.96 or 10.04 — so treating it as below would be false precision.
+
+        Alcohol is the exception and stays strictly above: 0.5% ABV is the
+        legal ceiling for calling a drink alcohol-free, so a drink AT 0.5% is
+        alcohol-free rather than alcoholic.
+    */
     const RULES = [
         { trait: "over_10g_fat",    nutrient: "fat",     min: 10 },
         { trait: "protein",         nutrient: "protein", min: 20 },
@@ -26,12 +36,12 @@
         // lactose tag. Still soft — for anything with added sugar the two
         // numbers are not the same.
         { trait: "over_3g_lactose", nutrient: "sugars",  min: 1, soft: true, requires: "allergen_milk" },
-        { trait: "alcohol",         nutrient: "alcohol", min: 0.5 }
+        { trait: "alcohol",         nutrient: "alcohol", min: 0.5, above: true }
     ];
 
     // bile_stimulant is the one trait with two ways in
     function bileExpected(n) {
-        return (n.fat != null && n.fat > 17.5) || (n.protein != null && n.protein > 20);
+        return (n.fat != null && n.fat >= 17.5) || (n.protein != null && n.protein >= 20);
     }
 
     /* ---- reading the export ----------------------------------------- */
@@ -500,14 +510,14 @@
             // lactose-free dairy still reports those sugars as glucose and galactose
             if (rule.trait === "over_3g_lactose" && /lactose-free/i.test(food.name)) return;
             const has = food.traits.indexOf(rule.trait) !== -1;
-            const expected = value > rule.min;
+            const expected = rule.above ? value > rule.min : value >= rule.min;
             if (has === expected) return;
             findings.push({
                 trait: rule.trait,
                 soft: Boolean(rule.soft),
                 missing: expected,
                 text: (expected ? "missing" : "extra") + " — " + rule.nutrient + " " +
-                      value + " g/100g vs threshold " + rule.min
+                      value + " g/100g vs threshold " + (rule.above ? "over " : "") + rule.min
             });
         });
 
@@ -520,7 +530,7 @@
                     soft: false,
                     missing: expected,
                     text: (expected ? "missing" : "extra") + " — fat " + n.fat +
-                          ", protein " + n.protein + " (needs fat>17.5 or protein>20)"
+                          ", protein " + n.protein + " (needs fat 17.5+ or protein 20+)"
                 });
             }
         }

@@ -90,14 +90,20 @@
                 <p>Traits are tagged one of two ways. Some use a fixed threshold per 100g, with a minimum
                     typical serving size so foods only eaten in tiny amounts don't get flagged:</p>
                 <ul>
-                    <li><strong>Lactose:</strong> over 1g/100g</li>
-                    <li><strong>Alcohol:</strong> over 0.5% ABV</li>
-                    <li><strong>Fiber:</strong> over 6g/100g (skipped if a typical serving is under 10g)</li>
-                    <li><strong>Fat:</strong> over 10g/100g (skipped if a typical serving is under 10g)</li>
-                    <li><strong>Protein:</strong> over 20g/100g (skipped if a typical serving is under 10g)</li>
+                    <li><strong>Lactose:</strong> 1g/100g or more</li>
+                    <li><strong>Fiber:</strong> 6g/100g or more (skipped if a typical serving is under 10g)</li>
+                    <li><strong>Fat:</strong> 10g/100g or more (skipped if a typical serving is under 10g)</li>
+                    <li><strong>Protein:</strong> 20g/100g or more (skipped if a typical serving is under 10g)</li>
+                    <li><strong>Alcohol:</strong> above 0.5% ABV</li>
                 </ul>
+                <p>The thresholds are "at or above", the way nutrition claims on a package are written —
+                    "high fibre" means at least 6g, not more than 6g. A food measured at exactly the
+                    threshold is reported to one decimal, so treating 10.0g of fat as under the line would
+                    read more precision into the figure than it has. Alcohol is the exception and stays
+                    strictly above: 0.5% is the legal ceiling for calling a drink alcohol-free, so a drink
+                    at 0.5% is alcohol-free rather than alcoholic.</p>
                 <p><strong>Bile Stimulant</strong> uses either the fat or protein threshold above, but raised
-                    higher — over 17.5g fat or over 20g protein per 100g, matching EU food-labeling "high
+                    higher — 17.5g fat or 20g protein per 100g, matching EU food-labeling "high
                     fat"/"high protein" categories. That's why foods like sour cream, ground meat, and Greek
                     yogurt are split into separate low-fat, medium-fat, and full-fat entries: the fat content
                     genuinely changes whether the trait applies. Turmeric is the one exception, tagged for its
@@ -209,7 +215,7 @@
 
     <footer>
         <p>Built by a dietitian, for dietitians (and the curious).</p>
-        <p>Pre-beta v0.73 — updated 28 July 2026</p>
+        <p>Pre-beta v0.74 — updated 28 July 2026</p>
     </footer>
 
     <script src="nav.js"></script>
