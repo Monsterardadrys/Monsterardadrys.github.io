@@ -978,10 +978,11 @@ const CATEGORIES = [
       { name: "Hot Dog Sausage", lmv: "Korv varmkorv kokt", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal"] },
       { name: "Chicken Nuggets", lmv: "Kyckling nugget friterad tillagad på restaurang", traits: ["over_10g_fat", "allergen", "allergen_wheat"] },
       { name: "Bacon", lmv: "Gris bacon stekt", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal", "dao_competitor"] },
-      { name: "Liver", lmv: "Nöt lever rå", traits: ["protein", "alpha_gal"] },
+      { name: "Beef Liver", lmv: "Nöt lever rå", traits: ["protein", "alpha_gal"] },
       { name: "Liver Pate", lmv: "Leverpastej bredbar fett ca 24%", lmvNote: "the spreadable kind, 24 % fat", traits: ["over_10g_fat", "bile_stimulant", "alpha_gal"] },
       { name: "Blood Pudding", lmv: "Blodpudding blodkorv fett 14%", traits: ["alpha_gal", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
-      { name: "Reindeer", lmv: "Ren kött rå", traits: ["protein", "alpha_gal"] }
+      { name: "Reindeer", lmv: "Ren kött rå", traits: ["protein", "alpha_gal"] },
+      { name: "Dried Reindeer Meat", lmv: "Ren kött torkat", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "dao_competitor", "alpha_gal"] }
     ]
   },
   {
