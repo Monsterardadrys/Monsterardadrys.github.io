@@ -451,20 +451,20 @@ const ARTICLES = {
         heading: "Specific mechanisms",
         blocks: [
           { type: "list", items: [
-            "**Capsaicin:** activates pain/heat receptors in the gut lining, found in hot peppers",
-            "**Peel/skin:** concentrated fiber and irritant compounds in the outer layer of some fruits/vegetables",
-            "**Allyl/sulfur compounds:** pungent compounds in raw garlic, onion, mustard",
-            "**Carbonation:** gas causes distension, worsens bloating and reflux",
-            "**Acetic acid:** vinegar's acidity can irritate the gut lining directly",
-            "**Alcohol:** relaxes the esophageal sphincter, irritates gut lining",
-            "**Caffeine:** stimulates gut motility and acid secretion"
+            "**Capsaicin:** activates pain/heat receptors in the gut lining, found in hot peppers (well established)",
+            "**Alcohol:** relaxes the esophageal sphincter, irritates gut lining (well established)",
+            "**Caffeine:** stimulates gut motility and acid secretion (well established)",
+            "**Carbonation:** gas causes distension, worsens bloating and reflux (limited)",
+            "**Peel/skin:** concentrated fiber and irritant compounds in the outer layer of some fruits/vegetables (preliminary)",
+            "**Allyl/sulfur compounds:** pungent compounds in raw garlic, onion, mustard (preliminary)",
+            "**Acetic acid:** vinegar's acidity can irritate the gut lining directly (preliminary)"
           ]}
         ]
       },
       {
         heading: null,
         blocks: [
-          { type: "note", text: "This reflects a mix of clinical experience, general physiology, and GI research — with varying levels of confidence per specific trait. Not every food tagged here has an equally strong or proven effect; treat this as a starting point for individual investigation." }
+          { type: "note", text: "The levels above are the same ones shown with each trait in the results. The first three rest on measured effects in people; the last three rest on cell and animal work or on clinical experience alone. Not every food tagged here has an equally strong effect — treat this as a starting point for individual investigation." }
         ]
       }
     ]
@@ -653,7 +653,7 @@ const ARTICLES = {
       {
         heading: null,
         blocks: [
-          { type: "note", text: "Foods are tagged here based on fat/protein content thresholds rather than a formal clinical classification — treat this as a starting point rather than a diagnostic label." }
+          { type: "note", text: "Foods are tagged here on fat and protein content — over 17.5g fat or over 20g protein per 100g. That cut-off is this tool's own, borrowed from EU food-labeling categories rather than from any clinical guideline, and the step from a measured CCK response to an actual symptom is inferred rather than trialled. Treat it as a starting point rather than a diagnostic label." }
         ]
       }
     ]
@@ -677,7 +677,7 @@ const ARTICLES = {
       {
         heading: null,
         blocks: [
-          { type: "note", text: "This is a categorical judgment call, not a lab measurement — see the About page for the reasoning behind it." }
+          { type: "note", text: "This is a categorical judgment call, not a lab measurement — see the About page for the reasoning behind it. The evidence linking refined and ultra-processed foods to gut symptoms sits at the level of the whole diet rather than any single food, which is why this trait is more useful as a pattern across a selection than as a verdict on one item." }
         ]
       }
     ]
@@ -742,7 +742,7 @@ const ARTICLES = {
         blocks: [
           { type: "list", items: [
             "**Birch (PR-10 protein family):** apples, stone fruits, carrots, celery/celeriac, hazelnuts, soy",
-            "**Grass:** melon, watermelon, tomato, orange, peanut, potato",
+            "**Grass:** melon, watermelon, tomato, orange, peanut, potato — the least settled of the three: the proteins involved are more varied and the food list less consistent than for birch",
             "**Latex (chitinases):** banana, avocado, kiwi, papaya"
           ]}
         ]
