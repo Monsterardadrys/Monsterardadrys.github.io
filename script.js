@@ -575,10 +575,24 @@
 
       popupTextContainer.appendChild(headingRow);
 
-      // How well-grounded this trait is. Only carried by the traits that have
-      // been through a source review so far, so it's rendered only when
-      // present rather than defaulting to a level we haven't actually judged.
+      const paragraphs = (trait.analysis && trait.analysis.length)
+        ? trait.analysis
+        : ["The most common shared trait among these foods is " + trait.label + "."];
+      paragraphs.forEach(function (text, i) {
+        const p = document.createElement("p");
+        if (i === 0) p.className = "popupText";
+        p.textContent = text;
+        popupTextContainer.appendChild(p);
+      });
+
+      // How well-grounded the trait is, under its own heading and below the
+      // explanation — what the trait is comes first, how sure we are second.
       if (trait.evidence) {
+        const evHeading = document.createElement("p");
+        evHeading.className = "evidenceHeading";
+        evHeading.textContent = "How well supported is this?";
+        popupTextContainer.appendChild(evHeading);
+
         const ev = document.createElement("p");
         ev.className = "evidenceLine";
         const badge = document.createElement("span");
@@ -589,16 +603,6 @@
         ev.appendChild(document.createTextNode(" " + trait.evidence.detail));
         popupTextContainer.appendChild(ev);
       }
-
-      const paragraphs = (trait.analysis && trait.analysis.length)
-        ? trait.analysis
-        : ["The most common shared trait among these foods is " + trait.label + "."];
-      paragraphs.forEach(function (text, i) {
-        const p = document.createElement("p");
-        if (i === 0) p.className = "popupText";
-        p.textContent = text;
-        popupTextContainer.appendChild(p);
-      });
       if (trait.articleId) {
         const p = document.createElement("p");
         p.className = "noPrint";
