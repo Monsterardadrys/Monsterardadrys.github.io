@@ -736,8 +736,8 @@ const CATEGORIES = [
       { name: "Sweetcorn", lmv: "Majskorn frysvara", traits: ["fodmaps", "polyols", "fructans", "salicylate"] },
       { name: "Shallot", lmv: "Lök gul", lmvNote: "yellow onion — shallot is not listed", traits: ["fodmaps", "fructans", "irritant", "allyl_compounds"] },
       { name: "Spring Onion", traits: ["fodmaps", "fructans", "irritant", "allyl_compounds"] },
-      { name: "Globe Artichoke", lmv: "Kronärtskocka kokt", traits: ["fiber", "fodmaps", "fructans"] },
-      { name: "Okra", lmv: "Okra kokt u. salt", traits: ["fiber", "fodmaps", "fructans"] }
+      { name: "Globe Artichoke", lmv: "Kronärtskocka kokt", traits: ["fodmaps", "fructans"] },
+      { name: "Okra", lmv: "Okra kokt u. salt", traits: ["fodmaps", "fructans"] }
     ]
   },
   {
@@ -791,7 +791,7 @@ const CATEGORIES = [
       { name: "Elderberry", lmv: "Fläderbär", traits: ["fiber"] },
       { name: "Cranberry", lmv: "Tranbär", traits: [] },
       { name: "Sea Buckthorn", lmv: "Havtorn", traits: [] },
-      { name: "Aronia", lmv: "Aronia svart", traits: ["fiber", "fodmaps", "polyols"] },
+      { name: "Aronia", lmv: "Aronia svart", traits: ["fodmaps", "polyols"] },
       { name: "Mulberry", lmv: "Mullbär", traits: [] },
       { name: "Physalis", lmv: "Physalis", traits: [] },
       { name: "Frozen Mixed Berries", lmv: "Hallon blåbär frysvara", lmvNote: "raspberry and blueberry", traits: ["fodmaps", "polyols"] }
@@ -866,9 +866,9 @@ const CATEGORIES = [
       // Sources vary a lot (fiber 10-33g, fat 18-25g per 100g) but every one
       // of them clears both thresholds. Protein is only ~5g, so no protein tag.
       { name: "Tiger Nut (roasted)", traits: ["fiber", "over_10g_fat", "bile_stimulant"] },
-      { name: "Pistachio", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "fructans", "allergen", "allergen_treenut"] },
+      { name: "Pistachio", lmv: "Pistaschnötter u. salt", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "fructans", "allergen", "allergen_treenut"] },
       { name: "Pine Nuts", traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "allergen", "allergen_treenut"] },
-      { name: "Hemp Seeds", lmv: "Hampafrö u. skal", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein"] },
+      { name: "Hemp Seeds", lmv: "Hampafrö u. skal", traits: ["over_10g_fat", "bile_stimulant", "protein"] },
       { name: "Poppy Seeds", lmv: "Vallmofrö", smallServing: true, traits: ["fiber", "over_10g_fat", "bile_stimulant"] },
       { name: "Sunflower Seed Butter", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "fructans"] }
     ]
@@ -915,7 +915,7 @@ const CATEGORIES = [
       { name: "Gluten-free Crispbread", lmv: "Hårt bröd glutenfritt fibrer ca 7%", traits: ["fiber", "refined_carbs"] },
       { name: "Gluten-free Pasta", lmv: "Pasta kokt m. salt majs 100% glutenfri", lmvNote: "100 % maize — the wheat-starch kind is not listed", traits: ["refined_carbs"] },
       { name: "Gluten-free Oats", lmv: "Havregryn fullkorn", lmvNote: "the same entry as ordinary oats — the difference is contamination, not composition", traits: ["fiber", "fodmaps", "fructans"] },
-      { name: "Spelt", lmv: "Dinkel speltvete kokt m. salt", traits: ["fiber", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
+      { name: "Spelt", lmv: "Dinkel speltvete kokt m. salt", traits: ["fodmaps", "fructans", "allergen", "allergen_wheat"] },
       { name: "Semolina Porridge", lmv: "Mannagrynsgröt", traits: ["refined_carbs", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
       { name: "Corn Tortilla", traits: [] },
       { name: "Wheat Bran", lmv: "Vetekli", traits: ["fiber", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
@@ -942,7 +942,7 @@ const CATEGORIES = [
       { name: "Kidney Beans", lmv: "Kidneybönor röda bönor konserv. u. lag", traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Pinto Beans", lmv: "Bruna bönor torkade kokta m. salt", traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Split Peas", lmv: "Gula ärtor kokta m. salt", traits: ["fiber", "fodmaps", "galactans"] },
-      { name: "White Beans in Tomato Sauce", lmv: "Vita bönor m. tomatsås konserv.", traits: ["fiber", "fodmaps", "galactans", "refined_carbs"] },
+      { name: "White Beans in Tomato Sauce", lmv: "Vita bönor m. tomatsås konserv.", traits: ["refined_carbs", "fodmaps", "galactans"] },
       { name: "Green Lentils", lmv: "Gröna linser torkade kokta m. salt", traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Mung Beans", lmv: "Mungbönor torkade kokta u. salt", traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Adzuki Beans", traits: ["fiber", "fodmaps", "galactans"] },
@@ -978,10 +978,10 @@ const CATEGORIES = [
       { name: "Hot Dog Sausage", lmv: "Korv varmkorv kokt", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal"] },
       { name: "Chicken Nuggets", lmv: "Kyckling nugget friterad tillagad på restaurang", traits: ["over_10g_fat", "allergen", "allergen_wheat"] },
       { name: "Bacon", lmv: "Gris bacon stekt", traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal", "dao_competitor"] },
-      { name: "Beef Liver", lmv: "Nöt lever rå", traits: ["protein", "alpha_gal"] },
+      { name: "Beef Liver", lmv: "Nöt lever rå", traits: ["alpha_gal"] },
       { name: "Liver Pate", lmv: "Leverpastej bredbar fett ca 24%", lmvNote: "the spreadable kind, 24 % fat", traits: ["over_10g_fat", "bile_stimulant", "alpha_gal"] },
-      { name: "Blood Pudding", lmv: "Blodpudding blodkorv fett 14%", traits: ["alpha_gal", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
-      { name: "Reindeer", lmv: "Ren kött rå", traits: ["protein", "alpha_gal"] },
+      { name: "Blood Pudding", lmv: "Blodpudding blodkorv fett 14%", traits: ["over_10g_fat", "fodmaps", "fructans", "allergen", "allergen_wheat", "alpha_gal"] },
+      { name: "Reindeer", lmv: "Ren kött rå", traits: ["bile_stimulant", "protein", "alpha_gal"] },
       { name: "Dried Reindeer Meat", lmv: "Ren kött torkat", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "dao_competitor", "alpha_gal"] }
     ]
   },
@@ -1003,9 +1003,9 @@ const CATEGORIES = [
       { name: "Fish Balls", lmv: "Fiskbullar konserv. u. buljong", traits: ["allergen", "allergen_fish", "histamine"] },
       { name: "Fish Fingers", lmv: "Fiskpinnar stekta", traits: ["over_10g_fat", "allergen", "allergen_fish", "allergen_wheat", "histamine"] },
       { name: "Nori", traits: ["fiber"] },
-      { name: "Mackerel", lmv: "Makrill rå", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "dao_competitor", "allergen", "allergen_fish"] },
+      { name: "Mackerel", lmv: "Makrill rå", traits: ["over_10g_fat", "bile_stimulant", "histamine", "dao_competitor", "allergen", "allergen_fish"] },
       { name: "Sardines (canned)", lmv: "Sardiner i olja konserv.", traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "dao_competitor", "allergen", "allergen_fish"] },
-      { name: "Pickled Herring", lmv: "Sill inlagd u. lag", traits: ["over_10g_fat", "bile_stimulant", "histamine", "dao_competitor", "irritant", "aceticAcid", "refined_carbs", "allergen", "allergen_fish"] },
+      { name: "Pickled Herring", lmv: "Sill inlagd u. lag", traits: ["over_10g_fat", "refined_carbs", "histamine", "dao_competitor", "irritant", "aceticAcid", "allergen", "allergen_fish"] },
       { name: "Surimi / Crab Sticks", lmv: "Surimi fisk", traits: ["refined_carbs", "allergen", "allergen_fish", "allergen_wheat"] }
     ]
   },
@@ -1166,15 +1166,15 @@ const CATEGORIES = [
     id: "plantBased",
     label: "Plant-Based Substitutes",
     foods: [
-      { name: "Soy Yogurt", traits: ["allergen", "allergen_soy"] },
+      { name: "Soy Yogurt", lmv: "Soygurt naturell eko. berikad", traits: ["allergen", "allergen_soy"] },
       { name: "Coconut Yogurt", traits: ["fodmaps", "polyols"] },
-      { name: "Oat Yogurt", traits: ["fodmaps", "fructans"] },
-      { name: "Oat Fraiche", lmv: "Fraiche m. havre veg. fett 15% berikad", traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans"] },
+      { name: "Oat Yogurt", lmv: "Havregurt naturell fett 2,2% berikad", traits: ["fodmaps", "fructans"] },
+      { name: "Oat Fraiche", lmv: "Fraiche m. havre veg. fett 15% berikad", traits: ["over_10g_fat", "fodmaps", "fructans"] },
       { name: "Vegan Cheese (Coconut Oil)", lmv: "Kokosbaserad bit fett ca 20% som alternativ till ost", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs"] },
       { name: "Vegan Cheese (Cashew)", traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "fructans", "allergen", "allergen_treenut"] },
-      { name: "Plant-based Mince", lmv: "Sojaprotein färs stekt", traits: ["protein", "fodmaps", "galactans", "allergen", "allergen_soy"] },
-      { name: "Quorn", lmv: "Mykoprotein bullar frysvara", lmvNote: "mycoprotein balls — plain pieces are not listed", traits: ["fiber", "allergen", "allergen_egg"] },
-      { name: "Veggie Burger (bean-based)", traits: ["fiber", "fodmaps", "galactans", "refined_carbs"] },
+      { name: "Plant-based Mince", lmv: "Sojaprotein färs stekt", traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "allergen", "allergen_soy"] },
+      { name: "Quorn", lmv: "Mykoprotein bullar frysvara", lmvNote: "mycoprotein balls — plain pieces are not listed", traits: ["allergen", "allergen_egg"] },
+      { name: "Veggie Burger (bean-based)", lmv: "Grönsaksburgare stekt veg.", traits: ["fiber", "fodmaps", "galactans", "refined_carbs"] },
       { name: "Pea Protein Powder", traits: ["protein"] },
       { name: "Aquafaba", traits: ["fodmaps", "galactans"] },
     ]
@@ -1291,8 +1291,8 @@ const CATEGORIES = [
       { name: "Halva", traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_sesame", "refined_carbs"] },
       { name: "Baklava", lmv: "Baklava ", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "allergen", "allergen_treenut", "allergen_wheat"] },
       { name: "Sugar-free Chewing Gum", lmv: "Tuggummi sockerfritt", traits: ["fodmaps", "polyols"] },
-      { name: "Cinnamon Bun", lmv: "Sött vetebröd kanelbulle gräddad kylvara frysvara el. butiksbakad", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "fodmaps", "fructans", "allergen", "allergen_wheat", "allergen_milk"] },
-      { name: "Marzipan", lmv: "Mandelmassa", traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "fodmaps", "galactans", "allergen", "allergen_treenut"] },
+      { name: "Cinnamon Bun", lmv: "Sött vetebröd kanelbulle gräddad kylvara frysvara el. butiksbakad", traits: ["over_10g_fat", "refined_carbs", "fodmaps", "fructans", "allergen", "allergen_milk", "allergen_wheat"] },
+      { name: "Marzipan", lmv: "Mandelmassa", traits: ["fiber", "over_10g_fat", "bile_stimulant", "refined_carbs", "fodmaps", "galactans", "allergen", "allergen_treenut"] },
       { name: "Liquorice", lmv: "Lakritsgodis", traits: ["refined_carbs"] },
       { name: "Salty Liquorice", traits: ["refined_carbs"] }
     ]
