@@ -40,7 +40,7 @@
     ];
 
     // Band 1 in PORTION_BANDS (foods-data.js) — keep the two in step.
-    const SMALL_PORTION = 6;
+    const SMALL_PORTION = 7;
 
     // bile_stimulant is the one trait with two ways in
     function bileExpected(n) {
@@ -497,7 +497,7 @@
         const n = record.nutrients;
         const findings = [];
 
-        /* Band 1 foods — a portion of 6g or less — are exempt from the
+        /* Band 1 foods — a portion of 7g or less — are exempt from the
            per-100g fat, protein and fiber thresholds. Cinnamon is 53g fiber
            per 100g, but nobody eats 100g of cinnamon. Only the
            concentration-based traits (lactose, alcohol) still apply.
