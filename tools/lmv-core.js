@@ -39,6 +39,9 @@
         { trait: "alcohol",         nutrient: "alcohol", min: 0.5, above: true }
     ];
 
+    // Band 1 in PORTION_BANDS (foods-data.js) — keep the two in step.
+    const SMALL_PORTION = 6;
+
     // bile_stimulant is the one trait with two ways in
     function bileExpected(n) {
         return (n.fat != null && n.fat >= 17.5) || (n.protein != null && n.protein >= 20);
@@ -494,12 +497,13 @@
         const n = record.nutrients;
         const findings = [];
 
-        /* Band 1 foods — a portion is 6g or less — are exempt from the
+        /* Band 1 foods — a portion of 6g or less — are exempt from the
            per-100g fat, protein and fiber thresholds. Cinnamon is 53g fiber
            per 100g, but nobody eats 100g of cinnamon. Only the
-           concentration-based traits (lactose, alcohol) still apply. */
+           concentration-based traits (lactose, alcohol) still apply.
+           SMALL_PORTION mirrors band 1 in PORTION_BANDS (foods-data.js). */
         const servingRules = ["over_10g_fat", "protein", "fiber"];
-        const tiny = food.portion === 1;
+        const tiny = food.portion <= SMALL_PORTION;
 
         RULES.forEach(function (rule) {
             const value = n[rule.nutrient];
@@ -638,7 +642,7 @@
                     name: food.name,
                     category: cat.label,
                     traits: food.traits,
-                    portion: food.portion || 4,
+                    portion: food.portion == null ? 100 : food.portion,
                     wholeSeed: Boolean(food.wholeSeed)
                 });
             });
