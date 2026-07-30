@@ -1455,7 +1455,22 @@ footer p { color: var(--linen); }
 
 .sourceMissing { font-style: italic; }
 
+/* The portion the thresholds are applied to. Sits next to the name rather
+   than with the source text — it says something about the food, not about
+   where the numbers came from. */
+.sourcePortion {
+    font-size: 0.8rem;
+    color: var(--primary);
+    background: var(--linen);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 0 0.45rem;
+    white-space: nowrap;
+    align-self: center;
+}
+
 @media (min-width: 40rem) {
     .sourceItems li { justify-content: space-between; }
-    .sourceDetail { text-align: right; }
+    .sourceDetail { text-align: right; margin-left: auto; }
+    .sourcePortion { order: 3; }
 }

@@ -63,6 +63,13 @@
                     data and clinical literature instead. Those foods are listed here too, marked as such —
                     the point of this page is that you can tell which is which.</p>
 
+                <p>Each food also shows the <strong>typical portion</strong> it is assessed on. A figure per
+                    100g means little on its own — 17.5g of fat per 100g is about 4g in a slice of cheese and
+                    about 22g in a portion of mince — so the portion decides which threshold applies. Foods
+                    with a portion of 6g or less, like spices, are left out of the fat, protein and fiber
+                    thresholds altogether. See <a href="about.html#methodology">How the analysis works</a> for
+                    the four portion bands.</p>
+
                 <p>FODMAP subtypes come from the Monash University database rather than Livsmedelsverket, and
                     allergens, cross-reactivity and GI irritant mechanisms come from clinical literature. Those
                     are not what this page tracks. See <a href="about.html#sources">How the analysis works</a>
@@ -70,6 +77,9 @@
                     This?</a> for where the uncertainty sits.</p>
 
                 <div class="sourceCounts" id="sourceCounts"></div>
+
+                <h3>Portion bands</h3>
+                <div class="sourceCounts" id="portionBands"></div>
             </section>
 
             <section id="sourceList">
@@ -80,7 +90,7 @@
 
     <footer>
         <p>Food composition data from Livsmedelsverket, used under CC BY 4.0.</p>
-        <p>Pre-beta v0.76 — updated 28 July 2026</p>
+        <p>Pre-beta v0.77 — updated 28 July 2026</p>
     </footer>
 
     <script src="foods-data.js"></script>
@@ -114,6 +124,14 @@
                     name.textContent = food.name;
                     li.appendChild(name);
 
+                    // The portion the thresholds are applied to, and its band.
+                    const portion = document.createElement("span");
+                    portion.className = "sourcePortion";
+                    portion.textContent = food.portion + " g";
+                    portion.title = "Typical portion — band " + portionBand(food.portion) +
+                        " (" + PORTION_BANDS[portionBand(food.portion) - 1].label + ")";
+                    li.appendChild(portion);
+
                     const detail = document.createElement("span");
                     if (food.lmv) {
                         verified++;
@@ -142,6 +160,18 @@
                 '<div class="sourceCount"><b>' + verified + '</b><span>checked against Livsmedelsverket</span></div>' +
                 '<div class="sourceCount"><b>' + (total - verified) + '</b><span>from other sources</span></div>' +
                 '<div class="sourceCount"><b>' + pct + '%</b><span>of ' + total + ' foods</span></div>';
+
+            const bandCounts = document.getElementById("portionBands");
+            PORTION_BANDS.forEach(function (b) {
+                let n = 0;
+                CATEGORIES.forEach(function (cat) {
+                    cat.foods.forEach(function (f) { if (portionBand(f.portion) === b.band) n++; });
+                });
+                const div = document.createElement("div");
+                div.className = "sourceCount";
+                div.innerHTML = '<b>' + n + '</b><span>' + b.label + '</span>';
+                bandCounts.appendChild(div);
+            });
         })();
     </script>
 </body>
