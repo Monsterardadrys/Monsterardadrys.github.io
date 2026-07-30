@@ -122,25 +122,26 @@
    a portion of mince. So every food carries `portion` — a typical serving in
    grams — and the band follows from it.
 
-   Portions are set per food group, not per food: every fruit is 100g, every
-   berry 50g, every cut of meat, fish and poultry 125g, potato and cooked
-   grains 175g, roots 80g. Departures from the group are deliberate and
-   argued — half an avocado, one egg, grated parmesan.
+   Portions come from the food group, not from the food: every fruit is 100g,
+   every berry 50g, every cut of meat, fish and poultry 125g, potato and cooked
+   grains 175g, roots 80g, nuts 25g, cheese 20g. Eighteen sizes cover all of
+   them. Departures from a group are deliberate — half an avocado, one egg,
+   a wine glass rather than a tumbler.
 
-   The boundaries then sit in the gaps of that distribution rather than on
-   round numbers. Sizes cluster on household measures (5, 20, 25, 30, 50, 80,
-   100, 125, 175, 200g), so a boundary placed on one of those would split
-   foods that are the same size. 6, 45 and 110 sit in gaps: nothing is within
-   10% of any of them.
+   The boundaries then sit in the gaps of that distribution. Sizes cluster on
+   household measures (5, 20, 25, 30, 50, 80, 100, 125, 175, 200g), so a
+   boundary on one of those would split foods that are the same size. 7, 45 and
+   112 are each at the widest point of their gap: no food is within 11% of any
+   of them.
 
-   Band 1 — a portion of 6g or less — is exempt from the per-100g fat, protein
+   Band 1 — a portion of 7g or less — is exempt from the per-100g fat, protein
    and fiber thresholds. Cinnamon is 53g of fiber per 100g and nobody eats 100g
    of cinnamon. */
 const PORTION_BANDS = [
-  { band: 1, label: "Up to 6g",   max: 6,    example: "spices, salt, a knob of horseradish" },
-  { band: 2, label: "6\u201345g",     max: 45,   example: "butter, oil, a slice of cheese, a handful of nuts" },
-  { band: 3, label: "45\u2013110g",   max: 110,  example: "bread, an egg, a bowl of berries, a sausage" },
-  { band: 4, label: "Over 110g",  max: null, example: "meat, fish, cooked grains, a glass of milk" }
+  { band: 1, label: "Up to 7g",   max: 7,    example: "spices, salt, butter, a knob of horseradish" },
+  { band: 2, label: "7\u201345g",     max: 45,   example: "oil, a slice of cheese, a handful of nuts, an egg white" },
+  { band: 3, label: "45\u2013112g",   max: 112,  example: "bread, an egg, a bowl of berries, a sausage" },
+  { band: 4, label: "Over 112g",  max: null, example: "meat, fish, cooked grains, a glass of milk" }
 ];
 
 function portionBand(grams) {
@@ -751,7 +752,7 @@ const CATEGORIES = [
       { name: "Parsley", lmv: "Persilja blad", portion: 5, traits: [] },
       { name: "Leek", lmv: "Purjolök", portion: 60, traits: ["fodmaps", "fructans"] },
       { name: "Spinach", lmv: "Spenat frysvara", portion: 100, traits: ["histamine"] },
-      { name: "Avocado", lmv: "Avokado", portion: 70, traits: ["over_10g_fat", "bile_stimulant", "cross_reactive", "cross_latex", "fodmaps", "polyols", "salicylate"] },
+      { name: "Avocado", lmv: "Avokado", portion: 50, traits: ["over_10g_fat", "bile_stimulant", "cross_reactive", "cross_latex", "fodmaps", "polyols", "salicylate"] },
       { name: "Cucumber", lmv: "Gurka", portion: 100, traits: ["irritant", "peel_skin"] },
       { name: "Bell Pepper (sweet)", lmv: "Paprika röd", portion: 100, traits: ["irritant"] },
       { name: "Bell Pepper (hot)", lmv: "Chilipeppar färsk", portion: 5, traits: ["irritant", "capsaicin"] },
@@ -994,9 +995,9 @@ const CATEGORIES = [
       { name: "Pork (fatty cut)", lmv: "Gris sidfläsk rökt", lmvNote: "smoked side pork — the fattiest cut listed", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "alpha_gal"] },
       { name: "Elk Meat", lmv: "Älg högrev rå", portion: 125, traits: ["bile_stimulant", "protein", "alpha_gal", "histamine"] },
       { name: "Chicken", lmv: "Kyckling kokt m. salt", portion: 125, traits: ["bile_stimulant", "protein"] },
-      { name: "Egg White", lmv: "Äggvita rå", portion: 33, traits: ["allergen", "allergen_egg"] },
-      { name: "Egg Yolk", lmv: "Äggula rå", portion: 17, traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg"] },
-      { name: "Whole Egg", lmv: "Ägg rått", portion: 55, traits: ["allergen", "allergen_egg"] },
+      { name: "Egg White", lmv: "Äggvita rå", portion: 30, traits: ["allergen", "allergen_egg"] },
+      { name: "Egg Yolk", lmv: "Äggula rå", portion: 20, traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg"] },
+      { name: "Whole Egg", lmv: "Ägg rått", portion: 50, traits: ["allergen", "allergen_egg"] },
       { name: "Salami", lmv: "Påläggskorv salami rökt", portion: 20, traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal", "dao_competitor"] },
       { name: "Dry-Cured Ham (lean)", lmv: "Gris skinka lufttorkad italiensk", portion: 20, traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal", "dao_competitor"] },
       { name: "Dry-Cured Ham (fatty cut)", portion: 20, traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal", "dao_competitor"] },
@@ -1061,7 +1062,7 @@ const CATEGORIES = [
       { name: "Yoghurt 0,5%", lmv: "Yoghurt naturell lätt fett 0,5% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Yoghurt 3%", lmv: "Yoghurt naturell fett 3% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Greek Yogurt (10% fat)", lmv: "Yoghurt naturell fett 10%", lmvNote: "entry measures 8.3 g fat, below the 10 g threshold", portion: 200, traits: ["over_10g_fat", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
-      { name: "Butter", lmv: "Smör fett 80%", portion: 7, traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_milk"] },
+      { name: "Butter", lmv: "Smör fett 80%", portion: 5, traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_milk"] },
       { name: "Cream", lmv: "Vispgrädde fett 40%", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Quark (~1%)", lmv: "Kvarg färskost fett 1%", portion: 200, traits: ["allergen", "allergen_milk", "over_3g_lactose"] },
       { name: "Quark (~10%)", lmv: "Kvarg färskost fett 10%", portion: 200, traits: ["over_10g_fat", "allergen", "allergen_milk", "over_3g_lactose"] },
@@ -1070,7 +1071,7 @@ const CATEGORIES = [
       { name: "Sour Cream (~20% fat)", lmv: "Crème fraiche fett 34%", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Ricotta Cheese", lmv: "Färskost ricotta fett ca 10%", portion: 60, traits: ["over_10g_fat", "allergen", "allergen_milk", "over_3g_lactose"] },
       { name: "Mascarpone", lmv: "Färskost fett 33%", portion: 20, traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_milk", "over_3g_lactose"] },
-      { name: "Parmesan", lmv: "Ost hårdost parmesan fett 30% typ Parmiggiano Reggiano", portion: 10, traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
+      { name: "Parmesan", lmv: "Ost hårdost parmesan fett 30% typ Parmiggiano Reggiano", portion: 20, traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
       { name: "Halloumi", lmv: "Ost halloumi rå fett 22%", portion: 60, traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk"] },
       { name: "Mozzarella", lmv: "Ost mozzarella fett 18%", portion: 30, traits: ["over_10g_fat", "allergen", "allergen_milk"] },
       { name: "Blue Cheese", lmv: "Ädelost grönmögelost fett 17%", portion: 20, traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen", "allergen_milk", "histamine", "dao_competitor"] },
@@ -1120,7 +1121,7 @@ const CATEGORIES = [
       { name: "Sumac", portion: 2, traits: ["irritant", "aceticAcid"] },
       { name: "Cumin", lmv: "Spiskummin frö torkad", portion: 2, traits: ["salicylate"] },
       { name: "Shawarma Spice Mix", portion: 2, traits: ["irritant"] },
-      { name: "Wasabi", lmv: "Wasabirot", portion: 3, traits: ["irritant", "allyl_compounds"] },
+      { name: "Wasabi", lmv: "Wasabirot", portion: 5, traits: ["irritant", "allyl_compounds"] },
       { name: "Curry Powder", portion: 2, traits: ["irritant", "capsaicin"] },
       { name: "Sichuan Peppercorn", portion: 2, traits: ["irritant"] },
       { name: "Nutmeg", lmv: "Muskotnöt malen", portion: 2, traits: [] },
@@ -1182,11 +1183,11 @@ const CATEGORIES = [
     id: "ultraProcessed",
     label: "Processed Foods",
     foods: [
-      { name: "Frozen pizza", lmv: "Pizza orientalisk", portion: 300, traits: ["refined_carbs"] },
+      { name: "Frozen pizza", lmv: "Pizza orientalisk", portion: 175, traits: ["refined_carbs"] },
       { name: "French Fries (deep-fried)", lmv: "Pommes frites friterad potatis fett ca 11% frysvara", portion: 150, traits: ["over_10g_fat", "refined_carbs"] },
       { name: "French Fries (oven-baked)", lmv: "Pommes frites friterad potatis värmd i ugn fett ca 7% frysvara", portion: 150, traits: ["refined_carbs"] },
       { name: "Instant Ramen", portion: 175, traits: ["allergen", "allergen_wheat", "fodmaps", "fructans"] },
-      { name: "Margarine", lmv: "Flytande margarin fett 70%", portion: 7, traits: ["over_10g_fat", "bile_stimulant"] },
+      { name: "Margarine", lmv: "Flytande margarin fett 70%", portion: 5, traits: ["over_10g_fat", "bile_stimulant"] },
       { name: "Instant Soup / Bouillon Cubes", lmv: "Köttbuljong tärning ätf.", portion: 5, traits: ["fodmaps", "fructans"] },
       { name: "Flavored Yogurt", lmv: "Fruktyoghurt fett 2%", portion: 200, traits: ["over_3g_lactose", "fodmaps", "refined_carbs", "allergen", "allergen_milk"] },
       { name: "Pretzels", lmv: "Salta pinnar", portion: 20, traits: ["fiber", "allergen", "allergen_wheat", "refined_carbs"] },
@@ -1285,20 +1286,20 @@ const CATEGORIES = [
     id: "mushrooms",
     label: "Mushrooms",
     foods: [
-      { name: "Shiitake Mushrooms", lmv: "Shiitakesvamp", portion: 75, traits: ["fodmaps", "polyols", "dao_competitor"] },
-      { name: "Oyster Mushrooms", lmv: "Ostronskivling", portion: 75, traits: ["dao_competitor"] },
-      { name: "White Button Mushrooms", lmv: "Champinjon", portion: 75, traits: ["fodmaps", "polyols", "dao_competitor"] },
-      { name: "Portobello Mushrooms", lmv: "Champinjon", portion: 75, traits: ["fodmaps", "polyols", "dao_competitor"] },
-      { name: "Cremini Mushrooms", lmv: "Champinjon", portion: 75, traits: ["fodmaps", "polyols", "dao_competitor"] },
-      { name: "Enoki Mushrooms", portion: 75, traits: ["fodmaps", "polyols", "dao_competitor"] },
-      { name: "Chanterelle Mushrooms", lmv: "Kantarell gul rå", portion: 75, traits: ["fodmaps", "polyols", "dao_competitor"] },
-      { name: "Porcini Mushrooms", portion: 75, traits: ["fodmaps", "polyols", "dao_competitor"] },
-      { name: "Morel Mushrooms", portion: 75, traits: ["fodmaps", "polyols", "dao_competitor"] },
-      { name: "King Oyster Mushrooms", lmv: "Ostronskivling", portion: 75, traits: ["dao_competitor"] },
+      { name: "Shiitake Mushrooms", lmv: "Shiitakesvamp", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Oyster Mushrooms", lmv: "Ostronskivling", portion: 80, traits: ["dao_competitor"] },
+      { name: "White Button Mushrooms", lmv: "Champinjon", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Portobello Mushrooms", lmv: "Champinjon", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Cremini Mushrooms", lmv: "Champinjon", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Enoki Mushrooms", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Chanterelle Mushrooms", lmv: "Kantarell gul rå", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Porcini Mushrooms", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Morel Mushrooms", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "King Oyster Mushrooms", lmv: "Ostronskivling", portion: 80, traits: ["dao_competitor"] },
       { name: "Truffle", portion: 5, traits: ["fodmaps", "polyols", "dao_competitor"] },
-      { name: "Maitake Mushrooms", portion: 75, traits: ["fodmaps", "polyols", "dao_competitor"] },
-      { name: "Lion's Mane Mushrooms", portion: 75, traits: ["fodmaps", "polyols", "dao_competitor"] },
-      { name: "Trumpet Chanterelle", portion: 75, traits: ["fodmaps", "polyols", "dao_competitor"] }
+      { name: "Maitake Mushrooms", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Lion's Mane Mushrooms", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor"] },
+      { name: "Trumpet Chanterelle", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor"] }
     ]
   },
   {
@@ -1314,8 +1315,8 @@ const CATEGORIES = [
       // than a real zero — 70% chocolate is around 11g. Tag kept.
       { name: "Dark Chocolate", lmv: "Mörk choklad kakao ≥ 70%", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "fiber", "caffeine"] },
       { name: "Cheese Puffs / Snacks", lmv: "Ostbågar", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_milk"] },
-      { name: "Granola Bar", lmv: "Bar müslibar m. choklad berikad", portion: 35, traits: ["refined_carbs", "allergen", "allergen_treenut"] },
-      { name: "Protein Bar", portion: 55, traits: ["protein", "refined_carbs", "allergen", "allergen_milk"] },
+      { name: "Granola Bar", lmv: "Bar müslibar m. choklad berikad", portion: 30, traits: ["refined_carbs", "allergen", "allergen_treenut"] },
+      { name: "Protein Bar", portion: 50, traits: ["protein", "refined_carbs", "allergen", "allergen_milk"] },
       { name: "Microwave Popcorn", lmv: "Popcorn mikropopcorn poppade fett ca 22%", portion: 25, traits: ["over_10g_fat", "fiber"] },
       { name: "Sugary Breakfast Cereal", lmv: "Frukostflingor majs m. socker", portion: 40, traits: ["refined_carbs", "allergen", "allergen_wheat"] },
       { name: "Sugary soft drinks", lmv: "Läsk", portion: 330, traits: ["refined_carbs", "carbonation", "irritant"] },
