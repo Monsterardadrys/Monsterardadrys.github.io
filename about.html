@@ -87,15 +87,30 @@
                     tool counts how many of them share each trait and ranks traits by how common they are across
                     your selection.</p>
 
-                <p>Traits are tagged one of two ways. Some use a fixed threshold per 100g, with a minimum
-                    typical serving size so foods only eaten in tiny amounts don't get flagged:</p>
+                <p>Traits are tagged one of two ways. Some use a fixed threshold per 100g:</p>
                 <ul>
                     <li><strong>Lactose:</strong> 1g/100g or more</li>
-                    <li><strong>Fiber:</strong> 6g/100g or more (skipped if a typical serving is under 10g)</li>
-                    <li><strong>Fat:</strong> 10g/100g or more (skipped if a typical serving is under 10g)</li>
-                    <li><strong>Protein:</strong> 20g/100g or more (skipped if a typical serving is under 10g)</li>
+                    <li><strong>Fiber:</strong> 6g/100g or more</li>
+                    <li><strong>Fat:</strong> 10g/100g or more</li>
+                    <li><strong>Protein:</strong> 20g/100g or more</li>
                     <li><strong>Alcohol:</strong> above 0.5% ABV</li>
                 </ul>
+
+                <h3>Portion size</h3>
+
+                <p>A threshold per 100g only means something once you know how much of the food goes on a
+                    plate. 17.5g of fat per 100g is about 4g in a slice of cheese and about 22g in a portion
+                    of mince — the same number, five times the effect. So every food is placed in one of four
+                    portion bands:</p>
+                <ul>
+                    <li><strong>Up to 6g</strong> — spices, salt, a knob of horseradish</li>
+                    <li><strong>6&ndash;45g</strong> — butter, oil, a slice of cheese, a handful of nuts</li>
+                    <li><strong>45&ndash;120g</strong> — bread, an egg, a bowl of berries, a sausage</li>
+                    <li><strong>Over 120g</strong> — meat, fish, cooked grains, a glass of milk</li>
+                </ul>
+                <p>Foods in the smallest band are left out of the fat, protein and fiber thresholds
+                    altogether: cinnamon is 53g of fiber per 100g, but a portion is a teaspoon. Lactose and
+                    alcohol still apply there, since those work by concentration rather than by dose.</p>
                 <p>The thresholds are "at or above", the way nutrition claims on a package are written —
                     "high fibre" means at least 6g, not more than 6g. A food measured at exactly the
                     threshold is reported to one decimal, so treating 10.0g of fat as under the line would
@@ -215,7 +230,7 @@
 
     <footer>
         <p>Built by a dietitian, for dietitians (and the curious).</p>
-        <p>Pre-beta v0.74 — updated 28 July 2026</p>
+        <p>Pre-beta v0.75 — updated 28 July 2026</p>
     </footer>
 
     <script src="nav.js"></script>

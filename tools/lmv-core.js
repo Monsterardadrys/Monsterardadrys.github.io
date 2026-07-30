@@ -494,17 +494,18 @@
         const n = record.nutrients;
         const findings = [];
 
-        /* Foods eaten in gram amounts are exempt from the per-100g fat,
-           protein and fiber thresholds — cinnamon is 53g fiber per 100g, but
-           nobody eats 100g of cinnamon. Only the concentration-based traits
-           (lactose, alcohol) still apply. */
+        /* Band 1 foods — a portion is 6g or less — are exempt from the
+           per-100g fat, protein and fiber thresholds. Cinnamon is 53g fiber
+           per 100g, but nobody eats 100g of cinnamon. Only the
+           concentration-based traits (lactose, alcohol) still apply. */
         const servingRules = ["over_10g_fat", "protein", "fiber"];
+        const tiny = food.portion === 1;
 
         RULES.forEach(function (rule) {
             const value = n[rule.nutrient];
             if (value == null) return;
             if (rule.requires && food.traits.indexOf(rule.requires) === -1) return;
-            if (food.smallServing && servingRules.indexOf(rule.trait) !== -1) return;
+            if (tiny && servingRules.indexOf(rule.trait) !== -1) return;
             // whole seeds are tagged on fiber alone — the fat stays in the shell
             if (food.wholeSeed && rule.trait !== "fiber") return;
             // lactose-free dairy still reports those sugars as glucose and galactose
@@ -521,7 +522,7 @@
             });
         });
 
-        if (!food.smallServing && !food.wholeSeed && (n.fat != null || n.protein != null)) {
+        if (!tiny && !food.wholeSeed && (n.fat != null || n.protein != null)) {
             const has = food.traits.indexOf("bile_stimulant") !== -1;
             const expected = bileExpected(n);
             if (has !== expected) {
@@ -637,7 +638,7 @@
                     name: food.name,
                     category: cat.label,
                     traits: food.traits,
-                    smallServing: Boolean(food.smallServing || cat.smallServing),
+                    portion: food.portion || 4,
                     wholeSeed: Boolean(food.wholeSeed)
                 });
             });
