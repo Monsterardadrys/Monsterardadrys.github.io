@@ -51,11 +51,14 @@
         fiber: 6,          // a meaningful fiber load
         sugars: 5,         // lactose, where symptoms start for many
         bileFat: 13,       // the fat that drives a strong CCK response
-        bileProtein: 25    // protein is a weaker trigger, so it takes more
+        bileProtein: 45    // far weaker than fat: at this load the arm
+                           // effectively never fires on its own, which is
+                           // the honest reading of the evidence
     };
 
-    // what a portion in each band is scored at
-    const BAND_PORTION = { 2: 25, 3: 80, 4: 150 };
+    // the median real portion in each band — mirrors PORTION_BANDS
+    // (foods-data.js). Band 1 has no entry: nothing can reach a dose at 5g.
+    const BAND_PORTION = { 2: 15, 3: 25, 4: 50, 5: 100, 6: 175 };
 
     function threshold(dose, band) {
         return Math.round(dose / BAND_PORTION[band] * 1000) / 10;
@@ -80,9 +83,11 @@
 
     function portionBand(grams) {
         if (grams <= SMALL_PORTION) return 1;
-        if (grams <= 45) return 2;
-        if (grams <= 112) return 3;
-        return 4;
+        if (grams <= 17) return 2;
+        if (grams <= 35) return 3;
+        if (grams <= 69) return 4;
+        if (grams <= 112) return 5;
+        return 6;
     }
 
     // bile_stimulant is the one trait with two ways in
