@@ -138,8 +138,8 @@
    and fiber thresholds. Cinnamon is 53g of fiber per 100g and nobody eats 100g
    of cinnamon. */
 const PORTION_BANDS = [
-  { band: 1, label: "Up to 7g",   max: 7,    example: "spices, salt, butter, a knob of horseradish" },
-  { band: 2, label: "7\u201345g",     max: 45,   example: "oil, a slice of cheese, a handful of nuts, an egg white" },
+  { band: 1, label: "Up to 7g",   max: 7,    example: "spices, salt, soy sauce, a knob of horseradish" },
+  { band: 2, label: "7\u201345g",     max: 45,   example: "butter, oil, a slice of cheese, a handful of nuts" },
   { band: 3, label: "45\u2013112g",   max: 112,  example: "bread, an egg, a bowl of berries, a sausage" },
   { band: 4, label: "Over 112g",  max: null, example: "meat, fish, cooked grains, a glass of milk" }
 ];
@@ -1062,7 +1062,7 @@ const CATEGORIES = [
       { name: "Yoghurt 0,5%", lmv: "Yoghurt naturell lätt fett 0,5% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Yoghurt 3%", lmv: "Yoghurt naturell fett 3% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Greek Yogurt (10% fat)", lmv: "Yoghurt naturell fett 10%", lmvNote: "entry measures 8.3 g fat, below the 10 g threshold", portion: 200, traits: ["over_10g_fat", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
-      { name: "Butter", lmv: "Smör fett 80%", portion: 5, traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_milk"] },
+      { name: "Butter", lmv: "Smör fett 80%", portion: 10, traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_milk"] },
       { name: "Cream", lmv: "Vispgrädde fett 40%", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Quark (~1%)", lmv: "Kvarg färskost fett 1%", portion: 200, traits: ["allergen", "allergen_milk", "over_3g_lactose"] },
       { name: "Quark (~10%)", lmv: "Kvarg färskost fett 10%", portion: 200, traits: ["over_10g_fat", "allergen", "allergen_milk", "over_3g_lactose"] },
@@ -1187,7 +1187,7 @@ const CATEGORIES = [
       { name: "French Fries (deep-fried)", lmv: "Pommes frites friterad potatis fett ca 11% frysvara", portion: 150, traits: ["over_10g_fat", "refined_carbs"] },
       { name: "French Fries (oven-baked)", lmv: "Pommes frites friterad potatis värmd i ugn fett ca 7% frysvara", portion: 150, traits: ["refined_carbs"] },
       { name: "Instant Ramen", portion: 175, traits: ["allergen", "allergen_wheat", "fodmaps", "fructans"] },
-      { name: "Margarine", lmv: "Flytande margarin fett 70%", portion: 5, traits: ["over_10g_fat", "bile_stimulant"] },
+      { name: "Margarine", lmv: "Flytande margarin fett 70%", portion: 10, traits: ["over_10g_fat", "bile_stimulant"] },
       { name: "Instant Soup / Bouillon Cubes", lmv: "Köttbuljong tärning ätf.", portion: 5, traits: ["fodmaps", "fructans"] },
       { name: "Flavored Yogurt", lmv: "Fruktyoghurt fett 2%", portion: 200, traits: ["over_3g_lactose", "fodmaps", "refined_carbs", "allergen", "allergen_milk"] },
       { name: "Pretzels", lmv: "Salta pinnar", portion: 20, traits: ["fiber", "allergen", "allergen_wheat", "refined_carbs"] },
