@@ -1453,6 +1453,22 @@ footer p { color: var(--linen); }
     font-size: 0.9rem;
 }
 
+.thresholdTable {
+    border-collapse: collapse;
+    margin: 0.8rem 0 1.2rem;
+    font-size: 0.9rem;
+}
+
+.thresholdTable th,
+.thresholdTable td {
+    border: 1px solid var(--border);
+    padding: 0.3rem 0.6rem;
+    text-align: right;
+}
+
+.thresholdTable th:first-child { text-align: left; }
+.thresholdTable tr:first-child th { background: var(--linen); font-weight: 600; }
+
 .sourceMissing { font-style: italic; }
 
 /* The portion the thresholds are applied to. Sits next to the name rather
