@@ -94,7 +94,7 @@
                     <li><strong>Protein:</strong> 15g in a portion</li>
                     <li><strong>Fiber:</strong> 6g in a portion</li>
                     <li><strong>Lactose:</strong> 5g in a portion</li>
-                    <li><strong>Bile stimulant:</strong> 13g of fat, or 45g of protein, in a portion</li>
+                    <li><strong>Bile stimulant:</strong> 13g of fat in a portion, counting protein at a fifth of its weight</li>
                     <li><strong>Alcohol:</strong> above 0.5% ABV</li>
                 </ul>
                 <p>Alcohol is the exception and stays a concentration. 0.5% is the legal line for calling a
@@ -140,16 +140,20 @@
                     <tr><th>Protein</th><td>100</td><td>60</td><td>30</td><td>15</td><td>8.6</td></tr>
                     <tr><th>Fiber</th><td>40</td><td>24</td><td>12</td><td>6</td><td>3.4</td></tr>
                     <tr><th>Lactose</th><td>33.3</td><td>20</td><td>10</td><td>5</td><td>2.9</td></tr>
-                    <tr><th>Bile, fat</th><td>86.7</td><td>52</td><td>26</td><td>13</td><td>7.4</td></tr>
+                    <tr><th>Bile</th><td>86.7</td><td>52</td><td>26</td><td>13</td><td>7.4</td></tr>
                 </table>
                 </div>
-                <p><strong>Bile Stimulant</strong> takes a higher dose than the plain fat trait, because it is
-                    about a strong gallbladder contraction rather than a fat load in general. Protein is a far
-                    weaker trigger than fat, and its dose is set to say so: at 45g in a portion, protein alone
-                    essentially never reaches it. That is deliberate. A rule that let protein trigger the trait
-                    on its own made lean chicken a gallbladder concern, which is the opposite of the clinical
-                    advice. Turmeric is the one exception, tagged for its known effect on bile release despite
-                    meeting neither dose.</p>
+                <p><strong>Bile Stimulant</strong> takes a higher dose than the plain fat trait, because it
+                    is about a strong gallbladder contraction rather than a fat load in general. Protein
+                    releases the same hormone but far more weakly, so instead of a separate protein threshold
+                    it counts toward the same dose at a fifth of its weight:</p>
+                <p class="formula">fat + 0.2 &times; protein &ge; 13g in a portion</p>
+                <p>Protein therefore lowers the fat a food needs rather than qualifying it on its own. 125g of
+                    beef, at 12.5g of fat and 26g of protein, reaches the dose; 125g of chicken breast, at 2g
+                    of fat and 29g of protein, does not. A separate protein threshold could not tell those two
+                    apart at any setting — anything low enough to catch the beef also caught the chicken, which
+                    is the opposite of the advice anyone would give in gallbladder disease. Turmeric is the one
+                    exception, tagged for its known effect on bile release despite reaching no dose at all.</p>
 
                 <p>Whole flaxseed, chia and psyllium are tagged on their fiber alone. The seeds are
                     small and tough enough to be swallowed intact, so most of the fat never leaves the
@@ -257,7 +261,7 @@
 
     <footer>
         <p>Built by a dietitian, for dietitians (and the curious).</p>
-        <p>Pre-beta v0.84 — updated 28 July 2026</p>
+        <p>Pre-beta v0.85 — updated 28 July 2026</p>
     </footer>
 
     <script src="nav.js"></script>

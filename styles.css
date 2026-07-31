@@ -1453,6 +1453,15 @@ footer p { color: var(--linen); }
     font-size: 0.9rem;
 }
 
+.formula {
+    font-family: 'Lora', serif;
+    font-size: 1.05rem;
+    text-align: center;
+    padding: 0.5rem;
+    background: var(--linen);
+    border-radius: 8px;
+}
+
 .tableScroll { overflow-x: auto; max-width: 100%; }
 
 .thresholdTable {

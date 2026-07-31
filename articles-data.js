@@ -631,7 +631,7 @@ const ARTICLES = {
       {
         heading: "What triggers bile release?",
         blocks: [
-          { type: "p", text: "Fat is the dominant dietary trigger of cholecystokinin (CCK), a hormone that signals the gallbladder to contract and release bile. Protein is a weaker, secondary trigger. Fried and smoked foods are common contributors too, both because they're typically high in fat and because the frying/smoking process itself can add further irritant compounds." }
+          { type: "p", text: "Fat is the dominant dietary trigger of cholecystokinin (CCK), a hormone that signals the gallbladder to contract and release bile. Protein releases it too, but far more weakly — roughly a fifth as much per gram, which is how this tool weighs it. In practice that means a protein-rich meal needs less fat to provoke the same response: 125g of beef reaches the threshold on 12.5g of fat, where a food carrying no protein would need 13g. Fried and smoked foods are common contributors too, both because they're typically high in fat and because the frying or smoking itself can add further irritant compounds." }
         ]
       },
       {
