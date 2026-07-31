@@ -15,36 +15,80 @@
 (function (root) {
     "use strict";
 
-    /* ---- thresholds (per 100 g) ------------------------------------- */
+    /* ---- thresholds ------------------------------------------------- */
 
     /*
-        Thresholds are "at or above", matching how EU nutrition claims are
-        written ("high fibre: at least 6 g"). A figure reported as exactly the
-        threshold is a rounded one — 10.0 g of fat in the database could be
-        9.96 or 10.04 — so treating it as below would be false precision.
+        Thresholds are a dose per portion, not a concentration per 100g. The
+        old flat rules asked "is this food fatty", which the portion answers
+        differently for a slice of cheese and a plate of mince: 17.5g of fat
+        per 100g is 4g on the cheese and 22g on the mince.
 
-        Alcohol is the exception and stays strictly above: 0.5% ABV is the
-        legal ceiling for calling a drink alcohol-free, so a drink AT 0.5% is
-        alcohol-free rather than alcoholic.
+        So a dose is set per nutrient, and the per-100g threshold falls out of
+        the band's portion:
+
+            threshold = dose / portion * 100
+
+        Changing behaviour means changing DOSE. BAND_PORTION is the portion
+        each band is scored at — the middle of the band's real sizes, not the
+        middle of its range.
+
+        Band 1 (7g or less) has no dose that a portion could reach, so those
+        foods are exempt entirely.
+
+        Alcohol is the exception and stays a concentration: 0.5% ABV is the
+        legal line for calling a drink alcohol-free, and a legal line does not
+        scale with how much you pour.
+
+        Thresholds are "at or above", matching how nutrition claims are
+        written ("high fibre: at least 6g"). A figure reported to one decimal
+        cannot carry more precision than that.
     */
+
+    // grams of the nutrient in one portion
+    const DOSE = {
+        fat: 7.5,          // fat delays emptying and loosens the sphincter
+        protein: 15,       // a meaningful protein load
+        fiber: 6,          // a meaningful fiber load
+        sugars: 5,         // lactose, where symptoms start for many
+        bileFat: 13,       // the fat that drives a strong CCK response
+        bileProtein: 25    // protein is a weaker trigger, so it takes more
+    };
+
+    // what a portion in each band is scored at
+    const BAND_PORTION = { 2: 25, 3: 80, 4: 150 };
+
+    function threshold(dose, band) {
+        return Math.round(dose / BAND_PORTION[band] * 1000) / 10;
+    }
+
     const RULES = [
-        { trait: "over_10g_fat",    nutrient: "fat",     min: 10 },
-        { trait: "protein",         nutrient: "protein", min: 20 },
-        { trait: "fiber",           nutrient: "fiber",   min: 6 },
+        { trait: "over_10g_fat",    nutrient: "fat",     dose: "fat" },
+        { trait: "protein",         nutrient: "protein", dose: "protein" },
+        { trait: "fiber",           nutrient: "fiber",   dose: "fiber" },
         // Gated on allergen_milk: the database reports total sugars, not
         // lactose, so without this every piece of fruit reports a missing
         // lactose tag. Still soft — for anything with added sugar the two
         // numbers are not the same.
-        { trait: "over_3g_lactose", nutrient: "sugars",  min: 1, soft: true, requires: "allergen_milk" },
+        { trait: "over_3g_lactose", nutrient: "sugars",  dose: "sugars",
+          soft: true, requires: "allergen_milk" },
+        // not portion-scaled, see above
         { trait: "alcohol",         nutrient: "alcohol", min: 0.5, above: true }
     ];
 
     // Band 1 in PORTION_BANDS (foods-data.js) — keep the two in step.
     const SMALL_PORTION = 7;
 
+    function portionBand(grams) {
+        if (grams <= SMALL_PORTION) return 1;
+        if (grams <= 45) return 2;
+        if (grams <= 112) return 3;
+        return 4;
+    }
+
     // bile_stimulant is the one trait with two ways in
-    function bileExpected(n) {
-        return (n.fat != null && n.fat >= 17.5) || (n.protein != null && n.protein >= 20);
+    function bileExpected(n, band) {
+        return (n.fat != null && n.fat >= threshold(DOSE.bileFat, band)) ||
+               (n.protein != null && n.protein >= threshold(DOSE.bileProtein, band));
     }
 
     /* ---- reading the export ----------------------------------------- */
@@ -502,40 +546,44 @@
            per 100g, but nobody eats 100g of cinnamon. Only the
            concentration-based traits (lactose, alcohol) still apply.
            SMALL_PORTION mirrors band 1 in PORTION_BANDS (foods-data.js). */
-        const servingRules = ["over_10g_fat", "protein", "fiber"];
-        const tiny = food.portion <= SMALL_PORTION;
+        const band = portionBand(food.portion);
+        const tiny = band === 1;
 
         RULES.forEach(function (rule) {
             const value = n[rule.nutrient];
             if (value == null) return;
             if (rule.requires && food.traits.indexOf(rule.requires) === -1) return;
-            if (tiny && servingRules.indexOf(rule.trait) !== -1) return;
+            if (tiny && rule.dose) return;
             // whole seeds are tagged on fiber alone — the fat stays in the shell
             if (food.wholeSeed && rule.trait !== "fiber") return;
             // lactose-free dairy still reports those sugars as glucose and galactose
             if (rule.trait === "over_3g_lactose" && /lactose-free/i.test(food.name)) return;
+            const min = rule.dose ? threshold(DOSE[rule.dose], band) : rule.min;
             const has = food.traits.indexOf(rule.trait) !== -1;
-            const expected = rule.above ? value > rule.min : value >= rule.min;
+            const expected = rule.above ? value > min : value >= min;
             if (has === expected) return;
             findings.push({
                 trait: rule.trait,
                 soft: Boolean(rule.soft),
                 missing: expected,
                 text: (expected ? "missing" : "extra") + " — " + rule.nutrient + " " +
-                      value + " g/100g vs threshold " + (rule.above ? "over " : "") + rule.min
+                      value + " g/100g vs " + (rule.above ? "over " : "") + min +
+                      (rule.dose ? " (band " + band + ", " + food.portion + "g portion)" : "")
             });
         });
 
         if (!tiny && !food.wholeSeed && (n.fat != null || n.protein != null)) {
             const has = food.traits.indexOf("bile_stimulant") !== -1;
-            const expected = bileExpected(n);
+            const expected = bileExpected(n, band);
             if (has !== expected) {
                 findings.push({
                     trait: "bile_stimulant",
                     soft: false,
                     missing: expected,
                     text: (expected ? "missing" : "extra") + " — fat " + n.fat +
-                          ", protein " + n.protein + " (needs fat 17.5+ or protein 20+)"
+                          ", protein " + n.protein + " (band " + band + " needs fat " +
+                          threshold(DOSE.bileFat, band) + "+ or protein " +
+                          threshold(DOSE.bileProtein, band) + "+)"
                 });
             }
         }

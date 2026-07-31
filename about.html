@@ -87,14 +87,18 @@
                     tool counts how many of them share each trait and ranks traits by how common they are across
                     your selection.</p>
 
-                <p>Traits are tagged one of two ways. Some use a fixed threshold per 100g:</p>
+                <p>Traits are tagged one of two ways. Some use a threshold — an amount of the nutrient
+                    in one portion, rather than a figure per 100g:</p>
                 <ul>
-                    <li><strong>Lactose:</strong> 1g/100g or more</li>
-                    <li><strong>Fiber:</strong> 6g/100g or more</li>
-                    <li><strong>Fat:</strong> 10g/100g or more</li>
-                    <li><strong>Protein:</strong> 20g/100g or more</li>
+                    <li><strong>Fat:</strong> 7.5g in a portion</li>
+                    <li><strong>Protein:</strong> 15g in a portion</li>
+                    <li><strong>Fiber:</strong> 6g in a portion</li>
+                    <li><strong>Lactose:</strong> 5g in a portion</li>
+                    <li><strong>Bile stimulant:</strong> 13g of fat, or 25g of protein, in a portion</li>
                     <li><strong>Alcohol:</strong> above 0.5% ABV</li>
                 </ul>
+                <p>Alcohol is the exception and stays a concentration. 0.5% is the legal line for calling a
+                    drink alcohol-free, and a legal line does not scale with how much you pour.</p>
 
                 <h3>Portion size</h3>
 
@@ -121,18 +125,26 @@
                 <p>Foods in the smallest band are left out of the fat, protein and fiber thresholds
                     altogether: cinnamon is 53g of fiber per 100g, but a portion is a teaspoon. Lactose and
                     alcohol still apply there, since those work by concentration rather than by dose.</p>
-                <p>The thresholds are "at or above", the way nutrition claims on a package are written —
-                    "high fibre" means at least 6g, not more than 6g. A food measured at exactly the
-                    threshold is reported to one decimal, so treating 10.0g of fat as under the line would
-                    read more precision into the figure than it has. Alcohol is the exception and stays
-                    strictly above: 0.5% is the legal ceiling for calling a drink alcohol-free, so a drink
-                    at 0.5% is alcohol-free rather than alcoholic.</p>
-                <p><strong>Bile Stimulant</strong> uses either the fat or protein threshold above, but raised
-                    higher — 17.5g fat or 20g protein per 100g, matching EU food-labeling "high
-                    fat"/"high protein" categories. That's why foods like sour cream, ground meat, and Greek
-                    yogurt are split into separate low-fat, medium-fat, and full-fat entries: the fat content
-                    genuinely changes whether the trait applies. Turmeric is the one exception, tagged for its
-                    known effect on bile release despite not meeting either threshold.</p>
+                <p>Turning that dose back into a figure per 100g depends on the band, since that is what
+                    sets the portion it is scored at &mdash; 25g, 80g or 150g:</p>
+                <table class="thresholdTable">
+                    <tr><th></th><th>7&ndash;45g</th><th>45&ndash;112g</th><th>Over 112g</th></tr>
+                    <tr><th>Fat</th><td>30</td><td>9.4</td><td>5</td></tr>
+                    <tr><th>Protein</th><td>60</td><td>18.8</td><td>10</td></tr>
+                    <tr><th>Fiber</th><td>24</td><td>7.5</td><td>4</td></tr>
+                    <tr><th>Lactose</th><td>20</td><td>6.3</td><td>3.3</td></tr>
+                    <tr><th>Bile, fat</th><td>52</td><td>16.3</td><td>8.7</td></tr>
+                    <tr><th>Bile, protein</th><td>100</td><td>31.3</td><td>16.7</td></tr>
+                </table>
+                <p>So a slice of cheese has to be far fattier than a portion of mince before either counts as
+                    a fat load, which is what the portion sizes say. Thresholds are "at or above", the way
+                    nutrition claims on a package are written &mdash; "high fibre" means at least 6g, not more
+                    than 6g. A food measured at exactly the threshold is reported to one decimal, so treating
+                    10.0g as under the line would read more precision into the figure than it has.</p>
+                <p><strong>Bile Stimulant</strong> takes a higher dose than the plain fat trait, because it is
+                    about a strong gallbladder contraction rather than a fat load in general. Protein is a
+                    weaker trigger than fat, so it takes more of it. Turmeric is the one exception, tagged for
+                    its known effect on bile release despite meeting neither.</p>
 
                 <p>Whole flaxseed, chia and psyllium are tagged on their fiber alone. The seeds are
                     small and tough enough to be swallowed intact, so most of the fat never leaves the
@@ -240,7 +252,7 @@
 
     <footer>
         <p>Built by a dietitian, for dietitians (and the curious).</p>
-        <p>Pre-beta v0.81 — updated 28 July 2026</p>
+        <p>Pre-beta v0.82 — updated 28 July 2026</p>
     </footer>
 
     <script src="nav.js"></script>
