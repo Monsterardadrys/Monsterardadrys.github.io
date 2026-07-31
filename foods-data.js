@@ -125,23 +125,28 @@
    Portions come from the food group, not from the food: every fruit is 100g,
    every berry 50g, every cut of meat, fish and poultry 125g, potato and cooked
    grains 175g, roots 80g, nuts 25g, cheese 20g, a slice of bread 40g.
-   Seventeen sizes cover all of them. Departures from a group are deliberate — half an avocado, one egg,
-   a wine glass rather than a tumbler.
+   Seventeen sizes cover all of them. Departures from a group are deliberate —
+   half an avocado, one egg, a wine glass rather than a tumbler.
 
    The boundaries then sit in the gaps of that distribution. Sizes cluster on
    household measures (5, 20, 25, 30, 50, 80, 100, 125, 175, 200g), so a
-   boundary on one of those would split foods that are the same size. 7, 45 and
-   112 are each at the widest point of their gap: no food is within 11% of any
-   of them.
+   boundary on one of those would split foods that are the same size. Each cut
+   is at the widest point of its gap: no food is within 11% of any of them.
 
-   Band 1 — a portion of 7g or less — is exempt from the per-100g fat, protein
-   and fiber thresholds. Cinnamon is 53g of fiber per 100g and nobody eats 100g
-   of cinnamon. */
+   Six bands rather than four, because the thresholds are scored at the median
+   portion of the band and those medians should climb evenly. They now run
+   5, 15, 25, 50, 100, 175g — each step under a doubling of the last.
+
+   Band 1 — a portion of 7g or less — is exempt from the fat, protein and fiber
+   thresholds. Not by assertion: at a 5g portion, reaching the 7.5g fat dose
+   would take 150g of fat per 100g of food. No food can. */
 const PORTION_BANDS = [
-  { band: 1, label: "Up to 7g",   max: 7,    example: "spices, salt, soy sauce, a knob of horseradish" },
-  { band: 2, label: "7\u201345g",     max: 45,   example: "a slice of bread, butter, a slice of cheese, a handful of nuts" },
-  { band: 3, label: "45\u2013112g",   max: 112,  example: "a pita, an egg, a bowl of berries, a sausage" },
-  { band: 4, label: "Over 112g",  max: null, example: "meat, fish, cooked grains, a glass of milk" }
+  { band: 1, label: "Up to 7g",  max: 7,    portion: 5,   example: "spices, salt, soy sauce, a knob of horseradish" },
+  { band: 2, label: "7\u201317g",    max: 17,   portion: 15,  example: "oil, butter, a spoonful of seeds" },
+  { band: 3, label: "17\u201335g",   max: 35,   portion: 25,  example: "a slice of cheese, a handful of nuts, dried fruit" },
+  { band: 4, label: "35\u201369g",   max: 69,   portion: 50,  example: "a slice of bread, a bowl of berries, an egg, a pita" },
+  { band: 5, label: "69\u2013112g",  max: 112,  portion: 100, example: "fruit, vegetables, mushrooms, a sausage" },
+  { band: 6, label: "Over 112g", max: null, portion: 175, example: "meat, fish, cooked grains, a glass of milk" }
 ];
 
 function portionBand(grams) {
