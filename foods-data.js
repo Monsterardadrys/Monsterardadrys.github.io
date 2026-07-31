@@ -124,8 +124,8 @@
 
    Portions come from the food group, not from the food: every fruit is 100g,
    every berry 50g, every cut of meat, fish and poultry 125g, potato and cooked
-   grains 175g, roots 80g, nuts 25g, cheese 20g. Eighteen sizes cover all of
-   them. Departures from a group are deliberate — half an avocado, one egg,
+   grains 175g, roots 80g, nuts 25g, cheese 20g, a slice of bread 40g.
+   Seventeen sizes cover all of them. Departures from a group are deliberate — half an avocado, one egg,
    a wine glass rather than a tumbler.
 
    The boundaries then sit in the gaps of that distribution. Sizes cluster on
@@ -139,8 +139,8 @@
    of cinnamon. */
 const PORTION_BANDS = [
   { band: 1, label: "Up to 7g",   max: 7,    example: "spices, salt, soy sauce, a knob of horseradish" },
-  { band: 2, label: "7\u201345g",     max: 45,   example: "butter, oil, a slice of cheese, a handful of nuts" },
-  { band: 3, label: "45\u2013112g",   max: 112,  example: "bread, an egg, a bowl of berries, a sausage" },
+  { band: 2, label: "7\u201345g",     max: 45,   example: "a slice of bread, butter, a slice of cheese, a handful of nuts" },
+  { band: 3, label: "45\u2013112g",   max: 112,  example: "a pita, an egg, a bowl of berries, a sausage" },
   { band: 4, label: "Over 112g",  max: null, example: "meat, fish, cooked grains, a glass of milk" }
 ];
 
@@ -923,7 +923,7 @@ const CATEGORIES = [
       { name: "Muesli (no added sugar)", lmv: "Frukostflingor müsli fullkorn m. frukt", portion: 50, traits: ["fiber", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
       { name: "Wheat", lmv: "Matvete kokt m. salt", portion: 175, traits: ["fiber", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
       { name: "Rye", lmv: "Rågkross ångprep. fullkorn", lmvNote: "cracked whole grain — rye is not listed as a cooked whole grain", portion: 175, traits: ["fiber", "fodmaps", "fructans"] },
-      { name: "Rye Bread (whole grain)", lmv: "Bröd fullkorn råg fibrer ca 7%", portion: 70, traits: ["fiber", "fodmaps", "fructans"] },
+      { name: "Rye Bread (whole grain)", lmv: "Bröd fullkorn råg fibrer ca 7%", portion: 40, traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Pearl Barley (cooked)", lmv: "Korngryn kokt u. salt", portion: 175, traits: ["fodmaps", "fructans"] },
       { name: "Barley", lmv: "Korngryn kokt u. salt", portion: 175, traits: ["fodmaps", "fructans"] },
       { name: "Quinoa", lmv: "Mjölmålla quinoa röd kokt m. salt", portion: 175, traits: ["fiber"] },
@@ -932,11 +932,11 @@ const CATEGORIES = [
       { name: "Couscous", lmv: "Couscous kokt m. salt fullkorn", lmvNote: "wholegrain — the only cooked entry", portion: 175, traits: ["refined_carbs", "allergen", "allergen_wheat", "fodmaps", "fructans"] },
       { name: "Bulgur", lmv: "Bulgur kokt", portion: 175, traits: ["allergen", "allergen_wheat", "fodmaps", "fructans"] },
       { name: "Freekeh", portion: 175, traits: ["allergen", "allergen_wheat", "fodmaps", "fructans"] },
-      { name: "Pita Bread", lmv: "Bröd vitt vete vatten fibrer ca 3,5% typ pitabröd", portion: 70, traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "refined_carbs"] },
-      { name: "Naan Bread", portion: 70, traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "refined_carbs", "over_10g_fat"] },
+      { name: "Pita Bread", lmv: "Bröd vitt vete vatten fibrer ca 3,5% typ pitabröd", portion: 60, traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "refined_carbs"] },
+      { name: "Naan Bread", portion: 60, traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "refined_carbs", "over_10g_fat"] },
       { name: "Soba Noodles", portion: 175, traits: ["refined_carbs", "allergen", "allergen_wheat", "fodmaps", "fructans"] },
       { name: "Rice Noodles", lmv: "Nudlar risnudlar kokta", portion: 175, traits: ["refined_carbs"] },
-      { name: "White Bread", lmv: "Bröd vitt fibrer 3,5%", portion: 70, traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "refined_carbs"] },
+      { name: "White Bread", lmv: "Bröd vitt fibrer 3,5%", portion: 40, traits: ["allergen", "allergen_wheat", "fodmaps", "fructans", "refined_carbs"] },
       { name: "Pasta (no egg)", lmv: "Pasta kokt u. salt", portion: 175, traits: ["refined_carbs", "allergen", "allergen_wheat", "fodmaps", "fructans"] },
       { name: "Teff", lmv: "Teffmjöl", lmvNote: "flour", portion: 40, traits: ["fiber"] },
       { name: "Sorghum/Durra", lmv: "Durra el. andra sorghumarter mjöl", lmvNote: "flour", portion: 40, traits: [] },
@@ -947,14 +947,14 @@ const CATEGORIES = [
       { name: "Seitan", portion: 125, traits: ["protein", "allergen", "allergen_wheat"] },
       { name: "Tapioca", portion: 20, traits: [] },
       { name: "Cornstarch", lmv: "Majsstärkelse", portion: 5, traits: ["refined_carbs"] },
-      { name: "Sourdough Bread (wheat)", portion: 70, traits: ["refined_carbs", "allergen", "allergen_wheat"] },
-      { name: "Gluten-free Bread", lmv: "Bröd vitt glutenfritt", portion: 70, traits: ["refined_carbs"] },
+      { name: "Sourdough Bread (wheat)", portion: 40, traits: ["refined_carbs", "allergen", "allergen_wheat"] },
+      { name: "Gluten-free Bread", lmv: "Bröd vitt glutenfritt", portion: 40, traits: ["refined_carbs"] },
       { name: "Gluten-free Crispbread", lmv: "Hårt bröd glutenfritt fibrer ca 7%", portion: 20, traits: ["fiber", "refined_carbs"] },
       { name: "Gluten-free Pasta", lmv: "Pasta kokt m. salt majs 100% glutenfri", lmvNote: "100 % maize — the wheat-starch kind is not listed", portion: 175, traits: ["refined_carbs"] },
       { name: "Gluten-free Oats", lmv: "Havregryn fullkorn", lmvNote: "the same entry as ordinary oats — the difference is contamination, not composition", portion: 40, traits: ["fiber", "fodmaps", "fructans"] },
       { name: "Spelt", lmv: "Dinkel speltvete kokt m. salt", portion: 175, traits: ["fodmaps", "fructans", "allergen", "allergen_wheat"] },
       { name: "Semolina Porridge", lmv: "Mannagrynsgröt", portion: 175, traits: ["refined_carbs", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
-      { name: "Corn Tortilla", portion: 70, traits: [] },
+      { name: "Corn Tortilla", portion: 60, traits: [] },
       { name: "Wheat Bran", lmv: "Vetekli", portion: 20, traits: ["fiber", "fodmaps", "fructans", "allergen", "allergen_wheat"] },
       { name: "Rice Flour", lmv: "Rismjöl vitt", portion: 40, traits: ["refined_carbs"] },
       { name: "Potato Flour", lmv: "Potatismjöl", portion: 20, traits: ["refined_carbs"] },
@@ -1325,7 +1325,7 @@ const CATEGORIES = [
       { name: "Halva", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_sesame", "refined_carbs"] },
       { name: "Baklava", lmv: "Baklava ", portion: 40, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "allergen", "allergen_treenut", "allergen_wheat"] },
       { name: "Sugar-free Chewing Gum", lmv: "Tuggummi sockerfritt", portion: 5, traits: ["fodmaps", "polyols"] },
-      { name: "Cinnamon Bun", lmv: "Sött vetebröd kanelbulle gräddad kylvara frysvara el. butiksbakad", portion: 70, traits: ["over_10g_fat", "refined_carbs", "fodmaps", "fructans", "allergen", "allergen_milk", "allergen_wheat"] },
+      { name: "Cinnamon Bun", lmv: "Sött vetebröd kanelbulle gräddad kylvara frysvara el. butiksbakad", portion: 60, traits: ["over_10g_fat", "refined_carbs", "fodmaps", "fructans", "allergen", "allergen_milk", "allergen_wheat"] },
       { name: "Marzipan", lmv: "Mandelmassa", portion: 30, traits: ["fiber", "over_10g_fat", "bile_stimulant", "refined_carbs", "fodmaps", "galactans", "allergen", "allergen_treenut"] },
       { name: "Liquorice", lmv: "Lakritsgodis", portion: 30, traits: ["refined_carbs"] },
       { name: "Salty Liquorice", portion: 25, traits: ["refined_carbs"] }
