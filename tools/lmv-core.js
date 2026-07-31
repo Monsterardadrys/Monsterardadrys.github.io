@@ -43,9 +43,21 @@
         protein: 15,       // a meaningful protein load
         fiber: 6,          // a meaningful fiber load
         sugars: 5,         // lactose, where symptoms start for many
-        bileFat: 13,       // the fat that drives a strong CCK response
-        bileProtein: 45    // far weaker than fat, see about.html
+        bile: 13           // fat equivalents, see bileExpected below
     };
+
+    /* Protein releases CCK too, but far more weakly than fat. Rather than a
+       separate protein threshold — which either fires for nothing or fires for
+       lean chicken, with no useful setting in between — protein counts toward
+       the same dose at a fraction of its weight:
+
+           fat + 0.2 x protein >= 13g
+
+       So protein lowers the fat a food needs rather than qualifying it alone.
+       125g of beef at 12.5g fat and 26.3g protein reaches the dose; 125g of
+       chicken breast at 1.9g fat and 28.8g protein does not, and would need
+       the weight up at 0.39 before it did. The window is wide. */
+    const PROTEIN_WEIGHT = 0.2;
 
     const RULES = [
         { trait: "over_10g_fat",    nutrient: "fat",     dose: "fat" },
@@ -66,10 +78,10 @@
         return Math.round(per100g * portion) / 100;
     }
 
-    // bile_stimulant is the one trait with two ways in
-    function bileExpected(n, portion) {
-        return (n.fat != null && inPortion(n.fat, portion) >= DOSE.bileFat) ||
-               (n.protein != null && inPortion(n.protein, portion) >= DOSE.bileProtein);
+    // fat plus a fraction of the protein, in one portion
+    function bileLoad(n, portion) {
+        return inPortion(n.fat || 0, portion) +
+               PROTEIN_WEIGHT * inPortion(n.protein || 0, portion);
     }
 
     /* ---- reading the export ----------------------------------------- */
@@ -558,16 +570,18 @@
 
         if (!food.wholeSeed && (n.fat != null || n.protein != null)) {
             const has = food.traits.indexOf("bile_stimulant") !== -1;
-            const expected = bileExpected(n, portion);
+            const load = bileLoad(n, portion);
+            const expected = load >= DOSE.bile;
             if (has !== expected) {
                 findings.push({
                     trait: "bile_stimulant",
                     soft: false,
                     missing: expected,
                     text: (expected ? "missing" : "extra") + " — " +
-                          inPortion(n.fat, portion) + " g fat and " +
-                          inPortion(n.protein, portion) + " g protein in a " + portion +
-                          "g portion, doses " + DOSE.bileFat + " / " + DOSE.bileProtein
+                          inPortion(n.fat || 0, portion) + " g fat + 0.2 x " +
+                          inPortion(n.protein || 0, portion) + " g protein = " +
+                          Math.round(load * 100) / 100 + " in a " + portion +
+                          "g portion, dose " + DOSE.bile
                 });
             }
         }
