@@ -1055,7 +1055,7 @@ const CATEGORIES = [
     id: "dairy",
     label: "Dairy",
     foods: [
-      { name: "Cows Milk", lmv: "Mjölk fett 3% berikad", portion: 200, traits: ["over_10g_fat", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
+      { name: "Cows Milk", lmv: "Mjölk fett 3% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Goats Milk", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Sheeps Milk", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Cream Cheese (<10% fat)", lmv: "Färskost cream cheese extra light fett 5%", portion: 20, traits: ["fodmaps", "allergen", "allergen_milk"] },
@@ -1097,11 +1097,11 @@ const CATEGORIES = [
       { name: "Paneer", lmv: "Paneer", portion: 60, traits: ["over_10g_fat", "bile_stimulant", "over_3g_lactose", "allergen", "allergen_milk"] },
       { name: "Skyr", portion: 200, traits: ["over_3g_lactose", "allergen", "allergen_milk"] },
       { name: "Buttermilk", lmv: "Filmjölk fett 3% berikad", portion: 200, traits: ["over_3g_lactose", "allergen", "allergen_milk"] },
-      { name: "Kefir", lmv: "Kefir fett 3% berikad", portion: 200, traits: ["over_10g_fat", "over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
+      { name: "Kefir", lmv: "Kefir fett 3% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       // Lactase-treated dairy: lactose <0.1g/100g and Monash-tested low FODMAP,
       // but the milk protein and (for yogurt) the fermentation are unchanged.
       // That split is the point — it separates lactose from casein/histamine.
-      { name: "Lactose-free Milk", lmv: "Mjölk fett 3% berikad", lmvNote: "ordinary milk — the lactose-free version is not listed", portion: 200, traits: ["over_10g_fat", "allergen", "allergen_milk"] },
+      { name: "Lactose-free Milk", lmv: "Mjölk fett 3% berikad", lmvNote: "ordinary milk — the lactose-free version is not listed", portion: 200, traits: ["allergen", "allergen_milk"] },
       { name: "Lactose-free Yogurt", lmv: "Yoghurt naturell lätt laktosfri fett ca 0,4% berikad", portion: 200, traits: ["allergen", "allergen_milk"] },
       { name: "Filmjolk", lmv: "Filmjölk fett 3% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen", "allergen_milk"] },
       { name: "Creme Fraiche", lmv: "Crème fraiche fett 34%", portion: 25, traits: ["over_10g_fat", "fodmaps", "allergen", "allergen_milk"] },
@@ -1283,7 +1283,7 @@ const CATEGORIES = [
       { name: "Remoulade", lmv: "Remouladsås", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_egg", "irritant"] },
       { name: "Tomato Pasta Sauce", lmv: "Pastasås m. tomat örtkryddor", portion: 60, traits: ["fodmaps", "fructans", "refined_carbs"] },
       { name: "Bechamel Sauce", lmv: "Béchamelsås", portion: 60, traits: ["fodmaps", "allergen", "allergen_milk", "allergen_wheat"] },
-      { name: "Satay / Peanut Sauce", lmv: "Jordnötssås", portion: 25, traits: ["over_10g_fat", "refined_carbs", "fodmaps", "fructans", "allergen", "allergen_peanut"] },
+      { name: "Satay / Peanut Sauce", lmv: "Jordnötssås", portion: 25, traits: ["refined_carbs", "fodmaps", "fructans", "allergen", "allergen_peanut"] },
       { name: "Vegan Mayonnaise", portion: 25, traits: ["over_10g_fat", "bile_stimulant"] }
     ]
   },
