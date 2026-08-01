@@ -1,9 +1,13 @@
 <!--
     Food Intolerance Guide — About page.
 
-    Background + methodology, written for both curious end users and
-    other clinicians who want to know how the analysis actually works
-    before trusting it.
+    The "How the analysis works" section is the SHORT method: written for a
+    first-time reader, stating the method as it stands with no history, and
+    rewritten only when the method itself changes. It never refers to earlier
+    versions — "we do it this way because X", never "we changed this".
+
+    The long version lives in method.html and may refer back to earlier
+    reasoning. Any rule change belongs in both.
 -->
 
 <!DOCTYPE html>
@@ -54,6 +58,7 @@
                 <li><a href="#background">Background</a></li>
                 <li><a href="#why">Why this tool exists</a></li>
                 <li><a href="#methodology">How the analysis works</a></li>
+                <li><a href="method.html">Method in detail</a></li>
                 <li><a href="#sources">Data sources</a></li>
                 <li><a href="#limitations">Limitations</a></li>
             </ul>
@@ -84,104 +89,52 @@
                 <h2>How the analysis works</h2>
                 <p>Every food in the tool is tagged with the traits it carries — FODMAP subtypes, histamine
                     content, allergens, GI irritant mechanisms, and more. When you select a group of foods, the
-                    tool counts how many of them share each trait and ranks traits by how common they are across
-                    your selection.</p>
+                    tool counts how many of them share each trait, and ranks the traits by how common they are
+                    across your selection. What comes out is a shortlist of what your foods have in common.</p>
 
-                <p>Traits are tagged one of two ways. Some use a threshold — an amount of the nutrient
-                    in one portion, rather than a figure per 100g:</p>
+                <h3>Traits are measured per portion</h3>
+
+                <p>Some traits depend on how much of something a food contains. Those are measured as an
+                    amount in one normal portion, not as a figure per 100 grams — because a figure per 100
+                    grams says nothing until you know how much goes on a plate. The same 17.5g of fat per 100g
+                    is about 4g in a slice of cheese and about 22g in a portion of mince.</p>
                 <ul>
                     <li><strong>Fat:</strong> 6g in a portion</li>
                     <li><strong>Protein:</strong> 15g in a portion</li>
                     <li><strong>Fiber:</strong> 3g in a portion</li>
                     <li><strong>Lactose:</strong> 5g in a portion</li>
-                    <li><strong>Bile stimulant:</strong> 9.5g of fat in a portion, counting protein at a fifth of its weight</li>
-                    <li><strong>Alcohol:</strong> above 0.5% ABV</li>
+                    <li><strong>Bile stimulant:</strong> 9.5g of fat in a portion, counting protein at a fifth
+                        of its weight, since protein triggers the same hormone far more weakly</li>
+                    <li><strong>Salicylates:</strong> 1mg in a portion</li>
+                    <li><strong>Alcohol:</strong> above 0.5% by volume — a concentration, because that is the
+                        legal line for calling a drink alcohol-free</li>
                 </ul>
-                <p>Alcohol is the exception and stays a concentration. 0.5% is the legal line for calling a
-                    drink alcohol-free, and a legal line does not scale with how much you pour.</p>
+                <p>Every food therefore carries a typical serving in grams. Servings come from the food group,
+                    so that foods eaten the same way get the same number: every fruit 100g, every berry 50g,
+                    every cut of meat, fish and poultry 125g, potato and cooked grains 175g, a slice of bread
+                    40g, a slice of cheese 20g.</p>
 
-                <h3>Portion size</h3>
+                <h3>The rest are categorical</h3>
 
-                <p>A threshold per 100g only means something once you know how much of the food goes on a
-                    plate. 17.5g of fat per 100g is about 4g in a slice of cheese and about 22g in a portion
-                    of mince — the same number, five times the effect. So every food carries a typical
-                    serving in grams, and falls into one of six portion bands:</p>
-                <ul>
-                    <li><strong>Up to 7g</strong> — spices, salt, soy sauce, a knob of horseradish</li>
-                    <li><strong>7&ndash;17g</strong> — oil, butter, a spoonful of seeds</li>
-                    <li><strong>17&ndash;35g</strong> — a slice of cheese, a handful of nuts, dried fruit</li>
-                    <li><strong>35&ndash;69g</strong> — a slice of bread, a bowl of berries, an egg, a pita</li>
-                    <li><strong>69&ndash;112g</strong> — fruit, vegetables, mushrooms, a sausage</li>
-                    <li><strong>Over 112g</strong> — meat, fish, cooked grains, a glass of milk</li>
-                </ul>
-                <p>Portions are set per food group rather than per food, so that foods eaten the same way
-                    get the same number: every fruit is 100g, every berry 50g, every cut of meat, fish and
-                    poultry 125g, potato and cooked grains 175g, root vegetables 80g, a slice of bread 40g.
-                    Seventeen sizes cover all 475 foods. Where one departs from its group there is a reason
-                    — half an avocado, one egg, a wine glass rather than a tumbler.</p>
-                <p>The boundaries are 7, 17, 35, 69 and 112g rather than round numbers, and that is
-                    deliberate. Portion sizes bunch up on household measures — a great many foods land on
-                    exactly 25, 30, 100 or 125g — so a boundary placed on one of those would split foods that
-                    are the same size as each other. Each cut sits at the widest point of a gap: no food is
-                    within 11% of any of them.</p>
-                <p>Six bands rather than four, so that the typical portions they describe climb evenly:
-                    5, 15, 25, 50, 100 and 175g, each step under a doubling of the one before.</p>
-                <p>Foods in the smallest band need no special handling: 2g of cinnamon carries 1g of fiber
-                    against a 6g dose, so the arithmetic rules them out on its own. Alcohol still applies there,
-                    since it works by concentration rather than by dose.</p>
-                <p>Each food is measured at its own portion. The bands are there to explain the reasoning
-                    and to group foods on the <a href="sources.html">data sources</a> page &mdash; they do not
-                    enter the arithmetic. What they do show is how much the same dose demands of a food
-                    depending on how much of it goes on a plate. Taking a typical portion from each band:</p>
-                <div class="tableScroll">
-                <table class="thresholdTable">
-                    <tr><th>needed per 100g</th><th>15g</th><th>25g</th><th>50g</th><th>100g</th><th>175g</th></tr>
-                    <tr><th>Fat</th><td>40</td><td>24</td><td>12</td><td>6</td><td>3.4</td></tr>
-                    <tr><th>Protein</th><td>100</td><td>60</td><td>30</td><td>15</td><td>8.6</td></tr>
-                    <tr><th>Fiber</th><td>20</td><td>12</td><td>6</td><td>3</td><td>1.7</td></tr>
-                    <tr><th>Lactose</th><td>33.3</td><td>20</td><td>10</td><td>5</td><td>2.9</td></tr>
-                    <tr><th>Bile</th><td>63.3</td><td>38</td><td>19</td><td>9.5</td><td>5.4</td></tr>
-                </table>
-                </div>
-                <p><strong>Bile Stimulant</strong> takes a higher dose than the plain fat trait, because it
-                    is about a strong gallbladder contraction rather than a fat load in general. Protein
-                    releases the same hormone but far more weakly, so instead of a separate protein threshold
-                    it counts toward the same dose at a fifth of its weight:</p>
-                <p class="formula">fat + 0.2 &times; protein &ge; 9.5g in a portion</p>
-                <p>Protein therefore lowers the fat a food needs rather than qualifying it on its own. 125g of
-                    cooked turkey, at 9g of fat and 28g of protein, reaches the dose; 125g of chicken breast, at
-                    2g of fat, does not. A separate protein threshold could not tell those two apart at any
-                    setting — anything low enough to catch the turkey also caught cod and tuna, which is the
-                    opposite of the advice anyone would give in gallbladder disease. Turmeric is the one
-                    exception, tagged for its known effect on bile release despite reaching no dose at all.</p>
+                <p>Allergens, FODMAP subtypes, oral allergy syndrome and the GI irritant mechanisms have no
+                    gram cutoff. They follow established classifications: the "Big 9" allergens, the Monash
+                    University FODMAP database, and the pollen groups behind oral allergy syndrome.
+                    <strong>Refined carbohydrates</strong> works the same way — assigned by food type and
+                    processing rather than by carbohydrate content, so whole grains, legumes and vegetables
+                    are never tagged with it however carb-heavy they are.</p>
 
-                <p>Whole flaxseed, chia and psyllium are tagged on their fiber alone. The seeds are
-                    small and tough enough to be swallowed intact, so most of the fat never leaves the
-                    shell — the fiber is what acts on the gut. Ground versions release everything and are
-                    tagged on their full content. Larger seeds like pumpkin, and any seed that turns
-                    brittle when roasted, do not qualify.</p>
+                <p><strong>Histamine</strong> is categorical, but a food is tagged only where there is
+                    measured histamine, proteolytic ripening, long fermentation with an undefined flora, a
+                    freshness-dependent mechanism, or alcohol. Foods justified only by the "histamine
+                    liberator" idea are not tagged — a review of ten published low-histamine diets found 68%
+                    of the excluded foods had no detectable histamine, and the release mechanism has never
+                    been demonstrated in humans. That is why yogurt, kefir, strawberry and avocado carry no
+                    histamine tag here, even though most lists include them.</p>
 
-                <p><strong>Salicylates</strong> use a threshold too, but per portion rather than per 100g:
-                    at least 1 mg of salicylic acid in a normal serving. Concentration alone would mislead —
-                    cumin measures 605 mg/kg, but a portion is 2g, which puts it below a serving of green
-                    peas.</p>
-
-                <p>Other traits have no numeric threshold — they're categorical, based on established
-                    classifications rather than a gram cutoff: allergens, oral allergy syndrome, GI irritants,
-                    and FODMAPs (Monash University classifications).</p>
-
-                <p><strong>Histamine</strong> is categorical but not simply inherited from a published list.
-                    A food is tagged only where there is measured histamine, proteolytic ripening, long
-                    fermentation with an undefined flora, a freshness-dependent mechanism, or alcohol. Foods
-                    justified only by the "histamine liberator" idea are not tagged: a review of ten published
-                    low-histamine diets found that 68% of the excluded foods had no detectable histamine, and
-                    the release mechanism has never been demonstrated in humans. That is why yogurt, kefir,
-                    strawberry and avocado carry no histamine tag here even though most lists include them.</p>
-
-                <p><strong>DAO Competitors</strong> is a modifier rather than a trigger. Putrescine and
-                    cadaverine occupy the same enzyme that breaks histamine down, so they may slow its
-                    clearance — but a food carrying them without any histamine has nothing to compete with.
-                    The trait is therefore only reported when the selection also contains histamine.</p>
+                <p><strong>DAO competitors</strong> is a modifier rather than a trigger. Putrescine and
+                    cadaverine occupy the enzyme that breaks histamine down, so they may slow its clearance —
+                    but a food carrying them without any histamine has nothing to compete with. The trait is
+                    reported only when the selection also contains histamine.</p>
 
                 <h3>How well supported is each trait?</h3>
 
@@ -200,20 +153,20 @@
                         Acetic acid, peel and skin, and DAO competition sit here.</li>
                 </ul>
 
-                <p>The level says how well the trait itself is grounded — not how strongly you will react
-                    to it. A well-established trait can be irrelevant for you, and a preliminary one can be
-                    your main problem. Each trait's level, with a sentence on what it rests on, appears with
-                    the trait in the results.</p>
+                <p>The level says how well the trait itself is grounded — not how strongly you will react to
+                    it. A well-established trait can be irrelevant for you, and a preliminary one can be your
+                    main problem. Each trait's level, with a sentence on what it rests on, appears with the
+                    trait in the results.</p>
 
-                <p><strong>Refined Carbohydrates</strong> works the same way: it's assigned by food type and
-                    processing — white bread, sugar, and other ultra-processed or refined-grain foods — not by
-                    carb content. Whole grains, legumes, and vegetables are never tagged with it, no matter how
-                    carb-heavy they are.</p>
+                <p>Fat and protein are tracked passively in the background. They are rarely the direct cause
+                    of GI symptoms on their own, so rather than competing for a top spot in the ranking they
+                    appear as a side note when over 90% of your selection shares one — a signal that they may
+                    be worsening symptoms driven by something else.</p>
 
-                <p>Fat and protein content are also tracked passively in the background: since they're rarely
-                    the direct cause of GI symptoms on their own, instead of competing for a top spot in the
-                    trait ranking, they only appear as a side note when extremely common across your selection
-                    (over 90% of foods) — a signal they may be worsening symptoms driven by something else.</p>
+                <p class="readMore"><a href="method.html">The method in detail →</a><br>
+                    <span>Every rule with the reasoning and the numbers behind it: how the portion sizes and
+                    band boundaries were chosen, how each dose was arrived at, and where the exceptions
+                    are.</span></p>
             </section>
 
             <section id="sources">
@@ -261,7 +214,7 @@
 
     <footer>
         <p>Built by a dietitian, for dietitians (and the curious).</p>
-        <p>Pre-beta v0.86 — updated 28 July 2026</p>
+        <p>Pre-beta v0.87 — updated 28 July 2026</p>
     </footer>
 
     <script src="nav.js"></script>
