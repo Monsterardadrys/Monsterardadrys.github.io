@@ -39,9 +39,12 @@
 
     // grams of the nutrient in one portion
     const DOSE = {
-        fat: 6,            // fat delays emptying and loosens the sphincter
+        fat: 6.1,          // fat delays emptying and loosens the sphincter.
+                           // 6.1 rather than 6 because 2dl of 3% milk is
+                           // exactly 6.00g, and a dose should not sit on a
+                           // number several common foods land on
         protein: 15,       // a meaningful protein load
-        fiber: 6,          // the trait is for a fiber load big enough to be
+        fiber: 6.1,        // the trait is for a fiber load big enough to be
                            // expected to cause trouble, not for "contains
                            // fiber" — a plate of chips carries 4.5g
         sugars: 5,         // lactose, where symptoms start for many
