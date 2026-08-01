@@ -39,11 +39,14 @@
 
     // grams of the nutrient in one portion
     const DOSE = {
-        fat: 7.5,          // fat delays emptying and loosens the sphincter
+        fat: 6,            // fat delays emptying and loosens the sphincter
         protein: 15,       // a meaningful protein load
-        fiber: 6,          // a meaningful fiber load
+        fiber: 3,          // matches the EU "source of fibre" claim, read
+                           // as a portion rather than as a concentration
         sugars: 5,         // lactose, where symptoms start for many
-        bile: 13           // fat equivalents, see bileExpected below
+        bile: 9.5          // fat equivalents, see bileLoad below. Roughly
+                           // half the fat in a meal that provokes biliary
+                           // colic, since one food is rarely the whole meal
     };
 
     /* Protein releases CCK too, but far more weakly than fat. Rather than a
@@ -51,12 +54,13 @@
        lean chicken, with no useful setting in between — protein counts toward
        the same dose at a fraction of its weight:
 
-           fat + 0.2 x protein >= 13g
+           fat + 0.2 x protein >= 9.5g
 
        So protein lowers the fat a food needs rather than qualifying it alone.
-       125g of beef at 12.5g fat and 26.3g protein reaches the dose; 125g of
-       chicken breast at 1.9g fat and 28.8g protein does not, and would need
-       the weight up at 0.39 before it did. The window is wide. */
+       125g of cooked turkey, at 8.75g of fat and 27.5g of protein, reaches the
+       dose on the protein; 125g of chicken breast at 1.9g of fat does not, and
+       no plausible weight would bring it in without bringing in cod and tuna
+       as well. */
     const PROTEIN_WEIGHT = 0.2;
 
     const RULES = [
