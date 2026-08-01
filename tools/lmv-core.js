@@ -41,8 +41,9 @@
     const DOSE = {
         fat: 6,            // fat delays emptying and loosens the sphincter
         protein: 15,       // a meaningful protein load
-        fiber: 3,          // matches the EU "source of fibre" claim, read
-                           // as a portion rather than as a concentration
+        fiber: 6,          // the trait is for a fiber load big enough to be
+                           // expected to cause trouble, not for "contains
+                           // fiber" — a plate of chips carries 4.5g
         sugars: 5,         // lactose, where symptoms start for many
         bile: 9.5          // fat equivalents, see bileLoad below. Roughly
                            // half the fat in a meal that provokes biliary
