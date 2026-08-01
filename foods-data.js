@@ -1316,9 +1316,11 @@ const CATEGORIES = [
       // described by their filling; this is the nougat/caramel/peanut one.
       { name: "Candy bars", lmv: "Mjuk nougat m. kolasås jordnötter mjölkchokladöverdrag", lmvNote: "one representative bar, not a generic entry", portion: 50, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "over_3g_lactose", "allergen", "allergen_milk"] },
       { name: "Milk chocolate", lmv: "Mjölkchoklad", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "over_3g_lactose", "fodmaps", "caffeine", "allergen", "allergen_milk"] },
-      // Livsmedelsverket lists 0g fiber, which is a gap in the source rather
-      // than a real zero — 70% chocolate is around 11g. Tag kept.
-      { name: "Dark Chocolate", lmv: "Mörk choklad kakao ≥ 70%", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "fiber", "caffeine"] },
+      // Livsmedelsverket lists 0g fiber, which is a gap rather than a real zero:
+      // 70% chocolate runs around 11g/100g. That correction used to carry the
+      // fiber tag past a per-100g threshold, but 25g of chocolate is under 3g
+      // of fiber either way, so the tag goes.
+      { name: "Dark Chocolate", lmv: "Mörk choklad kakao ≥ 70%", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "caffeine"] },
       { name: "Cheese Puffs / Snacks", lmv: "Ostbågar", portion: 25, traits: ["over_10g_fat", "allergen", "allergen_milk"] },
       { name: "Granola Bar", lmv: "Bar müslibar m. choklad berikad", portion: 30, traits: ["refined_carbs", "allergen", "allergen_treenut"] },
       { name: "Protein Bar", portion: 50, traits: ["protein", "refined_carbs", "allergen", "allergen_milk"] },
@@ -1330,7 +1332,7 @@ const CATEGORIES = [
       { name: "Halva", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "allergen", "allergen_sesame", "refined_carbs"] },
       { name: "Baklava", lmv: "Baklava ", portion: 40, traits: ["over_10g_fat", "refined_carbs", "allergen", "allergen_wheat", "allergen_treenut"] },
       { name: "Sugar-free Chewing Gum", lmv: "Tuggummi sockerfritt", portion: 5, traits: ["fodmaps", "polyols"] },
-      { name: "Cinnamon Bun", lmv: "Sött vetebröd kanelbulle gräddad kylvara frysvara el. butiksbakad", portion: 60, traits: ["over_10g_fat", "refined_carbs", "fodmaps", "fructans", "allergen", "allergen_milk", "allergen_wheat"] },
+      { name: "Cinnamon Bun", lmv: "Sött vetebröd kanelbulle gräddad kylvara frysvara el. butiksbakad", lmvNote: "the 18.5 g of sugar is nearly all sucrose — the milk in the dough leaves well under a gram of lactose", portion: 60, traits: ["over_10g_fat", "refined_carbs", "fodmaps", "fructans", "allergen", "allergen_milk", "allergen_wheat"] },
       { name: "Marzipan", lmv: "Mandelmassa", portion: 30, traits: ["over_10g_fat", "refined_carbs", "fodmaps", "galactans", "allergen", "allergen_treenut"] },
       { name: "Liquorice", lmv: "Lakritsgodis", portion: 30, traits: ["refined_carbs"] },
       { name: "Salty Liquorice", portion: 25, traits: ["refined_carbs"] }

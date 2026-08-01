@@ -1462,6 +1462,23 @@ footer p { color: var(--linen); }
     border-radius: 8px;
 }
 
+.readMore {
+    border-top: 1px solid var(--border);
+    padding-top: 0.9rem;
+    margin-top: 1.6rem;
+}
+
+.readMore a {
+    font-family: 'Lora', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.readMore span {
+    font-size: 0.9rem;
+    color: #5a615c;
+}
+
 .tableScroll { overflow-x: auto; max-width: 100%; }
 
 .thresholdTable {
