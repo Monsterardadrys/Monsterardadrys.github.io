@@ -102,7 +102,6 @@
   "Cows Meat": "Nöt kött rå",
   "Lamb": "Lamm kött rå",
   "Turkey": "Kalkon kokt",
-  "Dry-Cured Ham (lean)": "Gris skinka lufttorkad italiensk",
   "Hot Dog Sausage": "Korv varmkorv kokt",
   "Egg Yolk": "Äggula rå",
   "Cod": "Torsk rå",
@@ -364,5 +363,6 @@
   "Pistachio": "Pistaschnötter u. salt",
   "Oat Yogurt": "Havregurt naturell fett 2,2% berikad",
   "Soy Yogurt": "Soygurt naturell eko. berikad",
-  "Veggie Burger (vegetable-based)": "Grönsaksburgare stekt veg."
+  "Veggie Burger (vegetable-based)": "Grönsaksburgare stekt veg.",
+  "Dry-Cured Ham (~12%)": "Gris skinka lufttorkad italiensk"
 }
