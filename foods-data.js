@@ -245,7 +245,7 @@ const TRAITS = {
       detail: "Fat measurably slows gastric emptying and lowers the pressure of the lower esophageal sphincter. Symptom provocation is best documented in reflux and functional dyspepsia."
     },
     analysis: [
-      "These foods contain more than 10g fat per 100g, which can worsen symptoms in GERD, IBS, gallbladder disease, and pancreatic insufficiency (EPI).",
+      "A normal portion of these foods carries at least 6g of fat, which can worsen symptoms in GERD, IBS, gallbladder disease, and pancreatic insufficiency (EPI).",
       "See the Fat article for warning signs of malabsorption and who is most affected."
     ]
   },
