@@ -486,8 +486,10 @@ const TRAITS = {
     ]
   },
 
-  /* ---- Allergens: the EU's 14 declarable ones, plus two that are not
-     declarable but turn up in practice.
+  /* ---- Allergens: the EU's declarable ones, minus lupin, plus two that are
+     not declarable but turn up in practice — onion/garlic and mushroom.
+     Lupin is left out because it barely reaches a Swedish plate, and this
+     database is Swedish first.
 
      There is no broad "allergen" trait. With every allergen present in its own
      right, an umbrella only took a top slot in the ranking without saying
@@ -662,23 +664,9 @@ const TRAITS = {
       "Mustard is a declarable allergen in the EU. Reactions are uncommon but can be severe, and mustard turns up unannounced in dressings, remoulade, sausage and spice blends."
     ]
   },
-  allergen_lupin: {
-    group: "Allergens",
-    order: 13,
-    label: "Lupin",
-    filter: true,
-    articleId: "allergen",
-    evidence: {
-      level: "Well established",
-      detail: "Declarable in the EU, and cross-reactivity with peanut is documented."
-    },
-    analysis: [
-      "Lupin flour appears in gluten-free baking and in some vegan products. It is a legume, and cross-reacts with peanut often enough that anyone with a peanut allergy should treat it with care."
-    ]
-  },
   allergen_sulphite: {
     group: "Allergens",
-    order: 14,
+    order: 13,
     label: "Sulphites",
     filter: true,
     articleId: "allergen",
@@ -693,7 +681,7 @@ const TRAITS = {
   },
   allergen_onion: {
     group: "Allergens",
-    order: 15,
+    order: 14,
     label: "Onion & garlic",
     filter: true,
     articleId: "allergen",
@@ -708,7 +696,7 @@ const TRAITS = {
   },
   allergen_mushroom: {
     group: "Allergens",
-    order: 16,
+    order: 15,
     label: "Mushroom",
     filter: true,
     articleId: "allergen",
@@ -1066,10 +1054,7 @@ const CATEGORIES = [
       { name: "Wheat Bran", lmv: "Vetekli", portion: 20, traits: ["fiber", "fodmaps", "fructans", "allergen_wheat"] },
       { name: "Rice Flour", lmv: "Rismjöl vitt", portion: 40, traits: ["refined_carbs"] },
       { name: "Potato Flour", lmv: "Potatismjöl", portion: 20, traits: ["refined_carbs"] },
-      { name: "Almond Flour", lmv: "Mandelmjöl", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "salicylate", "allergen_treenut", "cross_reactive", "cross_birch"] },
-      // Rare on a Nordic plate, but it is the only source of a declarable
-      // allergen we would otherwise have no food for at all.
-      { name: "Lupin Flour", portion: 30, traits: ["fiber", "fodmaps", "galactans", "allergen_lupin"] }
+      { name: "Almond Flour", lmv: "Mandelmjöl", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "salicylate", "allergen_treenut", "cross_reactive", "cross_birch"] }
     ]
   },
   {

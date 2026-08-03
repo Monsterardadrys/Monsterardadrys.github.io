@@ -22,10 +22,11 @@ rather than a figure per 100g: fat 6.1g, fiber 6.1g, protein 15g, lactose 5g,
 bile 9.5g of fat counting protein at a fifth of its weight. Alcohol stays a
 concentration. Tuning behaviour is a change to `DOSE` in `tools/lmv-core.js`.
 
-**Allergens** — the EU's 14 declarable allergens plus onion/garlic and
-mushroom, sixteen traits with no broad umbrella above them. Crustaceans and
-molluscs are separate, and `allergen_wheat` covers every gluten cereal, so
-oats, rye and barley products carry it too.
+**Allergens** — thirteen of the EU's fourteen declarable allergens plus
+onion/garlic and mushroom, fifteen traits with no broad umbrella above them.
+Crustaceans and molluscs are separate, and `allergen_wheat` covers every gluten
+cereal, so oats, rye and barley products carry it too. Lupin is deliberately
+absent: declarable, but not a Swedish food.
 
 **Two method pages** — `about.html#methodology` is the short one, written for a
 first-time reader with no history. `method.html` is the working one. A rule
@@ -35,11 +36,8 @@ change belongs in both.
 
 - **Re-run the audit after the allergen rework.** The last run (v0.92) came back
   with six disagreements, four of which were applied; the two left are the
-  documented exceptions. Nothing since then has touched a nutrient threshold,
-  but Lupin Flour is new.
-- **Lupin Flour has never been checked against Livsmedelsverket.** It was added
-  so that `allergen_lupin` has a food at all. The next audit will put it in "to
-  confirm"; if the database has no entry, it belongs in `lmv-absent.json`.
+  documented exceptions. Nothing since then has touched a nutrient threshold or
+  a portion, so a run should come back clean.
 
 ## Known and expected
 
