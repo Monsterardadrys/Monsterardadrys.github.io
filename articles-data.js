@@ -690,6 +690,7 @@ const ARTICLES = {
         heading: "The 14 declarable allergens",
         blocks: [
           { type: "p", text: "EU law requires 14 allergens to be declared on a label, however small the amount: cereals containing gluten (wheat, rye, barley, oats, spelt, kamut), milk, egg, fish, crustaceans, molluscs, peanut, tree nut, soy, sesame, celery, mustard, lupin, and sulphites above 10 mg/kg. These cause the large majority of true, IgE-mediated food allergies — distinct from the dose-dependent intolerances tracked elsewhere on this site." },
+          { type: "p", text: "Thirteen of them are tracked here. Lupin is the one left out: it is declarable across the EU, but it barely reaches a Swedish plate, and the food list is Swedish first." },
           { type: "p", text: "Two more are tracked here that no label has to mention: onion and garlic, and mushroom. Neither is declarable anywhere, so nobody with one of these allergies gets any warning — and both come up often enough in practice to be worth ruling in or out." },
           { type: "p", text: "Sulphites are the odd one out. They are preservatives rather than proteins, so the reaction is not a true allergy; the best documented effect is bronchoconstriction in people with asthma. Wine, light-coloured dried fruit and some pickled products are the usual sources." }
         ]
@@ -703,7 +704,7 @@ const ARTICLES = {
             "Wheat allergy, celiac disease, and non-celiac gluten sensitivity are three distinct conditions.",
             "Fish (parvalbumin) and shellfish (tropomyosin) are different allergens — one doesn't predict the other.",
             "Crustaceans and molluscs are declared separately: the tropomyosins differ enough that one group is often tolerated when the other isn't.",
-            "Peanut is a legume; peanut allergy doesn't reliably predict tree nut allergy. Lupin is a legume too, and cross-reacts with peanut often enough to matter.",
+            "Peanut is a legume; peanut allergy doesn't reliably predict tree nut allergy.",
             "Sesame can cause severe reactions and hides easily — in tahini, in hummus, in bread toppings.",
             "Celery reactions often run through birch pollen, and unlike most birch cross-reactions, celery can still react when cooked.",
             "Onion and garlic allergy is easily confused with the fructan intolerance the same foods cause — the first is immediate and oral, the second delayed and abdominal."
