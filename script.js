@@ -182,7 +182,10 @@
 
       if (section.group) {
         const specificWrap = document.createElement("div");
-        specificWrap.className = "specificWrap checkRow";
+        // Without a broad trait above it there is nothing to indent under.
+        specificWrap.className = section.broad
+          ? "specificWrap checkRow"
+          : "specificWrap checkRow flat";
         getGroupTraits(section.group).forEach(function (item) {
           renderCheckbox(specificWrap, item.traitId, item.trait);
         });
