@@ -983,6 +983,12 @@ input[type="checkbox"]:hover { cursor: pointer; }
     border-left: 3px solid var(--sage);
 }
 
+.specificWrap.flat {
+    margin: 0;
+    padding: 0;
+    border-left: none;
+}
+
 .specificWrap .checkboxStyle {
     font-size: 18px;
 }

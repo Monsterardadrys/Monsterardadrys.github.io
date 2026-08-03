@@ -117,7 +117,7 @@ const ARTICLES = {
         heading: "Why protein can trigger symptoms",
         blocks: [
           { type: "p", text: "Protein itself is well tolerated by most people, but it's a moderate stimulant of bile release (weaker than fat) and a large protein load can slow digestion." },
-          { type: "p", text: "Symptoms usually come from something protein-rich foods carry alongside the protein: dairy protein is often paired with lactose, some proteins overlap with Big 9 allergens, and fermented or aged proteins (cured meat, aged cheese) can be high in histamine." }
+          { type: "p", text: "Symptoms usually come from something protein-rich foods carry alongside the protein: dairy protein is often paired with lactose, some proteins overlap with declarable allergens, and fermented or aged proteins (cured meat, aged cheese) can be high in histamine." }
         ]
       },
       {
@@ -687,9 +687,11 @@ const ARTICLES = {
     title: "Allergens",
     sections: [
       {
-        heading: "The \"Big 9\"",
+        heading: "The 14 declarable allergens",
         blocks: [
-          { type: "p", text: "Milk, egg, wheat, fish, shellfish, peanut, tree nut, soy, and sesame cause the large majority of true, IgE-mediated food allergies — distinct from dose-dependent intolerances tracked elsewhere on this site." }
+          { type: "p", text: "EU law requires 14 allergens to be declared on a label, however small the amount: cereals containing gluten (wheat, rye, barley, oats, spelt, kamut), milk, egg, fish, crustaceans, molluscs, peanut, tree nut, soy, sesame, celery, mustard, lupin, and sulphites above 10 mg/kg. These cause the large majority of true, IgE-mediated food allergies — distinct from the dose-dependent intolerances tracked elsewhere on this site." },
+          { type: "p", text: "Two more are tracked here that no label has to mention: onion and garlic, and mushroom. Neither is declarable anywhere, so nobody with one of these allergies gets any warning — and both come up often enough in practice to be worth ruling in or out." },
+          { type: "p", text: "Sulphites are the odd one out. They are preservatives rather than proteins, so the reaction is not a true allergy; the best documented effect is bronchoconstriction in people with asthma. Wine, light-coloured dried fruit and some pickled products are the usual sources." }
         ]
       },
       {
@@ -700,8 +702,11 @@ const ARTICLES = {
             "Egg allergy is mainly driven by egg-white proteins; the yolk is less allergenic but not necessarily safe.",
             "Wheat allergy, celiac disease, and non-celiac gluten sensitivity are three distinct conditions.",
             "Fish (parvalbumin) and shellfish (tropomyosin) are different allergens — one doesn't predict the other.",
-            "Peanut is a legume; peanut allergy doesn't reliably predict tree nut allergy.",
-            "Sesame is a more recently recognized Big 9 allergen and can cause severe reactions."
+            "Crustaceans and molluscs are declared separately: the tropomyosins differ enough that one group is often tolerated when the other isn't.",
+            "Peanut is a legume; peanut allergy doesn't reliably predict tree nut allergy. Lupin is a legume too, and cross-reacts with peanut often enough to matter.",
+            "Sesame can cause severe reactions and hides easily — in tahini, in hummus, in bread toppings.",
+            "Celery reactions often run through birch pollen, and unlike most birch cross-reactions, celery can still react when cooked.",
+            "Onion and garlic allergy is easily confused with the fructan intolerance the same foods cause — the first is immediate and oral, the second delayed and abdominal."
           ]}
         ]
       },
