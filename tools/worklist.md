@@ -33,10 +33,10 @@ change belongs in both.
   foods — but from figures recovered out of earlier reports, not from a fresh
   run. Roughly 28 of the foods still carrying `fiber` have never been checked
   against a per-portion dose at all. One run settles it.
-- **Dry-Cured Ham** is split into lean and fatty, but the database holds only
-  one air-dried ham, so the fatty one is marked absent while the lean one is
-  verified. Both would now be scored at a 20g portion, which makes the split do
-  less work than it did. Merging them is an option.
+- **Allergens.** The broad "Big 9" trait does little now that all nine specific
+  allergens exist alongside it, and the list is American rather than European.
+  Worth replacing with the EU-14 plus the non-labelled allergies that come up in
+  practice — onion and mushroom.
 
 ## Known and expected
 

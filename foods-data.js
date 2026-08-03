@@ -256,7 +256,7 @@ const TRAITS = {
     articleId: "bile_stimulant",
     evidence: {
       level: "Limited",
-      detail: "The CCK response to fat and protein is well measured, but the step from there to symptoms is inferred rather than trialled. The 17.5 g fat / 20 g protein cut-off is ours, not a published one."
+      detail: "The CCK response to fat and protein is well measured, but the step from there to symptoms is inferred rather than trialled. The 9.5 g dose, and the fifth of its weight that protein counts for, are ours rather than published figures."
     },
     analysis: [
       "These foods strongly stimulate bile release via CCK, mainly through fat and protein content. Most relevant for gallstones or a history of gallbladder attacks.",
@@ -1004,8 +1004,7 @@ const CATEGORIES = [
       { name: "Egg Yolk", lmv: "Äggula rå", portion: 20, traits: ["allergen", "allergen_egg"] },
       { name: "Whole Egg", lmv: "Ägg rått", portion: 50, traits: ["allergen", "allergen_egg"] },
       { name: "Salami", lmv: "Påläggskorv salami rökt", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "alpha_gal"] },
-      { name: "Dry-Cured Ham (lean)", lmv: "Gris skinka lufttorkad italiensk", portion: 20, traits: ["histamine", "dao_competitor", "alpha_gal"] },
-      { name: "Dry-Cured Ham (fatty cut)", portion: 20, traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal", "dao_competitor"] },
+      { name: "Dry-Cured Ham (~12%)", lmv: "Gris skinka lufttorkad italiensk", portion: 20, traits: ["histamine", "dao_competitor", "alpha_gal"] },
       { name: "Chicken Sausage", lmv: "Korv kycklingkorv mager", portion: 100, traits: ["over_10g_fat", "bile_stimulant", "histamine"] },
       { name: "Sausages (regular)", lmv: "Korv frukostkorv stekt", portion: 100, traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal"] },
       { name: "Minced Meat (~10% fat)", lmv: "Nöt färs rå fett 10%", lmvNote: "entry measures 11.3 g fat", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },

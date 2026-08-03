@@ -694,7 +694,7 @@ input[type="checkbox"]:hover { cursor: pointer; }
 
 /* Closing frame on every analysis: a shared trait is a hypothesis, not a cause. */
 .popupCaveat {
-    margin: 24px 5% 0;
+    margin: 24px 0 22px;
     padding-top: 14px;
     border-top: 2px solid var(--border);
     font-style: italic;
