@@ -725,6 +725,18 @@ const ARTICLES = {
         ]
       },
       {
+        heading: "Mushroom, mould and yeast",
+        blocks: [
+          { type: "p", text: "Mushroom is one of the two allergens tracked here that no label has to declare. It is worth setting out what is actually known, because \"mould allergy\" is one of the most frequently self-diagnosed food problems and one of the most frequently misattributed." },
+          { type: "p", text: "Allergy to airborne mould spores — Alternaria, Cladosporium, Aspergillus, Penicillium — is real and well documented, affecting a few per cent of the population. Alternaria sensitisation is among the strongest single risk factors known for severe asthma. But that is an airway allergy to inhaled spores. It says very little about food." },
+          { type: "p", text: "Reactions to eating mould are far thinner. There are case reports of people sensitised to airborne moulds reacting to blue cheese, to mycoprotein or to yeast, and shared fungal proteins are the plausible explanation. What there is not is a dependable pattern: unlike birch pollen and apple, where the cross-reaction can be anticipated, an inhalant mould allergy does not predict a food reaction." },
+          { type: "p", text: "Blue cheese is the usual suspect and the weakest case. Roquefort and camembert do contain living Penicillium, but the ripening that makes them what they are also breaks the fungal proteins apart, and controlled challenges have largely come back negative. Aged cheese is among the highest-histamine foods there is, and histamine explains most of these reactions better than mould does." },
+          { type: "p", text: "Mycoprotein is the real exception. Quorn is made from a living fungus, its protein reaches the plate intact, and reactions — including severe ones — have been confirmed by challenge in people with no other food allergy. That is why mycoprotein carries the mushroom tag here alongside actual mushrooms." },
+          { type: "p", text: "Mould toxins are a separate subject that gets folded into this one. Aflatoxin and the other mycotoxins are a question of dose and long-term exposure, handled by food safety limits. They are not an immune reaction, and avoiding them has nothing to do with allergy." },
+          { type: "note", text: "In practice, a reported reaction to \"mould\" in food turns out most often to be one of three other things: an airway allergy the person has connected to meals, a histamine reaction to aged or fermented food, or a yeast sensitivity — which rests on no better evidence than mould does. Working out which one it is changes what helps." }
+        ]
+      },
+      {
         heading: null,
         blocks: [
           { type: "note", text: "Long-term unnecessary avoidance of a food can reduce tolerance over time, making a reaction more likely if the food is reintroduced later — this applies to true allergies, but similar patterns are seen with IBS and lactose intolerance too, even though the underlying mechanisms differ. Reintroduction is best guided by a professional rather than done alone after a long avoidance period." },
