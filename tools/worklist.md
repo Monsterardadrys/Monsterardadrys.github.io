@@ -23,7 +23,9 @@ bile 9.5g of fat counting protein at a fifth of its weight. Alcohol stays a
 concentration. Tuning behaviour is a change to `DOSE` in `tools/lmv-core.js`.
 
 **Allergens** — thirteen of the EU's fourteen declarable allergens plus
-onion/garlic and mushroom, fifteen traits with no broad umbrella above them.
+onion/garlic and mushroom, fourteen traits with no broad umbrella above them.
+Sulphites are declarable under the same rule but are a preservative, not a
+protein, so they sit with the other digestive factors.
 Crustaceans and molluscs are separate, and `allergen_wheat` covers every gluten
 cereal, so oats, rye and barley products carry it too. Lupin is deliberately
 absent: declarable, but not a Swedish food.

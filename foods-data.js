@@ -489,7 +489,8 @@ const TRAITS = {
   /* ---- Allergens: the EU's declarable ones, minus lupin, plus two that are
      not declarable but turn up in practice — onion/garlic and mushroom.
      Lupin is left out because it barely reaches a Swedish plate, and this
-     database is Swedish first.
+     database is Swedish first. Sulphites are declarable under the same rule
+     but are not a protein, so they live with the other digestive factors.
 
      There is no broad "allergen" trait. With every allergen present in its own
      right, an umbrella only took a top slot in the ranking without saying
@@ -664,9 +665,11 @@ const TRAITS = {
       "Mustard is a declarable allergen in the EU. Reactions are uncommon but can be severe, and mustard turns up unannounced in dressings, remoulade, sausage and spice blends."
     ]
   },
+  /* Declarable under the same EU rule as the allergens, but a preservative
+     rather than a protein, so it is filed with the other digestive factors
+     and keeps the allergens article for its write-up. */
   allergen_sulphite: {
-    group: "Allergens",
-    order: 13,
+    order: 20,
     label: "Sulphites",
     filter: true,
     articleId: "allergen",
@@ -681,7 +684,7 @@ const TRAITS = {
   },
   allergen_onion: {
     group: "Allergens",
-    order: 14,
+    order: 13,
     label: "Onion & garlic",
     filter: true,
     articleId: "allergen",
@@ -696,7 +699,7 @@ const TRAITS = {
   },
   allergen_mushroom: {
     group: "Allergens",
-    order: 15,
+    order: 14,
     label: "Mushroom",
     filter: true,
     articleId: "allergen",
@@ -795,7 +798,7 @@ const FILTER_SECTIONS = [
   },
   {
     title: "Other Digestive Factors",
-    items: ["fiber", "histamine", "dao_competitor", "salicylate", "bile_stimulant", "refined_carbs"]
+    items: ["fiber", "histamine", "dao_competitor", "salicylate", "bile_stimulant", "refined_carbs", "allergen_sulphite"]
   },
   {
     title: "Allergens",

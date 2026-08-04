@@ -31,34 +31,8 @@
   const popupContainer = document.getElementById("popupContainer");
   const popupTextContainer = document.getElementById("popupTextContainer");
 
-  // ---- Disclaimer popup close-on-click -----------------------------------
-  const disclaimerPopup = document.getElementById("disclaimerPopup");
-  const disclaimerBtn = document.querySelector(".disclaimerBtn");
-
-  disclaimerBtn.addEventListener("click", function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-    disclaimerPopup.classList.add("active");
-  });
-
-  document.addEventListener("click", function () {
-    if (!disclaimerPopup.classList.contains("active")) return;
-    disclaimerPopup.classList.remove("active");
-  });
-
-  // ---- Disclaimer / tool lock -----------------------------------------
-  const lockTargets = ["topSection", "searchContainer", "bottomSection"];
-  const disclaimerCheckRow = document.querySelector(".disclaimerCheck");
-  lockTargets.forEach(id => document.getElementById(id).classList.add("toolLocked"));
-  document.getElementById("disclaimerCheckbox").addEventListener("change", function () {
-    if (this.checked) {
-      lockTargets.forEach(id => document.getElementById(id).classList.remove("toolLocked"));
-      disclaimerCheckRow.classList.add("disclaimerCheck--done");
-    } else {
-      lockTargets.forEach(id => document.getElementById(id).classList.add("toolLocked"));
-      disclaimerCheckRow.classList.remove("disclaimerCheck--done");
-    }
-  });
+  // The disclaimer bar and popup live in disclaimer.js — shared with
+  // without.html, which needs exactly the same behaviour.
 
   // ---- Build the food category boxes from CATEGORIES / CATEGORY_GROUPS --
   function renderCategories() {
