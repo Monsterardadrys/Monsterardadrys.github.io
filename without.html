@@ -1,0 +1,156 @@
+<!--
+    Food Intolerance Guide — "foods without" lookup.
+
+    The inverse of the main app: pick traits, get the foods in the database
+    that carry none of them. Everything is generated from FILTER_SECTIONS and
+    CATEGORIES in foods-data.js, so this file never changes when a trait or a
+    food is added.
+
+    This page is the easiest one on the site to mistake for a diet plan, which
+    is why the framing is fixed and deliberate: it answers "which foods in this
+    database are not tagged with these", and never "which foods are safe".
+    Keep it that way. The disclaimer here is the same one as app.html — change
+    both together.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Foods without — Food Intolerance Guide</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Installable + offline: see manifest.webmanifest, sw.js and pwa.js -->
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#15414c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Intolerance">
+</head>
+
+<body>
+    <header>
+        <div class="headerBar">
+            <h1>Foods without</h1>
+            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <nav class="navDrawer" id="navDrawer" aria-hidden="true">
+            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu">&times;</button>
+            <a class="backToMain" href="index.html">Home</a>
+            <ul>
+                <li><a href="app.html">Launch App</a></li>
+                <li><a href="articles.html">Articles</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="sources.html">Data sources</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="navOverlay" id="navOverlay"></div>
+    </header>
+
+    <div class="disclaimerBar">
+        <label class="disclaimerCheck">
+            <input type="checkbox" id="disclaimerCheckbox">
+            I have read and understood the disclaimer
+        </label>
+        <a href="#disclaimerPopup" class="disclaimerBtn">Read disclaimer</a>
+    </div>
+
+    <div class="neck" id="neck">
+
+        <!-- Same text as app.html. Change both together. -->
+        <div class="disclaimerPopup" id="disclaimerPopup">
+            <div class="disclaimerText">
+                <h2>Disclaimer</h2>
+
+                <h3>What this tool does</h3>
+                <ul>
+                    <li>It shows what a set of foods have in common.</li>
+                    <li>It lists which foods in its database carry a given trait.</li>
+                </ul>
+
+                <h3>What it does not do</h3>
+                <ul>
+                    <li>It does not diagnose anything.</li>
+                    <li>It does not tell you what to eat or what to avoid. <em>No list here is a diet.</em></li>
+                    <li>A food carrying a trait does not mean you react to it. Most people react to none of them.</li>
+                    <li>A food <em>not</em> carrying a trait does not mean it is safe for you.</li>
+                </ul>
+
+                <h3>Before you change what you eat</h3>
+                <ul>
+                    <li>Talk to a doctor or dietitian first. Cutting foods out on your own can hide a real
+                        diagnosis, and long avoidance can leave your diet short of things you need.</li>
+                    <li>This is a tool for health care professionals, and it is <em>NOT</em> meant to
+                        replace their diagnosis and advice.</li>
+                </ul>
+
+                <h3>Still being built</h3>
+                <ul>
+                    <li>This website is under construction — information may be inaccurate.</li>
+                    <li>By continuing you agree that the author cannot be held responsible for any health
+                        issues arising from use of this information.</li>
+                </ul>
+
+                <p><em>Click anywhere to close.</em></p>
+            </div>
+        </div>
+
+        <div class="instructionsBox">
+            <h2>Which foods are not tagged with these?</h2>
+            <p class="withoutLead">Pick one or more traits below. You get every food in this database that
+                carries none of them.</p>
+            <p class="withoutWarn"><strong>This is a database lookup, not a diet.</strong> A food appears here
+                because nobody has tagged it with what you picked — not because it is safe for you. It may
+                still cause you symptoms for a reason this tool does not track, and a list built by removing
+                things can easily leave out something you need. Take it to a dietitian before you change
+                what you eat.</p>
+        </div>
+    </div>
+
+    <!-- Trait checkboxes are generated from FILTER_SECTIONS in foods-data.js -->
+    <h2 class="withoutHeading noPrint">Choose traits to exclude</h2>
+    <div class="filterContainer noPrint" id="traitPicker"></div>
+
+    <div class="withoutActions noPrint">
+        <button class="button2" id="clearTraitsButton" type="button">Clear</button>
+        <button class="button2" id="printWithoutButton" type="button">Print list</button>
+    </div>
+
+    <div id="printHeader" class="printOnly">
+        <h1>Food Intolerance Guide — Foods without</h1>
+        <p>Generated from foodintoleranceguide (Uppsala, Sweden). A list of foods in this database that are
+            not tagged with the selected traits.</p>
+        <p><em>This is a database lookup, not a diet, and not a list of foods that are safe for anyone. It is
+            NOT a diagnostic tool and does not replace the diagnostics and advice of a health care
+            professional. The author cannot be held responsible for any health issues arising from use of
+            this information.</em></p>
+    </div>
+
+    <div class="withoutResults" id="withoutResults">
+        <!-- populated by without.js -->
+    </div>
+</body>
+
+<footer>
+    <p>Did you find this webpage useful?</p>
+    <p>Did you find any errors or have ideas for improvement?</p>
+    <p>Email: Monsterardadrys@duck.com</p>
+    <p>Uppsala, Sweden, 2026</p>
+    <p>Pre-beta v0.98 — updated 4 August 2026</p>
+</footer>
+
+<script src="foods-data.js"></script>
+<script src="trait-foods.js"></script>
+<script src="nav.js"></script>
+<script src="pwa.js"></script>
+<script src="without.js"></script>
+
+</html>
