@@ -54,6 +54,7 @@
             <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu">&times;</button>
             <a class="backToMain" href="index.html">Home</a>
             <ul>
+                <li><a href="meal.html">Meal builder</a></li>
                 <li><a href="without.html">Foods without</a></li>
                 <li><a href="articles.html">Articles</a></li>
                 <li><a href="about.html">About</a></li>
@@ -129,7 +130,7 @@
                     <span class="stepDetail">Open the popup for a deeper breakdown of likely culprits.</span>
                 </li>
             </ol>
-            <p class="noSaveWarning"><strong>Nothing here is saved.</strong> The only way to keep a record is to open the analysis and choose to print it or save it as a PDF.</p>
+            <p class="noSaveWarning"><strong>Nothing here is saved.</strong> Use <em>Save to file</em> below to keep a copy on your own device, or print the analysis.</p>
         </div>
         <div id="chosenFoods">
             <h2>Chosen foods:</h2>
@@ -186,6 +187,17 @@
             </div>
         </div>
 
+        <!-- Nothing is stored anywhere, so a file is the only way a selection
+             survives closing the tab. See save-load.js. -->
+        <div class="clearSelectionBox noPrint" id="saveSelectionBox">
+            <h2>Keep this selection</h2>
+            <div class="clearButtonRow">
+                <button class="button2" id="saveSelectionButton" type="button">Save to file</button>
+                <button class="button2" id="loadSelectionButton" type="button">Load from file</button>
+            </div>
+            <p class="mealError" id="saveError" hidden></p>
+        </div>
+
         <h2 class="noPrint">Filter Analysis</h2>
         <p class="noPrint">Select one or more factors to exclude from the analysis. Filters update the analysis immediately, even
             after foods are already selected.</p>
@@ -201,12 +213,13 @@
     <p>Did you find any errors or have ideas for improvement?</p>
     <p>Email: Monsterardadrys@duck.com</p>
     <p>Uppsala, Sweden, 2026</p>
-    <p>Pre-beta v0.99 — updated 4 August 2026</p>
+    <p>Pre-beta v1.00 — updated 4 August 2026</p>
 </footer>
 
 <script src="foods-data.js"></script>
 <script src="articles-data.js"></script>
 <script src="trait-foods.js"></script>
+<script src="save-load.js"></script>
 <script src="disclaimer.js"></script>
 <script src="nav.js"></script>
 <script src="pwa.js"></script>

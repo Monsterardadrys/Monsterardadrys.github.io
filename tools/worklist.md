@@ -34,7 +34,30 @@ absent: declarable, but not a Swedish food.
 first-time reader with no history. `method.html` is the working one. A rule
 change belongs in both.
 
+**Three tools, one data file** — the app (what do these foods share), the
+meal builder (what is this meal loaded with) and Foods without (what carries
+none of these). All three build their food lists and trait pickers from
+`foods-data.js`; the shared pieces are `trait-foods.js` (lists and the trait
+picker), `disclaimer.js` and `save-load.js`.
+
+**Save and load** — the app saves a selection, the meal builder saves meals,
+both as JSON files on the user's own device. Every file carries
+`{ app, tool, version }` so one tool cannot open another's file.
+
 ## Open
+
+- **The meal builder counts servings, not grams.** `foods-data.js` holds each
+  food's traits and serving size but no nutrient values, so a meal cannot be
+  totalled in grams of fat or fiber. Until it can, "Fat 3.4" means 3.4 standard
+  servings' worth of fat-tagged food. Real totals need per-100g figures on
+  every food — the same numbers the audit reads out of the Livsmedelsverket
+  export, so the data exists, it is just not in the repo.
+- **FODMAP dose in a meal** is deliberately not attempted yet. Monash publishes
+  per-serving thresholds, which is the one categorical trait where a dose is
+  established; that is the next step after nutrient values land.
+- **Meal-level thresholds are not set.** A normal mixed meal holds 20–30g of
+  fat, so the single-food doses cannot be reused as they are — the unit of
+  analysis is different, not more lenient.
 
 - **Re-run the audit after the allergen rework.** The last run (v0.92) came back
   with six disagreements, four of which were applied; the two left are the

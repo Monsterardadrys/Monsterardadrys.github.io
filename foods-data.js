@@ -237,6 +237,7 @@ const TRAITS = {
 
   /* ---- Macros ---- */
   over_10g_fat: {
+    dose: true,   // scales with how much is eaten — see meal.js
     order: 1,
     label: "Fat",
     articleId: "fat",
@@ -250,6 +251,7 @@ const TRAITS = {
     ]
   },
   bile_stimulant: {
+    dose: true,   // scales with how much is eaten — see meal.js
     order: 8,
     label: "Bile stimulant",
     filter: true,
@@ -264,6 +266,7 @@ const TRAITS = {
     ]
   },
   fiber: {
+    dose: true,   // scales with how much is eaten — see meal.js
     order: 4,
     label: "Fiber",
     filter: true,
@@ -278,6 +281,7 @@ const TRAITS = {
     ]
   },
   protein: {
+    dose: true,   // scales with how much is eaten — see meal.js
     order: 2,
     label: "Protein",
     articleId: "protein",
@@ -304,6 +308,7 @@ const TRAITS = {
     ]
   },
   over_3g_lactose: {
+    dose: true,   // scales with how much is eaten — see meal.js
     group: "FODMAPs",
     order: 5,
     label: "Lactose",
@@ -358,6 +363,7 @@ const TRAITS = {
   // portion is 2g, which puts it below a serving of green peas. The <10g
   // serving rule is therefore already built into the measure.
   salicylate: {
+    dose: true,   // scales with how much is eaten — see meal.js
     order: 13,
     label: "Salicylates",
     filter: true,
@@ -376,6 +382,7 @@ const TRAITS = {
 
   /* ---- Alcohol / caffeine ---- */
   alcohol: {
+    dose: true,   // scales with how much is eaten — see meal.js
     group: "GI Irritants",
     order: 6,
     label: "Alcohol",
