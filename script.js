@@ -755,6 +755,62 @@
     document.getElementById("chosenFoods").scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
+  // ---- Save / load a selection --------------------------------------------
+  // Nothing is stored anywhere, so a file is the only way a selection
+  // survives closing the tab. See save-load.js.
+  const saveError = document.getElementById("saveError");
+
+  function showSaveError(message) {
+    saveError.textContent = message;
+    saveError.hidden = !message;
+  }
+
+  function checkedValues(container) {
+    return Array.from(container.querySelectorAll("input[type='checkbox']:checked"))
+      .map(function (cb) { return cb.value; });
+  }
+
+  function applyValues(container, values) {
+    const wanted = new Set(values);
+    const missing = new Set(wanted);
+    container.querySelectorAll("input[type='checkbox']").forEach(function (cb) {
+      cb.checked = wanted.has(cb.value);
+      missing.delete(cb.value);
+    });
+    return Array.from(missing);
+  }
+
+  document.getElementById("saveSelectionButton").addEventListener("click", function () {
+    showSaveError("");
+    SaveLoad.save("selection", {
+      foods: checkedValues(topSection),
+      filters: checkedValues(filterContainer)
+    }, "selection");
+  });
+
+  document.getElementById("loadSelectionButton").addEventListener("click", function () {
+    SaveLoad.load("selection", function (data) {
+      const missingFoods = applyValues(topSection, data.foods || []);
+      applyValues(filterContainer, data.filters || []);
+
+      // A saved food that has since been renamed or removed would otherwise
+      // vanish without a word.
+      showSaveError(missingFoods.length
+        ? "Loaded, but " + missingFoods.length + " food(s) are no longer in the database: " +
+          missingFoods.join(", ")
+        : "");
+
+      // Open the categories holding anything that was just ticked, so a
+      // loaded selection is visible rather than hidden behind closed boxes.
+      hideAllCategories();
+      topSection.querySelectorAll("input[type='checkbox']:checked").forEach(function (cb) {
+        const group = cb.closest(".foodGroup");
+        if (group) group.classList.add("open");
+      });
+      recompute();
+    }, showSaveError);
+  });
+
   // ---- Boot ----------------------------------------------------------------
   renderCategories();
   renderFilters();

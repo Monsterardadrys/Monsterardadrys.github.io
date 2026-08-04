@@ -1,16 +1,19 @@
 <!--
-    Food Intolerance Guide — "foods without" lookup.
+    Food Intolerance Guide — meal builder.
 
-    The inverse of the main app: pick traits, get the foods in the database
-    that carry none of them. Everything is generated from FILTER_SECTIONS and
-    CATEGORIES in foods-data.js, so this file never changes when a trait or a
-    food is added.
+    Build one or more meals out of weighed amounts of foods from the database
+    and see what each meal is loaded with. Everything is generated from
+    CATEGORIES and TRAITS in foods-data.js, so this file never changes when a
+    food or a trait is added.
 
-    This page is the easiest one on the site to mistake for a diet plan, which
-    is why the framing is fixed and deliberate: it answers "which foods in this
-    database are not tagged with these", and never "which foods are safe".
-    Keep it that way. The disclaimer here is the same one as app.html — change
-    both together.
+    WHAT THE NUMBERS ARE. The database carries each food's traits and its
+    standard serving, not its nutrient content, so a meal cannot yet be
+    totalled in grams of fat or fiber. What is summed is servings: a food
+    contributes its own weight divided by its own standard serving. Say that
+    plainly wherever a number appears — see the note under every analysis.
+
+    The disclaimer here is the same one as app.html and without.html — change
+    all three together.
 -->
 
 <!DOCTYPE html>
@@ -20,7 +23,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Foods without — Food Intolerance Guide</title>
+    <title>Meal builder — Food Intolerance Guide</title>
 
     <link rel="stylesheet" href="styles.css">
 
@@ -36,7 +39,7 @@
 <body>
     <header>
         <div class="headerBar">
-            <h1>Foods without</h1>
+            <h1>Meal builder</h1>
             <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
                 <span></span><span></span><span></span>
             </button>
@@ -46,6 +49,7 @@
             <a class="backToMain" href="index.html">Home</a>
             <ul>
                 <li><a href="app.html">Launch App</a></li>
+                <li><a href="without.html">Foods without</a></li>
                 <li><a href="articles.html">Articles</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="sources.html">Data sources</a></li>
@@ -55,7 +59,7 @@
         <div class="navOverlay" id="navOverlay"></div>
     </header>
 
-    <div class="disclaimerBar" data-lock="traitPicker withoutActions withoutResults">
+    <div class="disclaimerBar" data-lock="mealBuilder mealActions mealResults">
         <label class="disclaimerCheck">
             <input type="checkbox" id="disclaimerCheckbox">
             I have read and understood the disclaimer
@@ -65,7 +69,7 @@
 
     <div class="neck" id="neck">
 
-        <!-- Same text as app.html. Change both together. -->
+        <!-- Same text as app.html and without.html. Change all three together. -->
         <div class="disclaimerPopup" id="disclaimerPopup">
             <div class="disclaimerText">
                 <h2>Disclaimer</h2>
@@ -104,39 +108,53 @@
         </div>
 
         <div class="instructionsBox">
-            <h2>Which foods are not tagged with these?</h2>
-            <p class="withoutLead">Pick one or more traits below. You get every food in this database that
-                carries none of them.</p>
-            <p class="withoutWarn"><strong>This is a database lookup, not a diet.</strong> A food appears here
-                because nobody has tagged it with what you picked — not because it is safe for you. It may
-                still cause you symptoms for a reason this tool does not track, and a list built by removing
-                things can easily leave out something you need. Take it to a dietitian before you change
-                what you eat.</p>
+            <h2>Build a meal and see what it is loaded with.</h2>
+            <ol class="stepsList">
+                <li>
+                    <span class="stepTitle">Add foods with their weights.</span>
+                    <span class="stepDetail">Type a food, give it a weight in grams, add it to the meal.</span>
+                </li>
+                <li>
+                    <span class="stepTitle">Add more meals if you want to compare.</span>
+                    <span class="stepDetail">A day, a week, or the two meals that behaved differently.</span>
+                </li>
+                <li>
+                    <span class="stepTitle">Read what the meal carries.</span>
+                    <span class="stepDetail">Amount-based traits are summed; the rest are listed as present.</span>
+                </li>
+            </ol>
+            <p class="noSaveWarning"><strong>Nothing here is saved.</strong> Use <em>Save to file</em> to keep
+                a copy on your own device, and <em>Load from file</em> to bring it back.</p>
         </div>
     </div>
 
-    <!-- Trait checkboxes are generated from FILTER_SECTIONS in foods-data.js -->
-    <h2 class="withoutHeading noPrint">Choose traits to exclude</h2>
-    <div class="filterContainer noPrint" id="traitPicker"></div>
+    <div id="mealBuilder"></div>
 
-    <div class="withoutActions noPrint" id="withoutActions">
-        <button class="button2" id="clearTraitsButton" type="button">Clear</button>
-        <button class="button2" id="printWithoutButton" type="button">Print list</button>
+    <div class="mealActions noPrint" id="mealActions">
+        <button class="button2" id="addMealButton" type="button">Add meal</button>
+        <button class="button2" id="saveMealsButton" type="button">Save to file</button>
+        <button class="button2" id="loadMealsButton" type="button">Load from file</button>
+        <button class="button2" id="printMealsButton" type="button">Print analysis</button>
+        <button class="button2" id="clearMealsButton" type="button">Clear all</button>
     </div>
 
+    <p class="mealError" id="mealError" hidden></p>
+
     <div id="printHeader" class="printOnly">
-        <h1>Food Intolerance Guide — Foods without</h1>
-        <p>Generated from foodintoleranceguide (Uppsala, Sweden). A list of foods in this database that are
-            not tagged with the selected traits.</p>
-        <p><em>This is a database lookup, not a diet, and not a list of foods that are safe for anyone. It is
-            NOT a diagnostic tool and does not replace the diagnostics and advice of a health care
+        <h1>Food Intolerance Guide — Meal analysis</h1>
+        <p>Generated from foodintoleranceguide (Uppsala, Sweden) — a triage aid for exploring possible GI
+            reactions to foods, intended for use by health care professionals.</p>
+        <p><em>This is NOT a diagnostic tool and does not replace the diagnostics and advice of a health care
             professional. The author cannot be held responsible for any health issues arising from use of
             this information.</em></p>
     </div>
 
-    <div class="withoutResults" id="withoutResults">
-        <!-- populated by without.js -->
+    <div class="mealResults" id="mealResults">
+        <!-- populated by meal.js -->
     </div>
+
+    <!-- Every food in the database, for the add-food inputs -->
+    <datalist id="foodOptions"></datalist>
 </body>
 
 <footer>
@@ -148,10 +166,10 @@
 </footer>
 
 <script src="foods-data.js"></script>
-<script src="trait-foods.js"></script>
+<script src="save-load.js"></script>
 <script src="disclaimer.js"></script>
 <script src="nav.js"></script>
 <script src="pwa.js"></script>
-<script src="without.js"></script>
+<script src="meal.js"></script>
 
 </html>
