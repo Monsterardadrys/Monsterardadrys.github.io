@@ -138,6 +138,12 @@
     <div class="withoutResults" id="withoutResults">
         <!-- populated by without.js -->
     </div>
+
+    <!-- Repeats at the foot of every printed page, so loose sheets in a file
+         can be told apart. Browsers cannot number printed pages — there is no
+         page counter available to a stylesheet — so this identifies rather
+         than numbers. -->
+    <p class="printRunningFooter printOnly" id="printRunningFooter"></p>
 </body>
 
 <footer>
@@ -145,7 +151,7 @@
     <p>Did you find any errors or have ideas for improvement?</p>
     <p>Email: Monsterardadrys@duck.com</p>
     <p>Uppsala, Sweden, 2026</p>
-    <p>Pre-beta v1.05 — updated 4 August 2026</p>
+    <p>Pre-beta v1.06 — updated 4 August 2026</p>
 </footer>
 
 <script src="foods-data.js"></script>

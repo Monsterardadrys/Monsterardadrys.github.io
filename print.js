@@ -1,8 +1,10 @@
 /* =========================================================================
    print.js — the two things every printout on this site needs
 
-   1. A date. A printout that goes into a patient file is undated otherwise,
-      and "generated from foodintoleranceguide" says nothing about when.
+   1. A date, and a footer that repeats on every page so loose sheets can be
+      told apart. Browsers give a stylesheet no page counter, so the footer
+      identifies rather than numbers — there is no way to print "page 2 of 5"
+      from a web page, and pretending otherwise would be worse than a name.
    2. Collapsed <details> opened before printing. CSS alone does not reliably
       force a closed one onto paper, so the food lists in the articles would
       print as a row of empty headings.
@@ -23,12 +25,20 @@
     });
   }
 
+  function runningFooter() {
+    const el = document.getElementById("printRunningFooter");
+    if (!el) return;
+    el.textContent = "Food Intolerance Guide — " + document.title.split("—")[0].trim() +
+      " — not a diagnosis";
+  }
+
   function openDetails() {
     document.querySelectorAll("details").forEach(function (d) { d.open = true; });
   }
 
   window.addEventListener("beforeprint", function () {
     stamp();
+    runningFooter();
     openDetails();
   });
 
@@ -36,4 +46,5 @@
   // only ever read on paper, where a page open since yesterday would
   // otherwise carry yesterday's date.
   stamp();
+  runningFooter();
 })();

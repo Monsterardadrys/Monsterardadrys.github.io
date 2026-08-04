@@ -168,6 +168,16 @@
                 <div id="popupTextContainer">
                     <!-- analysis paragraphs are added by script.js -->
                 </div>
+                <!-- Six traits used to mean six full articles on the paper,
+                     which is fifteen pages nobody asked for. -->
+                <label class="printDepth noPrint" for="articleDepth">
+                    Articles in the printout
+                    <select id="articleDepth">
+                        <option value="short" selected>First section of each</option>
+                        <option value="none">None — analysis only</option>
+                        <option value="full">Everything</option>
+                    </select>
+                </label>
                 <button class="button2 noPrint" id="printAnalysisButton">Print analysis</button>
                 <button class="button2 noPrint" id="popupCloseBottomBtn">Close</button>
             </div>
@@ -206,6 +216,12 @@
         <div class="filterContainer noPrint" id="filterContainer"></div>
 
     </div>
+
+    <!-- Repeats at the foot of every printed page, so loose sheets in a file
+         can be told apart. Browsers cannot number printed pages — there is no
+         page counter available to a stylesheet — so this identifies rather
+         than numbers. -->
+    <p class="printRunningFooter printOnly" id="printRunningFooter"></p>
 </body>
 
 <footer>
@@ -213,7 +229,7 @@
     <p>Did you find any errors or have ideas for improvement?</p>
     <p>Email: Monsterardadrys@duck.com</p>
     <p>Uppsala, Sweden, 2026</p>
-    <p>Pre-beta v1.05 — updated 4 August 2026</p>
+    <p>Pre-beta v1.06 — updated 4 August 2026</p>
 </footer>
 
 <script src="foods-data.js"></script>

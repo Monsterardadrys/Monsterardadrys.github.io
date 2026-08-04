@@ -620,7 +620,8 @@
 
     const articlesBox = document.getElementById("printArticlesList");
     articlesBox.innerHTML = "";
-    if (typeof ARTICLES !== "undefined") {
+    const depth = document.getElementById("articleDepth").value;
+    if (typeof ARTICLES !== "undefined" && depth !== "none") {
       // Several traits can share one article — all fifteen allergens do. The
       // article prints once, listing the foods for the traits this analysis
       // actually found rather than all fifteen.
@@ -645,7 +646,10 @@
         h2.textContent = article.title;
         section.appendChild(h2);
 
-        article.sections.forEach(function (sec) {
+        // "short" is the first section — every article opens with what the
+        // trait is, which is the part a patient needs on paper.
+        const sections = depth === "short" ? article.sections.slice(0, 1) : article.sections;
+        sections.forEach(function (sec) {
           if (sec.heading) {
             const h3 = document.createElement("h3");
             h3.textContent = sec.heading;
@@ -670,7 +674,7 @@
 
         // Every food carrying the trait, so the printout stands on its own
         // away from the app — see trait-foods.js.
-        if (typeof TraitFoods !== "undefined") {
+        if (typeof TraitFoods !== "undefined" && depth === "full") {
           TraitFoods.renderForPrint(section, traitsByArticle[trait.articleId] || []);
         }
 
