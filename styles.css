@@ -1381,6 +1381,19 @@ footer p { color: var(--linen); }
 .printOnly { display: none; }
 
 @media print {
+    /* h1 is cream, for the dark header bar it normally sits in. On paper that
+       is cream on white, which is no title at all. */
+    h1 { color: var(--ink); }
+
+    /* Keep a meal, a table and a food list whole rather than split across a
+       page break in the middle of a row. */
+    .mealAnalysis, .mealTable, .traitFoods, .withoutResults h3 + ul {
+        break-inside: avoid;
+    }
+    .mealAnalysis h2, .withoutResults h2 { break-after: avoid; }
+
+    .printStamp { font-size: 14px; font-style: italic; }
+
     /* A collapsed list must still reach the paper. */
     .traitFoods > *:not(summary) { display: block !important; }
     .traitFoodsList { columns: 3; }
@@ -1916,4 +1929,10 @@ footer p { color: var(--linen); }
     line-height: 1.4;
     max-width: 46rem;
     margin: 6px auto 0;
+}
+
+.mealIngredients {
+    margin: 0 0 10px;
+    font-size: 16px;
+    line-height: 1.5;
 }

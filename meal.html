@@ -134,7 +134,17 @@
         </div>
     </div>
 
-    <div id="mealBuilder"></div>
+    <div id="printHeader" class="printOnly">
+        <h1>Food Intolerance Guide — Meal analysis</h1>
+        <p>Generated from foodintoleranceguide (Uppsala, Sweden) — a triage aid for exploring possible GI
+            reactions to foods, intended for use by health care professionals.</p>
+        <p><em>This is NOT a diagnostic tool and does not replace the diagnostics and advice of a health care
+            professional. The author cannot be held responsible for any health issues arising from use of
+            this information.</em></p>
+        <p class="printStamp" id="printStamp"></p>
+    </div>
+
+    <div id="mealBuilder" class="noPrint"></div>
 
     <div class="mealActions noPrint" id="mealActions">
         <button class="button2" id="addMealButton" type="button">Add meal</button>
@@ -145,15 +155,6 @@
     </div>
 
     <p class="mealError" id="mealError" hidden></p>
-
-    <div id="printHeader" class="printOnly">
-        <h1>Food Intolerance Guide — Meal analysis</h1>
-        <p>Generated from foodintoleranceguide (Uppsala, Sweden) — a triage aid for exploring possible GI
-            reactions to foods, intended for use by health care professionals.</p>
-        <p><em>This is NOT a diagnostic tool and does not replace the diagnostics and advice of a health care
-            professional. The author cannot be held responsible for any health issues arising from use of
-            this information.</em></p>
-    </div>
 
     <div class="mealResults" id="mealResults">
         <!-- populated by meal.js -->
@@ -168,7 +169,7 @@
     <p>Did you find any errors or have ideas for improvement?</p>
     <p>Email: Monsterardadrys@duck.com</p>
     <p>Uppsala, Sweden, 2026</p>
-    <p>Pre-beta v1.04 — updated 4 August 2026</p>
+    <p>Pre-beta v1.05 — updated 4 August 2026</p>
 </footer>
 
 <script src="foods-data.js"></script>
@@ -178,6 +179,7 @@
 <script src="disclaimer.js"></script>
 <script src="nav.js"></script>
 <script src="pwa.js"></script>
+<script src="print.js"></script>
 <script src="meal.js"></script>
 
 </html>
