@@ -119,6 +119,9 @@
       renderBlocks(content, section.blocks);
     });
 
+    // Which foods carry the trait(s) this article covers — see trait-foods.js.
+    if (typeof TraitFoods !== "undefined") TraitFoods.render(content, id);
+
     highlightActive(id);
   }
 
@@ -126,6 +129,12 @@
     const id = decodeURIComponent(location.hash.replace(/^#/, ""));
     renderArticle(id);
   }
+
+  // CSS alone does not reliably force a closed <details> onto paper, so open
+  // them all first. They stay open afterwards — printing is a deliberate act.
+  window.addEventListener("beforeprint", function () {
+    content.querySelectorAll("details").forEach(function (d) { d.open = true; });
+  });
 
   window.addEventListener("hashchange", route);
   renderIndex();

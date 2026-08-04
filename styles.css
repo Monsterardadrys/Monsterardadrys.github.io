@@ -354,7 +354,29 @@ header.header--hidden {
     opacity: 1;
     background-color: rgba(21, 65, 76, 0.45);
     pointer-events: auto;
+    /* The text is longer than a phone screen — let it scroll. */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
+
+.disclaimerText h3 {
+    font-family: 'Lora', serif;
+    font-size: 18px;
+    color: var(--primary);
+    margin: 18px 0 4px;
+}
+
+.disclaimerText h3:first-of-type { margin-top: 10px; }
+
+/* Scoped past `.neck ul`, which strips the markers off every list in the neck
+   and would otherwise run these four sections together. */
+.disclaimerPopup .disclaimerText ul {
+    margin: 0;
+    padding: 0 0 0 22px;
+    list-style: disc;
+}
+
+.disclaimerText li { margin-bottom: 3px; }
 
 .disclaimerText {
     background: var(--paper);
@@ -1085,9 +1107,66 @@ footer {
 
 footer p { color: var(--linen); }
 
+/* ---- "Which foods carry this?" — see trait-foods.js ---- */
+
+.traitFoodsSection {
+    margin-top: 34px;
+    border-top: 2px solid var(--sage);
+    padding-top: 18px;
+}
+
+.traitFoods {
+    border: 1px solid rgba(126, 155, 122, 0.45);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    background: rgba(126, 155, 122, 0.06);
+}
+
+.traitFoods > summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--primary);
+    /* Long allergen names need to wrap without pushing the marker off. */
+    list-style-position: outside;
+}
+
+.traitFoods[open] > summary { margin-bottom: 8px; }
+
+.traitFoodsCategory {
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--sage-dark);
+    margin: 12px 0 4px;
+}
+
+.traitFoodsList {
+    columns: 2;
+    column-gap: 22px;
+    padding-left: 20px;
+    margin: 0;
+}
+
+.traitFoodsList li { break-inside: avoid; }
+
+.traitFoodsNote {
+    margin-top: 16px;
+    font-size: 15px;
+    font-style: italic;
+    color: #5a5f5b;
+}
+
+@media (max-width: 700px) {
+    .traitFoodsList { columns: 1; }
+}
+
 .printOnly { display: none; }
 
 @media print {
+    /* A collapsed list must still reach the paper. */
+    .traitFoods > *:not(summary) { display: block !important; }
+    .traitFoodsList { columns: 3; }
     header, .disclaimerBar, .neck, .topSection, footer, .noPrint { display: none !important; }
     .popupContainer {
         visibility: visible !important;
