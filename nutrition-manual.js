@@ -35,9 +35,13 @@ const NUTRITION_SOURCES = {
     note: "The Swedish national food database. Everything it covers comes from there."
   },
   frida: {
-    label: "Frida (DTU, Denmark)",
-    note: "The Danish national database. Nordic products off the same shelf as ours, " +
-      "which is why it comes before the larger tables."
+    label: "Frida, the Danish Food Composition Database",
+    cite: "Marija Langwagen, Jette Jakobsen and Anders Poulsen: The Danish Food " +
+      "Composition Database, version 6.1, May 2026, National Food Institute, " +
+      "Technical University of Denmark. https://doi.org/10.11583/DTU.32312844",
+    note: "Nordic products off the same shelf as ours, which is why it comes before the " +
+      "larger tables. It also carries lactose as its own measured parameter rather than " +
+      "leaving it to be inferred from total sugars."
   },
   usda: {
     label: "USDA SR Legacy",
