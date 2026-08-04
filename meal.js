@@ -9,7 +9,11 @@
        served in 125g portions counts as 2 servings.
 
      - Everything else is categorical. An allergen is present or it is not,
-       and 2g of peanut is still peanut. Those are listed, never scored.
+       and 2g of peanut is still peanut. Those are reported family by family
+       — all the FODMAP types in one sentence, all the allergens in another —
+       naming which are present, which is most widespread across the meal's
+       ingredients, and which are absent. Prominence there means how many
+       ingredients carry it, never how much.
 
    WHAT THE SUM IS NOT. The database holds each food's traits and serving
    size, not its nutrient content, so "Fat 3.4 servings" means the meal holds
@@ -47,9 +51,51 @@
     errorBox.hidden = !message;
   }
 
+  // ---- Trait families ----------------------------------------------------
+  /* The categorical traits are reported family by family — FODMAPs together,
+     allergens together — rather than as one flat list, because "three of the
+     five FODMAP types, fructans the most prominent" says something a list of
+     fourteen bullet points does not.
+
+     Families come straight from FILTER_SECTIONS, so a new trait joins the
+     right sentence without this file changing. Anything ungrouped gets a line
+     of its own. */
+  const FAMILIES = [];
+  const claimed = {};
+
+  FILTER_SECTIONS.forEach(function (section) {
+    if (!section.group) return;
+    const members = [];
+    if (section.broad) members.push(section.broad);
+    Object.keys(TRAITS).forEach(function (id) {
+      if (TRAITS[id].group === section.group) members.push(id);
+    });
+    members.forEach(function (id) { claimed[id] = true; });
+
+    // The umbrella is the family, not a member of it — counting it as a type
+    // would make "one of six" out of a meal carrying a single subtype.
+    const types = members.filter(function (id) { return id !== section.broad; });
+    const withArticle = members.filter(function (id) { return TRAITS[id].articleId; })[0];
+
+    FAMILIES.push({
+      title: section.title,
+      noun: section.noun || section.title.toLowerCase(),
+      broad: section.broad || null,
+      types: types,
+      articleId: withArticle ? TRAITS[withArticle].articleId : null
+    });
+  });
+
+  // Categorical traits belonging to no family — histamine, refined carbs and
+  // the like. The amount-based ones are already in the table above.
+  const SINGLES = Object.keys(TRAITS).filter(function (id) {
+    return !claimed[id] && !TRAITS[id].dose;
+  });
+
   // ---- Analysis ----------------------------------------------------------
-  // Servings of trait-carrying food in a meal, plus who contributed.
-  function analyse(items) {
+  // For each trait: how many of the meal's ingredients carry it, and how many
+  // servings' worth they add up to.
+  function tally(items) {
     const found = {};
     items.forEach(function (item) {
       const food = FOODS[item.food];
@@ -57,30 +103,96 @@
       const servings = food.portion ? item.grams / food.portion : 0;
       food.traits.forEach(function (traitId) {
         if (!TRAITS[traitId]) return;
-        const entry = found[traitId] || (found[traitId] = { servings: 0, foods: [] });
+        const entry = found[traitId] || (found[traitId] = { servings: 0, count: 0 });
         entry.servings += servings;
-        entry.foods.push(item.food + " " + item.grams + "g");
+        entry.count += 1;
       });
     });
+    return found;
+  }
 
-    const dosed = [];
-    const present = [];
-    Object.keys(found).forEach(function (traitId) {
-      const row = {
-        traitId: traitId,
-        label: TRAITS[traitId].label,
-        servings: found[traitId].servings,
-        foods: found[traitId].foods
-      };
-      (TRAITS[traitId].dose ? dosed : present).push(row);
-    });
+  function dosedRows(found) {
+    return Object.keys(found)
+      .filter(function (id) { return TRAITS[id].dose; })
+      .map(function (id) {
+        return { label: TRAITS[id].label, servings: found[id].servings, count: found[id].count };
+      })
+      .sort(function (a, b) { return b.servings - a.servings; });
+  }
 
-    dosed.sort(function (a, b) { return b.servings - a.servings; });
-    present.sort(function (a, b) {
-      return b.foods.length - a.foods.length || a.label.localeCompare(b.label);
-    });
+  // ---- Wording -----------------------------------------------------------
+  const COUNT_WORDS = ["no", "one", "two", "three", "four", "five", "six",
+    "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen"];
 
-    return { dosed: dosed, present: present };
+  function countWord(n) { return COUNT_WORDS[n] || String(n); }
+
+  function ingredients(n) { return n + (n === 1 ? " ingredient" : " ingredients"); }
+
+  function joinList(parts) {
+    if (parts.length === 1) return parts[0];
+    return parts.slice(0, -1).join(", ") + " and " + parts[parts.length - 1];
+  }
+
+  // Naming ten absent allergens one by one buries the four that are there.
+  const NAME_ABSENT_UP_TO = 4;
+
+  function absentSentence(absent) {
+    if (!absent.length) return "";
+    if (absent.length <= NAME_ABSENT_UP_TO) {
+      return " " + joinList(absent) + (absent.length === 1 ? " is" : " are") +
+        " not in this meal.";
+    }
+    return " The other " + countWord(absent.length) + " are not in this meal.";
+  }
+
+  function familySentence(family, found) {
+    const present = family.types
+      .filter(function (id) { return found[id]; })
+      .map(function (id) {
+        return { label: TRAITS[id].label, count: found[id].count };
+      })
+      .sort(function (a, b) { return b.count - a.count || a.label.localeCompare(b.label); });
+
+    const absent = family.types.filter(function (id) { return !found[id]; })
+      .map(function (id) { return TRAITS[id].label; });
+
+    // The umbrella can sit on a food whose mechanism has no subtype of its
+    // own — an irritant that is neither capsaicin nor caffeine, say.
+    const broadOnly = family.broad && found[family.broad] && !present.length;
+    if (!present.length && !broadOnly) return null;
+
+    const total = family.types.length;
+    let text;
+
+    if (broadOnly) {
+      text = "This meal carries an " + family.noun + " from " +
+        ingredients(found[family.broad].count) + ", by a mechanism with no type of " +
+        "its own. None of the " + countWord(total) + " types tracked here are in it.";
+    } else if (present.length === 1) {
+      text = "One of the " + countWord(total) + " " + family.noun +
+        " types tracked here is in this meal: " + present[0].label + ", from " +
+        ingredients(present[0].count) + "." + absentSentence(absent);
+    } else {
+      const rest = present.slice(1).map(function (row) {
+        return row.label + " (" + row.count + ")";
+      });
+      text = countWord(present.length) + " of the " + countWord(total) + " " +
+        family.noun + " types tracked here are in this meal. " + present[0].label +
+        " comes from the most ingredients (" + present[0].count + "), then " +
+        joinList(rest) + "." + absentSentence(absent);
+      text = text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
+    return { title: family.title, text: text, articleId: family.articleId };
+  }
+
+  function singleSentence(traitId, found, totalItems) {
+    if (!found[traitId]) return null;
+    return {
+      title: TRAITS[traitId].label,
+      text: "in " + found[traitId].count + " of the " + totalItems + " ingredients.",
+      articleId: TRAITS[traitId].articleId || null
+    };
   }
 
   function totalGrams(items) {
@@ -269,14 +381,15 @@
       totalGrams(items) + "g in total";
     section.appendChild(weight);
 
-    const result = analyse(items);
+    const found = tally(items);
 
-    // ---- Amount-based
+    // ---- Measured by amount
     const h3a = document.createElement("h3");
     h3a.textContent = "Measured by amount";
     section.appendChild(h3a);
 
-    if (!result.dosed.length) {
+    const rows = dosedRows(found);
+    if (!rows.length) {
       const p = document.createElement("p");
       p.className = "mealEmpty";
       p.textContent = "Nothing in this meal carries an amount-based trait.";
@@ -292,7 +405,7 @@
       });
       table.appendChild(header);
 
-      result.dosed.forEach(function (row) {
+      rows.forEach(function (row) {
         const tr = document.createElement("tr");
         const label = document.createElement("th");
         label.textContent = row.label;
@@ -303,8 +416,7 @@
         tr.appendChild(servings);
 
         const from = document.createElement("td");
-        from.className = "mealFrom";
-        from.textContent = row.foods.join(", ");
+        from.textContent = ingredients(row.count);
         tr.appendChild(from);
 
         table.appendChild(tr);
@@ -316,37 +428,59 @@
       section.appendChild(wrap);
     }
 
-    // ---- Categorical
+    // ---- Present in the meal, family by family
     const h3b = document.createElement("h3");
     h3b.textContent = "Present in the meal";
     section.appendChild(h3b);
 
-    if (!result.present.length) {
+    const blocks = [];
+    FAMILIES.forEach(function (family) {
+      const block = familySentence(family, found);
+      if (block) blocks.push(block);
+    });
+    SINGLES.forEach(function (traitId) {
+      const block = singleSentence(traitId, found, items.length);
+      if (block) blocks.push(block);
+    });
+
+    if (!blocks.length) {
       const p = document.createElement("p");
       p.className = "mealEmpty";
       p.textContent = "Nothing in this meal carries a categorical trait.";
       section.appendChild(p);
     } else {
-      const ul = document.createElement("ul");
-      ul.className = "mealPresentList";
-      result.present.forEach(function (row) {
+      const list = document.createElement("ul");
+      list.className = "mealFamilyList";
+      blocks.forEach(function (block) {
         const li = document.createElement("li");
+
         const strong = document.createElement("strong");
-        strong.textContent = row.label;
+        strong.textContent = block.title + ": ";
         li.appendChild(strong);
-        li.appendChild(document.createTextNode(" — " + row.foods.join(", ")));
-        ul.appendChild(li);
+
+        li.appendChild(document.createTextNode(block.text + " "));
+
+        if (block.articleId) {
+          const link = document.createElement("a");
+          link.href = "articles.html#" + block.articleId;
+          link.className = "mealFamilyLink noPrint";
+          link.textContent = "Read more →";
+          li.appendChild(link);
+        }
+
+        list.appendChild(li);
       });
-      section.appendChild(ul);
+      section.appendChild(list);
     }
 
     const note = document.createElement("p");
     note.className = "traitFoodsNote";
     note.textContent = "Servings are servings of trait-carrying food, not grams of anything. " +
-      "Fat 3.4 means this meal holds as much fat-tagged food as 3.4 standard servings — it is not " +
-      "3.4 times a threshold, and not a nutrient total. The traits under \"present\" have no " +
-      "amount to add up: an allergen is in the meal or it is not, and a small amount is still an " +
-      "amount.";
+      "Fat 3.4 means this meal holds as much fat-tagged food as 3.4 standard servings — it is " +
+      "not 3.4 times a threshold, and not a nutrient total. Under \"present\", how prominent a " +
+      "trait is means how many ingredients carry it, not how much of it is there: those traits " +
+      "have no amount to add up, and a small amount of an allergen is still an amount. To see " +
+      "which food carries what, use the main app.";
     section.appendChild(note);
 
     container.appendChild(section);
