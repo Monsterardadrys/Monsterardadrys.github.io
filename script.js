@@ -650,6 +650,15 @@
       "causing the symptoms. A pattern is a hypothesis to test through structured elimination " +
       "and reintroduction, not a finding.";
     popupTextContainer.appendChild(caveat);
+
+    // The amount-based traits are measured at one typical serving, so a larger
+    // helping is invisible here. Says so where it is read, not only on About.
+    const portionCaveat = document.createElement("p");
+    portionCaveat.className = "popupCaveat";
+    portionCaveat.textContent = "Amounts are measured at one typical serving of each food. " +
+      "If you eat noticeably more than that, a trait that does not appear here may still " +
+      "apply to you.";
+    popupTextContainer.appendChild(portionCaveat);
   }
 
   showAnalysisButton.addEventListener("click", function () {
