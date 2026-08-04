@@ -59,16 +59,20 @@ both as JSON files on the user's own device. Every file carries
 every link and anchor, the scripts each page needs, and the numbers quoted in
 About and the method page against the code). Each exits non-zero on a fault.
 
-**Nutrition per 100g** — `node tools/build-nutrition.js <export>` writes
-`nutrition-data.js` from a Livsmedelsverket export, using the same confirmed
-matches as the audit. Generated: never hand-edit it. The meal builder totals a
-meal in grams from it and says how much of the meal the figures cover.
+**Nutrition per 100g** — builds `nutrition-data.js` from the same
+Livsmedelsverket export the audit takes, matched through the same confirmed
+list. Two front ends over one `tools/nutrition-core.js`, so they cannot produce
+different files: `tools/build-nutrition.html` on a phone (download the result
+into the project root) or `node tools/build-nutrition.js <export>`. Generated:
+never hand-edit it. The meal builder totals a meal in grams from it and says
+how much of the meal the figures cover.
 
 ## Open
 
-- **`nutrition-data.js` is empty until the generator is run**, because the
-  export is not in the repo. Until then the meal builder counts servings, which
-  is what it did before. One command settles it.
+- **`nutrition-data.js` is empty until the builder is run**, because the export
+  is not in the repo. Until then the meal builder counts servings, which is what
+  it did before. Open `tools/build-nutrition.html`, pick the export, download
+  the result over `nutrition-data.js`.
 - **The 109 foods with no Livsmedelsverket entry will still have no figures**
   once it has been run. They need published values entered by hand with a source
   per food, which means a second curated file the generator merges rather than
@@ -79,9 +83,6 @@ meal in grams from it and says how much of the meal the figures cover.
 - **Meal-level thresholds are not set.** A normal mixed meal holds 20–30g of
   fat, so the single-food doses cannot be reused as they are: the unit of
   analysis is different, not more lenient.
-- **The audit has not been re-run since the allergen rework.** Nothing since has
-  touched a nutrient threshold or a portion, so a run should come back clean —
-  but 24 foods gained a mugwort tag and the umbrella fixes touched 30 more.
 
 ## Known and expected
 

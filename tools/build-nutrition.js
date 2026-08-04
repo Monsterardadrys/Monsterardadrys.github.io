@@ -4,25 +4,20 @@
         node tools/build-nutrition.js <export-file>
 
     <export-file> is the same file the audit takes — the .xlsx from Sök
-    näringsinnehåll, or a CSV or JSON export. Matching reuses lmv-core.js and
-    tools/lmv-aliases.json, so a food gets figures only where the match has
-    already been confirmed by hand. Nothing is guessed.
+    näringsinnehåll, or a CSV or JSON export.
 
-    The output is generated, not curated: never hand-edit nutrition-data.js,
-    re-run this instead. Foods with no Livsmedelsverket entry (see
-    lmv-absent.json) come out with no figures, and every page that uses the
-    data has to cope with that.
+    If you'd rather not use a terminal, tools/build-nutrition.html does the
+    same thing in a browser and works fine on a phone. Both go through
+    nutrition-core.js, so they cannot produce different files.
 */
 
 const fs = require("fs");
 const path = require("path");
 const LMV = require("./lmv-core.js");
+const NutritionCore = require("./nutrition-core.js");
 
 const ROOT = path.join(__dirname, "..");
 const OUT = path.join(ROOT, "nutrition-data.js");
-
-// What we keep. Anything else in the export is not used by any page.
-const KEEP = ["fat", "protein", "carbs", "fiber", "sugars", "alcohol"];
 
 function loadFoods() {
     const src = fs.readFileSync(path.join(ROOT, "foods-data.js"), "utf8");
@@ -37,49 +32,6 @@ function loadMap(name) {
     const out = {};
     Object.keys(raw).forEach(function (k) { if (k[0] !== "_") out[k] = raw[k]; });
     return out;
-}
-
-function round(n) {
-    return Math.round(n * 100) / 100;
-}
-
-function entryFor(record) {
-    const values = {};
-    KEEP.forEach(function (key) {
-        const v = record.nutrients[key];
-        if (typeof v === "number" && !isNaN(v)) values[key] = round(v);
-    });
-    return Object.keys(values).length ? values : null;
-}
-
-function write(rows, exportName) {
-    const lines = [];
-    lines.push("/* =========================================================================");
-    lines.push("   nutrition-data.js — per 100g figures, GENERATED, do not hand-edit");
-    lines.push("");
-    lines.push("   Rebuild with:  node tools/build-nutrition.js <export-file>");
-    lines.push("");
-    lines.push("   Source: Livsmedelsverket's food database, matched food by food through");
-    lines.push("   tools/lmv-aliases.json — the same confirmed matches the audit uses. A");
-    lines.push("   food appears here only if its match was confirmed by hand.");
-    lines.push("");
-    lines.push("   " + rows.length + " of the database's foods have figures. The rest have no");
-    lines.push("   Livsmedelsverket entry (see tools/lmv-absent.json), so every page reading");
-    lines.push("   this has to cope with a food that is simply missing.");
-    lines.push("");
-    lines.push("   Built from: " + exportName);
-    lines.push("   ========================================================================= */");
-    lines.push("");
-    lines.push("const NUTRITION = {");
-    rows.forEach(function (row, i) {
-        const parts = KEEP.filter(function (k) { return row.values[k] != null; })
-            .map(function (k) { return k + ": " + row.values[k]; });
-        lines.push('  "' + row.name.replace(/"/g, '\\"') + '": { ' + parts.join(", ") + " }" +
-            (i === rows.length - 1 ? "" : ","));
-    });
-    lines.push("};");
-    lines.push("");
-    fs.writeFileSync(OUT, lines.join("\n"), "utf8");
 }
 
 function main() {
@@ -100,33 +52,20 @@ function main() {
 
     load.then(function (lmv) {
         const result = LMV.runAudit(ours, lmv, aliases, swedish, absent);
+        const built = NutritionCore.build(result, ours.length, path.basename(file));
 
-        // Both buckets are confirmed matches — a disagreement is a tag that
-        // needs a look, not a match that is wrong.
-        const matched = result.clean.concat(result.disagreements);
-
-        const rows = [];
-        const empty = [];
-        matched.forEach(function (m) {
-            const values = entryFor(m.record);
-            if (values) rows.push({ name: m.food.name, values: values });
-            else empty.push(m.food.name);
-        });
-        rows.sort(function (a, b) { return a.name.localeCompare(b.name); });
-
-        write(rows, path.basename(file));
+        fs.writeFileSync(OUT, built.text, "utf8");
 
         console.log("Nutrients detected: " + Object.keys(result.detected).join(", "));
-        console.log("Wrote " + rows.length + " of " + ours.length + " foods to nutrition-data.js");
-        console.log("No Livsmedelsverket entry: " + result.skipped.length);
-        if (result.unmatched.length) {
-            console.log("Unmatched (no figures, and not on the absent list): " +
-                result.unmatched.length);
-            result.unmatched.forEach(function (f) { console.log("  " + f.name); });
+        console.log("Wrote " + built.rows.length + " of " + ours.length + " foods to nutrition-data.js");
+        console.log("No Livsmedelsverket entry: " + built.skipped);
+        if (built.unmatched.length) {
+            console.log("Unmatched (no figures, and not on the absent list): " + built.unmatched.length);
+            built.unmatched.forEach(function (n) { console.log("  " + n); });
         }
-        if (empty.length) {
-            console.log("Matched but the export carried no usable figures: " + empty.length);
-            empty.forEach(function (n) { console.log("  " + n); });
+        if (built.empty.length) {
+            console.log("Matched but the export carried no usable figures: " + built.empty.length);
+            built.empty.forEach(function (n) { console.log("  " + n); });
         }
     }).catch(function (err) {
         console.error("Could not read " + file + ": " + err.message);
