@@ -111,6 +111,40 @@
     return found;
   }
 
+  /* Real grams, where we have them. nutrition-data.js is generated from a
+     Livsmedelsverket export and covers the foods with an entry there — around
+     three quarters of the database — so a meal is often part-covered and the
+     total has to say so rather than quietly under-reporting. */
+  const NUTRIENTS = [
+    { key: "fat", label: "Fat" },
+    { key: "protein", label: "Protein" },
+    { key: "carbs", label: "Carbohydrate" },
+    { key: "sugars", label: "Sugars" },
+    { key: "fiber", label: "Fiber" }
+  ];
+
+  function haveNutrition() {
+    return typeof NUTRITION !== "undefined" && Object.keys(NUTRITION).length > 0;
+  }
+
+  function nutrientTotals(items) {
+    const totals = {};
+    const covered = [];
+    const uncovered = [];
+
+    items.forEach(function (item) {
+      const values = NUTRITION[item.food];
+      if (!values) { uncovered.push(item.food); return; }
+      covered.push(item.food);
+      NUTRIENTS.forEach(function (n) {
+        if (values[n.key] == null) return;
+        totals[n.key] = (totals[n.key] || 0) + values[n.key] * item.grams / 100;
+      });
+    });
+
+    return { totals: totals, covered: covered, uncovered: uncovered };
+  }
+
   function dosedRows(found) {
     return Object.keys(found)
       .filter(function (id) { return TRAITS[id].dose; })
@@ -382,6 +416,60 @@
     section.appendChild(weight);
 
     const found = tally(items);
+
+    // ---- What the meal actually contains, in grams
+    if (haveNutrition()) {
+      const n = nutrientTotals(items);
+
+      const h3n = document.createElement("h3");
+      h3n.textContent = "In this meal";
+      section.appendChild(h3n);
+
+      if (!n.covered.length) {
+        const p = document.createElement("p");
+        p.className = "mealEmpty";
+        p.textContent = "None of these foods has figures on file, so this meal cannot be " +
+          "totalled in grams.";
+        section.appendChild(p);
+      } else {
+        const table = document.createElement("table");
+        table.className = "mealTable";
+        const header = document.createElement("tr");
+        ["Nutrient", "Grams"].forEach(function (text) {
+          const th = document.createElement("th");
+          th.textContent = text;
+          header.appendChild(th);
+        });
+        table.appendChild(header);
+
+        NUTRIENTS.forEach(function (nutrient) {
+          if (n.totals[nutrient.key] == null) return;
+          const tr = document.createElement("tr");
+          const label = document.createElement("th");
+          label.textContent = nutrient.label;
+          tr.appendChild(label);
+          const value = document.createElement("td");
+          value.textContent = fmt(n.totals[nutrient.key]) + " g";
+          tr.appendChild(value);
+          table.appendChild(tr);
+        });
+
+        const wrap = document.createElement("div");
+        wrap.className = "tableScroll";
+        wrap.appendChild(table);
+        section.appendChild(wrap);
+
+        const coverage = document.createElement("p");
+        coverage.className = "mealCoverage";
+        coverage.textContent = n.uncovered.length
+          ? "From " + n.covered.length + " of the " + items.length + " foods. " +
+            joinList(n.uncovered) + (n.uncovered.length === 1 ? " has" : " have") +
+            " no figures on file, so nothing above counts " +
+            (n.uncovered.length === 1 ? "it" : "them") + " — the real totals are higher."
+          : "From all " + items.length + " foods.";
+        section.appendChild(coverage);
+      }
+    }
 
     // ---- Measured by amount
     const h3a = document.createElement("h3");
