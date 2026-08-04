@@ -14,6 +14,11 @@
      - an umbrella without a subtype: legitimate where the broad trait covers
        mechanisms no subtype names, so these are listed as a warning rather
        than a fault. ALLOWED_BROAD_ONLY says which are deliberate.
+     - the amount-based tags against nutrition-data.js. This is the audit's
+       own arithmetic, and now that the figures live in the repo it runs
+       without the Livsmedelsverket export in hand — so a portion or a dose
+       can be changed and checked in the same sitting. It only covers the
+       365 foods with figures; the audit is still what checks the matching.
    ========================================================================= */
 
 const fs = require("fs");
@@ -24,11 +29,29 @@ const source = fs.readFileSync(path.join(root, "foods-data.js"), "utf8");
 const { TRAITS, CATEGORIES, FILTER_SECTIONS } =
   new Function(source + "; return { TRAITS, CATEGORIES, FILTER_SECTIONS };")();
 
+const { NUTRITION } = new Function(
+  fs.readFileSync(path.join(root, "nutrition-data.js"), "utf8") + "; return { NUTRITION };")();
+
+// Read straight out of lmv-core.js so there is one place a dose is set.
+const coreSource = fs.readFileSync(path.join(__dirname, "lmv-core.js"), "utf8");
+const DOSE = {};
+(coreSource.match(/const DOSE = \{([\s\S]*?)\};/) || ["", ""])[1]
+  .replace(/(\w+):\s*([\d.]+)/g, function (_, k, v) { DOSE[k] = Number(v); return ""; });
+const PROTEIN_WEIGHT = Number(
+  (coreSource.match(/const PROTEIN_WEIGHT = ([\d.]+)/) || [])[1] || 0.2);
+
 // Broad traits that legitimately stand alone, and why.
 const ALLOWED_BROAD_ONLY = {
   irritant: "isothiocyanates, piperine, menthol and plain acidity are irritant " +
     "mechanisms with no subtype of their own",
   cross_reactive: "ragweed cross-reactivity has no pollen subtype here"
+};
+
+/* Deliberate departures from what the numbers alone would say. Each is
+   argued in tools/worklist.md and on the method page. */
+const DOSE_EXCEPTIONS = {
+  "Turmeric|bile_stimulant": "carries it on its own evidence, not on its fat content",
+  "Cinnamon Bun|over_3g_lactose": "the sugar is sucrose, not lactose"
 };
 
 const faults = [];
@@ -90,8 +113,62 @@ FILTER_SECTIONS.forEach(function (section) {
   }
 });
 
+// ---- Amount-based tags against the figures --------------------------------
+/* One entry per trait that is measured rather than classified. `soft` marks
+   the lactose one: the database reports total sugars, so a mismatch there is
+   worth a look but is not by itself wrong — lactose-free dairy still carries
+   the glucose and galactose the lactose was split into. */
+const DOSE_TRAITS = [
+  { trait: "over_10g_fat", dose: DOSE.fat, fatBased: true, of: function (n) { return n.fat; } },
+  { trait: "protein", dose: DOSE.protein, of: function (n) { return n.protein; } },
+  { trait: "fiber", dose: DOSE.fiber, of: function (n) { return n.fiber; } },
+  /* Gated on allergen_milk, exactly as the audit gates it: the database
+     reports total sugars, and the sugar in an apple is not lactose. */
+  {
+    trait: "over_3g_lactose", dose: DOSE.sugars, soft: true, requires: "allergen_milk",
+    of: function (n) { return n.sugars; }
+  },
+  {
+    trait: "bile_stimulant", dose: DOSE.bile, fatBased: true,
+    of: function (n) { return (n.fat || 0) + PROTEIN_WEIGHT * (n.protein || 0); }
+  }
+];
+
+let checkedAgainstFigures = 0;
+
+foods.forEach(function (food) {
+  const n = NUTRITION[food.name];
+  if (!n) return;
+  checkedAgainstFigures += 1;
+
+  DOSE_TRAITS.forEach(function (rule) {
+    if (rule.dose == null) return;
+    if (rule.requires && food.traits.indexOf(rule.requires) === -1) return;
+    /* A seed swallowed intact keeps its fat inside the shell, so the figure
+       for the seed overstates what reaches the gut. Fiber still applies —
+       that is the whole point of eating it. See wholeSeed in foods-data.js. */
+    if (food.wholeSeed && rule.fatBased) return;
+    const per100g = rule.of(n);
+    if (per100g == null) return;
+
+    const inPortion = Math.round(per100g * food.portion) / 100;
+    const tagged = food.traits.indexOf(rule.trait) !== -1;
+    const qualifies = inPortion >= rule.dose;
+    if (tagged === qualifies) return;
+
+    const why = DOSE_EXCEPTIONS[food.name + "|" + rule.trait];
+    const line = food.name + " " + (tagged ? "carries" : "does not carry") + " " +
+      rule.trait + " — " + inPortion + "g in a " + food.portion + "g portion, dose " + rule.dose;
+
+    if (why) warnings.push(line + "\n    deliberate — " + why);
+    else if (rule.soft) warnings.push(line + "\n    soft — the figure is total sugars, not lactose");
+    else faults.push(line);
+  });
+});
+
 // ---- Report --------------------------------------------------------------
-console.log(foods.length + " foods, " + Object.keys(TRAITS).length + " traits");
+console.log(foods.length + " foods, " + Object.keys(TRAITS).length + " traits, " +
+  checkedAgainstFigures + " checked against nutrition-data.js");
 
 if (warnings.length) {
   console.log("\nWarnings (" + warnings.length + ")");

@@ -54,12 +54,15 @@ both as JSON files on the user's own device. Every file carries
 `{ app, tool, version }` so one tool cannot open another's file.
 
 **Checks that used to be done by eye** — `tools/check-data.js` for the food data
-(unknown traits, missing portions, umbrella/subtype consistency) and
+(unknown traits, missing portions, umbrella/subtype consistency, and every
+amount-based tag against `nutrition-data.js` — the audit's own arithmetic,
+running without the export in hand) and
 `tools/check-site.js` for the site (version stamps, service-worker coverage,
 every link and anchor, the scripts each page needs, and the numbers quoted in
 About and the method page against the code). Each exits non-zero on a fault.
 
-**Nutrition per 100g** — builds `nutrition-data.js` from the same
+**Nutrition per 100g** — 365 foods carry fat, protein, carbohydrate, fiber,
+sugars and alcohol per 100g. Rebuilt from the same
 Livsmedelsverket export the audit takes, matched through the same confirmed
 list. Two front ends over one `tools/nutrition-core.js`, so they cannot produce
 different files: `tools/build-nutrition.html` on a phone (download the result
@@ -69,12 +72,9 @@ how much of the meal the figures cover.
 
 ## Open
 
-- **`nutrition-data.js` is empty until the builder is run**, because the export
-  is not in the repo. Until then the meal builder counts servings, which is what
-  it did before. Open `tools/build-nutrition.html`, pick the export, download
-  the result over `nutrition-data.js`.
-- **The 109 foods with no Livsmedelsverket entry will still have no figures**
-  once it has been run. They need published values entered by hand with a source
+- **The 109 foods with no Livsmedelsverket entry have no figures.** Seitan,
+  the vegan cheeses, most Asian sauces. A meal containing one says so and
+  under-reports by that much. They need published values entered by hand with a source
   per food, which means a second curated file the generator merges rather than
   overwrites — `nutrition-data.js` must stay purely generated.
 - **FODMAP dose in a meal** is deliberately not attempted yet. Monash publishes
