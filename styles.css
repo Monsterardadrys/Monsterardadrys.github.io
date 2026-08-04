@@ -1883,3 +1883,22 @@ footer p { color: var(--linen); }
     opacity: 0;
     pointer-events: none;
 }
+
+.mealFamilyList {
+    padding-left: 20px;
+    margin: 0 0 6px;
+}
+
+.mealFamilyList li {
+    margin-bottom: 10px;
+    font-size: 17px;
+    line-height: 1.45;
+}
+
+.mealFamilyList strong { color: var(--primary); }
+
+.mealFamilyLink {
+    white-space: nowrap;
+    font-weight: 600;
+    color: var(--clay-dark);
+}
