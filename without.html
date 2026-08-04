@@ -55,7 +55,7 @@
         <div class="navOverlay" id="navOverlay"></div>
     </header>
 
-    <div class="disclaimerBar">
+    <div class="disclaimerBar" data-lock="traitPicker withoutActions withoutResults">
         <label class="disclaimerCheck">
             <input type="checkbox" id="disclaimerCheckbox">
             I have read and understood the disclaimer
@@ -119,7 +119,7 @@
     <h2 class="withoutHeading noPrint">Choose traits to exclude</h2>
     <div class="filterContainer noPrint" id="traitPicker"></div>
 
-    <div class="withoutActions noPrint">
+    <div class="withoutActions noPrint" id="withoutActions">
         <button class="button2" id="clearTraitsButton" type="button">Clear</button>
         <button class="button2" id="printWithoutButton" type="button">Print list</button>
     </div>
@@ -144,11 +144,12 @@
     <p>Did you find any errors or have ideas for improvement?</p>
     <p>Email: Monsterardadrys@duck.com</p>
     <p>Uppsala, Sweden, 2026</p>
-    <p>Pre-beta v0.98 — updated 4 August 2026</p>
+    <p>Pre-beta v0.99 — updated 4 August 2026</p>
 </footer>
 
 <script src="foods-data.js"></script>
 <script src="trait-foods.js"></script>
+<script src="disclaimer.js"></script>
 <script src="nav.js"></script>
 <script src="pwa.js"></script>
 <script src="without.js"></script>
