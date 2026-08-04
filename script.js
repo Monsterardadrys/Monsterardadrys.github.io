@@ -700,6 +700,16 @@
     const articlesBox = document.getElementById("printArticlesList");
     articlesBox.innerHTML = "";
     if (typeof ARTICLES !== "undefined") {
+      // Several traits can share one article — all fifteen allergens do. The
+      // article prints once, listing the foods for the traits this analysis
+      // actually found rather than all fifteen.
+      const traitsByArticle = {};
+      popupActiveTraits.forEach(function (item) {
+        const articleId = TRAITS[item.traitId].articleId;
+        if (!articleId) return;
+        (traitsByArticle[articleId] = traitsByArticle[articleId] || []).push(item.traitId);
+      });
+
       const seen = new Set();
       popupActiveTraits.forEach(function (item) {
         const trait = TRAITS[item.traitId];
@@ -736,6 +746,12 @@
             }
           });
         });
+
+        // Every food carrying the trait, so the printout stands on its own
+        // away from the app — see trait-foods.js.
+        if (typeof TraitFoods !== "undefined") {
+          TraitFoods.renderForPrint(section, traitsByArticle[trait.articleId] || []);
+        }
 
         articlesBox.appendChild(section);
       });

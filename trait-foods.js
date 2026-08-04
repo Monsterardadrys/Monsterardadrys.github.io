@@ -1,0 +1,181 @@
+/* =========================================================================
+   trait-foods.js — "which foods carry this trait?"
+
+   Reads CATEGORIES and TRAITS from foods-data.js and builds the food lists
+   that appear at the foot of every article and in the printed analysis.
+   Load after foods-data.js.
+
+   The lists answer one question and no other: which foods in this database
+   carry this tag. They are not a list of foods to avoid — see the standing
+   note at the bottom of each one.
+   ========================================================================= */
+
+const TraitFoods = (function () {
+  "use strict";
+
+  // Foods carrying `traitId`, grouped by the category they live in and
+  // keeping the category order from foods-data.js.
+  function byCategory(traitId) {
+    const groups = [];
+    CATEGORIES.forEach(function (category) {
+      const names = category.foods
+        .filter(function (food) { return food.traits.indexOf(traitId) !== -1; })
+        .map(function (food) { return food.name; });
+      if (names.length) groups.push({ label: category.label, names: names });
+    });
+    return groups;
+  }
+
+  function countFor(traitId) {
+    return byCategory(traitId).reduce(function (total, group) {
+      return total + group.names.length;
+    }, 0);
+  }
+
+  // Every trait pointing at this article, in the order TRAITS declares them.
+  // Most articles have exactly one; the allergens article has fifteen.
+  //
+  // Where that trait is the broad one at the head of a filter card — GI
+  // irritants, FODMAPs, cross-reactivity — the specific traits underneath it
+  // come too. They have no article of their own, and the broad list on its
+  // own would hide which foods are the caffeine ones and which the capsaicin.
+  function traitsForArticle(articleId) {
+    const ids = [];
+    Object.keys(TRAITS).forEach(function (id) {
+      if (TRAITS[id].articleId !== articleId) return;
+      ids.push(id);
+
+      if (typeof FILTER_SECTIONS === "undefined") return;
+      FILTER_SECTIONS.forEach(function (section) {
+        if (section.broad !== id || !section.group) return;
+        Object.keys(TRAITS).forEach(function (other) {
+          if (TRAITS[other].group === section.group && ids.indexOf(other) === -1) {
+            ids.push(other);
+          }
+        });
+      });
+    });
+    return ids;
+  }
+
+  function plural(n) { return n === 1 ? "1 food" : n + " foods"; }
+
+  // One trait's lists, as a <details> so a long article stays scannable.
+  function buildTraitBlock(traitId, openByDefault) {
+    const groups = byCategory(traitId);
+    if (!groups.length) return null;
+
+    const details = document.createElement("details");
+    details.className = "traitFoods";
+    if (openByDefault) details.open = true;
+
+    const summary = document.createElement("summary");
+    summary.textContent = TRAITS[traitId].label + " — " + plural(countFor(traitId));
+    details.appendChild(summary);
+
+    groups.forEach(function (group) {
+      const h4 = document.createElement("h4");
+      h4.className = "traitFoodsCategory";
+      h4.textContent = group.label;
+      details.appendChild(h4);
+
+      const ul = document.createElement("ul");
+      ul.className = "traitFoodsList";
+      group.names.forEach(function (name) {
+        const li = document.createElement("li");
+        li.textContent = name;
+        ul.appendChild(li);
+      });
+      details.appendChild(ul);
+    });
+
+    return details;
+  }
+
+  // Appends the whole "which foods carry this" section for one article.
+  // Returns true if anything was added.
+  function render(container, articleId) {
+    if (typeof CATEGORIES === "undefined" || typeof TRAITS === "undefined") return false;
+
+    const traitIds = traitsForArticle(articleId).filter(function (id) {
+      return countFor(id) > 0;
+    });
+    if (!traitIds.length) return false;
+
+    const wrap = document.createElement("section");
+    wrap.className = "traitFoodsSection";
+
+    const h2 = document.createElement("h2");
+    h2.textContent = "Which foods carry this?";
+    wrap.appendChild(h2);
+
+    const intro = document.createElement("p");
+    intro.textContent = traitIds.length === 1
+      ? "Every food in this database tagged with this trait."
+      : "Every food in this database tagged with each of these traits.";
+    wrap.appendChild(intro);
+
+    // A single trait is worth showing straight away; fifteen are not.
+    const openByDefault = traitIds.length === 1;
+    traitIds.forEach(function (id) {
+      const block = buildTraitBlock(id, openByDefault);
+      if (block) wrap.appendChild(block);
+    });
+
+    const note = document.createElement("p");
+    note.className = "traitFoodsNote";
+    note.textContent = "What this list is: the foods in this database carrying the tag, " +
+      "measured at one standard serving each. What it is not: a list of foods to avoid. " +
+      "Most people react to none of them, and a food's presence here says nothing about " +
+      "whether it affects you.";
+    wrap.appendChild(note);
+
+    container.appendChild(wrap);
+    return true;
+  }
+
+  // Flat version for the printout, where <details> and nesting are noise.
+  // Takes explicit trait ids rather than an article: the printout should
+  // carry the traits the analysis actually found, not every trait that
+  // happens to share an article.
+  function renderForPrint(container, ids) {
+    const traitIds = ids.filter(function (id) {
+      return TRAITS[id] && countFor(id) > 0;
+    });
+    if (!traitIds.length) return false;
+
+    traitIds.forEach(function (traitId) {
+      const h3 = document.createElement("h3");
+      // The label verbatim — lowercasing it would wreck DAO, GOS and FODMAPs.
+      h3.textContent = "Foods tagged " + TRAITS[traitId].label +
+        " (" + plural(countFor(traitId)) + ")";
+      container.appendChild(h3);
+
+      const ul = document.createElement("ul");
+      ul.className = "printFoodsUl";
+      byCategory(traitId).forEach(function (group) {
+        group.names.forEach(function (name) {
+          const li = document.createElement("li");
+          li.textContent = name;
+          ul.appendChild(li);
+        });
+      });
+      container.appendChild(ul);
+    });
+
+    const note = document.createElement("p");
+    note.className = "traitFoodsNote";
+    note.textContent = "These lists are the foods in this database carrying the tag, measured " +
+      "at one standard serving each. They are not a list of foods to avoid.";
+    container.appendChild(note);
+    return true;
+  }
+
+  return {
+    byCategory: byCategory,
+    countFor: countFor,
+    traitsForArticle: traitsForArticle,
+    render: render,
+    renderForPrint: renderForPrint
+  };
+})();
