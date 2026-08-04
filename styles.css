@@ -1394,6 +1394,24 @@ footer p { color: var(--linen); }
 
     .printStamp { font-size: 14px; font-style: italic; }
 
+    /* A fixed element repeats on every printed page in every browser that
+       matters. The body gets room for it so nothing prints underneath. */
+    .printRunningFooter {
+        display: block !important;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: 0;
+        padding: 4px 5%;
+        font-size: 12px;
+        color: #5a5f5b;
+        background: #fff;
+        border-top: 1px solid #ccc;
+    }
+
+    body { padding-bottom: 26px; }
+
     /* A collapsed list must still reach the paper. */
     .traitFoods > *:not(summary) { display: block !important; }
     .traitFoodsList { columns: 3; }
@@ -1935,4 +1953,25 @@ footer p { color: var(--linen); }
     margin: 0 0 10px;
     font-size: 16px;
     line-height: 1.5;
+}
+
+/* Sits at the foot of every printed page. Hidden on screen by .printOnly. */
+.printRunningFooter {
+    display: none;
+}
+
+.printDepth {
+    display: block;
+    margin: 10px 5% 4px;
+    font-size: 16px;
+}
+
+.printDepth select {
+    font-family: inherit;
+    font-size: 16px;
+    margin-left: 6px;
+    padding: 4px 6px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--paper);
 }

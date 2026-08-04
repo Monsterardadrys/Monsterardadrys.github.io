@@ -267,11 +267,29 @@
       nameInput.addEventListener("change", render);
       head.appendChild(nameInput);
 
+      /* The question this tool gets asked is "what changes if I leave the
+         cream out", which means the same meal twice with one thing different.
+         Typing it in again is the slow way to ask. */
+      const copyMeal = document.createElement("button");
+      copyMeal.type = "button";
+      copyMeal.className = "mealRemove";
+      copyMeal.textContent = "Duplicate";
+      copyMeal.addEventListener("click", function () {
+        meals.splice(index + 1, 0, {
+          name: meal.name + " (copy)",
+          items: meal.items.map(function (item) {
+            return { food: item.food, grams: item.grams };
+          })
+        });
+        render();
+      });
+      head.appendChild(copyMeal);
+
       if (meals.length > 1) {
         const removeMeal = document.createElement("button");
         removeMeal.type = "button";
         removeMeal.className = "mealRemove";
-        removeMeal.textContent = "Remove meal";
+        removeMeal.textContent = "Remove";
         removeMeal.addEventListener("click", function () {
           meals.splice(index, 1);
           render();
@@ -369,6 +387,19 @@
       addButton.textContent = "Add";
       addRow.appendChild(addButton);
 
+      /* Picking a food fills in its standard serving, so the common case is
+         one tap and the unusual one is a number you overwrite. Stops as soon
+         as the weight has been touched by hand — guessing over someone's own
+         figure would be worse than not guessing at all. */
+      let gramsTouched = false;
+      gramsInput.addEventListener("input", function () { gramsTouched = true; });
+
+      foodInput.addEventListener("input", function () {
+        if (gramsTouched) return;
+        const food = FOODS[foodInput.value.trim()];
+        gramsInput.value = food && food.portion ? food.portion : "";
+      });
+
       function addFood() {
         const name = foodInput.value.trim();
         if (!name) return;
@@ -386,6 +417,7 @@
         const typed = parseInt(gramsInput.value, 10);
         const grams = typed > 0 ? typed : food.portion;
         showError("");
+        gramsTouched = false;
         meal.items.push({ food: name, grams: grams });
         render();
       }
@@ -401,7 +433,7 @@
 
       const hint = document.createElement("p");
       hint.className = "mealAddHint";
-      hint.textContent = "Leave the weight blank to use the food's standard serving.";
+      hint.textContent = "The weight fills in with the food's standard serving — change it if you like.";
       addRow.appendChild(hint);
 
       builder.appendChild(card);
