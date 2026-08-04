@@ -775,6 +775,21 @@ const TRAITS = {
       "Relevant for people with a grass pollen allergy. Cross-reactive proteins are found in foods like melon, watermelon, tomato, orange, peanut and potato."
     ]
   },
+  cross_mugwort: {
+    group: "Cross-reactivity",
+    order: 4,
+    label: "Mugwort pollen",
+    filter: true,
+    evidence: {
+      level: "Well established",
+      detail: "The celery-mugwort-spice syndrome is well documented in Europe, with component testing (Art v 1, Art v 3). The umbellifer and spice end is solid; the fruits reported alongside it are thinner."
+    },
+    analysis: [
+      "Relevant for people with a mugwort pollen allergy — common in Sweden and often missed, because mugwort flowers late and gets blamed on the tail of the grass season.",
+      "The classic pattern is celery, carrot and the umbellifer spices, together with the composites that share mugwort's own plant family: chamomile, sunflower seed, lettuce and artichoke. Spices are the part that catches people out, since a teaspoon in a dressing is enough and nothing on the menu names it.",
+      "Unlike most birch reactions, celery here can still react when cooked."
+    ]
+  },
   cross_latex: {
     group: "Cross-reactivity",
     order: 3,
@@ -831,10 +846,10 @@ const CATEGORIES = [
     label: "Roots",
     foods: [
       { name: "Beet Root", lmv: "Rödbeta", portion: 80, traits: ["fodmaps", "fructans", "salicylate"] },
-      { name: "Carrot", lmv: "Morot", portion: 80, traits: ["cross_reactive", "cross_birch"] },
-      { name: "Celeriac Root", lmv: "Rotselleri", portion: 80, traits: ["cross_reactive", "cross_birch", "allergen_celery"] },
-      { name: "Jerusalem Artichoke", lmv: "Jordärtskocka", portion: 80, traits: ["fodmaps", "fructans"] },
-      { name: "Parsnip", lmv: "Palsternacka", portion: 80, traits: [] },
+      { name: "Carrot", lmv: "Morot", portion: 80, traits: ["cross_reactive", "cross_birch", "cross_mugwort"] },
+      { name: "Celeriac Root", lmv: "Rotselleri", portion: 80, traits: ["cross_reactive", "cross_birch", "allergen_celery", "cross_mugwort"] },
+      { name: "Jerusalem Artichoke", lmv: "Jordärtskocka", portion: 80, traits: ["fodmaps", "fructans", "cross_reactive", "cross_mugwort"] },
+      { name: "Parsnip", lmv: "Palsternacka", portion: 80, traits: ["cross_reactive", "cross_mugwort"] },
       { name: "Potato", lmv: "Potatis rå", portion: 175, traits: ["cross_reactive", "cross_birch", "cross_grass"] },
       { name: "Swede", lmv: "Kålrot", portion: 80, traits: [] },
       { name: "Sweet Potato", lmv: "Sötpotatis rå", portion: 175, traits: ["fiber", "salicylate"] },
@@ -859,7 +874,7 @@ const CATEGORIES = [
       { name: "Tomato", lmv: "Tomat", portion: 100, traits: ["histamine", "irritant", "cross_reactive", "cross_grass", "cross_latex", "dao_competitor"] },
       { name: "Cauliflower", lmv: "Blomkål", portion: 100, traits: ["fodmaps", "fructans"] },
       { name: "Aubergine", lmv: "Aubergine", portion: 100, traits: ["histamine", "fodmaps", "fructans", "dao_competitor"] },
-      { name: "Parsley", lmv: "Persilja blad", portion: 5, traits: [] },
+      { name: "Parsley", lmv: "Persilja blad", portion: 5, traits: ["cross_reactive", "cross_mugwort"] },
       { name: "Leek", lmv: "Purjolök", portion: 60, traits: ["fodmaps", "fructans", "allergen_onion"] },
       { name: "Spinach", lmv: "Spenat frysvara", portion: 100, traits: ["histamine"] },
       { name: "Avocado", lmv: "Avokado", portion: 50, traits: ["over_10g_fat", "bile_stimulant", "cross_reactive", "cross_latex", "fodmaps", "polyols", "salicylate"] },
@@ -867,23 +882,23 @@ const CATEGORIES = [
       { name: "Bell Pepper (sweet)", lmv: "Paprika röd", portion: 100, traits: ["irritant"] },
       { name: "Bell Pepper (hot)", lmv: "Chilipeppar färsk", portion: 5, traits: ["irritant", "capsaicin"] },
       { name: "Asparagus", lmv: "Sparris grön kokt m. salt", portion: 100, traits: ["fodmaps", "fructans"] },
-      { name: "Fennel Bulb", lmv: "Fänkål", portion: 100, traits: ["fodmaps", "fructans"] },
+      { name: "Fennel Bulb", lmv: "Fänkål", portion: 100, traits: ["fodmaps", "fructans", "cross_reactive", "cross_mugwort"] },
       { name: "Broccoli", lmv: "Broccoli", portion: 100, traits: ["fodmaps", "fructans"] },
       { name: "Brussels Sprouts", lmv: "Brysselkål", portion: 100, traits: ["fodmaps", "fructans", "galactans"] },
       { name: "Green Beans", lmv: "Gröna bönor", portion: 100, traits: ["salicylate"] },
       { name: "Zucchini", lmv: "Squash", portion: 100, traits: [] },
       { name: "Pumpkin", lmv: "Pumpa", portion: 100, traits: ["dao_competitor"] },
       { name: "Swiss Chard", lmv: "Mangold", portion: 100, traits: [] },
-      { name: "Romaine Lettuce", lmv: "Romansallat", portion: 100, traits: [] },
+      { name: "Romaine Lettuce", lmv: "Romansallat", portion: 100, traits: ["cross_reactive", "cross_mugwort"] },
       { name: "Rocket", lmv: "Ruccolasallat", portion: 20, traits: ["irritant"] },
-      { name: "Celery", lmv: "Stjälkselleri", portion: 100, traits: ["fodmaps", "polyols", "cross_reactive", "cross_birch", "allergen_celery"] },
+      { name: "Celery", lmv: "Stjälkselleri", portion: 100, traits: ["fodmaps", "polyols", "cross_reactive", "cross_birch", "allergen_celery", "cross_mugwort"] },
       { name: "Bok Choy", lmv: "Sellerikål pak choi", portion: 100, traits: [] },
       { name: "Daikon Radish", lmv: "Rättika", portion: 80, traits: ["irritant"] },
       { name: "Rhubarb", lmv: "Rabarber tillagad u. socker", portion: 100, traits: [] },
       { name: "Sweetcorn", lmv: "Majskorn frysvara", portion: 100, traits: ["fodmaps", "polyols", "fructans", "salicylate"] },
       { name: "Shallot", lmv: "Lök gul", lmvNote: "yellow onion — shallot is not listed", portion: 5, traits: ["fodmaps", "fructans", "irritant", "allyl_compounds", "allergen_onion"] },
       { name: "Spring Onion", portion: 5, traits: ["fodmaps", "fructans", "irritant", "allyl_compounds", "allergen_onion"] },
-      { name: "Globe Artichoke", lmv: "Kronärtskocka kokt", portion: 100, traits: ["fodmaps", "fructans"] },
+      { name: "Globe Artichoke", lmv: "Kronärtskocka kokt", portion: 100, traits: ["fodmaps", "fructans", "cross_reactive", "cross_mugwort"] },
       { name: "Okra", lmv: "Okra kokt u. salt", portion: 100, traits: ["fodmaps", "fructans"] }
     ]
   },
@@ -894,7 +909,7 @@ const CATEGORIES = [
       { name: "Apples", lmv: "Äpple m. skal", portion: 100, traits: ["fodmaps", "fructose", "polyols", "irritant", "peel_skin", "cross_reactive", "cross_birch", "salicylate"] },
       { name: "Oranges", lmv: "Apelsin", portion: 100, traits: ["cross_reactive", "cross_grass", "dao_competitor"] },
       { name: "Pears", lmv: "Päron", portion: 100, traits: ["fodmaps", "fructose", "polyols", "irritant", "peel_skin", "cross_reactive", "cross_birch", "salicylate"] },
-      { name: "Mangos", lmv: "Mango", portion: 100, traits: ["fodmaps", "fructose"] },
+      { name: "Mangos", lmv: "Mango", portion: 100, traits: ["fodmaps", "fructose", "cross_reactive", "cross_mugwort"] },
       { name: "Lemon", lmv: "Citron", portion: 5, traits: ["dao_competitor"] },
       { name: "Lime", lmv: "Lime", portion: 5, traits: ["dao_competitor"] },
       { name: "Grapefruit", lmv: "Grapefrukt", portion: 100, traits: ["dao_competitor"] },
@@ -909,7 +924,7 @@ const CATEGORIES = [
       { name: "Plum", lmv: "Plommon", portion: 100, traits: ["cross_reactive", "cross_birch", "fodmaps", "polyols"] },
       { name: "Figs", lmv: "Fikon", portion: 100, traits: ["fodmaps", "fructose"] },
       { name: "Pomegranate", lmv: "Granatäpple", portion: 100, traits: ["salicylate"] },
-      { name: "Lychee", lmv: "Litchi", portion: 100, traits: ["fructose", "fodmaps", "polyols"] },
+      { name: "Lychee", lmv: "Litchi", portion: 100, traits: ["fructose", "fodmaps", "polyols", "cross_reactive", "cross_mugwort"] },
       { name: "Star Fruit", lmv: "Carambole stjärnfrukt", portion: 100, traits: [] },
       { name: "Durian", portion: 100, traits: ["over_10g_fat", "fodmaps", "fructose"] },
       { name: "Peach", lmv: "Persika", portion: 100, traits: ["fodmaps", "polyols", "cross_reactive", "cross_birch"] },
@@ -958,8 +973,8 @@ const CATEGORIES = [
       { name: "Dried Cranberry (No Sugar Added)", lmv: "Tranbär torkade", portion: 30, traits: ["fodmaps", "fructans"] },
       { name: "Dried Cherry (Added Sugar)", portion: 30, traits: ["fodmaps", "polyols", "fructose", "cross_reactive", "cross_birch", "refined_carbs"] },
       { name: "Dried Cherry (No Sugar Added)", portion: 30, traits: ["fiber", "fodmaps", "polyols", "fructose", "cross_reactive", "cross_birch"] },
-      { name: "Dried Mango (Added Sugar)", portion: 30, traits: ["fodmaps", "fructose", "refined_carbs", "allergen_sulphite"] },
-      { name: "Dried Mango (No Sugar Added)", portion: 30, traits: ["fodmaps", "fructose", "allergen_sulphite"] },
+      { name: "Dried Mango (Added Sugar)", portion: 30, traits: ["fodmaps", "fructose", "refined_carbs", "allergen_sulphite", "cross_reactive", "cross_mugwort"] },
+      { name: "Dried Mango (No Sugar Added)", portion: 30, traits: ["fodmaps", "fructose", "allergen_sulphite", "cross_reactive", "cross_mugwort"] },
       { name: "Dried Pineapple (Added Sugar)", portion: 30, traits: ["fiber", "fodmaps", "fructose", "refined_carbs", "allergen_sulphite"] },
       { name: "Dried Pineapple (No Sugar Added)", portion: 30, traits: ["fodmaps", "fructose", "fiber", "allergen_sulphite"] },
       { name: "Dried Papaya (Added Sugar)", portion: 30, traits: ["cross_reactive", "cross_latex", "refined_carbs", "allergen_sulphite"] },
@@ -976,7 +991,7 @@ const CATEGORIES = [
       { name: "Dried Kiwi (Added Sugar)", portion: 30, traits: ["cross_reactive", "cross_birch", "cross_grass", "cross_latex", "refined_carbs"] },
       { name: "Dried Kiwi (No Sugar Added)", portion: 30, traits: ["fiber", "cross_reactive", "cross_birch", "cross_grass", "cross_latex"] },
       { name: "Currants (dried)", portion: 30, traits: ["fiber", "fodmaps", "fructans"] },
-      { name: "Dried Lychee", portion: 30, traits: ["fructose", "fodmaps", "polyols"] }
+      { name: "Dried Lychee", portion: 30, traits: ["fructose", "fodmaps", "polyols", "cross_reactive", "cross_mugwort"] }
     ]
   },
   {
@@ -1001,7 +1016,7 @@ const CATEGORIES = [
       { name: "Hazelnut", lmv: "Hasselnötter", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "allergen_treenut", "cross_reactive", "cross_birch"] },
       { name: "Peanut", lmv: "Jordnötter torkade", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen_peanut", "cross_reactive", "cross_grass"] },
       { name: "Pumpkin Seeds", lmv: "Pumpafrö", portion: 15, traits: ["over_10g_fat"] },
-      { name: "Sunflower Seeds", lmv: "Solrosfrö", portion: 15, traits: ["over_10g_fat"] },
+      { name: "Sunflower Seeds", lmv: "Solrosfrö", portion: 15, traits: ["over_10g_fat", "cross_reactive", "cross_mugwort"] },
       { name: "Walnut", lmv: "Valnötter", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_treenut"] },
       { name: "Sesame Seeds", lmv: "Sesamfrö m. skal", portion: 5, traits: ["allergen_sesame"] },
       { name: "Macadamia", lmv: "Macadamianötter", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_treenut"] },
@@ -1017,7 +1032,7 @@ const CATEGORIES = [
       { name: "Pine Nuts", portion: 15, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "allergen_treenut"] },
       { name: "Hemp Seeds", lmv: "Hampafrö u. skal", portion: 15, traits: ["over_10g_fat"] },
       { name: "Poppy Seeds", lmv: "Vallmofrö", portion: 5, traits: [] },
-      { name: "Sunflower Seed Butter", portion: 25, traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "fructans"] }
+      { name: "Sunflower Seed Butter", portion: 25, traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "fructans", "cross_reactive", "cross_mugwort"] }
     ]
   },
   {
@@ -1221,14 +1236,14 @@ const CATEGORIES = [
     foods: [
       { name: "Chili", lmv: "Chilipeppar färsk", portion: 5, traits: ["irritant", "capsaicin"] },
       { name: "Garlic", lmv: "Vitlök", portion: 5, traits: ["fodmaps", "fructans", "irritant", "allyl_compounds", "allergen_onion"] },
-      { name: "Ginger", lmv: "Ingefära färsk", portion: 5, traits: [] },
-      { name: "Dill", lmv: "Dill färsk", portion: 2, traits: [] },
+      { name: "Ginger", lmv: "Ingefära färsk", portion: 5, traits: ["cross_reactive", "cross_mugwort"] },
+      { name: "Dill", lmv: "Dill färsk", portion: 2, traits: ["cross_reactive", "cross_mugwort"] },
       { name: "Turmeric", lmv: "Gurkmeja torkad", portion: 2, traits: ["bile_stimulant"] },
-      { name: "Mustard", lmv: "Senap svensk", portion: 5, traits: ["irritant", "allyl_compounds", "allergen_mustard"] },
-      { name: "Black Pepper", portion: 2, traits: ["irritant"] },
+      { name: "Mustard", lmv: "Senap svensk", portion: 5, traits: ["irritant", "allyl_compounds", "allergen_mustard", "cross_reactive", "cross_mugwort"] },
+      { name: "Black Pepper", portion: 2, traits: ["irritant", "cross_reactive", "cross_mugwort"] },
       { name: "Za'atar", portion: 2, traits: ["irritant"] },
       { name: "Sumac", portion: 2, traits: ["irritant", "aceticAcid"] },
-      { name: "Cumin", lmv: "Spiskummin frö torkad", portion: 2, traits: ["salicylate"] },
+      { name: "Cumin", lmv: "Spiskummin frö torkad", portion: 2, traits: ["salicylate", "cross_reactive", "cross_mugwort"] },
       { name: "Shawarma Spice Mix", portion: 2, traits: ["irritant"] },
       { name: "Wasabi", lmv: "Wasabirot", portion: 5, traits: ["irritant", "allyl_compounds"] },
       { name: "Curry Powder", portion: 2, traits: ["irritant", "capsaicin"] },
@@ -1243,7 +1258,7 @@ const CATEGORIES = [
       { name: "Rosemary", portion: 2, traits: [] },
       { name: "Mint", portion: 2, traits: ["irritant"] },
       { name: "Cinnamon", lmv: "Kanel", portion: 2, traits: [] },
-      { name: "Paprika Powder", portion: 2, traits: [] },
+      { name: "Paprika Powder", portion: 2, traits: ["cross_reactive", "cross_mugwort"] },
       { name: "Cardamom", lmv: "Kardemumma torkad", portion: 2, traits: [] },
       { name: "Allspice", portion: 2, traits: [] }
     ]
@@ -1275,7 +1290,7 @@ const CATEGORIES = [
       // Caffeine-free. Cross-reacts with mugwort/ragweed pollen (Asteraceae) —
       // tagged with the general cross-reaction trait, since we track only the
       // birch, grass and latex groups as subtypes.
-      { name: "Chamomile Tea", portion: 200, traits: ["salicylate", "cross_reactive"] },
+      { name: "Chamomile Tea", portion: 200, traits: ["salicylate", "cross_reactive", "cross_mugwort"] },
       { name: "Kombucha", portion: 200, traits: ["irritant", "histamine", "carbonation"] },
       { name: "Almond Milk", lmv: "Mandeldryck berikad", portion: 200, traits: ["allergen_treenut"] },
       { name: "Rice Milk", portion: 200, traits: [] },
@@ -1455,7 +1470,7 @@ const CATEGORIES = [
       { name: "Pickled Beetroot", lmv: "Rödbeta inlagd u. lag", portion: 40, traits: ["fodmaps", "fructans", "irritant", "aceticAcid", "refined_carbs", "salicylate"] },
       { name: "Pickled Onion", lmv: "Syltlök inlagd", portion: 20, traits: ["fodmaps", "fructans", "irritant", "aceticAcid", "allyl_compounds", "allergen_onion"] },
       { name: "Pickled Jalapeno", portion: 15, traits: ["irritant", "capsaicin", "aceticAcid"] },
-      { name: "Pickled Ginger", portion: 5, traits: ["irritant", "aceticAcid", "refined_carbs"] },
+      { name: "Pickled Ginger", portion: 5, traits: ["irritant", "aceticAcid", "refined_carbs", "cross_reactive", "cross_mugwort"] },
       { name: "Salt-brined Pickles", lmv: "Saltgurka u. lag", portion: 30, traits: ["histamine", "dao_competitor"] },
       { name: "Capers", portion: 5, traits: ["histamine", "irritant", "aceticAcid"] },
       { name: "Natto", portion: 40, traits: ["histamine", "dao_competitor", "fodmaps", "galactans", "allergen_soy"] },

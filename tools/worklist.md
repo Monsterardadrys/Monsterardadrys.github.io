@@ -44,7 +44,27 @@ picker), `disclaimer.js` and `save-load.js`.
 both as JSON files on the user's own device. Every file carries
 `{ app, tool, version }` so one tool cannot open another's file.
 
+**Checks that used to be done by eye** — `node tools/check-data.js` for the
+food data (unknown traits, missing portions, umbrella/subtype consistency) and
+`node tools/check-site.js` for the site (version stamps, service-worker
+coverage, every link and anchor, the scripts each page needs, and the numbers
+quoted in About and the method page against the code). Run both before a
+release; each exits non-zero on a fault.
+
+**Nutrition per 100g** — `node tools/build-nutrition.js <export>` writes
+`nutrition-data.js` from a Livsmedelsverket export, using the same confirmed
+matches as the audit. Generated: never hand-edit it. The meal builder totals a
+meal in grams from it and says how much of the meal the figures cover.
+
 ## Open
+
+- **nutrition-data.js is empty until the generator is run.** It needs the same
+  Livsmedelsverket export the audit takes. Until then the meal builder falls
+  back to counting servings, which is what it did before.
+- **The 109 foods with no Livsmedelsverket entry will still have no figures**
+  after the generator runs. They need published values entered by hand, with a
+  source per food, and the file would then stop being purely generated —
+  probably a second, curated file the generator merges rather than overwrites.
 
 - **The meal builder counts servings, not grams.** `foods-data.js` holds each
   food's traits and serving size but no nutrient values, so a meal cannot be

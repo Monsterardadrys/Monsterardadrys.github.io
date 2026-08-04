@@ -28,7 +28,7 @@ const { TRAITS, CATEGORIES, FILTER_SECTIONS } =
 const ALLOWED_BROAD_ONLY = {
   irritant: "isothiocyanates, piperine, menthol and plain acidity are irritant " +
     "mechanisms with no subtype of their own",
-  cross_reactive: "mugwort and ragweed cross-reactivity has no pollen subtype here"
+  cross_reactive: "ragweed cross-reactivity has no pollen subtype here"
 };
 
 const faults = [];

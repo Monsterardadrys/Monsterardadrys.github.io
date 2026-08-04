@@ -756,13 +756,15 @@ const ARTICLES = {
         ]
       },
       {
-        heading: "The three pollen groups",
+        heading: "The four pollen groups",
         blocks: [
           { type: "list", items: [
             "**Birch (PR-10 protein family):** apples, stone fruits, carrots, celery/celeriac, hazelnuts, soy",
-            "**Grass:** melon, watermelon, tomato, orange, peanut, potato — the least settled of the three: the proteins involved are more varied and the food list less consistent than for birch",
+            "**Mugwort (Art v 1, Art v 3):** celery, carrot, parsley, fennel and the umbellifer spices — cumin, dill, pepper, paprika, mustard, ginger — plus the plants in mugwort's own family: chamomile, sunflower seed, lettuce, artichoke",
+            "**Grass:** melon, watermelon, tomato, orange, peanut, potato — the least settled of the four: the proteins involved are more varied and the food list less consistent than for birch",
             "**Latex (chitinases):** banana, avocado, kiwi, papaya"
-          ]}
+          ]},
+          { type: "p", text: "Mugwort is the one most often missed in Scandinavia. It flowers late, so reactions get blamed on the tail of the grass season, and the foods it involves are spices — a teaspoon in a dressing is enough, and nothing on a menu names it. The pattern is known as celery-mugwort-spice syndrome, and unlike most birch reactions, celery can still react when cooked." }
         ]
       },
       {
