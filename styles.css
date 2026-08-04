@@ -1909,3 +1909,11 @@ footer p { color: var(--linen); }
     color: #5a5f5b;
     margin: 6px 0 0;
 }
+
+/* A source that has to be cited in full, rather than named in passing. */
+.citation {
+    font-size: 14px;
+    line-height: 1.4;
+    max-width: 46rem;
+    margin: 6px auto 0;
+}
