@@ -146,63 +146,10 @@
     }
   }
 
-  // ---- Build the filter checkboxes from FILTER_SECTIONS / TRAITS --------
+  // ---- Build the filter checkboxes ---------------------------------------
+  // Shared with the "foods without" page — see renderPicker in trait-foods.js.
   function renderFilters() {
-    function renderCheckbox(container, traitId, trait, extraClass) {
-      const label = document.createElement("label");
-      label.className = extraClass ? "checkboxStyle " + extraClass : "checkboxStyle";
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.value = traitId;
-      checkbox.addEventListener("change", recompute);
-      label.appendChild(checkbox);
-      label.appendChild(document.createTextNode(trait.label));
-      container.appendChild(label);
-    }
-
-    function getGroupTraits(groupName) {
-      return Object.keys(TRAITS)
-        .filter(function (id) { return TRAITS[id].filter && TRAITS[id].group === groupName; })
-        .map(function (id) { return { traitId: id, trait: TRAITS[id] }; })
-        .sort(function (a, b) { return (a.trait.order || 99) - (b.trait.order || 99); });
-    }
-
-    FILTER_SECTIONS.forEach(function (section) {
-      const card = document.createElement("div");
-      card.className = section.wide ? "filterCard wide" : "filterCard";
-
-      const title = document.createElement("p");
-      title.className = "filterCardTitle";
-      title.textContent = section.title;
-      card.appendChild(title);
-
-      if (section.broad) {
-        renderCheckbox(card, section.broad, TRAITS[section.broad], "broad");
-      }
-
-      if (section.group) {
-        const specificWrap = document.createElement("div");
-        // Without a broad trait above it there is nothing to indent under.
-        specificWrap.className = section.broad
-          ? "specificWrap checkRow"
-          : "specificWrap checkRow flat";
-        getGroupTraits(section.group).forEach(function (item) {
-          renderCheckbox(specificWrap, item.traitId, item.trait);
-        });
-        card.appendChild(specificWrap);
-      }
-
-      if (section.items) {
-        const row = document.createElement("div");
-        row.className = section.group ? "checkRow extraRow" : "checkRow";
-        section.items.forEach(function (traitId) {
-          renderCheckbox(row, traitId, TRAITS[traitId]);
-        });
-        card.appendChild(row);
-      }
-
-      filterContainer.appendChild(card);
-    });
+    TraitFoods.renderPicker(filterContainer, recompute);
   }
 
   // ---- Read current state straight from the DOM ------------------------

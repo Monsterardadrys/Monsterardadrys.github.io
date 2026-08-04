@@ -171,11 +171,82 @@ const TraitFoods = (function () {
     return true;
   }
 
+  /* ---- The trait picker ------------------------------------------------
+     One set of checkboxes built from FILTER_SECTIONS, shared by the app's
+     filter panel and the "foods without" page. Each checkbox carries the
+     trait id as its value, so a caller reads its own container with
+     querySelectorAll("input:checked"). */
+  function renderPicker(container, onChange) {
+    function checkbox(parent, traitId, extraClass) {
+      const label = document.createElement("label");
+      label.className = extraClass ? "checkboxStyle " + extraClass : "checkboxStyle";
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.value = traitId;
+      if (onChange) input.addEventListener("change", onChange);
+      label.appendChild(input);
+      label.appendChild(document.createTextNode(TRAITS[traitId].label));
+      parent.appendChild(label);
+    }
+
+    function groupTraits(groupName) {
+      return Object.keys(TRAITS)
+        .filter(function (id) { return TRAITS[id].filter && TRAITS[id].group === groupName; })
+        .sort(function (a, b) { return (TRAITS[a].order || 99) - (TRAITS[b].order || 99); });
+    }
+
+    FILTER_SECTIONS.forEach(function (section) {
+      const card = document.createElement("div");
+      card.className = section.wide ? "filterCard wide" : "filterCard";
+
+      const title = document.createElement("p");
+      title.className = "filterCardTitle";
+      title.textContent = section.title;
+      card.appendChild(title);
+
+      if (section.broad) checkbox(card, section.broad, "broad");
+
+      if (section.group) {
+        const wrap = document.createElement("div");
+        // Without a broad trait above it there is nothing to indent under.
+        wrap.className = section.broad
+          ? "specificWrap checkRow"
+          : "specificWrap checkRow flat";
+        groupTraits(section.group).forEach(function (id) { checkbox(wrap, id); });
+        card.appendChild(wrap);
+      }
+
+      if (section.items) {
+        const row = document.createElement("div");
+        row.className = section.group ? "checkRow extraRow" : "checkRow";
+        section.items.forEach(function (id) { checkbox(row, id); });
+        card.appendChild(row);
+      }
+
+      container.appendChild(card);
+    });
+  }
+
+  // Foods carrying none of `traitIds`, grouped by category. With nothing
+  // selected this is every food in the database.
+  function withoutTraits(traitIds) {
+    const groups = [];
+    CATEGORIES.forEach(function (category) {
+      const names = category.foods.filter(function (food) {
+        return !traitIds.some(function (id) { return food.traits.indexOf(id) !== -1; });
+      }).map(function (food) { return food.name; });
+      if (names.length) groups.push({ label: category.label, names: names });
+    });
+    return groups;
+  }
+
   return {
     byCategory: byCategory,
     countFor: countFor,
     traitsForArticle: traitsForArticle,
     render: render,
-    renderForPrint: renderForPrint
+    renderForPrint: renderForPrint,
+    renderPicker: renderPicker,
+    withoutTraits: withoutTraits
   };
 })();
