@@ -1,7 +1,6 @@
 # Worklist
 
-474 foods · 43 traits · 365 checked against Livsmedelsverket, 109 with no entry
-there.
+472 foods · 43 traits · 365 with nutrient figures, 107 without.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
@@ -62,7 +61,10 @@ every link and anchor, the scripts each page needs, and the numbers quoted in
 About and the method page against the code). Each exits non-zero on a fault.
 
 **Nutrition per 100g** — 365 foods carry fat, protein, carbohydrate, fiber,
-sugars and alcohol per 100g. Rebuilt from the same
+sugars and alcohol per 100g, each recording its `src`. Livsmedelsverket for
+all of them so far; `nutrition-manual.js` holds hand-entered figures for the
+foods it does not cover, and the builder merges the two with Livsmedelsverket
+winning. Only foods with figures can go in a meal — see meal.js. Rebuilt from the same
 Livsmedelsverket export the audit takes, matched through the same confirmed
 list. Two front ends over one `tools/nutrition-core.js`, so they cannot produce
 different files: `tools/build-nutrition.html` on a phone (download the result
@@ -72,11 +74,12 @@ how much of the meal the figures cover.
 
 ## Open
 
-- **The 109 foods with no Livsmedelsverket entry have no figures.** Seitan,
-  the vegan cheeses, most Asian sauces. A meal containing one says so and
-  under-reports by that much. They need published values entered by hand with a source
-  per food, which means a second curated file the generator merges rather than
-  overwrites — `nutrition-data.js` must stay purely generated.
+- **107 foods still have no figures**, so they cannot go in a meal. The source
+  ladder is decided and short — Frida (DK), then USDA SR Legacy, then Ciqual
+  for the European cheeses — and `nutrition-manual.js` is where entries go, one
+  per food with `src` and a verbatim `ref`. Nobody has downloaded those tables
+  yet. Roughly fifteen of the 107 (the vegan cheeses, protein bars, kombucha)
+  are branded products no national table analyses; they will stay without.
 - **FODMAP dose in a meal** is deliberately not attempted yet. Monash publishes
   per-serving thresholds, the one categorical trait where a dose is established.
   Next step after nutrient values land.
@@ -86,13 +89,19 @@ how much of the meal the figures cover.
 
 ## Known and expected
 
-- **109 foods have no Livsmedelsverket entry** — Roquefort, Fontina, za'atar,
+- **107 foods have no Livsmedelsverket entry** — Roquefort, Fontina, za'atar,
   sumak, kombucha, seitan, most Asian sauces, the vegan cheeses and yoghurts.
   Their figures come from published nutrition data and clinical literature, and
   `sources.html` says so per food. Not a backlog.
 - **Lactose-free dairy reports missing lactose** because the database gives
   total sugars, and lactose-free products still contain the glucose and
   galactose the lactose was split into. That is what the soft `*` marker is for.
+- **Pure additives are deliberately not in the database.** Erythritol and pea
+  protein powder were removed: an isolate is not a food, and its trait list
+  either says nothing or says one thing that is true by definition. Whey
+  protein stays — it carries milk allergen and lactose, which is real clinical
+  information. Flours, brans, psyllium, starches and yeast extract stay: pantry
+  items, and psyllium is a first-line IBS intervention.
 - **Three deliberate departures**: turmeric carries `bile_stimulant` on its own
   evidence, dark chocolate's fiber figure is a gap in the source, and the
   cinnamon bun's sugar is sucrose rather than lactose.

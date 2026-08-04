@@ -37,11 +37,27 @@
     });
   });
 
+  /* Only foods with figures can go in a meal. A meal is reported in grams of
+     fat and fiber, and a food with no numbers would sit in the list looking
+     like it counted while contributing nothing — worse than not being there.
+     They are still in the app and in Foods without, which do not need figures.
+
+     Before the figures have been built at all, nothing is gated: an empty
+     nutrition-data.js would otherwise leave an empty food list. */
+  function hasFigures(name) {
+    return !haveNutrition() || Boolean(NUTRITION[name]);
+  }
+
   Object.keys(FOODS).sort().forEach(function (name) {
+    if (!hasFigures(name)) return;
     const option = document.createElement("option");
     option.value = name;
     datalist.appendChild(option);
   });
+
+  function haveNutrition() {
+    return typeof NUTRITION !== "undefined" && Object.keys(NUTRITION).length > 0;
+  }
 
   // ---- State -------------------------------------------------------------
   let meals = [{ name: "Meal 1", items: [] }];
@@ -122,10 +138,6 @@
     { key: "sugars", label: "Sugars" },
     { key: "fiber", label: "Fiber" }
   ];
-
-  function haveNutrition() {
-    return typeof NUTRITION !== "undefined" && Object.keys(NUTRITION).length > 0;
-  }
 
   function nutrientTotals(items) {
     const totals = {};
@@ -363,6 +375,11 @@
         const food = FOODS[name];
         if (!food) {
           showError('"' + name + '" is not in this database. Start typing to pick from the list.');
+          return;
+        }
+        if (!hasFigures(name)) {
+          showError('"' + name + '" has no nutrient figures on file, so a meal holding it ' +
+            "could not be totalled. It is still in the main app and in Foods without.");
           return;
         }
         // No weight given: fall back to the food's own standard serving.
@@ -627,7 +644,7 @@
       const dropped = [];
       meals = data.meals.map(function (meal, index) {
         const items = (meal.items || []).filter(function (item) {
-          if (FOODS[item.food] && item.grams > 0) return true;
+          if (FOODS[item.food] && hasFigures(item.food) && item.grams > 0) return true;
           dropped.push(item.food);
           return false;
         }).map(function (item) {
@@ -636,7 +653,8 @@
         return { name: meal.name || "Meal " + (index + 1), items: items };
       });
       showError(dropped.length
-        ? "Loaded, but " + dropped.length + " food(s) are no longer in the database: " + dropped.join(", ")
+        ? "Loaded, but " + dropped.length + " food(s) were left out — no longer in the " +
+          "database, or with no nutrient figures on file: " + dropped.join(", ")
         : "");
       render();
     }, showError);
