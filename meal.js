@@ -432,6 +432,16 @@
       totalGrams(items) + "g in total";
     section.appendChild(weight);
 
+    /* What the meal was, in words. Only on paper: on screen the builder above
+       already shows it, but the builder is a form and does not print, so
+       without this a printout would report totals for a meal it never names. */
+    const ingredientLine = document.createElement("p");
+    ingredientLine.className = "mealIngredients printOnly";
+    ingredientLine.textContent = items.map(function (item) {
+      return item.food + " " + item.grams + "g";
+    }).join(" · ");
+    section.appendChild(ingredientLine);
+
     const found = tally(items);
 
     // ---- What the meal actually contains, in grams
