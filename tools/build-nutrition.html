@@ -191,6 +191,9 @@
 
     <script src="lmv-core.js"></script>
     <script src="nutrition-core.js"></script>
+    <!-- The hand-entered figures, merged in for the foods Livsmedelsverket
+         does not cover. See nutrition-manual.js. -->
+    <script src="../nutrition-manual.js"></script>
     <script>
         (function () {
             "use strict";
@@ -231,12 +234,14 @@
             }
 
             function render(result, sourceName) {
-                built = NutritionCore.build(result, ours.length, sourceName);
+                const manual = typeof NUTRITION_MANUAL !== "undefined" ? NUTRITION_MANUAL : {};
+                built = NutritionCore.build(result, ours.length, sourceName, manual);
 
                 const counts = document.getElementById("counts");
                 counts.innerHTML = "";
                 [
                     [built.rows.length, "with figures"],
+                    [built.manualUsed, "entered by hand"],
                     [built.skipped, "no entry"],
                     [built.unmatched.length, "unmatched"],
                     [built.empty.length, "matched, no figures"]

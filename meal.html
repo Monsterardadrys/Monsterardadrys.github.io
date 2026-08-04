@@ -6,11 +6,15 @@
     CATEGORIES and TRAITS in foods-data.js, so this file never changes when a
     food or a trait is added.
 
-    WHAT THE NUMBERS ARE. The database carries each food's traits and its
-    standard serving, not its nutrient content, so a meal cannot yet be
-    totalled in grams of fat or fiber. What is summed is servings: a food
-    contributes its own weight divided by its own standard serving. Say that
-    plainly wherever a number appears — see the note under every analysis.
+    WHAT THE NUMBERS ARE. Two things are reported and they are not the same.
+    Nutrients come from nutrition-data.js and are real grams. Servings are
+    servings of trait-carrying food: a food contributes its own weight divided
+    by its own standard serving, which is not a figure in grams of anything.
+    Say that plainly wherever a number appears — see the note under every
+    analysis.
+
+    Only foods with figures can be added, so a meal total is never quietly
+    short. Foods without them stay in the app and in Foods without.
 
     The disclaimer here is the same one as app.html and without.html — change
     all three together.
@@ -112,7 +116,9 @@
             <ol class="stepsList">
                 <li>
                     <span class="stepTitle">Add foods with their weights.</span>
-                    <span class="stepDetail">Type a food, give it a weight in grams, add it to the meal.</span>
+                    <span class="stepDetail">Type a food, give it a weight in grams, add it to the meal.
+                        Only foods with nutrient figures on file can go in — a meal is reported in grams,
+                        and a food with no numbers would look like it counted.</span>
                 </li>
                 <li>
                     <span class="stepTitle">Add more meals if you want to compare.</span>
@@ -162,11 +168,12 @@
     <p>Did you find any errors or have ideas for improvement?</p>
     <p>Email: Monsterardadrys@duck.com</p>
     <p>Uppsala, Sweden, 2026</p>
-    <p>Pre-beta v1.03 — updated 4 August 2026</p>
+    <p>Pre-beta v1.04 — updated 4 August 2026</p>
 </footer>
 
 <script src="foods-data.js"></script>
 <script src="nutrition-data.js"></script>
+<script src="nutrition-manual.js"></script>
 <script src="save-load.js"></script>
 <script src="disclaimer.js"></script>
 <script src="nav.js"></script>

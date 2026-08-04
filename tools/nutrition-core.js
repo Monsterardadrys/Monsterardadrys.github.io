@@ -8,6 +8,11 @@
     Matching is not done here: it is the audit's, from lmv-core.js, so a food
     gets figures only where the match has already been confirmed by hand in
     lmv-aliases.json. Nothing is guessed and nothing is matched twice.
+
+    Hand-entered figures from nutrition-manual.js are merged in for the foods
+    Livsmedelsverket does not cover. Livsmedelsverket always wins where both
+    have a figure — one national table applied consistently beats a mixture,
+    and the manual file exists to fill gaps, not to override.
 */
 
 (function (root) {
@@ -35,16 +40,38 @@
         absent list never had a record to read, so they come out with nothing
         and every page reading the file has to cope with that.
     */
-    function build(result, ourCount, sourceName) {
+    function build(result, ourCount, sourceName, manual) {
         const matched = result.clean.concat(result.disagreements);
 
         const rows = [];
         const empty = [];
+        const fromLmv = {};
         matched.forEach(function (m) {
             const values = valuesFrom(m.record);
-            if (values) rows.push({ name: m.food.name, values: values });
-            else empty.push(m.food.name);
+            if (values) {
+                rows.push({ name: m.food.name, src: "lmv", values: values });
+                fromLmv[m.food.name] = true;
+            } else {
+                empty.push(m.food.name);
+            }
         });
+
+        // Gaps only. A food Livsmedelsverket covers keeps its figure.
+        let manualUsed = 0;
+        Object.keys(manual || {}).forEach(function (name) {
+            if (fromLmv[name]) return;
+            const entry = manual[name];
+            if (!entry || !entry.values) return;
+            const values = {};
+            KEEP.forEach(function (k) {
+                const v = entry.values[k];
+                if (typeof v === "number" && !isNaN(v)) values[k] = round(v);
+            });
+            if (!Object.keys(values).length) return;
+            rows.push({ name: name, src: entry.src || "manual", values: values });
+            manualUsed += 1;
+        });
+
         rows.sort(function (a, b) { return a.name.localeCompare(b.name); });
 
         const lines = [];
@@ -55,14 +82,16 @@
         lines.push("     node tools/build-nutrition.js <export-file>");
         lines.push("     tools/build-nutrition.html   (works on a phone)");
         lines.push("");
-        lines.push("   Source: Livsmedelsverket's food database, matched food by food through");
+        lines.push("   Mostly Livsmedelsverket's food database, matched food by food through");
         lines.push("   tools/lmv-aliases.json — the same confirmed matches the audit uses. A");
-        lines.push("   food appears here only if its match was confirmed by hand.");
+        lines.push("   food appears from there only if its match was confirmed by hand. The");
+        lines.push("   rest come from nutrition-manual.js, which records a source per food;");
+        lines.push("   `src` on each line below says which.");
         lines.push("");
-        lines.push("   " + rows.length + " of " + ourCount + " foods have figures. The rest either have no");
-        lines.push("   Livsmedelsverket entry (see tools/lmv-absent.json) or were not matched in");
-        lines.push("   this export, so every page reading this has to cope with a food that is");
-        lines.push("   simply missing.");
+        lines.push("   " + rows.length + " of " + ourCount + " foods have figures — " +
+            (rows.length - manualUsed) + " from Livsmedelsverket, " + manualUsed + " entered by");
+        lines.push("   hand. The rest have none, and the meal builder will not let them into a");
+        lines.push("   meal.");
         lines.push("");
         lines.push("   Built from: " + sourceName);
         lines.push("   ========================================================================= */");
@@ -71,8 +100,8 @@
         rows.forEach(function (row, i) {
             const parts = KEEP.filter(function (k) { return row.values[k] != null; })
                 .map(function (k) { return k + ": " + row.values[k]; });
-            lines.push('  "' + row.name.replace(/"/g, '\\"') + '": { ' + parts.join(", ") + " }" +
-                (i === rows.length - 1 ? "" : ","));
+            lines.push('  "' + row.name.replace(/"/g, '\\"') + '": { src: "' + row.src +
+                '", ' + parts.join(", ") + " }" + (i === rows.length - 1 ? "" : ","));
         });
         lines.push("};");
         lines.push("");
@@ -81,6 +110,7 @@
             text: lines.join("\n"),
             rows: rows,
             empty: empty,
+            manualUsed: manualUsed,
             skipped: result.skipped.length,
             unmatched: result.unmatched.map(function (f) { return f.name; })
         };

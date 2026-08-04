@@ -25,6 +25,14 @@ function loadFoods() {
     return LMV.flattenCategories(CATEGORIES);
 }
 
+// The hand-entered figures, if any. Same file the browser builder reads.
+function loadManual() {
+    const p = path.join(ROOT, "nutrition-manual.js");
+    if (!fs.existsSync(p)) return {};
+    const src = fs.readFileSync(p, "utf8");
+    return new Function(src + "; return NUTRITION_MANUAL;")() || {};
+}
+
 function loadMap(name) {
     const p = path.join(__dirname, name);
     if (!fs.existsSync(p)) return {};
@@ -52,12 +60,14 @@ function main() {
 
     load.then(function (lmv) {
         const result = LMV.runAudit(ours, lmv, aliases, swedish, absent);
-        const built = NutritionCore.build(result, ours.length, path.basename(file));
+        const manual = loadManual();
+        const built = NutritionCore.build(result, ours.length, path.basename(file), manual);
 
         fs.writeFileSync(OUT, built.text, "utf8");
 
         console.log("Nutrients detected: " + Object.keys(result.detected).join(", "));
-        console.log("Wrote " + built.rows.length + " of " + ours.length + " foods to nutrition-data.js");
+        console.log("Wrote " + built.rows.length + " of " + ours.length + " foods to nutrition-data.js" +
+            " (" + built.manualUsed + " from nutrition-manual.js)");
         console.log("No Livsmedelsverket entry: " + built.skipped);
         if (built.unmatched.length) {
             console.log("Unmatched (no figures, and not on the absent list): " + built.unmatched.length);

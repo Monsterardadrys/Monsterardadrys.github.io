@@ -1333,7 +1333,6 @@ const CATEGORIES = [
       { name: "Plant-based Mince", lmv: "Sojaprotein färs stekt", portion: 125, traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "allergen_soy"] },
       { name: "Quorn", lmv: "Mykoprotein bullar frysvara", lmvNote: "mycoprotein balls — plain pieces are not listed", portion: 125, traits: ["protein", "allergen_egg", "allergen_mushroom"] },
       { name: "Veggie Burger (vegetable-based)", lmv: "Grönsaksburgare stekt veg.", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "fodmaps", "galactans"] },
-      { name: "Pea Protein Powder", portion: 25, traits: ["protein"] },
       { name: "Aquafaba", portion: 25, traits: ["fodmaps", "galactans"] },
     ]
   },
@@ -1374,7 +1373,6 @@ const CATEGORIES = [
       { name: "Garlic-infused Oil", portion: 10, traits: ["over_10g_fat", "bile_stimulant"] },
       { name: "Peanut Butter", lmv: "Jordnötssmör", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen_peanut", "cross_reactive", "cross_grass"] },
       { name: "Agave Syrup", portion: 25, traits: ["fodmaps", "fructose", "refined_carbs"] },
-      { name: "Erythritol Sweetener", portion: 5, traits: ["fodmaps", "polyols"] },
       { name: "Nutritional Yeast", lmv: "Näringsjäst", portion: 5, traits: [] }
     ]
   },
