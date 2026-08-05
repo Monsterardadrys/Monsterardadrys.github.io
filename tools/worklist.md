@@ -44,9 +44,11 @@ change belongs in both.
 
 **Three tools, one data file** — the app (what do these foods share), the meal
 builder (what is this meal loaded with) and Foods without (what carries none of
-these). All three build their food lists and trait pickers from `foods-data.js`;
-the shared pieces are `trait-foods.js` (lists and the trait picker),
-`disclaimer.js` and `save-load.js`.
+these). Everything shared lives in one place: `food-picker.js` (the category
+boxes and their search, in the app's tick mode and the meal builder's tap-to-add
+mode), `trait-foods.js` (the trait picker and the "which foods carry this"
+lists), `session.js`, `save-load.js`, `disclaimer.js` and `print.js`. None of
+them hardcodes a food, a category or a trait.
 
 **One session across three tools** — `session.js` keeps the app's selection,
 every meal and the traits picked in Foods without in this browser's local

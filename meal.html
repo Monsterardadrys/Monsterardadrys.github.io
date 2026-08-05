@@ -63,7 +63,7 @@
         <div class="navOverlay" id="navOverlay"></div>
     </header>
 
-    <div class="disclaimerBar" data-lock="mealBuilder mealActions mealResults">
+    <div class="disclaimerBar" data-lock="mealBuilder mealPickerBox mealActions mealResults">
         <label class="disclaimerCheck">
             <input type="checkbox" id="disclaimerCheckbox">
             I have read and understood the disclaimer
@@ -115,10 +115,10 @@
             <h2>Build a meal and see what it is loaded with.</h2>
             <ol class="stepsList">
                 <li>
-                    <span class="stepTitle">Add foods with their weights.</span>
-                    <span class="stepDetail">Type a food, give it a weight in grams, add it to the meal.
-                        Only foods with nutrient figures on file can go in — a meal is reported in grams,
-                        and a food with no numbers would look like it counted.</span>
+                    <span class="stepTitle">Tap foods to add them.</span>
+                    <span class="stepDetail">Each one arrives with its standard serving, which you can
+                        change. Only foods with nutrient figures on file are offered — a meal is reported
+                        in grams, and a food with no numbers would look like it counted.</span>
                 </li>
                 <li>
                     <span class="stepTitle">Add more meals if you want to compare.</span>
@@ -148,6 +148,19 @@
 
     <div id="mealBuilder" class="noPrint"></div>
 
+    <!-- The same category boxes and search the app uses — see food-picker.js.
+         Adds to whichever meal is chosen above. -->
+    <div class="mealPickerBox noPrint" id="mealPickerBox">
+        <h2>Add a food</h2>
+        <div class="searchContainer" id="searchContainer">
+            <input type="text" id="search" placeholder="Filter food list...">
+            <button class="showAllButton" id="showAllButton" type="button">Show all</button>
+        </div>
+        <p class="mealPickerHint">Tap a food to add it to <strong id="mealPickerTarget">Meal 1</strong>
+            with its standard serving. Change the weight afterwards if you like.</p>
+        <div class="topSection" id="foodPicker"></div>
+    </div>
+
     <div class="mealActions noPrint" id="mealActions">
         <button class="button2" id="addMealButton" type="button">Add meal</button>
         <button class="button2" id="saveMealsButton" type="button">Save to file</button>
@@ -162,8 +175,6 @@
         <!-- populated by meal.js -->
     </div>
 
-    <!-- Every food in the database, for the add-food inputs -->
-    <datalist id="foodOptions"></datalist>
 
     <!-- Repeats at the foot of every printed page, so loose sheets in a file
          can be told apart. Browsers cannot number printed pages — there is no
@@ -177,12 +188,13 @@
     <p>Did you find any errors or have ideas for improvement?</p>
     <p>Email: Monsterardadrys@duck.com</p>
     <p>Uppsala, Sweden, 2026</p>
-    <p>Pre-beta v1.07 — updated 4 August 2026</p>
+    <p>Pre-beta v1.08 — updated 5 August 2026</p>
 </footer>
 
 <script src="foods-data.js"></script>
 <script src="nutrition-data.js"></script>
 <script src="nutrition-manual.js"></script>
+<script src="food-picker.js"></script>
 <script src="save-load.js"></script>
 <script src="disclaimer.js"></script>
 <script src="session.js"></script>
