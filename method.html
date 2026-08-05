@@ -199,6 +199,38 @@
                     classifications rather than a gram cutoff: allergens, oral allergy syndrome, GI irritants,
                     and FODMAPs (Monash University classifications).</p>
 
+                <h3>FODMAPs: the one categorical family that gained a dose</h3>
+
+                <p>The split above — a dose where a dose exists, plain presence where it does not — put
+                    FODMAPs on the categorical side, and the tag stays there. Monash publishes a traffic
+                    light, not a gram figure per subtype, so "this food carries fructans" is what the
+                    database can honestly hold about a single food.</p>
+
+                <p>What Monash does publish is a serving size: the largest amount of a food that still
+                    rates low. That is a dose, just not one that fits a per-100g threshold like fat or
+                    fiber. It only starts meaning something once several foods are on the same plate, which
+                    is why it went into the meal builder and not into the analysis of a selection. Grams
+                    eaten over the low serving is a food's share of one serving, and the shares add up:
+                    four foods at half a serving each are two servings, not four low-FODMAP foods. Stacking
+                    is a routine reason a carefully low-FODMAP week still produces symptoms, and it is
+                    invisible to a tool that looks at one food at a time.</p>
+
+                <p>Three things can be true of a food and each is reported rather than folded into the
+                    number. It may have no low serving at all — onion and garlic — in which case there is
+                    nothing to divide by and the food is named, with the totals declared a floor. It may
+                    have no serving on file yet, in which case it is left out and counted in the coverage
+                    line, never treated as a zero. Or it may carry two subtypes, in which case its share
+                    counts towards both: the serving was set by whichever subtype was limiting, and the
+                    published data does not say which, so the other one is overstated. Naming that is
+                    cheaper than pretending to a precision the source does not have.</p>
+
+                <p>The figures live in <code>fodmap-data.js</code>, hand-entered with a source, in the same
+                    spirit as <code>nutrition-manual.js</code>. There is no bulk export from Monash, so this
+                    table will always be typed in rather than built, and it will always be partial before it
+                    is complete. It covers about a third of the FODMAP foods that can go in a meal, and
+                    every figure still needs checking against the current app: serving sizes are revised as
+                    foods are re-tested, and a stale figure looks exactly like a fresh one.</p>
+
                 <h3>Allergens: the EU list, minus one, plus two</h3>
 
                 <p>The allergen list follows EU labelling law: cereals containing gluten, milk, egg, fish,
@@ -295,7 +327,7 @@
 
     <footer>
         <p>Food composition data from Livsmedelsverket, used under CC BY 4.0.</p>
-        <p>Pre-beta v1.08 — updated 5 August 2026</p>
+        <p>Pre-beta v1.09 — updated 5 August 2026</p>
     </footer>
 
     <script src="session.js"></script>

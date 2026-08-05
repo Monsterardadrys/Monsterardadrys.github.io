@@ -147,6 +147,7 @@ const NEEDS = [
   [/rel="manifest"/, "pwa.js"],
   [/id="traitPicker"/, "trait-foods.js"],
   [/id="mealBuilder"/, "nutrition-data.js"],
+  [/id="mealBuilder"/, "fodmap-data.js"],
   [/SaveLoad|id="saveMealsButton"|id="saveSelectionButton"/, "save-load.js"]
 ];
 

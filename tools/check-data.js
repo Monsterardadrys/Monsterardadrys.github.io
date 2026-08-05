@@ -166,9 +166,57 @@ foods.forEach(function (food) {
   });
 });
 
+/* ---- The FODMAP serving table ---------------------------------------------
+   fodmap-data.js is hand-entered, so the two ways it can rot are a food that
+   has been renamed out from under it and a serving on a food that carries no
+   FODMAP tag. Coverage is reported as a count rather than a fault: the table
+   is meant to be partial, and the meal builder says which foods it could not
+   take. */
+const { FODMAP_SERVES, FODMAP_SOURCES } = new Function(
+  fs.readFileSync(path.join(root, "fodmap-data.js"), "utf8") +
+  "; return { FODMAP_SERVES, FODMAP_SOURCES };")();
+
+const byName = {};
+foods.forEach(function (food) { byName[food.name] = food; });
+
+const FODMAP_TYPE_IDS = Object.keys(TRAITS).filter(function (id) {
+  return TRAITS[id].group === "FODMAPs";
+});
+
+function carriesFodmap(food) {
+  return food.traits.indexOf("fodmaps") !== -1 ||
+    FODMAP_TYPE_IDS.some(function (id) { return food.traits.indexOf(id) !== -1; });
+}
+
+Object.keys(FODMAP_SERVES).forEach(function (name) {
+  const entry = FODMAP_SERVES[name];
+  const food = byName[name];
+  if (!food) {
+    faults.push("fodmap-data.js holds a serving for \"" + name + "\", which is not a food");
+    return;
+  }
+  if (!carriesFodmap(food)) {
+    faults.push(name + " has a low-FODMAP serving but carries no FODMAP trait");
+  }
+  if (typeof entry.low !== "number" || entry.low < 0) {
+    faults.push(name + " has a low-FODMAP serving that is not a number of grams");
+  }
+  if (!entry.src || !FODMAP_SOURCES[entry.src]) {
+    faults.push(name + " has a low-FODMAP serving with no known source");
+  }
+});
+
+const fodmapFoods = foods.filter(carriesFodmap);
+const withServe = fodmapFoods.filter(function (f) { return FODMAP_SERVES[f.name]; });
+const inMeals = fodmapFoods.filter(function (f) { return NUTRITION[f.name]; });
+const inMealsWithServe = inMeals.filter(function (f) { return FODMAP_SERVES[f.name]; });
+
 // ---- Report --------------------------------------------------------------
 console.log(foods.length + " foods, " + Object.keys(TRAITS).length + " traits, " +
   checkedAgainstFigures + " checked against nutrition-data.js");
+console.log(fodmapFoods.length + " FODMAP foods, " + withServe.length +
+  " with a low-FODMAP serving (" + inMealsWithServe.length + " of the " +
+  inMeals.length + " that can go in a meal)");
 
 if (warnings.length) {
   console.log("\nWarnings (" + warnings.length + ")");
