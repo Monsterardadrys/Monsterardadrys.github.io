@@ -1975,3 +1975,7 @@ footer p { color: var(--linen); }
     border-radius: 6px;
     background: var(--paper);
 }
+
+.mealCompare th:first-child { min-width: 9rem; }
+.mealCompare td { white-space: nowrap; }
+.mealCompareAbsent { color: #8a908b; }

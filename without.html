@@ -112,6 +112,9 @@
                 still cause you symptoms for a reason this tool does not track, and a list built by removing
                 things can easily leave out something you need. Take it to a dietitian before you change
                 what you eat.</p>
+            <p class="noSaveWarning"><strong>Kept in this browser, on this device.</strong> The traits you
+                pick stay here between visits. Nothing is sent anywhere. <em>Clear local data</em> in the
+                menu removes it.</p>
         </div>
     </div>
 
@@ -121,6 +124,8 @@
 
     <div class="withoutActions noPrint" id="withoutActions">
         <button class="button2" id="clearTraitsButton" type="button">Clear</button>
+        <button class="button2" id="saveSessionButton" type="button">Save to file</button>
+        <button class="button2" id="loadSessionButton" type="button">Load from file</button>
         <button class="button2" id="printWithoutButton" type="button">Print list</button>
     </div>
 
@@ -134,6 +139,8 @@
             this information.</em></p>
         <p class="printStamp" id="printStamp"></p>
     </div>
+
+    <p class="mealError" id="withoutError" hidden></p>
 
     <div class="withoutResults" id="withoutResults">
         <!-- populated by without.js -->
@@ -151,12 +158,14 @@
     <p>Did you find any errors or have ideas for improvement?</p>
     <p>Email: Monsterardadrys@duck.com</p>
     <p>Uppsala, Sweden, 2026</p>
-    <p>Pre-beta v1.06 — updated 4 August 2026</p>
+    <p>Pre-beta v1.07 — updated 4 August 2026</p>
 </footer>
 
 <script src="foods-data.js"></script>
 <script src="trait-foods.js"></script>
+<script src="save-load.js"></script>
 <script src="disclaimer.js"></script>
+<script src="session.js"></script>
 <script src="nav.js"></script>
 <script src="pwa.js"></script>
 <script src="print.js"></script>

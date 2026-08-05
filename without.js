@@ -31,6 +31,7 @@
 
   function render() {
     const traitIds = selectedTraits();
+    Session.set("without", { traits: traitIds });
     results.innerHTML = "";
 
     if (!traitIds.length) {
@@ -91,6 +92,46 @@
 
   printButton.addEventListener("click", function () { window.print(); });
 
+  /* A saved file is a snapshot of all three tools, not just this one — see
+     session.js. Loading one here restores the picked traits and leaves the
+     app's selection and any meals waiting on their own pages. */
+  const errorBox = document.getElementById("withoutError");
+
+  function showError(message) {
+    errorBox.textContent = message;
+    errorBox.hidden = !message;
+  }
+
+  document.getElementById("saveSessionButton").addEventListener("click", function () {
+    showError("");
+    SaveLoad.save("session", Session.snapshot(), "food-intolerance-guide");
+  });
+
+  document.getElementById("loadSessionButton").addEventListener("click", function () {
+    SaveLoad.load("session", function (data) {
+      Session.restore(data);
+      const wanted = new Set((data.without && data.without.traits) || []);
+      picker.querySelectorAll("input[type='checkbox']").forEach(function (cb) {
+        cb.checked = wanted.has(cb.value);
+      });
+      showError(wanted.size
+        ? ""
+        : "Loaded. That file had no traits picked here — anything it held for the " +
+          "other tools is waiting on their pages.");
+      render();
+    }, showError);
+  });
+
   TraitFoods.renderPicker(picker, render);
+
+  // What was picked last time, kept in this browser — see session.js.
+  const remembered = Session.get("without");
+  if (remembered && Array.isArray(remembered.traits)) {
+    const wanted = new Set(remembered.traits);
+    picker.querySelectorAll("input[type='checkbox']").forEach(function (cb) {
+      cb.checked = wanted.has(cb.value);
+    });
+  }
+
   render();
 })();

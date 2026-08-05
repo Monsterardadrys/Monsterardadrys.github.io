@@ -60,6 +60,8 @@
   }
 
   // ---- State -------------------------------------------------------------
+  // Kept in this browser between visits, so a trip to the app and back does
+  // not cost you the meal — see session.js.
   let meals = [{ name: "Meal 1", items: [] }];
 
   function showError(message) {
@@ -633,6 +635,133 @@
     container.appendChild(section);
   }
 
+  /* ---- Side by side ------------------------------------------------------
+     Rows are what varies, columns are the meals. Nutrients in grams, then
+     the amount-based traits in servings, then a tick for every categorical
+     trait any of the meals carries — that last table is where "I left the
+     cream out" actually shows. */
+  function comparisonTable(headings, rows) {
+    const table = document.createElement("table");
+    table.className = "mealTable mealCompare";
+
+    const head = document.createElement("tr");
+    headings.forEach(function (text) {
+      const th = document.createElement("th");
+      th.textContent = text;
+      head.appendChild(th);
+    });
+    table.appendChild(head);
+
+    rows.forEach(function (row) {
+      const tr = document.createElement("tr");
+      const label = document.createElement("th");
+      label.textContent = row.label;
+      tr.appendChild(label);
+      row.cells.forEach(function (cell) {
+        const td = document.createElement("td");
+        td.textContent = cell;
+        if (cell === "—") td.className = "mealCompareAbsent";
+        tr.appendChild(td);
+      });
+      table.appendChild(tr);
+    });
+
+    const wrap = document.createElement("div");
+    wrap.className = "tableScroll";
+    wrap.appendChild(table);
+    return wrap;
+  }
+
+  function renderComparison(container, filled) {
+    const section = document.createElement("section");
+    section.className = "mealAnalysis";
+
+    const h2 = document.createElement("h2");
+    h2.textContent = "Side by side";
+    section.appendChild(h2);
+
+    const headings = ["", ].concat(filled.map(function (meal) { return meal.name; }));
+    const tallies = filled.map(function (meal) { return tally(meal.items); });
+
+    const weights = {
+      label: "Total weight",
+      cells: filled.map(function (meal) { return totalGrams(meal.items) + " g"; })
+    };
+
+    // ---- Nutrients, where we have figures for the whole meal
+    if (haveNutrition()) {
+      const totals = filled.map(function (meal) { return nutrientTotals(meal.items); });
+      const rows = [weights];
+      NUTRIENTS.forEach(function (nutrient) {
+        const cells = totals.map(function (t) {
+          return t.totals[nutrient.key] == null ? "—" : fmt(t.totals[nutrient.key]) + " g";
+        });
+        if (cells.some(function (c) { return c !== "—"; })) {
+          rows.push({ label: nutrient.label, cells: cells });
+        }
+      });
+
+      const h3 = document.createElement("h3");
+      h3.textContent = "Nutrients";
+      section.appendChild(h3);
+      section.appendChild(comparisonTable(headings, rows));
+
+      const short = totals.filter(function (t) { return t.uncovered.length; });
+      if (short.length) {
+        const note = document.createElement("p");
+        note.className = "mealCoverage";
+        note.textContent = "Some foods have no figures on file, so those columns are short: " +
+          joinList(short.reduce(function (all, t) { return all.concat(t.uncovered); }, [])) + ".";
+        section.appendChild(note);
+      }
+    } else {
+      section.appendChild(comparisonTable(headings, [weights]));
+    }
+
+    // ---- Amount-based traits, in servings
+    const dosedIds = Object.keys(TRAITS).filter(function (id) {
+      return TRAITS[id].dose && tallies.some(function (t) { return t[id]; });
+    });
+    if (dosedIds.length) {
+      const h3 = document.createElement("h3");
+      h3.textContent = "Measured by amount, in servings";
+      section.appendChild(h3);
+      section.appendChild(comparisonTable(headings, dosedIds.map(function (id) {
+        return {
+          label: TRAITS[id].label,
+          cells: tallies.map(function (t) { return t[id] ? fmt(t[id].servings) : "—"; })
+        };
+      })));
+    }
+
+    // ---- Categorical traits, present or not
+    const presentIds = Object.keys(TRAITS).filter(function (id) {
+      return !TRAITS[id].dose && tallies.some(function (t) { return t[id]; });
+    });
+    if (presentIds.length) {
+      const h3 = document.createElement("h3");
+      h3.textContent = "Present in the meal";
+      section.appendChild(h3);
+      section.appendChild(comparisonTable(headings, presentIds.map(function (id) {
+        return {
+          label: TRAITS[id].label,
+          cells: tallies.map(function (t) {
+            return t[id] ? "in " + ingredients(t[id].count) : "—";
+          })
+        };
+      })));
+    }
+
+    const note = document.createElement("p");
+    note.className = "traitFoodsNote";
+    note.textContent = "The meals are compared, not added together: two meals side by side " +
+      "answer what changed, which a total would hide. Servings are servings of " +
+      "trait-carrying food, not grams of anything.";
+    section.appendChild(note);
+
+    container.appendChild(section);
+  }
+
   function renderResults() {
     results.innerHTML = "";
 
@@ -640,17 +769,14 @@
       renderAnalysis(results, meal.name, meal.items);
     });
 
-    // A combined view only says something the single meals do not once there
-    // is more than one meal with food in it.
+    // Two meals are built to be compared, not added up: the question is what
+    // changed, and a total hides exactly that.
     const filled = meals.filter(function (meal) { return meal.items.length; });
-    if (filled.length > 1) {
-      const all = [];
-      filled.forEach(function (meal) { all.push.apply(all, meal.items); });
-      renderAnalysis(results, "All meals together", all);
-    }
+    if (filled.length > 1) renderComparison(results, filled);
   }
 
   function render() {
+    Session.set("meals", meals);
     renderBuilder();
     renderResults();
   }
@@ -673,13 +799,14 @@
 
   document.getElementById("saveMealsButton").addEventListener("click", function () {
     showError("");
-    SaveLoad.save("meals", { meals: meals }, "meals");
+    SaveLoad.save("session", Session.snapshot(), "food-intolerance-guide");
   });
 
   document.getElementById("loadMealsButton").addEventListener("click", function () {
-    SaveLoad.load("meals", function (data) {
+    SaveLoad.load("session", function (data) {
+      Session.restore(data);
       if (!Array.isArray(data.meals) || !data.meals.length) {
-        showError("That file holds no meals.");
+        showError("That file holds no meals. Anything else in it has been restored.");
         return;
       }
       // Keep only what this tool understands, and only foods it still has.
@@ -701,6 +828,9 @@
       render();
     }, showError);
   });
+
+  const remembered = Session.get("meals");
+  if (Array.isArray(remembered) && remembered.length) meals = remembered;
 
   render();
 })();
