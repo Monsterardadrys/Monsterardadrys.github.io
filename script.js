@@ -34,91 +34,14 @@
   // The disclaimer bar and popup live in disclaimer.js — shared with
   // without.html, which needs exactly the same behaviour.
 
-  // ---- Build the food category boxes from CATEGORIES / CATEGORY_GROUPS --
-  function renderCategories() {
-    function renderCategoryBox(container, category) {
-      const box = document.createElement("div");
-      box.className = "foodBox";
-
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "button";
-      button.textContent = category.label;
-
-      const group = document.createElement("div");
-      group.className = "foodGroup";
-
-      category.foods.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (food) {
-        const label = document.createElement("label");
-        label.className = "checkboxStyle";
-        label.dataset.traits = food.traits.join(" ");
-
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.value = food.name;
-        checkbox.addEventListener("change", recompute);
-
-        label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(food.name));
-        group.appendChild(label);
-      });
-
-      button.addEventListener("click", function () {
-        group.classList.toggle("open");
-      });
-
-      box.appendChild(button);
-      box.appendChild(group);
-      container.appendChild(box);
-    }
-
-    const byId = {};
-    CATEGORIES.forEach(function (category) { byId[category.id] = category; });
-    const placedIds = new Set();
-
-    CATEGORY_GROUPS.forEach(function (categoryGroup) {
-      const categories = categoryGroup.categories
-        .map(function (id) { return byId[id]; })
-        .filter(Boolean);
-      if (categories.length === 0) return;
-
-      const section = document.createElement("div");
-      section.className = "categoryGroup";
-
-      const title = document.createElement("p");
-      title.className = "categoryGroupTitle";
-      title.textContent = categoryGroup.title;
-      section.appendChild(title);
-
-      const row = document.createElement("div");
-      row.className = "categoryGroupRow";
-      categories.forEach(function (category) {
-        placedIds.add(category.id);
-        renderCategoryBox(row, category);
-      });
-      section.appendChild(row);
-
-      topSection.appendChild(section);
-    });
-
-    const leftover = CATEGORIES.filter(function (category) { return !placedIds.has(category.id); });
-    if (leftover.length > 0) {
-      const section = document.createElement("div");
-      section.className = "categoryGroup";
-
-      const title = document.createElement("p");
-      title.className = "categoryGroupTitle";
-      title.textContent = "Other";
-      section.appendChild(title);
-
-      const row = document.createElement("div");
-      row.className = "categoryGroupRow";
-      leftover.forEach(function (category) { renderCategoryBox(row, category); });
-      section.appendChild(row);
-
-      topSection.appendChild(section);
-    }
-  }
+  // ---- The food category boxes and their search --------------------------
+  // Shared with the meal builder — see FoodPicker in food-picker.js.
+  const picker = FoodPicker.create({
+    container: topSection,
+    searchInput: searchField,
+    mode: "check",
+    onChange: recompute
+  });
 
   // ---- Build the filter checkboxes ---------------------------------------
   // Shared with the "foods without" page — see renderPicker in trait-foods.js.
@@ -690,54 +613,12 @@
     window.print();
   });
 
-  // ---- Search / show-all -------------------------------------------------
-  function showAllCategories() {
-    topSection.querySelectorAll(".foodGroup").forEach(function (group) {
-      group.classList.add("open");
-    });
-  }
-
-  function hideAllCategories() {
-    topSection.querySelectorAll(".foodGroup").forEach(function (group) {
-      group.classList.remove("open");
-    });
-  }
-
-  function runSearch() {
-    const filter = searchField.value.toUpperCase();
-    let found = false;
-    showAllCategories();
-
-    const checkboxes = topSection.querySelectorAll("input[type='checkbox']");
-    checkboxes.forEach(function (checkbox) {
-      const matches = checkbox.value.toUpperCase().indexOf(filter) > -1;
-      if (matches) found = true;
-      checkbox.closest("label").style.display = matches ? "" : "none";
-    });
-
-    if (!found) {
-      checkboxes.forEach(function (checkbox) {
-        checkbox.closest("label").style.display = "";
-      });
-    }
-
-    searchField.value = "";
-  }
-
-  searchButton.addEventListener("click", runSearch);
-
-  searchField.addEventListener("keydown", function (e) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      runSearch();
-    }
-  });
+  searchButton.addEventListener("click", function () { picker.search(searchField.value); });
 
   showAllButton.addEventListener("click", function () {
-    topSection.querySelectorAll("label").forEach(function (label) {
-      label.style.display = "";
-    });
-    showAllCategories();
+    searchField.value = "";
+    picker.clearSearch();
+    picker.showAll();
   });
 
   // ---- Clear selection (Foods / Filter / All) -----------------------------
@@ -755,11 +636,11 @@
 
   restartButton.addEventListener("click", function () {
     if (!window.confirm("Clear everything — foods, filters, and search?")) return;
-    topSection.querySelectorAll("input[type='checkbox']").forEach(function (cb) { cb.checked = false; });
+    picker.setValues([]);
     filterContainer.querySelectorAll("input[type='checkbox']").forEach(function (cb) { cb.checked = false; });
-    topSection.querySelectorAll("label").forEach(function (label) { label.style.display = ""; });
     searchField.value = "";
-    hideAllCategories();
+    picker.clearSearch();
+    picker.hideAll();
     recompute();
     document.getElementById("chosenFoods").scrollIntoView({ behavior: "smooth", block: "start" });
   });
@@ -808,29 +689,19 @@
           missingFoods.join(", ")
         : "");
 
-      // Open the categories holding anything that was just ticked, so a
-      // loaded selection is visible rather than hidden behind closed boxes.
-      hideAllCategories();
-      topSection.querySelectorAll("input[type='checkbox']:checked").forEach(function (cb) {
-        const group = cb.closest(".foodGroup");
-        if (group) group.classList.add("open");
-      });
+      picker.revealChecked();
       recompute();
     }, showSaveError);
   });
 
   // ---- Boot ----------------------------------------------------------------
-  renderCategories();
   renderFilters();
 
   const remembered = Session.get("app");
   if (remembered) {
-    applyValues(topSection, remembered.foods || []);
+    picker.setValues(remembered.foods || []);
     applyValues(filterContainer, remembered.filters || []);
-    topSection.querySelectorAll("input[type='checkbox']:checked").forEach(function (cb) {
-      const group = cb.closest(".foodGroup");
-      if (group) group.classList.add("open");
-    });
+    picker.revealChecked();
   }
 
   recompute();

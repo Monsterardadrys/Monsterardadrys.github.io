@@ -27,7 +27,6 @@
   const builder = document.getElementById("mealBuilder");
   const results = document.getElementById("mealResults");
   const errorBox = document.getElementById("mealError");
-  const datalist = document.getElementById("foodOptions");
 
   // ---- The food index ----------------------------------------------------
   const FOODS = {};
@@ -48,12 +47,6 @@
     return !haveNutrition() || Boolean(NUTRITION[name]);
   }
 
-  Object.keys(FOODS).sort().forEach(function (name) {
-    if (!hasFigures(name)) return;
-    const option = document.createElement("option");
-    option.value = name;
-    datalist.appendChild(option);
-  });
 
   function haveNutrition() {
     return typeof NUTRITION !== "undefined" && Object.keys(NUTRITION).length > 0;
@@ -63,6 +56,10 @@
   // Kept in this browser between visits, so a trip to the app and back does
   // not cost you the meal — see session.js.
   let meals = [{ name: "Meal 1", items: [] }];
+
+  // A tap in the picker has to land somewhere, so one meal is always the
+  // active one. It is the last one touched, and named above the picker.
+  let activeMeal = 0;
 
   function showError(message) {
     errorBox.textContent = message;
@@ -256,6 +253,11 @@
     meals.forEach(function (meal, index) {
       const card = document.createElement("section");
       card.className = "mealCard";
+      card.addEventListener("click", function () {
+        if (activeMeal === index) return;
+        activeMeal = index;
+        render();
+      });
 
       const head = document.createElement("div");
       head.className = "mealCardHead";
@@ -263,6 +265,7 @@
       const nameInput = document.createElement("input");
       nameInput.type = "text";
       nameInput.className = "mealName";
+      if (index === activeMeal) card.classList.add("mealCard--active");
       nameInput.value = meal.name;
       nameInput.setAttribute("aria-label", "Meal name");
       nameInput.addEventListener("input", function () { meal.name = nameInput.value; });
@@ -276,13 +279,15 @@
       copyMeal.type = "button";
       copyMeal.className = "mealRemove";
       copyMeal.textContent = "Duplicate";
-      copyMeal.addEventListener("click", function () {
+      copyMeal.addEventListener("click", function (e) {
+        e.stopPropagation();
         meals.splice(index + 1, 0, {
           name: meal.name + " (copy)",
           items: meal.items.map(function (item) {
             return { food: item.food, grams: item.grams };
           })
         });
+        activeMeal = index + 1;
         render();
       });
       head.appendChild(copyMeal);
@@ -292,8 +297,10 @@
         removeMeal.type = "button";
         removeMeal.className = "mealRemove";
         removeMeal.textContent = "Remove";
-        removeMeal.addEventListener("click", function () {
+        removeMeal.addEventListener("click", function (e) {
+          e.stopPropagation();
           meals.splice(index, 1);
+          if (activeMeal >= meals.length) activeMeal = meals.length - 1;
           render();
         });
         head.appendChild(removeMeal);
@@ -363,83 +370,25 @@
         card.appendChild(list);
       }
 
-      // ---- Add a food to this meal
-      const addRow = document.createElement("div");
-      addRow.className = "mealAddRow";
-
-      const foodInput = document.createElement("input");
-      foodInput.type = "text";
-      foodInput.className = "mealAddFood";
-      foodInput.setAttribute("list", "foodOptions");
-      foodInput.placeholder = "Food";
-      foodInput.setAttribute("aria-label", "Food to add");
-      addRow.appendChild(foodInput);
-
-      const gramsInput = document.createElement("input");
-      gramsInput.type = "number";
-      gramsInput.min = "1";
-      gramsInput.className = "mealAddGrams";
-      gramsInput.placeholder = "g";
-      gramsInput.setAttribute("aria-label", "Grams");
-      addRow.appendChild(gramsInput);
-
-      const addButton = document.createElement("button");
-      addButton.type = "button";
-      addButton.className = "button2 mealAddButton";
-      addButton.textContent = "Add";
-      addRow.appendChild(addButton);
-
-      /* Picking a food fills in its standard serving, so the common case is
-         one tap and the unusual one is a number you overwrite. Stops as soon
-         as the weight has been touched by hand — guessing over someone's own
-         figure would be worse than not guessing at all. */
-      let gramsTouched = false;
-      gramsInput.addEventListener("input", function () { gramsTouched = true; });
-
-      foodInput.addEventListener("input", function () {
-        if (gramsTouched) return;
-        const food = FOODS[foodInput.value.trim()];
-        gramsInput.value = food && food.portion ? food.portion : "";
-      });
-
-      function addFood() {
-        const name = foodInput.value.trim();
-        if (!name) return;
-        const food = FOODS[name];
-        if (!food) {
-          showError('"' + name + '" is not in this database. Start typing to pick from the list.');
-          return;
-        }
-        if (!hasFigures(name)) {
-          showError('"' + name + '" has no nutrient figures on file, so a meal holding it ' +
-            "could not be totalled. It is still in the main app and in Foods without.");
-          return;
-        }
-        // No weight given: fall back to the food's own standard serving.
-        const typed = parseInt(gramsInput.value, 10);
-        const grams = typed > 0 ? typed : food.portion;
-        showError("");
-        gramsTouched = false;
-        meal.items.push({ food: name, grams: grams });
-        render();
-      }
-
-      addButton.addEventListener("click", addFood);
-      [foodInput, gramsInput].forEach(function (input) {
-        input.addEventListener("keydown", function (e) {
-          if (e.key === "Enter") { e.preventDefault(); addFood(); }
-        });
-      });
-
-      card.appendChild(addRow);
-
-      const hint = document.createElement("p");
-      hint.className = "mealAddHint";
-      hint.textContent = "The weight fills in with the food's standard serving — change it if you like.";
-      addRow.appendChild(hint);
-
       builder.appendChild(card);
     });
+  }
+
+  function addFood(name) {
+    const food = FOODS[name];
+    if (!food) return;
+    if (!hasFigures(name)) {
+      showError('"' + name + '" has no nutrient figures on file, so a meal holding it ' +
+        "could not be totalled. It is still in the main app and in Foods without.");
+      return;
+    }
+    showError("");
+    const meal = meals[activeMeal] || meals[0];
+    const existing = meal.items.filter(function (item) { return item.food === name; })[0];
+    // Tapping the same food twice means a second helping, not a duplicate row.
+    if (existing) existing.grams += food.portion;
+    else meal.items.push({ food: name, grams: food.portion });
+    render();
   }
 
   // ---- The analysis ------------------------------------------------------
@@ -779,16 +728,20 @@
     Session.set("meals", meals);
     renderBuilder();
     renderResults();
+    const target = document.getElementById("mealPickerTarget");
+    if (target) target.textContent = (meals[activeMeal] || meals[0]).name || "this meal";
   }
 
   // ---- Buttons -----------------------------------------------------------
   document.getElementById("addMealButton").addEventListener("click", function () {
     meals.push({ name: "Meal " + (meals.length + 1), items: [] });
+    activeMeal = meals.length - 1;
     render();
   });
 
   document.getElementById("clearMealsButton").addEventListener("click", function () {
     meals = [{ name: "Meal 1", items: [] }];
+    activeMeal = 0;
     showError("");
     render();
   });
@@ -827,6 +780,22 @@
         : "");
       render();
     }, showError);
+  });
+
+  /* Only foods with figures are offered: a meal is reported in grams, and a
+     food with no numbers would sit in the list looking like it counted. */
+  const foodPicker = FoodPicker.create({
+    container: document.getElementById("foodPicker"),
+    searchInput: document.getElementById("search"),
+    mode: "pick",
+    include: function (food) { return hasFigures(food.name); },
+    onPick: addFood
+  });
+
+  document.getElementById("showAllButton").addEventListener("click", function () {
+    document.getElementById("search").value = "";
+    foodPicker.clearSearch();
+    foodPicker.showAll();
   });
 
   const remembered = Session.get("meals");

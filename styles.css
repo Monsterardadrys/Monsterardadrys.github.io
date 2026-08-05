@@ -1979,3 +1979,46 @@ footer p { color: var(--linen); }
 .mealCompare th:first-child { min-width: 9rem; }
 .mealCompare td { white-space: nowrap; }
 .mealCompareAbsent { color: #8a908b; }
+
+/* ---- The meal builder's copy of the food picker ---- */
+
+.mealPickerBox {
+    max-width: 700px;
+    margin: 0 auto 16px;
+    padding: 16px 18px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+.mealPickerBox h2 { margin-top: 0; }
+
+.mealPickerHint {
+    font-size: 15px;
+    color: #5a5f5b;
+    margin: 8px 0 0;
+}
+
+/* One meal is always the one a tap lands in. */
+.mealCard--active {
+    border-color: var(--sage-dark);
+    box-shadow: inset 4px 0 0 var(--sage);
+}
+
+.foodPick {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    font-size: 18px;
+    padding: 7px 10px;
+    margin: 0;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink);
+    cursor: pointer;
+}
+
+.foodPick:hover,
+.foodPick:focus { background: rgba(126, 155, 122, 0.16); }
