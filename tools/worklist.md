@@ -48,9 +48,18 @@ these). All three build their food lists and trait pickers from `foods-data.js`;
 the shared pieces are `trait-foods.js` (lists and the trait picker),
 `disclaimer.js` and `save-load.js`.
 
-**Save and load** — the app saves a selection, the meal builder saves meals,
-both as JSON files on the user's own device. Every file carries
-`{ app, tool, version }` so one tool cannot open another's file.
+**One session across three tools** — `session.js` keeps the app's selection,
+every meal and the traits picked in Foods without in this browser's local
+storage, so moving between the tools costs nothing. Saving to a file saves the
+whole record; loading one restores every tool. "Clear local data" is injected
+into every nav drawer from `session.js` rather than written into each page, so
+no page can exist where the data cannot be removed. Each page that stores
+anything says so — the old "Nothing here is saved" was true and is not now.
+
+**Comparing meals** — two or more meals with food in them get a side-by-side
+table rather than a total: nutrients in grams, amount-based traits in servings,
+and a row per categorical trait any of them carries. Duplicate a meal, change
+one thing, read the difference.
 
 **Checks that used to be done by eye** — `tools/check-data.js` for the food data
 (unknown traits, missing portions, umbrella/subtype consistency, and every

@@ -6,7 +6,7 @@
     That is the only step needed when deploying: bump VERSION.
 */
 
-const VERSION = "v1.06";
+const VERSION = "v1.07";
 const CACHE = "food-intolerance-guide-" + VERSION;
 
 const ASSETS = [
@@ -36,6 +36,7 @@ const ASSETS = [
     "nav.js",
     "pwa.js",
     "print.js",
+    "session.js",
     "manifest.webmanifest",
     "favicon.ico",
     "icons/icon-192.png",

@@ -261,6 +261,11 @@
 
   // ---- Main recompute — runs on every food or filter checkbox change ---
   function recompute() {
+    // Every change passes through here, so this is where the session is kept.
+    Session.set("app", {
+      foods: checkedValues(topSection),
+      filters: checkedValues(filterContainer)
+    });
     const selectedFoods = getSelectedFoods();
     const excluded = getExcludedTraitIds();
 
@@ -759,9 +764,9 @@
     document.getElementById("chosenFoods").scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
-  // ---- Save / load a selection --------------------------------------------
-  // Nothing is stored anywhere, so a file is the only way a selection
-  // survives closing the tab. See save-load.js.
+  // ---- Save / load ---------------------------------------------------------
+  // The selection lives in this browser between visits (session.js) and a
+  // file is a snapshot of every tool at once — see save-load.js.
   const saveError = document.getElementById("saveError");
 
   function showSaveError(message) {
@@ -786,16 +791,15 @@
 
   document.getElementById("saveSelectionButton").addEventListener("click", function () {
     showSaveError("");
-    SaveLoad.save("selection", {
-      foods: checkedValues(topSection),
-      filters: checkedValues(filterContainer)
-    }, "selection");
+    SaveLoad.save("session", Session.snapshot(), "food-intolerance-guide");
   });
 
   document.getElementById("loadSelectionButton").addEventListener("click", function () {
-    SaveLoad.load("selection", function (data) {
-      const missingFoods = applyValues(topSection, data.foods || []);
-      applyValues(filterContainer, data.filters || []);
+    SaveLoad.load("session", function (data) {
+      Session.restore(data);
+      const app = data.app || {};
+      const missingFoods = applyValues(topSection, app.foods || []);
+      applyValues(filterContainer, app.filters || []);
 
       // A saved food that has since been renamed or removed would otherwise
       // vanish without a word.
@@ -818,5 +822,16 @@
   // ---- Boot ----------------------------------------------------------------
   renderCategories();
   renderFilters();
+
+  const remembered = Session.get("app");
+  if (remembered) {
+    applyValues(topSection, remembered.foods || []);
+    applyValues(filterContainer, remembered.filters || []);
+    topSection.querySelectorAll("input[type='checkbox']:checked").forEach(function (cb) {
+      const group = cb.closest(".foodGroup");
+      if (group) group.classList.add("open");
+    });
+  }
+
   recompute();
 })();
