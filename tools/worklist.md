@@ -83,17 +83,31 @@ into the project root) or `node tools/build-nutrition.js <export>`. Generated:
 never hand-edit it. The meal builder totals a meal in grams from it and says
 how much of the meal the figures cover.
 
+**FODMAP dose in a meal** — `fodmap-data.js` holds the largest serving of a
+food Monash rates low, and the meal builder divides grams eaten by it and adds
+the shares up. Half a serving of four things is two servings; that stacking is
+what a food-by-food lookup cannot show. Foods with no low serving at any amount
+(onion, garlic) are named rather than counted, and foods with no serving on file
+are left out and counted in the coverage line rather than treated as zero. A
+food with two subtypes counts towards both, which overstates the one that did
+not set its serving.
+
 ## Open
 
+- **The FODMAP serving table is partial and unverified.** 50 foods have a
+  serving, 49 of the 131 FODMAP foods that can go in a meal. Every figure was
+  typed in from the Monash app and none has been checked against the current
+  version — serving sizes are revised as foods are re-tested. Monash publishes
+  no export, so this will always be hand-entered. Two foods were left out
+  deliberately because our subtype and Monash's disagree and that needs
+  settling first: we tag cauliflower and asparagus as fructans, Monash measures
+  mannitol in the one and excess fructose in the other.
 - **107 foods still have no figures**, so they cannot go in a meal. The source
   ladder is decided and short — Frida (DK), then USDA SR Legacy, then Ciqual
   for the European cheeses — and `nutrition-manual.js` is where entries go, one
   per food with `src` and a verbatim `ref`. Nobody has downloaded those tables
   yet. Roughly fifteen of the 107 (the vegan cheeses, protein bars, kombucha)
   are branded products no national table analyses; they will stay without.
-- **FODMAP dose in a meal** is deliberately not attempted yet. Monash publishes
-  per-serving thresholds, the one categorical trait where a dose is established.
-  Next step after nutrient values land.
 - **Meal-level thresholds are not set.** A normal mixed meal holds 20–30g of
   fat, so the single-food doses cannot be reused as they are: the unit of
   analysis is different, not more lenient.

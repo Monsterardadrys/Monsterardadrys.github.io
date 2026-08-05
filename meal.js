@@ -8,6 +8,12 @@
        its weight divided by its own standard serving, so 250g of a food
        served in 125g portions counts as 2 servings.
 
+     - FODMAPs are the exception among the categorical traits, because Monash
+       publishes a serving size for them. fodmap-data.js holds the largest
+       serving of each food that still rates low, and grams eaten divided by
+       that serving is the food's share of one low-FODMAP serving. Those
+       shares add up across the meal — see fodmapLoad below.
+
      - Everything else is categorical. An allergen is present or it is not,
        and 2g of peanut is still peanut. Those are reported family by family
        — all the FODMAP types in one sentence, all the allergens in another —
@@ -154,6 +160,78 @@
     });
 
     return { totals: totals, covered: covered, uncovered: uncovered };
+  }
+
+  /* ---- FODMAP load -------------------------------------------------------
+     The one categorical family with a published amount. A food's share of a
+     low-FODMAP serving is grams eaten over the serving Monash rates low, and
+     shares add up: three foods at half a serving each make one and a half
+     servings, which is exactly the stacking a food-by-food lookup hides.
+
+     Three things can go wrong with a food and each is reported rather than
+     folded into the number: it may carry no serving in fodmap-data.js, it
+     may have no low serving at all (onion, garlic — nothing to divide by),
+     or it may not be a FODMAP food, in which case it is simply not counted. */
+  const FODMAP_TYPES = {};
+  Object.keys(TRAITS).forEach(function (id) {
+    if (TRAITS[id].group === "FODMAPs") FODMAP_TYPES[id] = true;
+  });
+
+  function haveServes() {
+    return typeof FODMAP_SERVES !== "undefined" && Object.keys(FODMAP_SERVES).length > 0;
+  }
+
+  function fodmapLoad(items) {
+    const byType = {};
+    const counted = [];
+    const noServe = [];
+    const unknown = [];
+
+    items.forEach(function (item) {
+      const food = FOODS[item.food];
+      if (!food) return;
+
+      const types = food.traits.filter(function (id) { return FODMAP_TYPES[id]; });
+      if (!types.length && food.traits.indexOf("fodmaps") < 0) return;
+
+      const entry = FODMAP_SERVES[item.food];
+      if (!entry) { unknown.push(item.food); return; }
+      if (!entry.low) { noServe.push(item.food); return; }
+
+      // The serving was set by whichever type is limiting, and the published
+      // data does not say which, so the share counts towards every type the
+      // food carries. That overstates the others — the note says so.
+      const share = item.grams / entry.low;
+      counted.push(item.food);
+      types.forEach(function (id) {
+        const row = byType[id] || (byType[id] = { load: 0, count: 0 });
+        row.load += share;
+        row.count += 1;
+      });
+    });
+
+    const rows = Object.keys(byType).map(function (id) {
+      return { id: id, label: TRAITS[id].label, load: byType[id].load, count: byType[id].count };
+    }).sort(function (a, b) { return b.load - a.load; });
+
+    return { rows: rows, counted: counted, noServe: noServe, unknown: unknown };
+  }
+
+  // What the highest type adds up to, in plain words. One low-FODMAP serving
+  // is the line Monash draws; past it the food was not tested as low.
+  function loadVerdict(rows) {
+    if (!rows.length) return "";
+    const top = rows[0];
+    if (top.load < 1) {
+      return "Nothing here reaches a full low-FODMAP serving — " + top.label +
+        " comes closest, at " + fmt(top.load) + ".";
+    }
+    if (top.load < 2) {
+      return top.label + " passes one low-FODMAP serving (" + fmt(top.load) +
+        "), so this meal holds more of it than any single food was tested as low at.";
+    }
+    return top.label + " is at " + fmt(top.load) + " low-FODMAP servings — well past " +
+      "one, from " + ingredients(top.count) + ".";
   }
 
   function dosedRows(found) {
@@ -526,6 +604,90 @@
       section.appendChild(wrap);
     }
 
+    // ---- FODMAP load, in low-FODMAP servings
+    if (haveServes()) {
+      const load = fodmapLoad(items);
+      const fodmapFoods = load.counted.length + load.noServe.length + load.unknown.length;
+
+      if (fodmapFoods) {
+        const h3f = document.createElement("h3");
+        h3f.textContent = "FODMAP load";
+        section.appendChild(h3f);
+
+        if (load.rows.length) {
+          const table = document.createElement("table");
+          table.className = "mealTable";
+          const header = document.createElement("tr");
+          ["Type", "Low-FODMAP servings", "From"].forEach(function (text) {
+            const th = document.createElement("th");
+            th.textContent = text;
+            header.appendChild(th);
+          });
+          table.appendChild(header);
+
+          load.rows.forEach(function (row) {
+            const tr = document.createElement("tr");
+            const label = document.createElement("th");
+            label.textContent = row.label;
+            tr.appendChild(label);
+
+            const value = document.createElement("td");
+            value.textContent = fmt(row.load);
+            if (row.load >= 1) value.className = "mealOverServing";
+            tr.appendChild(value);
+
+            const from = document.createElement("td");
+            from.textContent = ingredients(row.count);
+            tr.appendChild(from);
+
+            table.appendChild(tr);
+          });
+
+          const wrap = document.createElement("div");
+          wrap.className = "tableScroll";
+          wrap.appendChild(table);
+          section.appendChild(wrap);
+
+          const verdict = document.createElement("p");
+          verdict.className = "mealVerdict";
+          verdict.textContent = loadVerdict(load.rows);
+          section.appendChild(verdict);
+        }
+
+        // Foods the arithmetic could not take, each for its own reason.
+        if (load.noServe.length) {
+          const p = document.createElement("p");
+          p.className = "mealCoverage";
+          p.textContent = joinList(load.noServe) +
+            (load.noServe.length === 1 ? " has" : " have") + " no low-FODMAP serving at " +
+            "any amount, so " + (load.noServe.length === 1 ? "it is" : "they are") +
+            " not in the figures above — nothing to divide by. The numbers are a floor, " +
+            "not a total.";
+          section.appendChild(p);
+        }
+
+        if (load.unknown.length) {
+          const p = document.createElement("p");
+          p.className = "mealCoverage";
+          p.textContent = "No serving size on file for " + joinList(load.unknown) +
+            ", so " + (load.unknown.length === 1 ? "it is" : "they are") +
+            " left out of the figures above. " + load.counted.length + " of the " +
+            fodmapFoods + " FODMAP-carrying foods in this meal " +
+            (load.counted.length === 1 ? "is" : "are") + " counted.";
+          section.appendChild(p);
+        }
+
+        const fnote = document.createElement("p");
+        fnote.className = "traitFoodsNote";
+        fnote.textContent = "One low-FODMAP serving is the largest amount of a food Monash " +
+          "tested as low. A food eaten at half that serving counts as 0.5, and halves add " +
+          "up — that stacking is what a meal shows and a food-by-food lookup does not. " +
+          "A food carrying two types counts towards both, which overstates whichever one " +
+          "was not what set its serving size.";
+        section.appendChild(fnote);
+      }
+    }
+
     // ---- Present in the meal, family by family
     const h3b = document.createElement("h3");
     h3b.textContent = "Present in the meal";
@@ -573,9 +735,11 @@
 
     const note = document.createElement("p");
     note.className = "traitFoodsNote";
-    note.textContent = "Servings are servings of trait-carrying food, not grams of anything. " +
-      "Fat 3.4 means this meal holds as much fat-tagged food as 3.4 standard servings — it is " +
-      "not 3.4 times a threshold, and not a nutrient total. Under \"present\", how prominent a " +
+    note.textContent = "Under \"measured by amount\", servings are servings of trait-carrying " +
+      "food, not grams of anything. Fat 3.4 means this meal holds as much fat-tagged food as " +
+      "3.4 standard servings — it is not 3.4 times a threshold, and not a nutrient total. " +
+      "A low-FODMAP serving is a different unit again: there 1.0 is the line itself. " +
+      "Under \"present\", how prominent a " +
       "trait is means how many ingredients carry it, not how much of it is there: those traits " +
       "have no amount to add up, and a small amount of an allergen is still an amount. To see " +
       "which food carries what, use the main app.";
@@ -681,6 +845,30 @@
           cells: tallies.map(function (t) { return t[id] ? fmt(t[id].servings) : "—"; })
         };
       })));
+    }
+
+    // ---- FODMAP load, where the meals differ most visibly
+    if (haveServes()) {
+      const loads = filled.map(function (meal) { return fodmapLoad(meal.items); });
+      const typeIds = Object.keys(FODMAP_TYPES).filter(function (id) {
+        return loads.some(function (load) {
+          return load.rows.some(function (row) { return row.id === id; });
+        });
+      });
+      if (typeIds.length) {
+        const h3 = document.createElement("h3");
+        h3.textContent = "FODMAP load, in low-FODMAP servings";
+        section.appendChild(h3);
+        section.appendChild(comparisonTable(headings, typeIds.map(function (id) {
+          return {
+            label: TRAITS[id].label,
+            cells: loads.map(function (load) {
+              const row = load.rows.filter(function (r) { return r.id === id; })[0];
+              return row ? fmt(row.load) : "—";
+            })
+          };
+        })));
+      }
     }
 
     // ---- Categorical traits, present or not
