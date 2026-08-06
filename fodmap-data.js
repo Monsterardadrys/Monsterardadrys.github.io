@@ -14,16 +14,21 @@
    ones. Those are reported by name rather than counted, because there is no
    number to divide by.
 
-   WHAT THE MEAL BUILDER DOES WITH IT. Grams eaten divided by `low` is that
-   food's share of a low-FODMAP serving, and those shares add up across the
-   meal. That is the whole point: three foods at half a serving each are not
-   three low-FODMAP foods, they are one and a half servings. Stacking is the
-   thing a food-by-food lookup cannot show and a meal can.
+   WHAT THE MEAL BUILDER DOES WITH IT — A THRESHOLD, NOT A QUANTITY. Monash
+   rates a stated serving low, moderate or high. It does not publish grams of
+   fructans per 100g, and no arithmetic on this file can recover them. So the
+   figure decides whether a food counts, not how much it counts: weighed out
+   at or under `low`, the food is in the meal but is not what is loading it;
+   over `low`, it counts. FODMAPs are then reported exactly like allergens and
+   the other categorical families.
 
-   A food carrying two subtypes contributes its share to both, which
-   overstates whichever one is not the limiting one. The limiting subtype is
-   what `low` was set by, and Monash publishes the traffic light rather than
-   the gram figure per subtype, so this is as far as the published data goes.
+   Dividing grams by `low` to two decimals was tried and thrown away. It reads
+   as a measurement, and it is a traffic light.
+
+   A food over its serving counts towards every subtype it carries, which
+   overstates whichever one was not limiting. `low` was set by the limiting
+   subtype and the traffic light does not say which, so that is as far as the
+   published data goes.
 
    ---------------------------------------------------------------------
    STATUS: PARTIAL, AND NOT YET CHECKED AGAINST THE APP

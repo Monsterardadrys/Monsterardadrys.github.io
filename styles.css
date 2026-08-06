@@ -1941,19 +1941,6 @@ footer p { color: var(--linen); }
     margin: 6px 0 0;
 }
 
-/* Past one low-FODMAP serving. Weight rather than colour does the work, so
-   it still reads on paper and without colour vision. */
-.mealOverServing {
-    font-weight: 700;
-    color: var(--clay-dark);
-}
-
-.mealVerdict {
-    margin: 8px 0 0;
-    font-size: 16px;
-    line-height: 1.5;
-}
-
 /* A source that has to be cited in full, rather than named in passing. */
 .citation {
     font-size: 14px;
