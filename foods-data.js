@@ -881,7 +881,8 @@ const CATEGORIES = [
       { name: "Cucumber", lmv: "Gurka", portion: 100, traits: ["irritant", "peel_skin"] },
       { name: "Bell Pepper (sweet)", lmv: "Paprika röd", portion: 100, traits: ["irritant"] },
       { name: "Bell Pepper (hot)", lmv: "Chilipeppar färsk", portion: 5, traits: ["irritant", "capsaicin"] },
-      { name: "Asparagus", lmv: "Sparris grön kokt m. salt", portion: 100, traits: ["fodmaps", "fructans"] },
+      // Monash measures excess fructose here, not fructans — checked in the app.
+      { name: "Asparagus", lmv: "Sparris grön kokt m. salt", portion: 100, traits: ["fodmaps", "fructose"] },
       { name: "Fennel Bulb", lmv: "Fänkål", portion: 100, traits: ["fodmaps", "fructans", "cross_reactive", "cross_mugwort"] },
       { name: "Broccoli", lmv: "Broccoli", portion: 100, traits: ["fodmaps", "fructans"] },
       { name: "Brussels Sprouts", lmv: "Brysselkål", portion: 100, traits: ["fodmaps", "fructans", "galactans"] },

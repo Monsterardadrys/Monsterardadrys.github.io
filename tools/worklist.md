@@ -83,14 +83,24 @@ into the project root) or `node tools/build-nutrition.js <export>`. Generated:
 never hand-edit it. The meal builder totals a meal in grams from it and says
 how much of the meal the figures cover.
 
-**FODMAP dose in a meal** — `fodmap-data.js` holds the largest serving of a
-food Monash rates low, and the meal builder divides grams eaten by it and adds
-the shares up. Half a serving of four things is two servings; that stacking is
-what a food-by-food lookup cannot show. Foods with no low serving at any amount
-(onion, garlic) are named rather than counted, and foods with no serving on file
-are left out and counted in the coverage line rather than treated as zero. A
-food with two subtypes counts towards both, which overstates the one that did
-not set its serving.
+**FODMAPs as a threshold** — `fodmap-data.js` holds the largest serving of a
+food Monash rates low, and the meal builder uses it to decide whether an
+ingredient counts, not how much it counts. Monash rates a serving low, moderate
+or high; it publishes no grams of fructan per 100g, so there is nothing to add
+up. FODMAPs are therefore reported like every other categorical family, with the
+weight deciding which ingredients are in the sentence.
+
+Summing was built first and dropped: dividing grams by the low serving produced
+"polyols 6.7" on an ordinary plate, with two decimals, an implied common scale
+between subtypes and an implied linearity, none of which a traffic light
+supports — and every total was a floor with holes, because the table is partial.
+The threshold keeps what the figure can carry and throws away what it cannot.
+
+Named rather than folded in: foods with no low serving at any amount (onion,
+garlic) count at any weight; foods with no serving on file count on the tag
+alone; a food over its serving counts towards every subtype it carries, which
+overstates the one that was not limiting. Stacking is printed as a sentence, not
+a number.
 
 ## Open
 
@@ -98,10 +108,9 @@ not set its serving.
   serving, 49 of the 131 FODMAP foods that can go in a meal. Every figure was
   typed in from the Monash app and none has been checked against the current
   version — serving sizes are revised as foods are re-tested. Monash publishes
-  no export, so this will always be hand-entered. Two foods were left out
-  deliberately because our subtype and Monash's disagree and that needs
-  settling first: we tag cauliflower and asparagus as fructans, Monash measures
-  mannitol in the one and excess fructose in the other.
+  no export, so this will always be hand-entered. Checked in the app: cauliflower
+  is fructans, as we had it. Asparagus was not — it is excess fructose, and the
+  tag has been corrected.
 - **107 foods still have no figures**, so they cannot go in a meal. The source
   ladder is decided and short — Frida (DK), then USDA SR Legacy, then Ciqual
   for the European cheeses — and `nutrition-manual.js` is where entries go, one

@@ -10,9 +10,9 @@
 
      - FODMAPs are the exception among the categorical traits, because Monash
        publishes a serving size for them. fodmap-data.js holds the largest
-       serving of each food that still rates low, and grams eaten divided by
-       that serving is the food's share of one low-FODMAP serving. Those
-       shares add up across the meal — see fodmapLoad below.
+       serving of each food that still rates low, and that decides whether an
+       ingredient counts at the weight you gave it — not how much it counts.
+       A traffic light is not a quantity. See fodmapStanding below.
 
      - Everything else is categorical. An allergen is present or it is not,
        and 2g of peanut is still peanut. Those are reported family by family
@@ -162,16 +162,25 @@
     return { totals: totals, covered: covered, uncovered: uncovered };
   }
 
-  /* ---- FODMAP load -------------------------------------------------------
-     The one categorical family with a published amount. A food's share of a
-     low-FODMAP serving is grams eaten over the serving Monash rates low, and
-     shares add up: three foods at half a serving each make one and a half
-     servings, which is exactly the stacking a food-by-food lookup hides.
+  /* ---- FODMAPs: a threshold, not a sum -----------------------------------
+     The only categorical family with a published amount, and the amount is
+     coarser than it looks. Monash rates a stated serving low, moderate or
+     high; it does not publish grams of fructans per 100g. So the honest use
+     of the figure is a threshold, not a quantity: at or under the serving
+     Monash rates low, this food is not what is loading the meal, and over it,
+     it is. Dividing to two decimals would dress a traffic light up as a
+     measurement, and only some foods have even that.
 
-     Three things can go wrong with a food and each is reported rather than
-     folded into the number: it may carry no serving in fodmap-data.js, it
-     may have no low serving at all (onion, garlic — nothing to divide by),
-     or it may not be a FODMAP food, in which case it is simply not counted. */
+     So FODMAPs are reported exactly like the other categorical families —
+     which types are present, from how many ingredients — with the amount
+     deciding which ingredients count. Foods with no serving on file, and
+     foods with no low serving at any amount (onion, garlic), always count;
+     both are named so it is clear which is which.
+
+     What a threshold cannot show is stacking, and stacking is real: low
+     servings are set one food at a time. That is said in words rather than
+     added up, because adding it up would need the grams the source does not
+     give. */
   const FODMAP_TYPES = {};
   Object.keys(TRAITS).forEach(function (id) {
     if (TRAITS[id].group === "FODMAPs") FODMAP_TYPES[id] = true;
@@ -181,11 +190,12 @@
     return typeof FODMAP_SERVES !== "undefined" && Object.keys(FODMAP_SERVES).length > 0;
   }
 
-  function fodmapLoad(items) {
-    const byType = {};
-    const counted = [];
-    const noServe = [];
-    const unknown = [];
+  function fodmapStanding(items) {
+    const counts = {};      // trait id -> ingredients counting towards it
+    const over = [];        // weighed out above the serving rated low
+    const within = [];      // at or under it, so not counted
+    const noServe = [];     // no amount rates low
+    const untested = [];    // no serving on file
 
     items.forEach(function (item) {
       const food = FOODS[item.food];
@@ -195,43 +205,61 @@
       if (!types.length && food.traits.indexOf("fodmaps") < 0) return;
 
       const entry = FODMAP_SERVES[item.food];
-      if (!entry) { unknown.push(item.food); return; }
-      if (!entry.low) { noServe.push(item.food); return; }
+      let counting = true;
 
-      // The serving was set by whichever type is limiting, and the published
-      // data does not say which, so the share counts towards every type the
-      // food carries. That overstates the others — the note says so.
-      const share = item.grams / entry.low;
-      counted.push(item.food);
-      types.forEach(function (id) {
-        const row = byType[id] || (byType[id] = { load: 0, count: 0 });
-        row.load += share;
-        row.count += 1;
-      });
+      if (!entry) untested.push(item.food);
+      else if (!entry.low) noServe.push(item.food);
+      else if (item.grams > entry.low) over.push(item.food + " " + item.grams + "g, low at " + entry.low + "g");
+      else { within.push(item.food + " " + item.grams + "g, low at " + entry.low + "g"); counting = false; }
+
+      /* A food over its serving counts towards every subtype it carries. The
+         serving was set by whichever one was limiting and the traffic light
+         does not say which, so this overstates the others — but only as far
+         as calling them present, which is what the rest of this section does
+         to every categorical trait anyway. */
+      if (counting) {
+        // The umbrella follows the threshold too, or a meal could show no
+        // subtype and still read as carrying FODMAPs from three ingredients.
+        counts.fodmaps = (counts.fodmaps || 0) + 1;
+        types.forEach(function (id) { counts[id] = (counts[id] || 0) + 1; });
+      }
     });
 
-    const rows = Object.keys(byType).map(function (id) {
-      return { id: id, label: TRAITS[id].label, load: byType[id].load, count: byType[id].count };
-    }).sort(function (a, b) { return b.load - a.load; });
-
-    return { rows: rows, counted: counted, noServe: noServe, unknown: unknown };
+    return { counts: counts, over: over, within: within, noServe: noServe, untested: untested };
   }
 
-  // What the highest type adds up to, in plain words. One low-FODMAP serving
-  // is the line Monash draws; past it the food was not tested as low.
-  function loadVerdict(rows) {
-    if (!rows.length) return "";
-    const top = rows[0];
-    if (top.load < 1) {
-      return "Nothing here reaches a full low-FODMAP serving — " + top.label +
-        " comes closest, at " + fmt(top.load) + ".";
+  /* Why each food counted or did not. Printed under the FODMAP sentence,
+     because "counted at the amount you weighed out" is only useful if you can
+     see which amounts were which. */
+  function fodmapNotes(standing) {
+    const notes = [];
+
+    if (standing.within.length) {
+      notes.push("Not counted, within the serving Monash rates low: " +
+        joinList(standing.within) + ".");
     }
-    if (top.load < 2) {
-      return top.label + " passes one low-FODMAP serving (" + fmt(top.load) +
-        "), so this meal holds more of it than any single food was tested as low at.";
+    if (standing.noServe.length) {
+      notes.push(joinList(standing.noServe) + (standing.noServe.length === 1 ? " has" : " have") +
+        " no low serving at any amount, so " +
+        (standing.noServe.length === 1 ? "it counts" : "they count") + " whatever the weight.");
     }
-    return top.label + " is at " + fmt(top.load) + " low-FODMAP servings — well past " +
-      "one, from " + ingredients(top.count) + ".";
+    if (standing.untested.length) {
+      notes.push("No serving on file for " + joinList(standing.untested) + ", so " +
+        (standing.untested.length === 1 ? "it is" : "they are") +
+        " counted on the tag alone, whatever the weight.");
+    }
+
+    // What a threshold cannot show, and only worth saying when there is
+    // something to stack: two or more FODMAP foods on the same plate.
+    const carrying = standing.over.length + standing.within.length +
+      standing.noServe.length + standing.untested.length;
+    if (carrying > 1) {
+      notes.push("Each serving is rated low on its own, so several in one meal can still " +
+        "add up — a plate of foods each within its own serving is not the same as one " +
+        "low-FODMAP food.");
+    }
+
+    return notes;
   }
 
   function dosedRows(found) {
@@ -268,20 +296,29 @@
     return " The other " + countWord(absent.length) + " are not in this meal.";
   }
 
-  function familySentence(family, found) {
+  /* `counts` overrides how many ingredients count towards each type, and is
+     how the FODMAP family gets its threshold: a food weighed out at or under
+     the serving Monash rates low is in the meal but not counted here. Every
+     other family passes nothing and counts plain presence. */
+  function familySentence(family, found, counts) {
+    function countFor(id) {
+      if (counts) return counts[id] || 0;
+      return found[id] ? found[id].count : 0;
+    }
+
     const present = family.types
-      .filter(function (id) { return found[id]; })
+      .filter(function (id) { return countFor(id) > 0; })
       .map(function (id) {
-        return { label: TRAITS[id].label, count: found[id].count };
+        return { label: TRAITS[id].label, count: countFor(id) };
       })
       .sort(function (a, b) { return b.count - a.count || a.label.localeCompare(b.label); });
 
-    const absent = family.types.filter(function (id) { return !found[id]; })
+    const absent = family.types.filter(function (id) { return countFor(id) === 0; })
       .map(function (id) { return TRAITS[id].label; });
 
     // The umbrella can sit on a food whose mechanism has no subtype of its
     // own — an irritant that is neither capsaicin nor caffeine, say.
-    const broadOnly = family.broad && found[family.broad] && !present.length;
+    const broadOnly = !counts && family.broad && found[family.broad] && !present.length;
     if (!present.length && !broadOnly) return null;
 
     const total = family.types.length;
@@ -604,97 +641,32 @@
       section.appendChild(wrap);
     }
 
-    // ---- FODMAP load, in low-FODMAP servings
-    if (haveServes()) {
-      const load = fodmapLoad(items);
-      const fodmapFoods = load.counted.length + load.noServe.length + load.unknown.length;
-
-      if (fodmapFoods) {
-        const h3f = document.createElement("h3");
-        h3f.textContent = "FODMAP load";
-        section.appendChild(h3f);
-
-        if (load.rows.length) {
-          const table = document.createElement("table");
-          table.className = "mealTable";
-          const header = document.createElement("tr");
-          ["Type", "Low-FODMAP servings", "From"].forEach(function (text) {
-            const th = document.createElement("th");
-            th.textContent = text;
-            header.appendChild(th);
-          });
-          table.appendChild(header);
-
-          load.rows.forEach(function (row) {
-            const tr = document.createElement("tr");
-            const label = document.createElement("th");
-            label.textContent = row.label;
-            tr.appendChild(label);
-
-            const value = document.createElement("td");
-            value.textContent = fmt(row.load);
-            if (row.load >= 1) value.className = "mealOverServing";
-            tr.appendChild(value);
-
-            const from = document.createElement("td");
-            from.textContent = ingredients(row.count);
-            tr.appendChild(from);
-
-            table.appendChild(tr);
-          });
-
-          const wrap = document.createElement("div");
-          wrap.className = "tableScroll";
-          wrap.appendChild(table);
-          section.appendChild(wrap);
-
-          const verdict = document.createElement("p");
-          verdict.className = "mealVerdict";
-          verdict.textContent = loadVerdict(load.rows);
-          section.appendChild(verdict);
-        }
-
-        // Foods the arithmetic could not take, each for its own reason.
-        if (load.noServe.length) {
-          const p = document.createElement("p");
-          p.className = "mealCoverage";
-          p.textContent = joinList(load.noServe) +
-            (load.noServe.length === 1 ? " has" : " have") + " no low-FODMAP serving at " +
-            "any amount, so " + (load.noServe.length === 1 ? "it is" : "they are") +
-            " not in the figures above — nothing to divide by. The numbers are a floor, " +
-            "not a total.";
-          section.appendChild(p);
-        }
-
-        if (load.unknown.length) {
-          const p = document.createElement("p");
-          p.className = "mealCoverage";
-          p.textContent = "No serving size on file for " + joinList(load.unknown) +
-            ", so " + (load.unknown.length === 1 ? "it is" : "they are") +
-            " left out of the figures above. " + load.counted.length + " of the " +
-            fodmapFoods + " FODMAP-carrying foods in this meal " +
-            (load.counted.length === 1 ? "is" : "are") + " counted.";
-          section.appendChild(p);
-        }
-
-        const fnote = document.createElement("p");
-        fnote.className = "traitFoodsNote";
-        fnote.textContent = "One low-FODMAP serving is the largest amount of a food Monash " +
-          "tested as low. A food eaten at half that serving counts as 0.5, and halves add " +
-          "up — that stacking is what a meal shows and a food-by-food lookup does not. " +
-          "A food carrying two types counts towards both, which overstates whichever one " +
-          "was not what set its serving size.";
-        section.appendChild(fnote);
-      }
-    }
-
     // ---- Present in the meal, family by family
     const h3b = document.createElement("h3");
     h3b.textContent = "Present in the meal";
     section.appendChild(h3b);
 
+    // FODMAPs are the one family where the amount decides whether an
+    // ingredient counts. Everything else counts on presence alone.
+    const standing = haveServes() ? fodmapStanding(items) : null;
+
     const blocks = [];
     FAMILIES.forEach(function (family) {
+      if (standing && family.broad === "fodmaps") {
+        let block = familySentence(family, found, standing.counts);
+        /* Every FODMAP food weighed out within its own low serving. Worth a
+           block of its own: "you had FODMAP foods and none of them is above
+           its serving" is the answer, and silence is not. */
+        if (!block && standing.within.length) {
+          block = {
+            title: family.title, articleId: family.articleId,
+            text: "No FODMAP type is counted in this meal — every food carrying one is " +
+              "within the serving Monash rates low."
+          };
+        }
+        if (block) { block.notes = fodmapNotes(standing); blocks.push(block); }
+        return;
+      }
       const block = familySentence(family, found);
       if (block) blocks.push(block);
     });
@@ -728,6 +700,13 @@
           li.appendChild(link);
         }
 
+        (block.notes || []).forEach(function (text) {
+          const p = document.createElement("p");
+          p.className = "mealCoverage";
+          p.textContent = text;
+          li.appendChild(p);
+        });
+
         list.appendChild(li);
       });
       section.appendChild(list);
@@ -738,11 +717,12 @@
     note.textContent = "Under \"measured by amount\", servings are servings of trait-carrying " +
       "food, not grams of anything. Fat 3.4 means this meal holds as much fat-tagged food as " +
       "3.4 standard servings — it is not 3.4 times a threshold, and not a nutrient total. " +
-      "A low-FODMAP serving is a different unit again: there 1.0 is the line itself. " +
       "Under \"present\", how prominent a " +
       "trait is means how many ingredients carry it, not how much of it is there: those traits " +
-      "have no amount to add up, and a small amount of an allergen is still an amount. To see " +
-      "which food carries what, use the main app.";
+      "have no amount to add up, and a small amount of an allergen is still an amount. FODMAPs " +
+      "are the exception — Monash rates a stated serving low, so a food weighed out within its " +
+      "serving is in the meal without being counted there. To see which food carries what, use " +
+      "the main app.";
     section.appendChild(note);
 
     container.appendChild(section);
@@ -847,33 +827,24 @@
       })));
     }
 
-    // ---- FODMAP load, where the meals differ most visibly
-    if (haveServes()) {
-      const loads = filled.map(function (meal) { return fodmapLoad(meal.items); });
-      const typeIds = Object.keys(FODMAP_TYPES).filter(function (id) {
-        return loads.some(function (load) {
-          return load.rows.some(function (row) { return row.id === id; });
-        });
-      });
-      if (typeIds.length) {
-        const h3 = document.createElement("h3");
-        h3.textContent = "FODMAP load, in low-FODMAP servings";
-        section.appendChild(h3);
-        section.appendChild(comparisonTable(headings, typeIds.map(function (id) {
-          return {
-            label: TRAITS[id].label,
-            cells: loads.map(function (load) {
-              const row = load.rows.filter(function (r) { return r.id === id; })[0];
-              return row ? fmt(row.load) : "—";
-            })
-          };
-        })));
+    /* ---- Categorical traits, present or not
+       FODMAP subtypes go through the same threshold as they do in a single
+       meal's analysis, so leaving out the onion — or halving the avocado —
+       changes the column here rather than only the grams above. */
+    const standings = haveServes()
+      ? filled.map(function (meal) { return fodmapStanding(meal.items); })
+      : null;
+
+    function countIn(index, id) {
+      if (standings && (FODMAP_TYPES[id] || id === "fodmaps")) {
+        return standings[index].counts[id] || 0;
       }
+      return tallies[index][id] ? tallies[index][id].count : 0;
     }
 
-    // ---- Categorical traits, present or not
     const presentIds = Object.keys(TRAITS).filter(function (id) {
-      return !TRAITS[id].dose && tallies.some(function (t) { return t[id]; });
+      if (TRAITS[id].dose && !FODMAP_TYPES[id]) return false;
+      return filled.some(function (_, i) { return countIn(i, id) > 0; });
     });
     if (presentIds.length) {
       const h3 = document.createElement("h3");
@@ -882,8 +853,9 @@
       section.appendChild(comparisonTable(headings, presentIds.map(function (id) {
         return {
           label: TRAITS[id].label,
-          cells: tallies.map(function (t) {
-            return t[id] ? "in " + ingredients(t[id].count) : "—";
+          cells: filled.map(function (_, i) {
+            const n = countIn(i, id);
+            return n ? "in " + ingredients(n) : "—";
           })
         };
       })));

@@ -199,37 +199,55 @@
                     classifications rather than a gram cutoff: allergens, oral allergy syndrome, GI irritants,
                     and FODMAPs (Monash University classifications).</p>
 
-                <h3>FODMAPs: the one categorical family that gained a dose</h3>
+                <h3>FODMAPs: a threshold, after a sum was tried and dropped</h3>
 
                 <p>The split above — a dose where a dose exists, plain presence where it does not — put
-                    FODMAPs on the categorical side, and the tag stays there. Monash publishes a traffic
-                    light, not a gram figure per subtype, so "this food carries fructans" is what the
-                    database can honestly hold about a single food.</p>
+                    FODMAPs on the categorical side, and that is where they stay. But they are the one
+                    categorical family with a published amount, so it is worth being exact about what the
+                    amount is. Monash tests a stated serving of a food and rates it low, moderate or high.
+                    It does not publish grams of fructan per 100g. A traffic light against a serving size
+                    is what exists.</p>
 
-                <p>What Monash does publish is a serving size: the largest amount of a food that still
-                    rates low. That is a dose, just not one that fits a per-100g threshold like fat or
-                    fiber. It only starts meaning something once several foods are on the same plate, which
-                    is why it went into the meal builder and not into the analysis of a selection. Grams
-                    eaten over the low serving is a food's share of one serving, and the shares add up:
-                    four foods at half a serving each are two servings, not four low-FODMAP foods. Stacking
-                    is a routine reason a carefully low-FODMAP week still produces symptoms, and it is
-                    invisible to a tool that looks at one food at a time.</p>
+                <p>The first attempt treated the low serving as a unit and divided by it: 100g of apple
+                    against a 20g low serving is five servings, and servings from different foods add up.
+                    The arithmetic is defensible and the output was not. It produced figures like "polyols
+                    6.7" on an ordinary plate — a number carrying two decimal places, an implied common
+                    scale between fructans and polyols, and an implied linearity, none of which the source
+                    supports. On top of that the table is partial, so every total was a floor with holes in
+                    it, and a floor with holes is a poor thing to print as a number. It was dressing a
+                    traffic light up as a measurement.</p>
 
-                <p>Three things can be true of a food and each is reported rather than folded into the
-                    number. It may have no low serving at all — onion and garlic — in which case there is
-                    nothing to divide by and the food is named, with the totals declared a floor. It may
-                    have no serving on file yet, in which case it is left out and counted in the coverage
-                    line, never treated as a zero. Or it may carry two subtypes, in which case its share
-                    counts towards both: the serving was set by whichever subtype was limiting, and the
-                    published data does not say which, so the other one is overstated. Naming that is
-                    cheaper than pretending to a precision the source does not have.</p>
+                <p>What the serving honestly supports is a threshold. At or under the serving rated low,
+                    this food is not what is loading the meal; over it, it is. So the amount decides
+                    <em>whether</em> an ingredient counts, not how much, and FODMAPs are then reported
+                    exactly like allergens and the irritants: which types are present, from how many
+                    ingredients. That also means one presentation to learn instead of two, and the
+                    threshold still does the work you want — 25g of avocado drops out of the sentence, 50g
+                    does not, and leaving the onion out changes the line.</p>
+
+                <p>Three cases are named rather than folded in. A food with no low serving at any amount,
+                    onion and garlic being the usual ones, counts whatever the weight. A food with no
+                    serving on file counts on its tag alone, and is named so it is clear the threshold was
+                    not applied to it. A food over its serving counts towards every subtype it carries,
+                    which overstates whichever one was not limiting — the serving was set by the limiting
+                    one and the traffic light does not say which. That last overstatement is the price of
+                    the source, and it is smaller here than it was under the sum: it now only reaches as
+                    far as calling a subtype present, which is what this section does to every categorical
+                    trait anyway.</p>
+
+                <p>What the threshold cannot show is stacking, and stacking is real: servings are rated one
+                    food at a time, so several foods each within their own serving can still add up. That is
+                    printed as a sentence under the FODMAP line rather than as a number, because a number
+                    would need the grams the source does not give.</p>
 
                 <p>The figures live in <code>fodmap-data.js</code>, hand-entered with a source, in the same
                     spirit as <code>nutrition-manual.js</code>. There is no bulk export from Monash, so this
                     table will always be typed in rather than built, and it will always be partial before it
                     is complete. It covers about a third of the FODMAP foods that can go in a meal, and
                     every figure still needs checking against the current app: serving sizes are revised as
-                    foods are re-tested, and a stale figure looks exactly like a fresh one.</p>
+                    foods are re-tested, and a stale figure looks exactly like a fresh one. Asparagus was
+                    corrected against the app in the same sitting — it is tagged for excess fructose now,
+                    not fructans.</p>
 
                 <h3>Allergens: the EU list, minus one, plus two</h3>
 
@@ -327,7 +345,7 @@
 
     <footer>
         <p>Food composition data from Livsmedelsverket, used under CC BY 4.0.</p>
-        <p>Pre-beta v1.09 — updated 5 August 2026</p>
+        <p>Pre-beta v1.10 — updated 5 August 2026</p>
     </footer>
 
     <script src="session.js"></script>
