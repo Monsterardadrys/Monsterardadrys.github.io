@@ -53,10 +53,9 @@ them hardcodes a food, a category or a trait.
 **One session across three tools** — `session.js` keeps the app's selection,
 every meal and the traits picked in Foods without in this browser's local
 storage, so moving between the tools costs nothing. Saving to a file saves the
-whole record; loading one restores every tool. "Clear local data" is injected
-into every nav drawer from `session.js` rather than written into each page, so
-no page can exist where the data cannot be removed. Each page that stores
-anything says so — the old "Nothing here is saved" was true and is not now.
+whole record; loading one restores every tool. "Clear local data" is a menu
+entry like any other (see below), so no page can exist where the data cannot be
+removed. Each page that stores anything says so — the old "Nothing here is saved" was true and is not now.
 
 **Comparing meals** — two or more meals with food in them get a side-by-side
 table rather than a total: nutrients in grams, amount-based traits in servings,
@@ -108,7 +107,11 @@ Meal builder link, so the only way between two of the three tools was via the
 front page. `NAV_LINKS` in `nav.js` is the list now, the page you are on is
 marked rather than removed, and a page's drawer holds an empty `<ul>`.
 `check-site.js` fails a published page that is missing from the menu or that
-carries its own list. The three tools are named the same way everywhere:
+carries its own list. "Clear local data" is an entry in that same list rather
+than something `session.js` appends afterwards — appending only worked while
+nothing rewrote the list after it, and then something did.
+
+The three tools are named the same way everywhere:
 **Shared traits**, **Meal builder**, **Foods without** — the first had been
 "Launch App", which named the button rather than the tool.
 

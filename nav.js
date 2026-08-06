@@ -8,8 +8,11 @@
    the page you are on is marked rather than removed — a menu that hides where
    you are makes you check the menu to find out where you are.
 
-   A new page needs a line in NAV_LINKS and an empty <ul id="navList"> in its
-   drawer. Nothing else.
+   A new page needs a line in NAV_LINKS and an empty <ul> in its drawer.
+   Nothing else. An entry with `action` instead of `href` is a button rather
+   than a link — "Clear local data" is one, and it is in this list rather than
+   appended by session.js so that nothing can rewrite the list out from under
+   it. That is how it went missing from every page but the front one.
    ========================================================================= */
 
 const NAV_LINKS = [
@@ -21,8 +24,16 @@ const NAV_LINKS = [
   { href: "articles.html", label: "Articles" },
   { href: "about.html", label: "About" },
   { href: "sources.html", label: "Data sources" },
-  { href: "contact.html", label: "Contact" }
+  { href: "contact.html", label: "Contact" },
+  // Not a page. Every page stores something, so it has to be on every page.
+  { action: "clearData", label: "Clear local data" }
 ];
+
+const NAV_ACTIONS = {
+  clearData: function () {
+    if (typeof Session !== "undefined") Session.clearFromMenu();
+  }
+};
 
 (function buildMenu() {
   const drawer = document.querySelector(".navDrawer");
@@ -32,6 +43,15 @@ const NAV_LINKS = [
   // "index.html", "", "/" and "/food-intolerance-guide/" all mean the front page.
   const file = window.location.pathname.split("/").pop() || "index.html";
 
+  /* A heading rather than a gap. The drawer used to reserve blank space at
+     the top for the close button, which read as a missing first item. */
+  if (!drawer.querySelector(".navTitle")) {
+    const title = document.createElement("p");
+    title.className = "navTitle";
+    title.textContent = "Menu";
+    drawer.insertBefore(title, drawer.firstChild);
+  }
+
   // Home sits above the list, as its own link, on every page but the front one.
   const home = drawer.querySelector(".backToMain");
   if (home && file === "index.html") home.remove();
@@ -39,7 +59,18 @@ const NAV_LINKS = [
   list.innerHTML = "";
   NAV_LINKS.forEach(function (item) {
     const li = document.createElement("li");
-    if (item.href === file) {
+
+    if (item.action) {
+      const button = document.createElement("a");
+      button.href = "#";
+      button.className = "navClearData";
+      button.textContent = item.label;
+      button.addEventListener("click", function (e) {
+        e.preventDefault();
+        NAV_ACTIONS[item.action]();
+      });
+      li.appendChild(button);
+    } else if (item.href === file) {
       // Marked, not removed. A span rather than a link to itself.
       const here = document.createElement("span");
       here.className = "navHere";
@@ -52,6 +83,7 @@ const NAV_LINKS = [
       link.textContent = item.label;
       li.appendChild(link);
     }
+
     list.appendChild(li);
   });
 })();

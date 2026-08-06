@@ -131,10 +131,15 @@ pages.forEach(function (page) {
 // touches the DOM the moment it loads, and there is no DOM here.
 const NAV_LINKS = new Function("return " +
   (read("nav.js").match(/const NAV_LINKS = (\[[\s\S]*?\n\]);/) || [])[1])();
-const inMenu = new Set(NAV_LINKS.map(function (item) { return item.href; }));
+// Entries with `action` instead of `href` are buttons, not pages.
+const menuPages = NAV_LINKS.filter(function (item) { return item.href; });
+const inMenu = new Set(menuPages.map(function (item) { return item.href; }));
 
-NAV_LINKS.forEach(function (item) {
+menuPages.forEach(function (item) {
   if (!exists(item.href)) faults.push("the menu links to " + item.href + ", which does not exist");
+});
+NAV_LINKS.forEach(function (item) {
+  if (!item.href && !item.action) faults.push("a menu entry has neither href nor action");
 });
 /* Deliberately not in the menu. index.html is the Home link above the list,
    and method.html is the long working version — reached from About, where
