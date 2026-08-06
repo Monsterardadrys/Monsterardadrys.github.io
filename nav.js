@@ -1,3 +1,61 @@
+/* =========================================================================
+   nav.js — the drawer menu, and the menu itself
+
+   THE MENU IS BUILT HERE, NOT IN THE PAGES. Every page used to carry its own
+   copy of the list and leave itself out of it. They drifted: Foods without
+   lost the Meal builder link entirely, so the only way between two of the
+   three tools was via the front page. One list in one place cannot drift, and
+   the page you are on is marked rather than removed — a menu that hides where
+   you are makes you check the menu to find out where you are.
+
+   A new page needs a line in NAV_LINKS and an empty <ul id="navList"> in its
+   drawer. Nothing else.
+   ========================================================================= */
+
+const NAV_LINKS = [
+  // The three tools first: they are what the site is for, and someone
+  // holding a phone should reach any of them from any of them.
+  { href: "app.html", label: "Shared traits" },
+  { href: "meal.html", label: "Meal builder" },
+  { href: "without.html", label: "Foods without" },
+  { href: "articles.html", label: "Articles" },
+  { href: "about.html", label: "About" },
+  { href: "sources.html", label: "Data sources" },
+  { href: "contact.html", label: "Contact" }
+];
+
+(function buildMenu() {
+  const drawer = document.querySelector(".navDrawer");
+  const list = drawer && drawer.querySelector("ul");
+  if (!list) return;
+
+  // "index.html", "", "/" and "/food-intolerance-guide/" all mean the front page.
+  const file = window.location.pathname.split("/").pop() || "index.html";
+
+  // Home sits above the list, as its own link, on every page but the front one.
+  const home = drawer.querySelector(".backToMain");
+  if (home && file === "index.html") home.remove();
+
+  list.innerHTML = "";
+  NAV_LINKS.forEach(function (item) {
+    const li = document.createElement("li");
+    if (item.href === file) {
+      // Marked, not removed. A span rather than a link to itself.
+      const here = document.createElement("span");
+      here.className = "navHere";
+      here.setAttribute("aria-current", "page");
+      here.textContent = item.label;
+      li.appendChild(here);
+    } else {
+      const link = document.createElement("a");
+      link.href = item.href;
+      link.textContent = item.label;
+      li.appendChild(link);
+    }
+    list.appendChild(li);
+  });
+})();
+
 document.addEventListener("DOMContentLoaded", function () {
   const header = document.querySelector("header");
   const hamburgerBtn = document.getElementById("hamburgerBtn");

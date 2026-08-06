@@ -102,6 +102,16 @@ alone; a food over its serving counts towards every subtype it carries, which
 overstates the one that was not limiting. Stacking is printed as a sentence, not
 a number.
 
+**One menu, built in nav.js** — every page used to carry its own copy of the
+list and leave itself out of it, and they drifted: Foods without had lost the
+Meal builder link, so the only way between two of the three tools was via the
+front page. `NAV_LINKS` in `nav.js` is the list now, the page you are on is
+marked rather than removed, and a page's drawer holds an empty `<ul>`.
+`check-site.js` fails a published page that is missing from the menu or that
+carries its own list. The three tools are named the same way everywhere:
+**Shared traits**, **Meal builder**, **Foods without** — the first had been
+"Launch App", which named the button rather than the tool.
+
 ## Open
 
 - **The FODMAP serving table is partial and unverified.** 50 foods have a
