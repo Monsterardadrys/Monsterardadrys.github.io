@@ -271,6 +271,7 @@ header.header--hidden {
 }
 
 .navDrawer li a,
+.navDrawer li .navHere,
 .navDrawer .backToMain {
     color: white;
     display: block;
@@ -284,6 +285,15 @@ header.header--hidden {
 .navDrawer .backToMain:hover {
     background-color: var(--paper);
     color: var(--primary);
+}
+
+/* The page you are already on. Shown rather than removed, so the menu is the
+   same list everywhere and also tells you where you are. */
+.navDrawer li .navHere {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-left: 4px solid var(--clay);
+    padding-left: 10px;
+    cursor: default;
 }
 
 /* Disclaimer bar — extended up behind the fixed header (via negative

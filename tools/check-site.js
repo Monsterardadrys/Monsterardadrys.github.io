@@ -124,6 +124,33 @@ pages.forEach(function (page) {
   });
 });
 
+/* The menu is data now, not markup, so the link check has to reach into it.
+   It also has to cover every published page: the reason the menu moved into
+   nav.js is that Foods without had quietly lost the Meal builder link. */
+// Read the array out of the source rather than running the file: nav.js
+// touches the DOM the moment it loads, and there is no DOM here.
+const NAV_LINKS = new Function("return " +
+  (read("nav.js").match(/const NAV_LINKS = (\[[\s\S]*?\n\]);/) || [])[1])();
+const inMenu = new Set(NAV_LINKS.map(function (item) { return item.href; }));
+
+NAV_LINKS.forEach(function (item) {
+  if (!exists(item.href)) faults.push("the menu links to " + item.href + ", which does not exist");
+});
+/* Deliberately not in the menu. index.html is the Home link above the list,
+   and method.html is the long working version — reached from About, where
+   someone who wants that depth is already standing. */
+const NOT_IN_MENU = ["index.html", "method.html"];
+
+pages.forEach(function (page) {
+  if (NOT_IN_MENU.indexOf(page) === -1 && !inMenu.has(page)) {
+    faults.push(page + " is published but not in the menu (NAV_LINKS in nav.js)");
+  }
+  const html = read(page);
+  if (!/<nav class="navDrawer"[\s\S]*?<ul><\/ul>[\s\S]*?<\/nav>/.test(html)) {
+    faults.push(page + " does not leave its menu list empty for nav.js to fill");
+  }
+});
+
 // Article links written in data rather than markup
 Object.keys(ARTICLES).forEach(function (key) {
   JSON.stringify(ARTICLES[key]).replace(/articles\.html#([a-z_]+)/g, function (_, id) {

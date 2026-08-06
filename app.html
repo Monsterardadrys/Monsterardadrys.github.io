@@ -28,7 +28,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Food intolerance guide</title>
+    <title>Shared traits — Food Intolerance Guide</title>
 
     <link rel="stylesheet" href="styles.css">
 
@@ -45,7 +45,7 @@
 <body>
     <header>
         <div class="headerBar">
-            <h1>Food intolerance guide</h1>
+            <h1>Shared traits</h1>
             <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
                 <span></span><span></span><span></span>
             </button>
@@ -53,14 +53,9 @@
         <nav class="navDrawer" id="navDrawer" aria-hidden="true">
             <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu">&times;</button>
             <a class="backToMain" href="index.html">Home</a>
-            <ul>
-                <li><a href="meal.html">Meal builder</a></li>
-                <li><a href="without.html">Foods without</a></li>
-                <li><a href="articles.html">Articles</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="sources.html">Data sources</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
+            <!-- Built by nav.js from NAV_LINKS, so no page can carry a
+                 different menu from its neighbours. -->
+            <ul></ul>
         </nav>
         <div class="navOverlay" id="navOverlay"></div>
     </header>
@@ -160,7 +155,7 @@
         </div>
 
         <div id="printHeader" class="printOnly">
-            <h1>Food Intolerance Guide — Analysis Printout</h1>
+            <h1>Food Intolerance Guide — Shared traits</h1>
             <p>Generated from foodintoleranceguide (Uppsala, Sweden) — a triage aid for exploring possible GI reactions to foods, intended for use by health care professionals.</p>
             <p><em>This is NOT a diagnostic tool and does not replace the diagnostics and advice of a health care professional. The author cannot be held responsible for any health issues arising from use of this information.</em></p>
         </div>
@@ -232,7 +227,7 @@
     <p>Did you find any errors or have ideas for improvement?</p>
     <p>Email: Monsterardadrys@duck.com</p>
     <p>Uppsala, Sweden, 2026</p>
-    <p>Pre-beta v1.10 — updated 5 August 2026</p>
+    <p>Pre-beta v1.11 — updated 5 August 2026</p>
 </footer>
 
 <script src="foods-data.js"></script>
