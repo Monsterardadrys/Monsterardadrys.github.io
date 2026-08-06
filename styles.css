@@ -232,7 +232,9 @@ header.header--hidden {
     background: linear-gradient(180deg, var(--primary), var(--primary-dark));
     box-shadow: -4px 0 30px rgba(0, 0, 0, 0.3);
     z-index: 950;
-    padding: 70px 20px 24px;
+    /* Top padding fits the "Menu" heading beside the close button — it used
+       to reserve 70px of nothing, which read as a missing first item. */
+    padding: 16px 20px 24px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -257,8 +259,19 @@ header.header--hidden {
     cursor: pointer;
 }
 
+/* Sits on the close button's row, in the site's heading face rather than the
+   menu's, so it reads as a label and not as another thing to tap. */
+.navTitle {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: rgba(246, 241, 230, 0.6);
+    margin: 0 0 10px;
+    padding: 0 14px;
+}
+
 .navDrawer .backToMain {
-    margin: 0 0 12px;
+    margin: 0 0 10px;
 }
 
 .navDrawer ul {
@@ -275,10 +288,21 @@ header.header--hidden {
 .navDrawer .backToMain {
     color: white;
     display: block;
-    padding: 12px 14px;
-    font-size: 38px;
+    padding: 10px 14px;
+    font-size: 31px;
     text-decoration: none;
     border-radius: 8px;
+}
+
+/* Not a page — an action, and the only one here. Set apart so it is not
+   tapped on the way to somewhere else. */
+.navDrawer li .navClearData {
+    margin-top: 10px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(246, 241, 230, 0.25);
+    border-radius: 0 0 8px 8px;
+    font-size: 26px;
+    color: rgba(246, 241, 230, 0.75);
 }
 
 .navDrawer li a:hover,
