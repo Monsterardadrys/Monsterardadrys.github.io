@@ -1,0 +1,6 @@
+# Screenshots from browser testing land wherever the test was run from, which
+# is usually here. One got committed and shipped. Nothing at the root is an
+# image except the favicon — the app's icons live in icons/.
+/*.png
+/*.jpg
+/*.pdf
