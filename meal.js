@@ -148,7 +148,11 @@
     { key: "sugars", label: "Sugars" },
     { key: "fiber", label: "Fiber" },
     // Only worth a row when there is any. Most meals have none.
-    { key: "alcohol", label: "Alcohol", whenAbove: 0 }
+    { key: "alcohol", label: "Alcohol", whenAbove: 0 },
+    // Not in the file until the build is re-run against an export carrying
+    // the column — see tools/lmv-core.js. Absent until then, and everything
+    // reading it copes with that.
+    { key: "water", label: "Water" }
   ];
 
   /* The bile-stimulating load is not a nutrient anyone measures — it is the
@@ -180,13 +184,23 @@
     // weight of the plate — a food with no figures contributes grams but no
     // sugar, and would water every concentration down.
     let coveredGrams = 0;
+    let wateredGrams = 0;
     items.forEach(function (item) {
-      if (NUTRITION[item.food]) coveredGrams += item.grams;
+      const values = NUTRITION[item.food];
+      if (!values) return;
+      coveredGrams += item.grams;
+      if (values.water != null) wateredGrams += item.grams;
     });
 
     return {
       totals: totals, covered: covered, uncovered: uncovered,
-      coveredGrams: coveredGrams
+      coveredGrams: coveredGrams,
+      /* How dry a meal is can only be asked when every food in it has a water
+         figure. One food short and the meal looks drier than it is — the
+         missing food contributes weight to the denominator and no water to
+         the numerator, which is the direction that raises a false alarm.
+         Hand-entered figures in nutrition-manual.js have no water column. */
+      waterComplete: coveredGrams > 0 && wateredGrams === coveredGrams
     };
   }
 
@@ -247,6 +261,24 @@
         "consistently high fiber intake is rarely what causes trouble; a sudden rise " +
         "over what someone is used to usually is."
     },
+    /* The one that fires on too little rather than too much, and the only one
+       with a precondition. Osmolality is solutes per unit water, so a dry meal
+       and a sweet meal are the same event seen from two sides — and it is the
+       pair that hurts, not either alone. A dry meal of plain starch has little
+       osmotically active in it and is not flagged; a sweet drink brings its own
+       water and is not flagged here either. Dried fruit and a dense sweet dough
+       are what this is for.
+
+       `needs` keeps it honest: with too little solute there is nothing to pull
+       water in, and the line would be reporting that bread is dry. */
+    {
+      key: "water", kind: "share", below: 40, needs: { sugars: 20 },
+      label: "Water in the meal",
+      why: "Sugar draws water into the stomach and small bowel until what is there " +
+        "is dilute enough to pass on. A meal that brings little of its own takes that " +
+        "water from the body, and the stretching is what is felt. Dried fruit and " +
+        "dense sweet doughs are the sharpest version of it."
+    },
     {
       /* 60g, not 40g. At 40g an ordinary plate of chicken and rice tripped it,
          and a line that fires on an ordinary dinner teaches people to skip the
@@ -267,16 +299,25 @@
          concentration. A teaspoon of honey is three quarters sugar and
          nobody's osmotic load; without this floor it was flagged as one. */
       if (signal.floor != null && total < signal.floor) return null;
+      // A signal can depend on there being enough of something else.
+      if (signal.key === "water" && !n.waterComplete) return null;
+      if (signal.needs && Object.keys(signal.needs).some(function (key) {
+        return !(n.totals[key] >= signal.needs[key]);
+      })) return null;
       const value = signal.kind === "share" ? total / n.coveredGrams * 100 : total;
-      if (value < signal.line) return null;
+      // Most lines are a ceiling. Water is a floor: too little, not too much.
+      if (signal.below != null ? value > signal.below : value < signal.line) return null;
       /* A share is a ratio, so it does not move when the whole meal is
          scaled — the same 60g per 100g at 30g of raisins and at 400g. That
          reads as a stuck number unless the amount it came from is next to
          it, so both are shown. */
+      const against = signal.below != null
+        ? "under the " + signal.below + "g per 100g below which a meal counts as dry."
+        : "against " + signal.line + (signal.kind === "share" ? "g per 100g." : "g.");
       const text = signal.kind === "share"
         ? fmt(value) + "g per 100g — " + fmt(total) + "g in " +
-          Math.round(n.coveredGrams) + "g of meal — against " + signal.line + "g per 100g."
-        : fmt(value) + "g, against " + signal.line + "g.";
+          Math.round(n.coveredGrams) + "g of meal — " + against
+        : fmt(value) + "g, " + against;
       return { label: signal.label, text: text, why: signal.why };
     }).filter(Boolean);
   }
@@ -863,6 +904,17 @@
             list.appendChild(li);
           });
           section.appendChild(list);
+
+          /* Not every line here rests on the same kind of evidence, and the
+             page should not pretend otherwise. */
+          const basis = document.createElement("p");
+          basis.className = "mealCoverage noPrint";
+          const basisLink = document.createElement("a");
+          basisLink.href = "method.html#a-lot-at-once";
+          basisLink.className = "mealFamilyLink";
+          basisLink.textContent = "Where each line comes from →";
+          basis.appendChild(basisLink);
+          section.appendChild(basis);
 
           if (n.uncovered.length) {
             const p = document.createElement("p");

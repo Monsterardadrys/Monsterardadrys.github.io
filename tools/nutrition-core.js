@@ -19,7 +19,7 @@
     "use strict";
 
     // What we keep. Anything else in the export is not used by any page.
-    const KEEP = ["fat", "protein", "carbs", "fiber", "sugars", "alcohol"];
+    const KEEP = ["fat", "protein", "carbs", "fiber", "sugars", "alcohol", "water"];
 
     function round(n) { return Math.round(n * 100) / 100; }
 

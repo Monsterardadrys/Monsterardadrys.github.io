@@ -180,8 +180,30 @@ sentences starting lowercase, and "an cross-reaction". Also `modifierOf`: a DAO
 competitor with no histamine in the meal was reported as a finding, which the
 app has always suppressed — nineteen foods can trigger it.
 
+**Water, and the dry-meal line** — `water` is read from the Livsmedelsverket
+export like any other nutrient (`tools/lmv-core.js`), kept in the generated file
+(`tools/nutrition-core.js`), and used for one signal: a meal under 40g of water
+per 100g that also carries 20g of sugars. Osmolality is solutes per unit water,
+so dry and sweet are one event, not two — and the pair is what hurts. Dryness
+alone is not flagged; a drink alongside clears it.
+
+Deriving water as 100 minus everything else was tried and dropped: within a
+couple of grams on most foods, twelve out on raisins, which is the food it
+would have been used on. The signal also requires a water figure for *every*
+food in the meal, since a food short of one puts weight in the denominator and
+no water in the numerator.
+
+The evidence behind each line in this section is set out one at a time on the
+method page, because they are not equally well founded — the osmolality
+mechanism is textbook, the dry-meal line is physiology plus clinical
+experience and says so.
+
 ## Open
 
+- **No water figures on file yet.** The column is read now, but
+  `nutrition-data.js` was built before it existed, so the dry-meal line stays
+  quiet until `tools/build-nutrition.html` is run again against a
+  Livsmedelsverket export. Nothing else changes when it is.
 - **The FODMAP serving table is partial and unverified.** 50 foods have a
   serving, 49 of the 131 FODMAP foods that can go in a meal. Every figure was
   typed in from the Monash app and none has been checked against the current

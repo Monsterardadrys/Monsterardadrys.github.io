@@ -101,7 +101,13 @@
         ["fiber",   [/fibrer/, /^fiber/, /kostfiber/]],
         ["sugars",  [/sockerarter/, /^socker\b/]],
         ["alcohol", [/^alkohol/]],
-        ["carbs",   [/kolhydrater/]]
+        ["carbs",   [/kolhydrater/]],
+        /* Water is not a threshold for any trait — it is read for the meal
+           builder, where a meal with little of it and plenty of sugar is its
+           own event. Deriving it as 100 minus everything else was tried and
+           dropped: it lands within a couple of grams on most foods and 12g
+           out on raisins, which is exactly the food it would be used on. */
+        ["water",   [/^vatten/]]
     ];
 
     const NAME_KEYS = ["namn", "livsmedelsnamn", "livsmedel", "name", "foodname"];
