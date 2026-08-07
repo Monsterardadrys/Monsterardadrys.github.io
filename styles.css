@@ -1968,6 +1968,15 @@ footer p { color: var(--linen); }
     color: var(--clay-dark);
 }
 
+/* Leading sentence under a heading — plainer than the body, but not the
+   small italic of a footnote, because it has to be read. */
+.mealVerdict {
+    margin: 6px 0 10px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #4a504b;
+}
+
 .mealCoverage {
     font-size: 15px;
     font-style: italic;
