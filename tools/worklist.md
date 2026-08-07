@@ -151,6 +151,14 @@ keep helpings, as a sentence naming the unit with emphasis that climbs with the
 count. `IN_GRAMS` in `meal.js` decides which is which. Do not bring the table
 back.
 
+**Saved files were unloadable, v1.07 to v1.15** — `save-load.js` built its file
+with `Object.assign(envelope, payload)`, and `Session.snapshot()` carries an
+`app` key of its own. It overwrote the envelope's `app` identity field, so every
+file failed its own check on the way back in: "That file was not saved by this
+tool." Nobody had round-tripped a file since the shared session landed. The
+payload now sits under `data`, where a key cannot collide with an envelope key.
+Do not flatten it back.
+
 ## Open
 
 - **The FODMAP serving table is partial and unverified.** 50 foods have a
