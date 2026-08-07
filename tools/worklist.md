@@ -125,6 +125,20 @@ the release did not help and was not the cure; GitHub recovering was.
 `check-site.js` fails anything sitting at the site root that is not part of the
 site — a Playwright screenshot shipped that way once.
 
+**A lot at once** — the meal-level lines, in `MEAL_SIGNALS` in `meal.js`. Not a
+nutritional assessment and it must not drift into one: the question is whether a
+component arrives in an amount, or at a concentration, the gut is likely to
+notice. Two units, two mechanisms — an amount for fat, protein and fiber; a
+concentration per 100g of meal for sugar, because osmolality is a property of
+the solution. Fat is under both, being hydrophobic. Fat 25g and 15g/100g,
+sugars 10g/100g, fiber 10g, protein 60g.
+
+Protein started at 40g and tripped on chicken, rice and carrot; a line that
+fires on an ordinary dinner teaches people to skip the section. Nothing is
+printed when nothing crosses. The wording exists to stop the numbers reading as
+limits — they matter when someone eats well over their usual, and when the gut
+is already sensitive, and the tool cannot know anyone's usual.
+
 ## Open
 
 - **The FODMAP serving table is partial and unverified.** 50 foods have a
@@ -140,9 +154,6 @@ site — a Playwright screenshot shipped that way once.
   per food with `src` and a verbatim `ref`. Nobody has downloaded those tables
   yet. Roughly fifteen of the 107 (the vegan cheeses, protein bars, kombucha)
   are branded products no national table analyses; they will stay without.
-- **Meal-level thresholds are not set.** A normal mixed meal holds 20–30g of
-  fat, so the single-food doses cannot be reused as they are: the unit of
-  analysis is different, not more lenient.
 
 ## Known and expected
 

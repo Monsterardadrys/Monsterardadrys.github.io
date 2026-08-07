@@ -159,7 +159,98 @@
       });
     });
 
-    return { totals: totals, covered: covered, uncovered: uncovered };
+    // Concentrations need the weight the figures actually cover, not the
+    // weight of the plate — a food with no figures contributes grams but no
+    // sugar, and would water every concentration down.
+    let coveredGrams = 0;
+    items.forEach(function (item) {
+      if (NUTRITION[item.food]) coveredGrams += item.grams;
+    });
+
+    return {
+      totals: totals, covered: covered, uncovered: uncovered,
+      coveredGrams: coveredGrams
+    };
+  }
+
+  /* ---- A lot at once -----------------------------------------------------
+     NOT a nutritional judgement. Nothing here says a meal is unhealthy, and
+     nothing here is advice. It says one thing only: this meal holds enough of
+     something, or holds it concentrated enough, that the gut is likely to
+     notice — which is a different question from whether the meal is good.
+
+     Two units, because two different mechanisms:
+
+       - AN AMOUNT. Fat and protein leave the stomach slowly and slow it
+         further; fiber arrives in the colon as bulk to ferment. What matters
+         is how much lands in one sitting.
+
+       - A CONCENTRATION, per 100g of meal. Sugar draws water into the lumen
+         by osmosis, and osmolality is a property of the solution, not of the
+         total: 15g of sugar in a glass of squash and the same 15g spread
+         through a plate of food are not the same event. Fat is here twice for
+         the same reason — it does not dissolve into the watery phase, so a
+         meal that is a sixth fat by weight behaves differently from one where
+         the same fat is spread thin.
+
+     WHAT THESE LINES ARE NOT. They are not a level anyone should stay under,
+     and crossing one is not a fault. Most people cross several of them at a
+     normal dinner and notice nothing. They matter in two situations: when
+     someone is eating well over what they are used to, and when the gut is
+     already irritable or already restricted. Fiber is the clearest case — a
+     consistently high intake is rarely the problem, and a sudden jump usually
+     is. The wording has to keep saying that, because a number on a screen
+     reads as a limit unless it is told not to. */
+  const MEAL_SIGNALS = [
+    {
+      key: "fat", kind: "total", line: 25, label: "Fat",
+      why: "Fat is the slowest thing to leave the stomach, and it triggers the " +
+        "hormones that slow it further. The line is where low-fat advice for fat " +
+        "malabsorption puts a single meal."
+    },
+    {
+      key: "fat", kind: "share", line: 15, label: "Fat as a share of the meal",
+      why: "Fat does not dissolve into the watery part of a meal — it travels as " +
+        "its own phase. The same grams spread through a larger meal behave more gently."
+    },
+    {
+      key: "sugars", kind: "share", line: 10, label: "Sugars as a share of the meal",
+      why: "Sugar pulls water into the bowel, and that depends on how concentrated " +
+        "it is rather than how much there is. Above roughly this much per 100g a meal " +
+        "is hypertonic — the line sports drinks are formulated to stay under. It " +
+        "counts hardest in something drunk, which reaches the small bowel fast."
+    },
+    {
+      key: "fiber", kind: "total", line: 10, label: "Fiber",
+      why: "The line is about a third of a day's fiber arriving at once. A " +
+        "consistently high fiber intake is rarely what causes trouble; a sudden rise " +
+        "over what someone is used to usually is."
+    },
+    {
+      /* 60g, not 40g. At 40g an ordinary plate of chicken and rice tripped it,
+         and a line that fires on an ordinary dinner teaches people to skip the
+         section. Protein is also the weakest of these mechanisms, so it should
+         be the last one to speak. */
+      key: "protein", kind: "total", line: 60, label: "Protein",
+      why: "A large protein load also leaves the stomach slowly, and sits there while " +
+        "it is broken down. This is a lot of it — well past a normal main course."
+    }
+  ];
+
+  function mealSignals(n) {
+    if (!n.coveredGrams) return [];
+    return MEAL_SIGNALS.map(function (signal) {
+      const total = n.totals[signal.key];
+      if (total == null) return null;
+      const value = signal.kind === "share" ? total / n.coveredGrams * 100 : total;
+      if (value < signal.line) return null;
+      return {
+        label: signal.label,
+        text: fmt(value) + (signal.kind === "share" ? "g per 100g" : "g") +
+          ", against " + signal.line + (signal.kind === "share" ? "g per 100g" : "g") + ".",
+        why: signal.why
+      };
+    }).filter(Boolean);
   }
 
   /* ---- FODMAPs: a threshold, not a sum -----------------------------------
@@ -593,6 +684,45 @@
             (n.uncovered.length === 1 ? "it" : "them") + " — the real totals are higher."
           : "From all " + items.length + " foods.";
         section.appendChild(coverage);
+
+        /* ---- A lot at once. Only what crosses a line, and silence when
+           nothing does — a section that always says something teaches people
+           to stop reading it. */
+        const signals = mealSignals(n);
+        if (signals.length) {
+          const h3s = document.createElement("h3");
+          h3s.textContent = "A lot at once";
+          section.appendChild(h3s);
+
+          const lead = document.createElement("p");
+          lead.className = "mealVerdict";
+          lead.textContent = "Not a judgement about the meal, and not a limit to stay " +
+            "under — most people cross these at an ordinary dinner and notice nothing. " +
+            "It matters when someone is eating well over what they are used to, or when " +
+            "the gut is already sensitive or already restricted.";
+          section.appendChild(lead);
+
+          const list = document.createElement("ul");
+          list.className = "mealFamilyList";
+          signals.forEach(function (signal) {
+            const li = document.createElement("li");
+            const strong = document.createElement("strong");
+            strong.textContent = signal.label + ": ";
+            li.appendChild(strong);
+            li.appendChild(document.createTextNode(signal.text + " " + signal.why));
+            list.appendChild(li);
+          });
+          section.appendChild(list);
+
+          if (n.uncovered.length) {
+            const p = document.createElement("p");
+            p.className = "mealCoverage";
+            p.textContent = "Worked out over the " + n.coveredGrams + "g this meal has " +
+              "figures for, not its full weight. Nothing crossing a line here is in " +
+              "doubt, but nothing staying under one is settled either.";
+            section.appendChild(p);
+          }
+        }
       }
     }
 
