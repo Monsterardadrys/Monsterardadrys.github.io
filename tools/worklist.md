@@ -58,8 +58,8 @@ entry like any other (see below), so no page can exist where the data cannot be
 removed. Each page that stores anything says so — the old "Nothing here is saved" was true and is not now.
 
 **Comparing meals** — two or more meals with food in them get a side-by-side
-table rather than a total: nutrients in grams, amount-based traits in servings,
-and a row per categorical trait any of them carries. Duplicate a meal, change
+table rather than a total: nutrients in grams, helpings for the two traits with
+no gram figure, and a row per categorical trait any of them carries. Duplicate a meal, change
 one thing, read the difference.
 
 **Checks that used to be done by eye** — `tools/check-data.js` for the food data
@@ -138,6 +138,18 @@ fires on an ordinary dinner teaches people to skip the section. Nothing is
 printed when nothing crosses. The wording exists to stop the numbers reading as
 limits — they matter when someone eats well over their usual, and when the gut
 is already sensitive, and the tool cannot know anyone's usual.
+
+**Helpings, mostly retired** — every amount-based trait used to be a count of
+standard servings of tagged food, in a table. It read as a multiple of the
+threshold and was not one: "Fat 2" meant two servings of fat-tagged food, each
+at least the dose and possibly far over, so 13g of fat or 80g. Fat, protein,
+fiber and alcohol are real grams now, and the bile-stimulating load is derived
+in the same table (fat + a fifth of protein, the single-food rule applied to
+the plate). Only salicylates and lactose have no gram figure — no table
+measures salicylate, and lactose is reported as total sugars — so those two
+keep helpings, as a sentence naming the unit with emphasis that climbs with the
+count. `IN_GRAMS` in `meal.js` decides which is which. Do not bring the table
+back.
 
 ## Open
 

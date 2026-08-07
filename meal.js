@@ -4,9 +4,11 @@
    A meal is a list of { food, grams }. The analysis splits traits the same
    way the rest of the site does:
 
-     - Amount-based traits (TRAITS[id].dose) are summed. A food contributes
-       its weight divided by its own standard serving, so 250g of a food
-       served in 125g portions counts as 2 servings.
+     - Amount-based traits (TRAITS[id].dose) are reported in real grams
+       wherever nutrition-data.js has the figure — fat, protein, fiber,
+       alcohol, and the bile-stimulating load derived from fat and protein.
+       Salicylates and lactose have no figure, so those two are counted in
+       helpings and said in a sentence that explains the unit.
 
      - FODMAPs are the exception among the categorical traits, because Monash
        publishes a serving size for them. fodmap-data.js holds the largest
@@ -21,10 +23,13 @@
        ingredients, and which are absent. Prominence there means how many
        ingredients carry it, never how much.
 
-   WHAT THE SUM IS NOT. The database holds each food's traits and serving
-   size, not its nutrient content, so "Fat 3.4 servings" means the meal holds
-   as much fat-tagged food as 3.4 standard servings — not 3.4 times any
-   threshold, and not a figure in grams. Keep every label saying that.
+   WHY HELPINGS ARE NEARLY GONE. Every amount-based trait was once reported
+   as a count of standard servings of tagged food, in a table. It read as a
+   multiple of the threshold and was not one: "Fat 2" meant two servings of
+   fat-tagged food, each AT LEAST the dose and possibly far over, so it could
+   be 13g of fat or 80g. Now that the grams exist, they are used, and the two
+   traits with no gram figure get a sentence that names the unit instead of a
+   bare number in a column. Do not reintroduce the table.
    ========================================================================= */
 
 (function () {
@@ -141,8 +146,20 @@
     { key: "protein", label: "Protein" },
     { key: "carbs", label: "Carbohydrate" },
     { key: "sugars", label: "Sugars" },
-    { key: "fiber", label: "Fiber" }
+    { key: "fiber", label: "Fiber" },
+    // Only worth a row when there is any. Most meals have none.
+    { key: "alcohol", label: "Alcohol", whenAbove: 0 }
   ];
+
+  /* The bile-stimulating load is not a nutrient anyone measures — it is the
+     rule this database tags foods by, worked out over the whole meal: fat,
+     counting protein at a fifth of its weight, because protein triggers the
+     same hormone far more weakly. Reported here because it can be, and in
+     the same grams as everything else. */
+  function bileLoad(totals) {
+    if (totals.fat == null && totals.protein == null) return null;
+    return (totals.fat || 0) + 0.2 * (totals.protein || 0);
+  }
 
   function nutrientTotals(items) {
     const totals = {};
@@ -353,11 +370,66 @@
     return notes;
   }
 
-  function dosedRows(found) {
+  /* ---- Helpings ----------------------------------------------------------
+     This used to be a table of every amount-based trait with a figure like
+     "Fat 2". Nobody could read it, and the number was easy to take for
+     something it was not: 2 does not mean twice the fat threshold, it means
+     the plate holds two standard servings of fat-tagged food, each of which
+     is AT LEAST the dose and may be far over it. Two helpings can be 13g of
+     fat or 80g.
+
+     Most of those traits no longer need it. Fat, protein, fiber, alcohol and
+     the bile-stimulating load are all real grams in the table above, and a
+     gram figure beats a proxy that has to be explained. What is left is the
+     two the database cannot put a number on:
+
+       - Salicylates: no figure per 100g anywhere in this data.
+       - Lactose: the source reports total sugars, and the sugar in an apple
+         is not lactose.
+
+     For those, helpings are the only quantity there is, so they are written
+     as a sentence with the unit explained rather than printed as a bare
+     number, and the wording leans harder as the count climbs. */
+  const IN_GRAMS = {
+    over_10g_fat: "Fat", protein: "Protein", fiber: "Fiber",
+    alcohol: "Alcohol", bile_stimulant: "the bile-stimulating load"
+  };
+
+  // What one helping of a carrying food holds, at minimum — the dose the tag
+  // is set by. See DOSE in tools/lmv-core.js; these must match it.
+  const PER_HELPING = {
+    salicylate: "at least 1mg of salicylic acid",
+    over_3g_lactose: "at least 5g of sugars"
+  };
+
+  function helpingPhrase(servings) {
+    if (servings < 1) return "part of one standard helping";
+    if (servings < 2) return "about one standard helping";
+    return fmt(servings) + " standard helpings";
+  }
+
+  // The emphasis the count earns, as its own clause at the end of the
+  // sentence so it never lands mid-phrase.
+  function helpingWeight(servings) {
+    if (servings >= 6) return " — several times what one helping carries";
+    if (servings >= 4) return " — a lot in one sitting";
+    return "";
+  }
+
+  function helpingRows(found) {
     return Object.keys(found)
-      .filter(function (id) { return TRAITS[id].dose; })
+      .filter(function (id) { return TRAITS[id].dose && !IN_GRAMS[id]; })
       .map(function (id) {
-        return { label: TRAITS[id].label, servings: found[id].servings, count: found[id].count };
+        return {
+          label: TRAITS[id].label,
+          text: (found[id].count === 1
+            ? "one ingredient carries it, " + helpingPhrase(found[id].servings)
+            : countWord(found[id].count) + " ingredients carry it, " +
+              helpingPhrase(found[id].servings) + " between them") +
+            helpingWeight(found[id].servings) +
+            (PER_HELPING[id] ? ". A helping holds " + PER_HELPING[id] : "") + ".",
+          servings: found[id].servings
+        };
       })
       .sort(function (a, b) { return b.servings - a.servings; });
   }
@@ -658,17 +730,26 @@
         });
         table.appendChild(header);
 
-        NUTRIENTS.forEach(function (nutrient) {
-          if (n.totals[nutrient.key] == null) return;
+        function gramsRow(label, grams) {
           const tr = document.createElement("tr");
-          const label = document.createElement("th");
-          label.textContent = nutrient.label;
-          tr.appendChild(label);
-          const value = document.createElement("td");
-          value.textContent = fmt(n.totals[nutrient.key]) + " g";
-          tr.appendChild(value);
+          const th = document.createElement("th");
+          th.textContent = label;
+          tr.appendChild(th);
+          const td = document.createElement("td");
+          td.textContent = fmt(grams) + " g";
+          tr.appendChild(td);
           table.appendChild(tr);
+        }
+
+        NUTRIENTS.forEach(function (nutrient) {
+          const grams = n.totals[nutrient.key];
+          if (grams == null) return;
+          if (nutrient.whenAbove != null && grams <= nutrient.whenAbove) return;
+          gramsRow(nutrient.label, grams);
         });
+
+        const bile = bileLoad(n.totals);
+        if (bile != null) gramsRow("Bile-stimulating load", bile);
 
         const wrap = document.createElement("div");
         wrap.className = "tableScroll";
@@ -684,6 +765,13 @@
             (n.uncovered.length === 1 ? "it" : "them") + " — the real totals are higher."
           : "From all " + items.length + " foods.";
         section.appendChild(coverage);
+
+        const bileNote = document.createElement("p");
+        bileNote.className = "mealCoverage";
+        bileNote.textContent = "The bile-stimulating load is the fat above, counting " +
+          "protein at a fifth of its weight — protein triggers the same hormone far " +
+          "more weakly. It is the rule single foods are tagged by, applied to the meal.";
+        section.appendChild(bileNote);
 
         /* ---- A lot at once. Only what crosses a line, and silence when
            nothing does — a section that always says something teaches people
@@ -726,49 +814,33 @@
       }
     }
 
-    // ---- Measured by amount
-    const h3a = document.createElement("h3");
-    h3a.textContent = "Measured by amount";
-    section.appendChild(h3a);
+    /* ---- Counted in helpings, for the two traits with no gram figure.
+       Everything else that scales with amount is in the grams table above. */
+    const helpings = helpingRows(found);
+    if (helpings.length) {
+      const h3a = document.createElement("h3");
+      h3a.textContent = "Counted in helpings, not grams";
+      section.appendChild(h3a);
 
-    const rows = dosedRows(found);
-    if (!rows.length) {
-      const p = document.createElement("p");
-      p.className = "mealEmpty";
-      p.textContent = "Nothing in this meal carries an amount-based trait.";
-      section.appendChild(p);
-    } else {
-      const table = document.createElement("table");
-      table.className = "mealTable";
-      const header = document.createElement("tr");
-      ["Trait", "Servings", "From"].forEach(function (text) {
-        const th = document.createElement("th");
-        th.textContent = text;
-        header.appendChild(th);
+      const lead = document.createElement("p");
+      lead.className = "mealVerdict";
+      lead.textContent = "These scale with how much is eaten, but this database has no " +
+        "figure per 100g for them — so they are counted in helpings, a helping being the " +
+        "standard serving of whichever food carries it. A helping is at least the amount " +
+        "the tag is set by, and can be well over it.";
+      section.appendChild(lead);
+
+      const list = document.createElement("ul");
+      list.className = "mealFamilyList";
+      helpings.forEach(function (row) {
+        const li = document.createElement("li");
+        const strong = document.createElement("strong");
+        strong.textContent = row.label + ": ";
+        li.appendChild(strong);
+        li.appendChild(document.createTextNode(row.text));
+        list.appendChild(li);
       });
-      table.appendChild(header);
-
-      rows.forEach(function (row) {
-        const tr = document.createElement("tr");
-        const label = document.createElement("th");
-        label.textContent = row.label;
-        tr.appendChild(label);
-
-        const servings = document.createElement("td");
-        servings.textContent = fmt(row.servings);
-        tr.appendChild(servings);
-
-        const from = document.createElement("td");
-        from.textContent = ingredients(row.count);
-        tr.appendChild(from);
-
-        table.appendChild(tr);
-      });
-
-      const wrap = document.createElement("div");
-      wrap.className = "tableScroll";
-      wrap.appendChild(table);
-      section.appendChild(wrap);
+      section.appendChild(list);
     }
 
     // ---- Present in the meal, family by family
@@ -844,9 +916,9 @@
 
     const note = document.createElement("p");
     note.className = "traitFoodsNote";
-    note.textContent = "Under \"measured by amount\", servings are servings of trait-carrying " +
-      "food, not grams of anything. Fat 3.4 means this meal holds as much fat-tagged food as " +
-      "3.4 standard servings — it is not 3.4 times a threshold, and not a nutrient total. " +
+    note.textContent = "Grams above are real amounts. A helping is not: it is one standard " +
+      "serving of a food that carries the trait, holding at least the amount the tag is set " +
+      "by and possibly well over it. " +
       "Under \"present\", how prominent a " +
       "trait is means how many ingredients carry it, not how much of it is there: those traits " +
       "have no amount to add up, and a small amount of an allergen is still an amount. FODMAPs " +
@@ -923,6 +995,14 @@
           rows.push({ label: nutrient.label, cells: cells });
         }
       });
+      // The derived row, same as in a single meal's analysis.
+      const bileCells = totals.map(function (t) {
+        const bile = bileLoad(t.totals);
+        return bile == null ? "—" : fmt(bile) + " g";
+      });
+      if (bileCells.some(function (c) { return c !== "—"; })) {
+        rows.push({ label: "Bile-stimulating load", cells: bileCells });
+      }
 
       const h3 = document.createElement("h3");
       h3.textContent = "Nutrients";
@@ -941,20 +1021,28 @@
       section.appendChild(comparisonTable(headings, [weights]));
     }
 
-    // ---- Amount-based traits, in servings
-    const dosedIds = Object.keys(TRAITS).filter(function (id) {
-      return TRAITS[id].dose && tallies.some(function (t) { return t[id]; });
+    /* ---- Helpings, for the two traits with no gram figure. Everything else
+       that scales with amount is a row in the grams table above. */
+    const helpingIds = Object.keys(TRAITS).filter(function (id) {
+      return TRAITS[id].dose && !IN_GRAMS[id] &&
+        tallies.some(function (t) { return t[id]; });
     });
-    if (dosedIds.length) {
+    if (helpingIds.length) {
       const h3 = document.createElement("h3");
-      h3.textContent = "Measured by amount, in servings";
+      h3.textContent = "In standard helpings";
       section.appendChild(h3);
-      section.appendChild(comparisonTable(headings, dosedIds.map(function (id) {
+      section.appendChild(comparisonTable(headings, helpingIds.map(function (id) {
         return {
           label: TRAITS[id].label,
           cells: tallies.map(function (t) { return t[id] ? fmt(t[id].servings) : "—"; })
         };
       })));
+      const note = document.createElement("p");
+      note.className = "mealCoverage";
+      note.textContent = "A helping is the standard serving of whichever food carries the " +
+        "trait — these two have no figure per 100g in this database, so helpings are the " +
+        "only quantity there is.";
+      section.appendChild(note);
     }
 
     /* ---- Categorical traits, present or not
@@ -994,8 +1082,7 @@
     const note = document.createElement("p");
     note.className = "traitFoodsNote";
     note.textContent = "The meals are compared, not added together: two meals side by side " +
-      "answer what changed, which a total would hide. Servings are servings of " +
-      "trait-carrying food, not grams of anything.";
+      "answer what changed, which a total would hide.";
     section.appendChild(note);
 
     container.appendChild(section);
