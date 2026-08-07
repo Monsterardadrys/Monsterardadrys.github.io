@@ -159,6 +159,25 @@ tool." Nobody had round-tripped a file since the shared session landed. The
 payload now sits under `data`, where a key cannot collide with an envelope key.
 Do not flatten it back.
 
+**Printing** — `@page` sets the frame: 16mm top, 12mm sides, 22mm bottom, on
+every sheet. Before that the only margins were whatever the browser and its
+print dialog agreed on, which can be none.
+
+The running footer was `position: fixed`, on the belief that a fixed element
+repeats on every printed page. **It does not** — measured by rendering to PDF
+and reading the text positions back: page two either had no footer at all or
+had it stranded at the top of the sheet, over the text. It is in the flow now
+and prints once at the end. A footer that really repeats needs the document
+wrapped in a table with a `<tfoot>`, which browsers do repeat; that is the
+route if per-sheet identification is ever worth the layout it would cost.
+
+**Wording, checked against ten contrasting meals** — "in 1 of the 1
+ingredients", "Five of the five FODMAP types", a tie reported as a ranking
+("Alcohol comes from the most ingredients (1), then Carbonation (1)"), whole
+sentences starting lowercase, and "an cross-reaction". Also `modifierOf`: a DAO
+competitor with no histamine in the meal was reported as a finding, which the
+app has always suppressed — nineteen foods can trigger it.
+
 ## Open
 
 - **The FODMAP serving table is partial and unverified.** 50 foods have a

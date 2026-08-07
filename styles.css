@@ -1414,10 +1414,31 @@ footer p { color: var(--linen); }
 
 .printOnly { display: none; }
 
+/* The printed page's frame. Without this the only margins are whatever the
+   browser and its print dialog happen to agree on, which can be none — and
+   with none, the running footer below lands on top of the text.
+
+   The bottom margin is deeper than the top because the footer lives in it:
+   content stops at the bottom of the page box, the footer sits below that,
+   and the two can no longer meet. Set here rather than in @media print
+   because @page is only ever consulted when printing. */
+@page {
+    margin: 16mm 12mm 22mm;
+}
+
 @media print {
     /* h1 is cream, for the dark header bar it normally sits in. On paper that
        is cream on white, which is no title at all. */
     h1 { color: var(--ink); }
+
+    /* nav.js sets padding-top inline, to clear the fixed header on screen.
+       There is no header on paper, and the inline value would push the first
+       page down by its height and nothing else — a margin on page one only.
+       !important in a stylesheet beats a plain inline declaration. */
+    body {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
 
     /* Keep a meal, a table and a food list whole rather than split across a
        page break in the middle of a row. */
@@ -1428,23 +1449,25 @@ footer p { color: var(--linen); }
 
     .printStamp { font-size: 14px; font-style: italic; }
 
-    /* A fixed element repeats on every printed page in every browser that
-       matters. The body gets room for it so nothing prints underneath. */
+    /* This was a fixed element, on the belief that a fixed element repeats on
+       every printed page. It does not — measured, not assumed: rendered to
+       PDF, page two either had no footer at all or had it stranded at the top
+       of the sheet, on top of the text. That is the overlap it caused.
+
+       It is in the flow now, and prints once at the end. A footer that really
+       repeats needs the whole document wrapped in a table with a <tfoot>,
+       which browsers do repeat; that is the route if per-sheet identification
+       becomes worth the layout it would cost. Page numbers remain impossible
+       either way — a stylesheet is given no page counter. */
     .printRunningFooter {
         display: block !important;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: 0;
-        padding: 4px 5%;
+        margin: 24px 0 0;
+        padding: 6px 0 0;
         font-size: 12px;
         color: #5a5f5b;
-        background: #fff;
         border-top: 1px solid #ccc;
+        break-inside: avoid;
     }
-
-    body { padding-bottom: 26px; }
 
     /* A collapsed list must still reach the paper. */
     .traitFoods > *:not(summary) { display: block !important; }
@@ -1459,7 +1482,7 @@ footer p { color: var(--linen); }
         overflow: visible;
         padding: 0;
     }
-    .printOnly { display: block; margin: 0 5% 30px; text-align: left; }
+    .printOnly { display: block; margin: 0 0 30px; text-align: left; }
     #printFoodsList { margin-top: 30px; }
     .printFoodsUl {
         columns: 3;

@@ -450,6 +450,12 @@
 
   function ingredients(n) { return n + (n === 1 ? " ingredient" : " ingredients"); }
 
+  // "an cross-reaction" was printable. The nouns come from FILTER_SECTIONS,
+  // so this cannot be settled by writing the article into the string.
+  function article(noun) {
+    return /^[aeiou]/i.test(noun) ? "an" : "a";
+  }
+
   function joinList(parts) {
     if (parts.length === 1) return parts[0];
     return parts.slice(0, -1).join(", ") + " and " + parts[parts.length - 1];
@@ -493,35 +499,65 @@
     if (!present.length && !broadOnly) return null;
 
     const total = family.types.length;
+    // "Five of the five" is a long way of saying all of them.
+    const howMany = present.length === total
+      ? "All " + countWord(total)
+      : countWord(present.length) + " of the " + countWord(total);
+    // Nothing "comes from the most ingredients" when they all come from the
+    // same number — that read as a ranking of a tie.
+    const tied = present.every(function (row) { return row.count === present[0].count; });
     let text;
 
     if (broadOnly) {
-      text = "This meal carries an " + family.noun + " from " +
+      text = "This meal carries " + article(family.noun) + " " + family.noun + " from " +
         ingredients(found[family.broad].count) + ", by a mechanism with no type of " +
         "its own. None of the " + countWord(total) + " types tracked here are in it.";
     } else if (present.length === 1) {
       text = "One of the " + countWord(total) + " " + family.noun +
         " types tracked here is in this meal: " + present[0].label + ", from " +
         ingredients(present[0].count) + "." + absentSentence(absent);
+    } else if (tied) {
+      text = howMany + " " + family.noun + " types tracked here are in this meal: " +
+        joinList(present.map(function (row) { return row.label; })) + ", each from " +
+        ingredients(present[0].count) + "." + absentSentence(absent);
     } else {
       const rest = present.slice(1).map(function (row) {
         return row.label + " (" + row.count + ")";
       });
-      text = countWord(present.length) + " of the " + countWord(total) + " " +
-        family.noun + " types tracked here are in this meal. " + present[0].label +
-        " comes from the most ingredients (" + present[0].count + "), then " +
-        joinList(rest) + "." + absentSentence(absent);
-      text = text.charAt(0).toUpperCase() + text.slice(1);
+      text = howMany + " " + family.noun + " types tracked here are in this meal. " +
+        present[0].label + " comes from the most ingredients (" + present[0].count +
+        "), then " + joinList(rest) + "." + absentSentence(absent);
     }
 
-    return { title: family.title, text: text, articleId: family.articleId };
+    // Every branch above builds a sentence; only one of them starts with a
+    // capital by construction.
+    return {
+      title: family.title,
+      text: text.charAt(0).toUpperCase() + text.slice(1),
+      articleId: family.articleId
+    };
+  }
+
+  /* A trait with `modifierOf` only means something alongside the trait it
+     modifies: a DAO competitor with no histamine in the meal has nothing to
+     compete with. The app drops those rather than reporting them as findings
+     — see modifierIsIdle in script.js — and this has to agree with it, or the
+     same plate says different things in two places. */
+  function modifierIsIdle(traitId, found) {
+    const target = TRAITS[traitId].modifierOf;
+    return Boolean(target) && !found[target];
   }
 
   function singleSentence(traitId, found, totalItems) {
-    if (!found[traitId]) return null;
+    if (!found[traitId] || modifierIsIdle(traitId, found)) return null;
+    const count = found[traitId].count;
+    let where;
+    if (totalItems === 1) where = "in the only ingredient.";
+    else if (count === totalItems) where = "in all " + totalItems + " ingredients.";
+    else where = "in " + count + " of the " + totalItems + " ingredients.";
     return {
       title: TRAITS[traitId].label,
-      text: "in " + found[traitId].count + " of the " + totalItems + " ingredients.",
+      text: where,
       articleId: TRAITS[traitId].articleId || null
     };
   }
@@ -885,8 +921,11 @@
         if (!block && standing.within.length) {
           block = {
             title: family.title, articleId: family.articleId,
-            text: "No FODMAP type is counted in this meal — every food carrying one is " +
-              "within the serving Monash rates low."
+            text: standing.within.length === 1
+              ? "No FODMAP type is counted in this meal — the one food carrying any is " +
+                "within the serving Monash rates low."
+              : "No FODMAP type is counted in this meal — every food carrying one is " +
+                "within the serving Monash rates low."
           };
         }
         if (block) { block.notes = fodmapNotes(standing); blocks.push(block); }
@@ -1087,7 +1126,9 @@
 
     const presentIds = Object.keys(TRAITS).filter(function (id) {
       if (TRAITS[id].dose && !FODMAP_TYPES[id]) return false;
-      return filled.some(function (_, i) { return countIn(i, id) > 0; });
+      return filled.some(function (_, i) {
+        return countIn(i, id) > 0 && !modifierIsIdle(id, tallies[i]);
+      });
     });
     if (presentIds.length) {
       const h3 = document.createElement("h3");
@@ -1097,7 +1138,7 @@
         return {
           label: TRAITS[id].label,
           cells: filled.map(function (_, i) {
-            const n = countIn(i, id);
+            const n = modifierIsIdle(id, tallies[i]) ? 0 : countIn(i, id);
             return n ? "in " + ingredients(n) : "—";
           })
         };
