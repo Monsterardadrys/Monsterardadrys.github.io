@@ -210,6 +210,10 @@
          meal that is a sixth fat by weight behaves differently from one where
          the same fat is spread thin.
 
+     A share also carries a floor — the grams of the substance needed before
+     its concentration means anything. 7g of honey is three quarters sugar and
+     is nobody's osmotic load; without the floor it was reported as one.
+
      WHAT THESE LINES ARE NOT. They are not a level anyone should stay under,
      and crossing one is not a fault. Most people cross several of them at a
      normal dinner and notice nothing. They matter in two situations: when
@@ -226,12 +230,12 @@
         "malabsorption puts a single meal."
     },
     {
-      key: "fat", kind: "share", line: 15, label: "Fat as a share of the meal",
+      key: "fat", kind: "share", line: 15, floor: 15, label: "Fat as a share of the meal",
       why: "Fat does not dissolve into the watery part of a meal — it travels as " +
         "its own phase. The same grams spread through a larger meal behave more gently."
     },
     {
-      key: "sugars", kind: "share", line: 10, label: "Sugars as a share of the meal",
+      key: "sugars", kind: "share", line: 10, floor: 15, label: "Sugars as a share of the meal",
       why: "Sugar pulls water into the bowel, and that depends on how concentrated " +
         "it is rather than how much there is. Above roughly this much per 100g a meal " +
         "is hypertonic — the line sports drinks are formulated to stay under. It " +
@@ -259,6 +263,10 @@
     return MEAL_SIGNALS.map(function (signal) {
       const total = n.totals[signal.key];
       if (total == null) return null;
+      /* A concentration needs enough of the substance to be worth a
+         concentration. A teaspoon of honey is three quarters sugar and
+         nobody's osmotic load; without this floor it was flagged as one. */
+      if (signal.floor != null && total < signal.floor) return null;
       const value = signal.kind === "share" ? total / n.coveredGrams * 100 : total;
       if (value < signal.line) return null;
       return {
@@ -518,6 +526,13 @@
     };
   }
 
+  /* A meal with its name field cleared still has to be called something —
+     an analysis under a blank heading belongs to nothing. The stored name
+     stays empty, so typing a name back in works; only the display falls back. */
+  function mealTitle(meal, index) {
+    return (meal.name || "").trim() || "Meal " + (index + 1);
+  }
+
   function totalGrams(items) {
     return items.reduce(function (sum, item) { return sum + item.grams; }, 0);
   }
@@ -749,7 +764,13 @@
         });
 
         const bile = bileLoad(n.totals);
-        if (bile != null) gramsRow("Bile-stimulating load", bile);
+        /* Not worth a row, or the paragraph under the table that explains
+           it, when it would print as "0 g" — a meal of pure sugar has no bile
+           story to tell. Tested against what is shown, not against zero: a
+           spoon of honey carries 0.02g of protein, which is truthy and rounds
+           to nothing. */
+        const showBile = bile != null && Math.round(bile * 10) > 0;
+        if (showBile) gramsRow("Bile-stimulating load", bile);
 
         const wrap = document.createElement("div");
         wrap.className = "tableScroll";
@@ -766,12 +787,14 @@
           : "From all " + items.length + " foods.";
         section.appendChild(coverage);
 
-        const bileNote = document.createElement("p");
-        bileNote.className = "mealCoverage";
-        bileNote.textContent = "The bile-stimulating load is the fat above, counting " +
-          "protein at a fifth of its weight — protein triggers the same hormone far " +
-          "more weakly. It is the rule single foods are tagged by, applied to the meal.";
-        section.appendChild(bileNote);
+        if (showBile) {
+          const bileNote = document.createElement("p");
+          bileNote.className = "mealCoverage";
+          bileNote.textContent = "The bile-stimulating load is the fat above, counting " +
+            "protein at a fifth of its weight — protein triggers the same hormone far " +
+            "more weakly. It is the rule single foods are tagged by, applied to the meal.";
+          section.appendChild(bileNote);
+        }
 
         /* ---- A lot at once. Only what crosses a line, and silence when
            nothing does — a section that always says something teaches people
@@ -975,7 +998,9 @@
     h2.textContent = "Side by side";
     section.appendChild(h2);
 
-    const headings = ["", ].concat(filled.map(function (meal) { return meal.name; }));
+    const headings = ["", ].concat(filled.map(function (meal) {
+      return mealTitle(meal, meals.indexOf(meal));
+    }));
     const tallies = filled.map(function (meal) { return tally(meal.items); });
 
     const weights = {
@@ -1091,8 +1116,8 @@
   function renderResults() {
     results.innerHTML = "";
 
-    meals.forEach(function (meal) {
-      renderAnalysis(results, meal.name, meal.items);
+    meals.forEach(function (meal, index) {
+      renderAnalysis(results, mealTitle(meal, index), meal.items);
     });
 
     // Two meals are built to be compared, not added up: the question is what
@@ -1106,7 +1131,8 @@
     renderBuilder();
     renderResults();
     const target = document.getElementById("mealPickerTarget");
-    if (target) target.textContent = (meals[activeMeal] || meals[0]).name || "this meal";
+    const active = meals[activeMeal] || meals[0];
+    if (target) target.textContent = mealTitle(active, meals.indexOf(active));
   }
 
   // ---- Buttons -----------------------------------------------------------
