@@ -29,7 +29,7 @@
     const el = document.getElementById("printRunningFooter");
     if (!el) return;
     el.textContent = "Food Intolerance Guide — " + document.title.split("—")[0].trim() +
-      " — not a diagnosis";
+      " — a triage aid, not a diagnosis. " + window.location.host;
   }
 
   function openDetails() {
