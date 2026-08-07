@@ -269,12 +269,15 @@
       if (signal.floor != null && total < signal.floor) return null;
       const value = signal.kind === "share" ? total / n.coveredGrams * 100 : total;
       if (value < signal.line) return null;
-      return {
-        label: signal.label,
-        text: fmt(value) + (signal.kind === "share" ? "g per 100g" : "g") +
-          ", against " + signal.line + (signal.kind === "share" ? "g per 100g" : "g") + ".",
-        why: signal.why
-      };
+      /* A share is a ratio, so it does not move when the whole meal is
+         scaled — the same 60g per 100g at 30g of raisins and at 400g. That
+         reads as a stuck number unless the amount it came from is next to
+         it, so both are shown. */
+      const text = signal.kind === "share"
+        ? fmt(value) + "g per 100g — " + fmt(total) + "g in " +
+          Math.round(n.coveredGrams) + "g of meal — against " + signal.line + "g per 100g."
+        : fmt(value) + "g, against " + signal.line + "g.";
+      return { label: signal.label, text: text, why: signal.why };
     }).filter(Boolean);
   }
 

@@ -130,7 +130,9 @@ nutritional assessment and it must not drift into one: the question is whether a
 component arrives in an amount, or at a concentration, the gut is likely to
 notice. Two units, two mechanisms — an amount for fat, protein and fiber; a
 concentration per 100g of meal for sugar, because osmolality is a property of
-the solution. Fat is under both, being hydrophobic. Fat 25g and 15g/100g,
+the solution. A share prints the amount it came from alongside the ratio — a
+ratio does not move when the meal is scaled, and looked like a stuck number
+without it. Fat is under both, being hydrophobic. Fat 25g and 15g/100g,
 sugars 10g/100g, fiber 10g, protein 60g.
 
 Protein started at 40g and tripped on chicken, rice and carrot; a line that
