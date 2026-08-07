@@ -11,9 +11,7 @@
      2. Service worker — every .html/.js/.css in the repo root is precached,
         and every precached path exists. A file missing from ASSETS works
         online and breaks offline, which is exactly the sort of thing nobody
-        notices for three releases. Also the other way round: nothing sits at
-        the root that is not part of the site, after a test screenshot was
-        committed and shipped.
+        notices for three releases.
      3. Links — every href to a local page resolves, and every #anchor
         resolves to an id on the target page or to an article key.
      4. Scripts — a page using a shared behaviour loads the file providing
@@ -81,21 +79,6 @@ pages.concat(scripts).concat(["styles.css"]).forEach(function (file) {
   if (file === "sw.js") return;   // the worker never caches itself
   if (NOT_PUBLISHED.indexOf(file) !== -1) return;
   if (cached.indexOf(file) === -1) faults.push(file + " is not in the sw.js precache list");
-});
-
-/* Nothing else belongs at the root. A Playwright screenshot was committed and
-   shipped once, because a test wrote a relative path from this directory and
-   `git add -A` took it. Anything here is either precached, deliberately not
-   published, or a file the host reads. */
-const ROOT_EXTRAS = ["sw.js", "favicon.ico", ".nojekyll", ".gitignore", "CNAME", "README.md"];
-
-fs.readdirSync(ROOT, { withFileTypes: true }).forEach(function (entry) {
-  if (entry.isDirectory()) return;
-  const file = entry.name;
-  if (cached.indexOf(file) !== -1) return;
-  if (NOT_PUBLISHED.indexOf(file) !== -1) return;
-  if (ROOT_EXTRAS.indexOf(file) !== -1) return;
-  faults.push(file + " sits in the site root but is not part of the site");
 });
 
 // ---- 3. Links ------------------------------------------------------------

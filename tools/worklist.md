@@ -115,14 +115,6 @@ The three tools are named the same way everywhere:
 **Shared traits**, **Meal builder**, **Foods without** — the first had been
 "Launch App", which named the button rather than the tool.
 
-**Deploying** — GitHub Pages builds from `master` on merge. `.nojekyll` at the
-root turns the Jekyll step off: nothing here is Jekyll, and that step is what
-hung for fifteen minutes and got the v1.12 deploy cancelled. If a release does
-not appear on the site, check Actions before checking the code — the "pages
-build and deployment" run reports it, and a cancelled build skips the deploy
-silently. `check-site.js` now also fails anything sitting at the site root that
-is not part of the site; a Playwright screenshot shipped that way once.
-
 ## Open
 
 - **The FODMAP serving table is partial and unverified.** 50 foods have a
