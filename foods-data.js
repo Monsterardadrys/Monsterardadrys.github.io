@@ -1048,7 +1048,11 @@ const CATEGORIES = [
       { name: "Oat Bran", lmv: "Havrekli", portion: 20, traits: ["fodmaps", "fructans", "allergen_wheat"] },
       { name: "Muesli (no added sugar)", lmv: "Frukostflingor müsli fullkorn m. frukt", portion: 50, traits: ["fodmaps", "fructans", "allergen_wheat"] },
       { name: "Wheat", lmv: "Matvete kokt m. salt", portion: 175, traits: ["fiber", "fodmaps", "fructans", "allergen_wheat"] },
-      { name: "Rye", lmv: "Rågkross ångprep. fullkorn", lmvNote: "cracked whole grain — rye is not listed as a cooked whole grain", portion: 175, traits: ["fiber", "protein", "fodmaps", "fructans", "allergen_wheat"] },
+      // Livsmedelsverket has no cooked rye, so the figures are the dry cracked
+      // grain and the portion has to be dry too — 60g makes about 175g cooked.
+      // At 175g the dry figures were three times what a plate holds, which is
+      // also what put protein on it: 5.4g in a real portion, dose 15.
+      { name: "Rye", lmv: "Rågkross ångprep. fullkorn", lmvNote: "cracked whole grain, dry weight — rye is not listed cooked", portion: 60, traits: ["fiber", "fodmaps", "fructans", "allergen_wheat"] },
       { name: "Rye Bread (whole grain)", lmv: "Bröd fullkorn råg fibrer ca 7%", portion: 40, traits: ["fodmaps", "fructans", "allergen_wheat"] },
       { name: "Pearl Barley (cooked)", lmv: "Korngryn kokt u. salt", portion: 175, traits: ["fodmaps", "fructans", "allergen_wheat"] },
       { name: "Barley", lmv: "Korngryn kokt u. salt", portion: 175, traits: ["fodmaps", "fructans", "allergen_wheat"] },
@@ -1297,7 +1301,11 @@ const CATEGORIES = [
       { name: "Rice Milk", portion: 200, traits: [] },
       { name: "Orange Juice", lmv: "Apelsinjuice drickf.", portion: 200, traits: ["cross_reactive", "cross_grass", "dao_competitor"] },
       { name: "Apple Juice", lmv: "Äppeljuice drickf.", portion: 200, traits: ["fodmaps", "fructose", "polyols", "cross_reactive", "cross_birch"] },
-      { name: "Rosehip Soup", lmv: "Nyponsoppapulver berikad", lmvNote: "powder — the made-up soup is not listed", portion: 200, traits: ["fiber", "refined_carbs"] },
+      // The figures are the powder made up 1:8 as directed — see nutrition-manual.js.
+      // Taken as powder against a 200g bowl it looked like 142g of sugar and
+      // enough fiber to tag, which is where the fiber tag came from. A made-up
+      // bowl holds 1.2g.
+      { name: "Rosehip Soup", lmvNote: "made up from powder — the prepared soup is not listed", portion: 200, traits: ["refined_carbs"] },
       { name: "Peppermint Tea", portion: 200, traits: ["irritant"] },
       { name: "Alcohol-free Beer", lmv: "Öl alkoholfri", portion: 330, traits: ["irritant", "carbonation", "allergen_wheat"] },
       { name: "Squash / Cordial", lmv: "Saft drickf.", portion: 200, traits: ["refined_carbs"] },

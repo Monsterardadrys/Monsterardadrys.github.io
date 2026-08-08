@@ -166,6 +166,29 @@ foods.forEach(function (food) {
   });
 });
 
+/* ---- Dry figures against a wet portion -------------------------------------
+   A food matched to the dry or powdered form of itself, but carrying the
+   portion of the cooked or made-up form, is wrong by whatever it lost in the
+   drying — several times over, not a few percent. Nothing caught it until the
+   water column arrived: rosehip soup powder against a 200g bowl put 142g of
+   sugar in a serving, and cracked rye against a cooked-grain portion was out
+   by three.
+
+   A portion of 100g or more is a cooked dish, a drink or a whole vegetable.
+   None of those is nearly waterless. Smoked pork belly at 43% is the driest
+   thing that legitimately reaches that size, so the line sits below it. */
+const WET_PORTION = 100;
+const DRY_ENOUGH = 30;
+
+foods.forEach(function (food) {
+  const n = NUTRITION[food.name];
+  if (!n || n.water == null) return;
+  if (food.portion < WET_PORTION || n.water >= DRY_ENOUGH) return;
+  faults.push(food.name + " has a " + food.portion + "g portion but only " + n.water +
+    "g of water per 100g — the figures look like the dry form of a food served wet" +
+    (food.lmv ? " (matched to \"" + food.lmv + "\")" : ""));
+});
+
 /* ---- The FODMAP serving table ---------------------------------------------
    fodmap-data.js is hand-entered, so the two ways it can rot are a food that
    has been renamed out from under it and a serving on a food that carries no
