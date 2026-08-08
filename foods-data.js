@@ -67,6 +67,25 @@
      }
 
    ---------------------------------------------------------------------
+   FOODS SOLD DRY AND EATEN MADE UP
+   ---------------------------------------------------------------------
+   Soup powder, custard powder, a drink mix, dried infant cereal. The food
+   table lists the powder; this database gives the food the portion of the
+   bowl. Taking one against the other is wrong by the whole dilution — rosehip
+   soup powder against a 200g bowl came out at 142g of sugar a serving, which
+   is also what earned it a fiber tag it should never have had.
+
+   Where the recipe is fixed and short — dry mix plus a stated amount of water
+   — say so, and the nutrition builder does the arithmetic:
+
+     madeUp: { parts: 1, water: 8 }    // 1 part powder to 8 of water
+
+   Only for a mix made up with water. A porridge or a hot chocolate that the
+   food table already lists cooked needs nothing: check the source entry
+   first. `check-data.js` fails a food with a portion of 100g or more and
+   under 30g of water per 100g, which is what this field is for.
+
+   ---------------------------------------------------------------------
    ADD A NEW FOOD TO AN EXISTING CATEGORY
    ---------------------------------------------------------------------
    Add an object to that category's `foods` array:
@@ -1305,7 +1324,11 @@ const CATEGORIES = [
       // Taken as powder against a 200g bowl it looked like 142g of sugar and
       // enough fiber to tag, which is where the fiber tag came from. A made-up
       // bowl holds 1.2g.
-      { name: "Rosehip Soup", lmvNote: "made up from powder — the prepared soup is not listed", portion: 200, traits: ["refined_carbs"] },
+      // Sold as powder, eaten as a bowl. `madeUp` is the packet's own recipe and
+      // the builder does the dilution — see tools/nutrition-core.js. Taken as
+      // powder against a 200g bowl this looked like 142g of sugar a serving,
+      // which is also where its fiber tag came from; a made-up bowl holds 1.1g.
+      { name: "Rosehip Soup", lmv: "Nyponsoppapulver berikad", lmvNote: "powder, made up 1 part to 8 of water as directed", madeUp: { parts: 1, water: 8 }, portion: 200, traits: ["refined_carbs"] },
       { name: "Peppermint Tea", portion: 200, traits: ["irritant"] },
       { name: "Alcohol-free Beer", lmv: "Öl alkoholfri", portion: 330, traits: ["irritant", "carbonation", "allergen_wheat"] },
       { name: "Squash / Cordial", lmv: "Saft drickf.", portion: 200, traits: ["refined_carbs"] },
@@ -1321,7 +1344,9 @@ const CATEGORIES = [
       { name: "French Fries (oven-baked)", lmv: "Pommes frites friterad potatis värmd i ugn fett ca 7% frysvara", portion: 150, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs"] },
       { name: "Instant Ramen", portion: 175, traits: ["allergen_wheat", "fodmaps", "fructans"] },
       { name: "Margarine", lmv: "Flytande margarin fett 70%", portion: 10, traits: ["over_10g_fat"] },
-      { name: "Instant Soup / Bouillon Cubes", lmv: "Köttbuljong tärning ätf.", portion: 5, traits: ["fodmaps", "fructans", "allergen_celery"] },
+      // "ätf." is the made-up broth, not the cube, so the portion is a mug of
+      // it. At 5g it was a teaspoon of stock and counted as nothing.
+      { name: "Instant Soup / Bouillon Cubes", lmv: "Köttbuljong tärning ätf.", lmvNote: "ready-to-eat broth, not the dry cube", portion: 200, traits: ["fodmaps", "fructans", "allergen_celery"] },
       { name: "Flavored Yogurt", lmv: "Fruktyoghurt fett 2%", portion: 200, traits: ["over_3g_lactose", "fodmaps", "refined_carbs", "allergen_milk"] },
       { name: "Pretzels", lmv: "Salta pinnar", portion: 20, traits: ["refined_carbs", "allergen_wheat"] },
       { name: "Instant Mashed Potato", lmv: "Potatismos hemlagad", portion: 175, traits: ["refined_carbs"] },

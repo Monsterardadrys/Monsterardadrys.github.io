@@ -23,6 +23,27 @@
 
     function round(n) { return Math.round(n * 100) / 100; }
 
+    /* Foods sold dry and eaten made up — soup powder, custard powder, a
+       drink mix. Livsmedelsverket lists the powder, not the bowl, and the
+       food here carries the bowl's portion. Taking one against the other is
+       wrong by the whole dilution: rosehip soup powder against a 200g bowl
+       came out at 142g of sugar a serving.
+
+       A food says its own recipe — `madeUp: { parts: 1, water: 8 }` — and the
+       figures are scaled by it here rather than entered by hand, so the
+       arithmetic is in one place and a changed source figure follows through.
+       Water is the powder's own, scaled, plus what was added. */
+    function dilute(values, madeUp) {
+        const total = madeUp.parts + madeUp.water;
+        const factor = madeUp.parts / total;
+        const out = {};
+        Object.keys(values).forEach(function (k) {
+            out[k] = round(values[k] * factor);
+        });
+        out.water = round((values.water || 0) * factor + (madeUp.water / total) * 100);
+        return out;
+    }
+
     function valuesFrom(record) {
         const values = {};
         KEEP.forEach(function (key) {
@@ -47,7 +68,8 @@
         const empty = [];
         const fromLmv = {};
         matched.forEach(function (m) {
-            const values = valuesFrom(m.record);
+            let values = valuesFrom(m.record);
+            if (values && m.food.madeUp) values = dilute(values, m.food.madeUp);
             if (values) {
                 rows.push({ name: m.food.name, src: "lmv", values: values });
                 fromLmv[m.food.name] = true;

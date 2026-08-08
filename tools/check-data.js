@@ -180,13 +180,42 @@ foods.forEach(function (food) {
 const WET_PORTION = 100;
 const DRY_ENOUGH = 30;
 
+/* The mirror case — figures for the made-up form against the portion of the
+   dry one — is just as wrong and cannot be caught this way. Beef bouillon at
+   98% water on a 5g portion was one, but so is every fresh herb, leaf and
+   vinegar: rocket is 93% water and a portion is 20g, basil 91% and 2g. There
+   is no line between them, because there is nothing wrong with those. That one
+   was found by reading the source entry — "ätf.", ready to eat — and it stays
+   a thing to read for rather than a rule that cries wolf. */
+
 foods.forEach(function (food) {
   const n = NUTRITION[food.name];
   if (!n || n.water == null) return;
   if (food.portion < WET_PORTION || n.water >= DRY_ENOUGH) return;
   faults.push(food.name + " has a " + food.portion + "g portion but only " + n.water +
     "g of water per 100g — the figures look like the dry form of a food served wet" +
-    (food.lmv ? " (matched to \"" + food.lmv + "\")" : ""));
+    (food.lmv ? " (matched to \"" + food.lmv + "\")" : "") +
+    ". If it is made up from a mix, give it a recipe: madeUp: { parts, water }");
+});
+
+/* A recipe has to be a recipe, and it must not be applied to figures that are
+   already made up — that would dilute a bowl of soup a second time. */
+foods.forEach(function (food) {
+  const made = food.madeUp;
+  if (!made) return;
+  if (!(made.parts > 0) || !(made.water > 0)) {
+    faults.push(food.name + " has a madeUp recipe that is not parts and water");
+    return;
+  }
+  if (!food.lmv) {
+    faults.push(food.name + " has a madeUp recipe but no source entry to apply it to");
+  }
+  const n = NUTRITION[food.name];
+  if (n && n.water != null && n.water < (made.water / (made.parts + made.water)) * 90) {
+    faults.push(food.name + " is made up 1:" + (made.water / made.parts) +
+      " but its figures hold only " + n.water + "g of water per 100g — " +
+      "the dilution looks as though it has not been applied");
+  }
 });
 
 /* ---- The FODMAP serving table ---------------------------------------------
