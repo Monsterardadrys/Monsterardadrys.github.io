@@ -50,7 +50,7 @@ const ALLOWED_BROAD_ONLY = {
 /* Deliberate departures from what the numbers alone would say. Each is
    argued in tools/worklist.md and on the method page. */
 const DOSE_EXCEPTIONS = {
-  "Turmeric|bile_stimulant": "carries it on its own evidence, not on its fat content",
+  "Turmeric (dried)|bile_stimulant": "carries it on its own evidence, not on its fat content",
   "Cinnamon Bun|over_3g_lactose": "the sugar is sucrose, not lactose"
 };
 
@@ -179,6 +179,57 @@ foods.forEach(function (food) {
    thing that legitimately reaches that size, so the line sits below it. */
 const WET_PORTION = 100;
 const DRY_ENOUGH = 30;
+
+/* ---- The form a food is in, declared rather than guessed --------------------
+   The fault above is always the same underneath: the figures describe one
+   state of a food and the portion describes another. A food can say which
+   state it is in, and then the water settles it — dried basil is not fresh
+   basil at a tenth the weight, and cooked rice is not rice.
+
+     fresh   as picked, and wet          — herbs, produce
+     dried   the dried version of something that also comes fresh
+     dry     a dry pantry staple, eaten after cooking or as an ingredient
+     cooked  made up with water and heat, as eaten
+
+   `form` is optional: an apple has one state and needs no field. Where it is
+   given it is checked, and where the name would otherwise be ambiguous — the
+   herb shelf has both — it has to be in the name too, because a shopper
+   reading the list is the person who has to tell them apart. */
+const FORM_WATER = {
+  fresh:  { min: 60, is: "wet, as picked" },
+  dried:  { max: 25, is: "dried" },
+  dry:    { max: 25, is: "a dry staple" },
+  cooked: { min: 45, is: "made up with water" }
+};
+
+/* Only where both are genuinely on the shelf. Nobody buys fresh nutmeg or
+   dried-versus-fresh curry powder, and demanding "(dried)" on those would be
+   noise on nine foods to catch none. `bothWays` is the editorial judgement
+   that a shopper has a choice to make. */
+
+foods.forEach(function (food) {
+  if (!food.form) return;
+  const rule = FORM_WATER[food.form];
+  if (!rule) {
+    faults.push(food.name + ' has form "' + food.form + '", which is not one of ' +
+      Object.keys(FORM_WATER).join(", "));
+    return;
+  }
+  if (food.bothWays && food.name.toLowerCase().indexOf("(" + food.form + ")") === -1) {
+    faults.push(food.name + ' is ' + food.form + ' and sold both ways, but does not ' +
+      'say which in its name — the list is what someone reads in a shop');
+  }
+  const n = NUTRITION[food.name];
+  if (!n || n.water == null) return;
+  if (rule.min != null && n.water < rule.min) {
+    faults.push(food.name + ' is marked ' + food.form + ' (' + rule.is + ') but holds ' +
+      n.water + 'g of water per 100g');
+  }
+  if (rule.max != null && n.water > rule.max) {
+    faults.push(food.name + ' is marked ' + food.form + ' (' + rule.is + ') but holds ' +
+      n.water + 'g of water per 100g');
+  }
+});
 
 /* The mirror case — figures for the made-up form against the portion of the
    dry one — is just as wrong and cannot be caught this way. Beef bouillon at
