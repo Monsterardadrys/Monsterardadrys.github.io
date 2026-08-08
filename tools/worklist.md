@@ -1,6 +1,6 @@
 # Worklist
 
-472 foods · 43 traits · 365 with nutrient figures, 107 without.
+484 foods · 43 traits · 365 with nutrient figures, 119 without.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
@@ -234,6 +234,26 @@ name has to say which — **Basil (fresh)**, **Turmeric (dried)**. Eleven herbs
 and spices were renamed. Nutmeg, cinnamon, curry powder and the rest are dried
 and nothing else, so they carry the form without the suffix; demanding it there
 would be noise on nine foods to catch none.
+
+**Both halves of a pair** — a food sold fresh and dried had only one of them
+on the list, which is fine at 5g and not at 20g. Twelve added: Basil (dried),
+Dill (dried), Mint (dried), Oregano (fresh), Thyme (fresh), Rosemary (fresh),
+Ginger (dried), Chili (dried), Garlic Powder, Sun-dried Tomato, and dried
+porcini and trumpet chanterelle.
+
+Which pairs matter is not the same question as which pairs exist. For the herbs
+it is only weight and water — basil carries no trait either way. It is the four
+where drying concentrates a trait that change what the tool says: garlic powder
+(fructans), chili (capsaicin), sun-dried tomato (histamine) and above all dried
+mushrooms, where 10g of dried porcini is 100g of fresh in mannitol.
+
+`bothWays` is for the same jar in two versions, so the name has to say which.
+Garlic powder, sun-dried tomatoes and raisins have their own names and their
+own shelf — they get a `form` and no suffix.
+
+The twelve have no `lmv` match yet, so they carry no figures and cannot go in a
+meal. The audit will offer candidates for them next time it runs; confirm them
+into `lmv-aliases.json` and rebuild.
 
 ## Open
 
