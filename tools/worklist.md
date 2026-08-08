@@ -17,6 +17,13 @@ New foods land in "to confirm" with three runner-up candidates each; confirmed
 pairs go in `tools/lmv-aliases.json`, and anything genuinely missing from the
 database goes in `tools/lmv-absent.json`.
 
+**Read the runners-up, not just the top line.** The scorer matches names, and
+a name matches best across the very difference that matters: it offered *Mango*
+for dried mango, *Papaya* for dried papaya, *Dill färsk* for dried dill and
+*Tofu fast* for silken tofu. Five of the six real matches in the last round
+were runners-up. Where every candidate is the wrong form and no right-form
+entry is offered at all, the food is absent, not unmatched.
+
 **Evidence levels** — every trait carries one, on a three-step ladder: well
 established (29), limited (10), preliminary (4).
 

@@ -544,8 +544,27 @@
 
     /* ---- the audit ---------------------------------------------------- */
 
+    /* A food sold dry and eaten made up carries its recipe — see `madeUp` in
+       foods-data.js. The record is the powder and the portion is the bowl, so
+       the figures have to be diluted before either is compared to the other.
+       Without this the audit read rosehip soup powder against a 200g bowl and
+       reported a fiber tag missing that a made-up bowl does not earn. Same
+       arithmetic as tools/nutrition-core.js — keep the two in step. */
+    function madeUpNutrients(n, madeUp) {
+        const total = madeUp.parts + madeUp.water;
+        const factor = madeUp.parts / total;
+        const out = {};
+        Object.keys(n).forEach(function (k) {
+            out[k] = typeof n[k] === "number" ? n[k] * factor : n[k];
+        });
+        if (typeof n.water === "number") {
+            out.water = n.water * factor + (madeUp.water / total) * 100;
+        }
+        return out;
+    }
+
     function auditFood(food, record) {
-        const n = record.nutrients;
+        const n = food.madeUp ? madeUpNutrients(record.nutrients, food.madeUp) : record.nutrients;
         const findings = [];
 
         /* No exemption for tiny portions is needed any more: a 2g portion of
