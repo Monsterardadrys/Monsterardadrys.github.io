@@ -21,7 +21,7 @@
   "Bell Pepper (sweet)": "Paprika",
   "Bell Pepper (hot)": [
     "Chilipeppar",
-    "Chili"
+    "Chili (fresh)"
   ],
   "Fennel Bulb": "Fänkål",
   "Brussels Sprouts": "Brysselkål",
@@ -341,37 +341,37 @@
   "Kefir": "Kefir",
   "Paneer": "Paneer",
   "Garlic": "Vitlök",
-  "Ginger": "Ingefära",
-  "Turmeric": "Gurkmeja",
+  "Ginger (fresh)": "Ingefära",
+  "Turmeric (dried)": "Gurkmeja",
   "Mustard": "Senap",
   "Black Pepper": [
     "Svartpeppar"
   ],
   "Za'atar": "Zaatar",
   "Sumac": "Sumak",
-  "Cumin": "Spiskummin",
+  "Cumin (dried)": "Spiskummin",
   "Shawarma Spice Mix": "Shawarmakrydda",
   "Sichuan Peppercorn": "Sichuanpeppar",
   "Nutmeg": "Muskotnöt",
-  "Oregano": [
+  "Oregano (dried)": [
     "Oregano torkad",
-    "Oregano"
+    "Oregano (dried)"
   ],
-  "Thyme": [
+  "Thyme (dried)": [
     "Timjan torkad",
     "Timjan"
   ],
-  "Rosemary": [
+  "Rosemary (dried)": [
     "Rosmarin torkad",
     "Rosmarin"
   ],
-  "Mint": [
+  "Mint (fresh)": [
     "Mynta torkad",
     "Pepparmynta"
   ],
   "Cinnamon": "Kanel",
-  "Basil": "Basilika",
-  "Dill": "Dill",
+  "Basil (fresh)": "Basilika",
+  "Dill (fresh)": "Dill (fresh)",
   "Red Wine": [
     "Vin rött",
     "Rödvin"

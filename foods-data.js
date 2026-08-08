@@ -67,6 +67,30 @@
      }
 
    ---------------------------------------------------------------------
+   WHICH FORM OF THE FOOD IS THIS?
+   ---------------------------------------------------------------------
+   Most faults found in this data have had the same shape underneath: the
+   figures describe one state of a food and the portion describes another.
+   Dried basil is not fresh basil at a tenth the weight. Cooked rice is not
+   rice. So a food can say which state it is in, and the water figure then
+   settles it rather than being read by eye:
+
+     form: "fresh"    as picked, and wet — herbs, produce
+     form: "dried"    the dried version of something that also comes fresh
+     form: "dry"      a dry pantry staple, eaten cooked or as an ingredient
+     form: "cooked"   made up with water and heat, as eaten
+
+   Optional: an apple has one state and needs no field. Where it is given,
+   check-data.js holds the water to it — "fresh" under 60g per 100g is a
+   contradiction, "cooked" under 45g likewise.
+
+   Add `bothWays: true` where a shopper actually has a choice on the shelf,
+   and the name must then say which one the row is: Basil (fresh), Turmeric
+   (dried). Nutmeg and curry powder are dried and nothing else, so they carry
+   the form without the suffix — the point is helping someone pick up the
+   right jar, not decorating every name.
+
+   ---------------------------------------------------------------------
    FOODS SOLD DRY AND EATEN MADE UP
    ---------------------------------------------------------------------
    Soup powder, custard powder, a drink mix, dried infant cereal. The food
@@ -1062,75 +1086,75 @@ const CATEGORIES = [
       // Oats, rye and barley are almost never eaten as bare grain, so the
       // products are what people actually recognise and react to. Wheat
       // already had its own spread of products further down this list.
-      { name: "Oats", lmv: "Havregryn fullkorn", portion: 40, traits: ["fodmaps", "fructans", "allergen_wheat"] },
-      { name: "Oat Porridge", lmv: "Havregrynsgröt fullkorn", portion: 175, traits: ["fodmaps", "fructans", "allergen_wheat"] },
-      { name: "Oat Bran", lmv: "Havrekli", portion: 20, traits: ["fodmaps", "fructans", "allergen_wheat"] },
-      { name: "Muesli (no added sugar)", lmv: "Frukostflingor müsli fullkorn m. frukt", portion: 50, traits: ["fodmaps", "fructans", "allergen_wheat"] },
-      { name: "Wheat", lmv: "Matvete kokt m. salt", portion: 175, traits: ["fiber", "fodmaps", "fructans", "allergen_wheat"] },
+      { name: "Oats", form: "dry", lmv: "Havregryn fullkorn", portion: 40, traits: ["fodmaps", "fructans", "allergen_wheat"] },
+      { name: "Oat Porridge", form: "cooked", lmv: "Havregrynsgröt fullkorn", portion: 175, traits: ["fodmaps", "fructans", "allergen_wheat"] },
+      { name: "Oat Bran", form: "dry", lmv: "Havrekli", portion: 20, traits: ["fodmaps", "fructans", "allergen_wheat"] },
+      { name: "Muesli (no added sugar)", form: "dry", lmv: "Frukostflingor müsli fullkorn m. frukt", portion: 50, traits: ["fodmaps", "fructans", "allergen_wheat"] },
+      { name: "Wheat", form: "cooked", lmv: "Matvete kokt m. salt", portion: 175, traits: ["fiber", "fodmaps", "fructans", "allergen_wheat"] },
       // Livsmedelsverket has no cooked rye, so the figures are the dry cracked
       // grain and the portion has to be dry too — 60g makes about 175g cooked.
       // At 175g the dry figures were three times what a plate holds, which is
       // also what put protein on it: 5.4g in a real portion, dose 15.
-      { name: "Rye", lmv: "Rågkross ångprep. fullkorn", lmvNote: "cracked whole grain, dry weight — rye is not listed cooked", portion: 60, traits: ["fiber", "fodmaps", "fructans", "allergen_wheat"] },
+      { name: "Rye", form: "dry", lmv: "Rågkross ångprep. fullkorn", lmvNote: "cracked whole grain, dry weight — rye is not listed cooked", portion: 60, traits: ["fiber", "fodmaps", "fructans", "allergen_wheat"] },
       { name: "Rye Bread (whole grain)", lmv: "Bröd fullkorn råg fibrer ca 7%", portion: 40, traits: ["fodmaps", "fructans", "allergen_wheat"] },
-      { name: "Pearl Barley (cooked)", lmv: "Korngryn kokt u. salt", portion: 175, traits: ["fodmaps", "fructans", "allergen_wheat"] },
-      { name: "Barley", lmv: "Korngryn kokt u. salt", portion: 175, traits: ["fodmaps", "fructans", "allergen_wheat"] },
-      { name: "Quinoa", lmv: "Mjölmålla quinoa röd kokt m. salt", portion: 175, traits: ["fiber"] },
-      { name: "Buckwheat", lmv: "Bovetemjöl", lmvNote: "flour", portion: 40, traits: [] },
-      { name: "Rice", lmv: "Ris råris kokt m. salt", portion: 175, traits: [] },
-      { name: "Couscous", lmv: "Couscous kokt m. salt fullkorn", lmvNote: "wholegrain — the only cooked entry", portion: 175, traits: ["fiber", "refined_carbs", "fodmaps", "fructans", "allergen_wheat"] },
-      { name: "Bulgur", lmv: "Bulgur kokt", portion: 175, traits: ["fiber", "fodmaps", "fructans", "allergen_wheat"] },
+      { name: "Pearl Barley (cooked)", form: "cooked", lmv: "Korngryn kokt u. salt", portion: 175, traits: ["fodmaps", "fructans", "allergen_wheat"] },
+      { name: "Barley", form: "cooked", lmv: "Korngryn kokt u. salt", portion: 175, traits: ["fodmaps", "fructans", "allergen_wheat"] },
+      { name: "Quinoa", form: "cooked", lmv: "Mjölmålla quinoa röd kokt m. salt", portion: 175, traits: ["fiber"] },
+      { name: "Buckwheat", form: "dry", lmv: "Bovetemjöl", lmvNote: "flour", portion: 40, traits: [] },
+      { name: "Rice", form: "cooked", lmv: "Ris råris kokt m. salt", portion: 175, traits: [] },
+      { name: "Couscous", form: "cooked", lmv: "Couscous kokt m. salt fullkorn", lmvNote: "wholegrain — the only cooked entry", portion: 175, traits: ["fiber", "refined_carbs", "fodmaps", "fructans", "allergen_wheat"] },
+      { name: "Bulgur", form: "cooked", lmv: "Bulgur kokt", portion: 175, traits: ["fiber", "fodmaps", "fructans", "allergen_wheat"] },
       { name: "Freekeh", portion: 175, traits: ["allergen_wheat", "fodmaps", "fructans"] },
       { name: "Pita Bread", lmv: "Bröd vitt vete vatten fibrer ca 3,5% typ pitabröd", portion: 60, traits: ["allergen_wheat", "fodmaps", "fructans", "refined_carbs"] },
       { name: "Naan Bread", portion: 60, traits: ["allergen_wheat", "fodmaps", "fructans", "refined_carbs", "over_10g_fat"] },
       { name: "Soba Noodles", portion: 175, traits: ["refined_carbs", "allergen_wheat", "fodmaps", "fructans"] },
-      { name: "Rice Noodles", lmv: "Nudlar risnudlar kokta", portion: 175, traits: ["refined_carbs"] },
+      { name: "Rice Noodles", form: "cooked", lmv: "Nudlar risnudlar kokta", portion: 175, traits: ["refined_carbs"] },
       { name: "White Bread", lmv: "Bröd vitt fibrer 3,5%", portion: 40, traits: ["allergen_wheat", "fodmaps", "fructans", "refined_carbs"] },
-      { name: "Pasta (no egg)", lmv: "Pasta kokt u. salt", portion: 175, traits: ["refined_carbs", "allergen_wheat", "fodmaps", "fructans"] },
-      { name: "Teff", lmv: "Teffmjöl", lmvNote: "flour", portion: 40, traits: [] },
-      { name: "Sorghum/Durra", lmv: "Durra el. andra sorghumarter mjöl", lmvNote: "flour", portion: 40, traits: [] },
+      { name: "Pasta (no egg)", form: "cooked", lmv: "Pasta kokt u. salt", portion: 175, traits: ["refined_carbs", "allergen_wheat", "fodmaps", "fructans"] },
+      { name: "Teff", form: "dry", lmv: "Teffmjöl", lmvNote: "flour", portion: 40, traits: [] },
+      { name: "Sorghum/Durra", form: "dry", lmv: "Durra el. andra sorghumarter mjöl", lmvNote: "flour", portion: 40, traits: [] },
       { name: "Crispbread (rye)", lmv: "Hårt bröd fullkorn råg fibrer ca 13%", portion: 20, traits: ["fodmaps", "fructans", "allergen_wheat"] },
       { name: "Rice Cakes", portion: 20, traits: ["refined_carbs"] },
-      { name: "Polenta", lmv: "Majsgryn polenta kokt m. salt", portion: 175, traits: [] },
-      { name: "Millet", lmv: "Hirs kokt m. salt", portion: 175, traits: [] },
+      { name: "Polenta", form: "cooked", lmv: "Majsgryn polenta kokt m. salt", portion: 175, traits: [] },
+      { name: "Millet", form: "cooked", lmv: "Hirs kokt m. salt", portion: 175, traits: [] },
       { name: "Seitan", portion: 125, traits: ["protein", "allergen_wheat"] },
       { name: "Tapioca", portion: 20, traits: [] },
-      { name: "Cornstarch", lmv: "Majsstärkelse", portion: 5, traits: ["refined_carbs"] },
+      { name: "Cornstarch", form: "dry", lmv: "Majsstärkelse", portion: 5, traits: ["refined_carbs"] },
       { name: "Sourdough Bread (wheat)", portion: 40, traits: ["refined_carbs", "allergen_wheat"] },
       { name: "Gluten-free Bread", lmv: "Bröd vitt glutenfritt", portion: 40, traits: ["refined_carbs"] },
       { name: "Gluten-free Crispbread", lmv: "Hårt bröd glutenfritt fibrer ca 7%", portion: 20, traits: ["refined_carbs"] },
-      { name: "Gluten-free Pasta", lmv: "Pasta kokt m. salt majs 100% glutenfri", lmvNote: "100 % maize — the wheat-starch kind is not listed", portion: 175, traits: ["refined_carbs"] },
-      { name: "Gluten-free Oats", lmv: "Havregryn fullkorn", lmvNote: "the same entry as ordinary oats — the difference is contamination, not composition", portion: 40, traits: ["fodmaps", "fructans", "allergen_wheat"] },
-      { name: "Spelt", lmv: "Dinkel speltvete kokt m. salt", portion: 175, traits: ["fiber", "fodmaps", "fructans", "allergen_wheat"] },
-      { name: "Semolina Porridge", lmv: "Mannagrynsgröt", portion: 175, traits: ["refined_carbs", "fodmaps", "fructans", "allergen_wheat"] },
+      { name: "Gluten-free Pasta", form: "cooked", lmv: "Pasta kokt m. salt majs 100% glutenfri", lmvNote: "100 % maize — the wheat-starch kind is not listed", portion: 175, traits: ["refined_carbs"] },
+      { name: "Gluten-free Oats", form: "dry", lmv: "Havregryn fullkorn", lmvNote: "the same entry as ordinary oats — the difference is contamination, not composition", portion: 40, traits: ["fodmaps", "fructans", "allergen_wheat"] },
+      { name: "Spelt", form: "cooked", lmv: "Dinkel speltvete kokt m. salt", portion: 175, traits: ["fiber", "fodmaps", "fructans", "allergen_wheat"] },
+      { name: "Semolina Porridge", form: "cooked", lmv: "Mannagrynsgröt", portion: 175, traits: ["refined_carbs", "fodmaps", "fructans", "allergen_wheat"] },
       { name: "Corn Tortilla", portion: 60, traits: [] },
-      { name: "Wheat Bran", lmv: "Vetekli", portion: 20, traits: ["fiber", "fodmaps", "fructans", "allergen_wheat"] },
-      { name: "Rice Flour", lmv: "Rismjöl vitt", portion: 40, traits: ["refined_carbs"] },
-      { name: "Potato Flour", lmv: "Potatismjöl", portion: 20, traits: ["refined_carbs"] },
-      { name: "Almond Flour", lmv: "Mandelmjöl", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "salicylate", "allergen_treenut", "cross_reactive", "cross_birch"] }
+      { name: "Wheat Bran", form: "dry", lmv: "Vetekli", portion: 20, traits: ["fiber", "fodmaps", "fructans", "allergen_wheat"] },
+      { name: "Rice Flour", form: "dry", lmv: "Rismjöl vitt", portion: 40, traits: ["refined_carbs"] },
+      { name: "Potato Flour", form: "dry", lmv: "Potatismjöl", portion: 20, traits: ["refined_carbs"] },
+      { name: "Almond Flour", form: "dry", lmv: "Mandelmjöl", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "salicylate", "allergen_treenut", "cross_reactive", "cross_birch"] }
     ]
   },
   {
     id: "legumes",
     label: "Legumes",
     foods: [
-      { name: "Black Bean", lmv: "Svarta bönor konserv. u. lag", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
-      { name: "Chickpea (whole/flour)", lmv: "Kikärtor torkade kokta m. salt", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
-      { name: "Common Peas", lmv: "Gröna ärtor kokta m. salt frysvara", portion: 150, traits: ["fiber", "fodmaps", "fructans", "dao_competitor", "salicylate"] },
-      { name: "Lentils", lmv: "Röda linser torkade kokta m. salt", lmvNote: "red lentils", portion: 150, traits: ["fiber", "protein", "fodmaps", "galactans"] },
+      { name: "Black Bean", form: "cooked", lmv: "Svarta bönor konserv. u. lag", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
+      { name: "Chickpea (whole/flour)", form: "cooked", lmv: "Kikärtor torkade kokta m. salt", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
+      { name: "Common Peas", form: "cooked", lmv: "Gröna ärtor kokta m. salt frysvara", portion: 150, traits: ["fiber", "fodmaps", "fructans", "dao_competitor", "salicylate"] },
+      { name: "Lentils", form: "cooked", lmv: "Röda linser torkade kokta m. salt", lmvNote: "red lentils", portion: 150, traits: ["fiber", "protein", "fodmaps", "galactans"] },
       { name: "Tempeh", lmv: "Tempeh", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "allergen_soy"] },
       { name: "Tofu (firm)", lmv: "Tofu fast", portion: 125, traits: ["allergen_soy", "cross_reactive", "cross_birch", "dao_competitor"] },
       { name: "Tofu (silken)", portion: 125, traits: ["fodmaps", "galactans", "allergen_soy", "cross_reactive", "cross_birch", "dao_competitor"] },
-      { name: "Soybeans", lmv: "Sojabönor torkade kokta u. salt", portion: 150, traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "dao_competitor", "allergen_soy", "cross_reactive", "cross_birch"] },
-      { name: "Edamame", lmv: "Sojabönor torkade kokta u. salt", portion: 80, traits: ["allergen_soy", "cross_reactive", "cross_birch"] },
+      { name: "Soybeans", form: "cooked", lmv: "Sojabönor torkade kokta u. salt", portion: 150, traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "dao_competitor", "allergen_soy", "cross_reactive", "cross_birch"] },
+      { name: "Edamame", form: "cooked", lmv: "Sojabönor torkade kokta u. salt", portion: 80, traits: ["allergen_soy", "cross_reactive", "cross_birch"] },
       { name: "Falafel", lmv: "Falafel kikärtskroketter stekta", portion: 125, traits: ["fiber", "over_10g_fat", "bile_stimulant", "fodmaps", "galactans"] },
-      { name: "Fava Beans", lmv: "Bondbönor färska kokta u. salt", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
-      { name: "Kidney Beans", lmv: "Kidneybönor röda bönor konserv. u. lag", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
-      { name: "Pinto Beans", lmv: "Bruna bönor torkade kokta m. salt", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
-      { name: "Split Peas", lmv: "Gula ärtor kokta m. salt", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
+      { name: "Fava Beans", form: "cooked", lmv: "Bondbönor färska kokta u. salt", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
+      { name: "Kidney Beans", form: "cooked", lmv: "Kidneybönor röda bönor konserv. u. lag", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
+      { name: "Pinto Beans", form: "cooked", lmv: "Bruna bönor torkade kokta m. salt", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
+      { name: "Split Peas", form: "cooked", lmv: "Gula ärtor kokta m. salt", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
       { name: "White Beans in Tomato Sauce", lmv: "Vita bönor m. tomatsås konserv.", portion: 150, traits: ["fiber", "refined_carbs", "fodmaps", "galactans"] },
-      { name: "Green Lentils", lmv: "Gröna linser torkade kokta m. salt", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
-      { name: "Mung Beans", lmv: "Mungbönor torkade kokta u. salt", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
+      { name: "Green Lentils", form: "cooked", lmv: "Gröna linser torkade kokta m. salt", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
+      { name: "Mung Beans", form: "cooked", lmv: "Mungbönor torkade kokta u. salt", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Adzuki Beans", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Butter Beans", portion: 150, traits: ["fiber", "fodmaps", "galactans"] }
     ]
@@ -1258,33 +1282,33 @@ const CATEGORIES = [
     id: "spices",
     label: "Spices",
     foods: [
-      { name: "Chili", lmv: "Chilipeppar färsk", portion: 5, traits: ["irritant", "capsaicin"] },
+      { name: "Chili (fresh)", bothWays: true, form: "fresh", lmv: "Chilipeppar färsk", portion: 5, traits: ["irritant", "capsaicin"] },
       { name: "Garlic", lmv: "Vitlök", portion: 5, traits: ["fodmaps", "fructans", "irritant", "allyl_compounds", "allergen_onion"] },
-      { name: "Ginger", lmv: "Ingefära färsk", portion: 5, traits: ["cross_reactive", "cross_mugwort"] },
-      { name: "Dill", lmv: "Dill färsk", portion: 2, traits: ["cross_reactive", "cross_mugwort"] },
-      { name: "Turmeric", lmv: "Gurkmeja torkad", portion: 2, traits: ["bile_stimulant"] },
+      { name: "Ginger (fresh)", bothWays: true, form: "fresh", lmv: "Ingefära färsk", portion: 5, traits: ["cross_reactive", "cross_mugwort"] },
+      { name: "Dill (fresh)", bothWays: true, form: "fresh", lmv: "Dill färsk", portion: 2, traits: ["cross_reactive", "cross_mugwort"] },
+      { name: "Turmeric (dried)", bothWays: true, form: "dried", lmv: "Gurkmeja torkad", portion: 2, traits: ["bile_stimulant"] },
       { name: "Mustard", lmv: "Senap svensk", portion: 5, traits: ["irritant", "allyl_compounds", "allergen_mustard", "cross_reactive", "cross_mugwort"] },
-      { name: "Black Pepper", portion: 2, traits: ["irritant", "cross_reactive", "cross_mugwort"] },
-      { name: "Za'atar", portion: 2, traits: ["irritant"] },
-      { name: "Sumac", portion: 2, traits: ["irritant", "aceticAcid"] },
-      { name: "Cumin", lmv: "Spiskummin frö torkad", portion: 2, traits: ["salicylate", "cross_reactive", "cross_mugwort"] },
-      { name: "Shawarma Spice Mix", portion: 2, traits: ["irritant"] },
+      { name: "Black Pepper", form: "dried", portion: 2, traits: ["irritant", "cross_reactive", "cross_mugwort"] },
+      { name: "Za'atar", form: "dried", portion: 2, traits: ["irritant"] },
+      { name: "Sumac", form: "dried", portion: 2, traits: ["irritant", "aceticAcid"] },
+      { name: "Cumin (dried)", form: "dried", lmv: "Spiskummin frö torkad", portion: 2, traits: ["salicylate", "cross_reactive", "cross_mugwort"] },
+      { name: "Shawarma Spice Mix", form: "dried", portion: 2, traits: ["irritant"] },
       { name: "Wasabi", lmv: "Wasabirot", portion: 5, traits: ["irritant", "allyl_compounds"] },
-      { name: "Curry Powder", portion: 2, traits: ["irritant", "capsaicin"] },
-      { name: "Sichuan Peppercorn", portion: 2, traits: ["irritant"] },
-      { name: "Nutmeg", lmv: "Muskotnöt malen", portion: 2, traits: [] },
+      { name: "Curry Powder", form: "dried", portion: 2, traits: ["irritant", "capsaicin"] },
+      { name: "Sichuan Peppercorn", form: "dried", portion: 2, traits: ["irritant"] },
+      { name: "Nutmeg", form: "dried", lmv: "Muskotnöt malen", portion: 2, traits: [] },
       // Herbs sit under the 10g typical-serving gate, so no macro tags apply
       // however fiber-dense they look per 100g. All rated 0 by SIGHI and
       // unrestricted by Monash.
-      { name: "Basil", lmv: "Basilika färsk", portion: 2, traits: [] },
-      { name: "Oregano", portion: 2, traits: [] },
-      { name: "Thyme", portion: 2, traits: [] },
-      { name: "Rosemary", portion: 2, traits: [] },
-      { name: "Mint", portion: 2, traits: ["irritant"] },
-      { name: "Cinnamon", lmv: "Kanel", portion: 2, traits: [] },
-      { name: "Paprika Powder", portion: 2, traits: ["cross_reactive", "cross_mugwort"] },
-      { name: "Cardamom", lmv: "Kardemumma torkad", portion: 2, traits: [] },
-      { name: "Allspice", portion: 2, traits: [] }
+      { name: "Basil (fresh)", bothWays: true, form: "fresh", lmv: "Basilika färsk", portion: 2, traits: [] },
+      { name: "Oregano (dried)", bothWays: true, form: "dried", portion: 2, traits: [] },
+      { name: "Thyme (dried)", bothWays: true, form: "dried", portion: 2, traits: [] },
+      { name: "Rosemary (dried)", bothWays: true, form: "dried", portion: 2, traits: [] },
+      { name: "Mint (fresh)", bothWays: true, form: "fresh", portion: 2, traits: ["irritant"] },
+      { name: "Cinnamon", form: "dried", lmv: "Kanel", portion: 2, traits: [] },
+      { name: "Paprika Powder", form: "dried", portion: 2, traits: ["cross_reactive", "cross_mugwort"] },
+      { name: "Cardamom (dried)", form: "dried", lmv: "Kardemumma torkad", portion: 2, traits: [] },
+      { name: "Allspice", form: "dried", portion: 2, traits: [] }
     ]
   },
   {
@@ -1328,7 +1352,7 @@ const CATEGORIES = [
       // the builder does the dilution — see tools/nutrition-core.js. Taken as
       // powder against a 200g bowl this looked like 142g of sugar a serving,
       // which is also where its fiber tag came from; a made-up bowl holds 1.1g.
-      { name: "Rosehip Soup", lmv: "Nyponsoppapulver berikad", lmvNote: "powder, made up 1 part to 8 of water as directed", madeUp: { parts: 1, water: 8 }, portion: 200, traits: ["refined_carbs"] },
+      { name: "Rosehip Soup", form: "cooked", lmv: "Nyponsoppapulver berikad", lmvNote: "powder, made up 1 part to 8 of water as directed", madeUp: { parts: 1, water: 8 }, portion: 200, traits: ["refined_carbs"] },
       { name: "Peppermint Tea", portion: 200, traits: ["irritant"] },
       { name: "Alcohol-free Beer", lmv: "Öl alkoholfri", portion: 330, traits: ["irritant", "carbonation", "allergen_wheat"] },
       { name: "Squash / Cordial", lmv: "Saft drickf.", portion: 200, traits: ["refined_carbs"] },
@@ -1346,7 +1370,7 @@ const CATEGORIES = [
       { name: "Margarine", lmv: "Flytande margarin fett 70%", portion: 10, traits: ["over_10g_fat"] },
       // "ätf." is the made-up broth, not the cube, so the portion is a mug of
       // it. At 5g it was a teaspoon of stock and counted as nothing.
-      { name: "Instant Soup / Bouillon Cubes", lmv: "Köttbuljong tärning ätf.", lmvNote: "ready-to-eat broth, not the dry cube", portion: 200, traits: ["fodmaps", "fructans", "allergen_celery"] },
+      { name: "Instant Soup / Bouillon Cubes", form: "cooked", lmv: "Köttbuljong tärning ätf.", lmvNote: "ready-to-eat broth, not the dry cube", portion: 200, traits: ["fodmaps", "fructans", "allergen_celery"] },
       { name: "Flavored Yogurt", lmv: "Fruktyoghurt fett 2%", portion: 200, traits: ["over_3g_lactose", "fodmaps", "refined_carbs", "allergen_milk"] },
       { name: "Pretzels", lmv: "Salta pinnar", portion: 20, traits: ["refined_carbs", "allergen_wheat"] },
       { name: "Instant Mashed Potato", lmv: "Potatismos hemlagad", portion: 175, traits: ["refined_carbs"] },

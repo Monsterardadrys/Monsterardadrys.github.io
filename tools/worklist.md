@@ -223,6 +223,18 @@ method page, because they are not equally well founded — the osmolality
 mechanism is textbook, the dry-meal line is physiology plus clinical
 experience and says so.
 
+**Which form a food is in** — `form: "fresh" | "dried" | "dry" | "cooked"` on
+63 foods, and `check-data.js` holds the water figure to it. Nearly every data
+fault found here has had one shape: the figures describe one state of a food
+and the portion describes another. Declaring the state turns that from
+something spotted by eye into something the checks catch.
+
+`bothWays: true` marks the foods a shopper has a real choice about, and their
+name has to say which — **Basil (fresh)**, **Turmeric (dried)**. Eleven herbs
+and spices were renamed. Nutmeg, cinnamon, curry powder and the rest are dried
+and nothing else, so they carry the form without the suffix; demanding it there
+would be noise on nine foods to catch none.
+
 ## Open
 
 - **The FODMAP serving table is partial and unverified.** 50 foods have a
