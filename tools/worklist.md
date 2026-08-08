@@ -198,10 +198,17 @@ faults nothing else could see, both of the same kind — dry figures against a
 wet portion:
 
 - **Rosehip Soup** was matched to the powder and given a 200g bowl's portion,
-  which put 142g of sugar in a serving and earned it a fiber tag. It is now in
-  `nutrition-manual.js`, made up 1:8 as the packet directs, and in
-  `lmv-absent.json` so the audit stops matching it to powder. A prepared bowl
-  holds 1.2g of fiber, so the tag is gone.
+  which put 142g of sugar in a serving and earned it a fiber tag. It keeps the
+  powder match and carries `madeUp: { parts: 1, water: 8 }`, the packet's own
+  recipe; `tools/nutrition-core.js` does the dilution, so the arithmetic sits
+  in one place and a changed source figure follows through. A prepared bowl
+  holds 1.1g of fiber, so the tag is gone.
+- **Instant Soup / Bouillon Cubes** was the mirror of it — "Köttbuljong
+  tärning ätf." is the ready-to-eat broth, 98% water, against a 5g cube's
+  portion. A teaspoon of stock, counting as nothing. The portion is a 200g mug
+  now. That direction cannot be caught by a rule: rocket is 93% water in a 20g
+  portion and basil 91% in 2g, and there is nothing wrong with either. It is a
+  thing to read the source entry for.
 - **Rye** was matched to dry cracked grain and given the 175g cooked-grain
   portion — three times what a plate holds, which is also what had put a
   protein tag on it (5.4g in a real portion, dose 15). The portion is 60g dry

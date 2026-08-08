@@ -1,4 +1,5 @@
 {
+  "Rosehip Soup": "Nyponsoppapulver berikad",
   "_comment": "Maps our English food names to the exact Livsmedelsverket name. Only confirmed pairs belong here — the audit treats everything listed as certain. Confirmed by hand from the full-database runs. Two rules were applied throughout: prefer the plain ingredient over a prepared dish, and for anything never eaten dry (legumes, pasta, rice, grains) use the cooked entry — an alias pointing at a dried or flour entry was dropped rather than kept.",
   "Beet Root": "Rödbeta",
   "Carrot": "Morot",

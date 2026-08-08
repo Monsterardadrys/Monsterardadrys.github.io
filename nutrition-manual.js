@@ -58,16 +58,4 @@ const NUTRITION_SOURCES = {
 
 /* Empty for now. Foods that appear in neither file have no figures at all,
    and the meal builder will not let them into a meal — see meal.js. */
-const NUTRITION_MANUAL = {
-  /* Livsmedelsverket lists the powder, not the made-up soup, and the portion
-     here is a 200g bowl of soup. Taking the powder figures against that
-     portion put 142g of sugar in a serving. These are the powder's own
-     figures at the dilution the packet directs — 1 part powder to 8 parts
-     water — which is arithmetic on a Livsmedelsverket entry rather than a
-     second source. Water follows from the same dilution. */
-  "Rosehip Soup": {
-    src: "lmv",
-    ref: "Nyponsoppapulver berikad, made up 1:8 as directed",
-    values: { fat: 0.02, protein: 0.08, carbs: 10.1, fiber: 0.6, sugars: 7.9, alcohol: 0, water: 89.1 }
-  }
-};
+const NUTRITION_MANUAL = {};

@@ -308,7 +308,7 @@ const NUTRITION = {
   "Ricotta Cheese": { src: "lmv", fat: 10.9, protein: 10.2, carbs: 2, fiber: 0, sugars: 3.5, alcohol: 0, water: 75.7 },
   "Rocket": { src: "lmv", fat: 0.4, protein: 3.6, carbs: 0, fiber: 1.7, sugars: 0, alcohol: 0, water: 93.1 },
   "Romaine Lettuce": { src: "lmv", fat: 0.2, protein: 1.9, carbs: 0.9, fiber: 1.8, sugars: 1.3, alcohol: 0, water: 94.5 },
-  "Rosehip Soup": { src: "lmv", fat: 0.02, protein: 0.08, carbs: 10.1, fiber: 0.6, sugars: 7.9, alcohol: 0, water: 89.1 },
+  "Rosehip Soup": { src: "lmv", fat: 0.02, protein: 0.08, carbs: 10.12, fiber: 0.56, sugars: 7.89, alcohol: 0, water: 89.09 },
   "Rye": { src: "lmv", fat: 2.5, protein: 9, carbs: 57.2, fiber: 18.1, sugars: 1.3, alcohol: 0, water: 11.7 },
   "Rye Bread (whole grain)": { src: "lmv", fat: 2.3, protein: 9.3, carbs: 38.3, fiber: 6.5, sugars: 4.9, alcohol: 0, water: 41.9 },
   "Salami": { src: "lmv", fat: 41.2, protein: 16.1, carbs: 0.2, fiber: 0, sugars: 1.4, alcohol: 0, water: 38.9 },
