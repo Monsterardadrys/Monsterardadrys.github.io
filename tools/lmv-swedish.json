@@ -355,7 +355,7 @@
   "Nutmeg": "Muskotnöt",
   "Oregano (dried)": [
     "Oregano torkad",
-    "Oregano (dried)"
+    "Oregano"
   ],
   "Thyme (dried)": [
     "Timjan torkad",
@@ -366,12 +366,12 @@
     "Rosmarin"
   ],
   "Mint (fresh)": [
-    "Mynta torkad",
-    "Pepparmynta"
+    "Mynta",
+    "Mynta färsk"
   ],
   "Cinnamon": "Kanel",
   "Basil (fresh)": "Basilika",
-  "Dill (fresh)": "Dill (fresh)",
+  "Dill (fresh)": "Dill",
   "Red Wine": [
     "Vin rött",
     "Rödvin"
@@ -607,5 +607,43 @@
   "Pork (lean cut)": [
     "Gris kött rå",
     "Gris kotlett rå"
+  ],
+  "Mint (dried)": [
+    "Mynta torkad",
+    "Pepparmynta"
+  ],
+  "Oregano (fresh)": [
+    "Oregano färsk",
+    "Oregano"
+  ],
+  "Thyme (fresh)": [
+    "Timjan färsk",
+    "Timjan"
+  ],
+  "Rosemary (fresh)": [
+    "Rosmarin färsk",
+    "Rosmarin"
+  ],
+  "Garlic Powder": [
+    "Vitlökspulver",
+    "Vitlök torkad"
+  ],
+  "Ginger (dried)": [
+    "Ingefära torkad",
+    "Ingefära malen"
+  ],
+  "Trumpet Chanterelle": [
+    "Trattkantarell"
+  ],
+  "Trumpet Chanterelle (dried)": [
+    "Trattkantarell torkad"
+  ],
+  "Porcini Mushrooms (dried)": [
+    "Karljohansvamp torkad",
+    "Stensopp torkad"
+  ],
+  "Sun-dried Tomato": [
+    "Tomat torkad",
+    "Soltorkad tomat"
   ]
 }

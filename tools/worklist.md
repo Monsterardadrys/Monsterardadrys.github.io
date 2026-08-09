@@ -17,6 +17,14 @@ New foods land in "to confirm" with three runner-up candidates each; confirmed
 pairs go in `tools/lmv-aliases.json`, and anything genuinely missing from the
 database goes in `tools/lmv-absent.json`.
 
+**The workbench is never cached.** `sw.js` used to cache every same-origin GET,
+`tools/` included, and serve it stale-while-revalidate. So an audit read
+yesterday's `lmv-aliases.json` and `lmv-absent.json`: a food confirmed one day
+was offered again the next, and foods just marked absent came straight back.
+The page asking for `foods-data.js` with `cache: "no-store"` did nothing about
+it — the service worker answers before the browser's own cache is consulted.
+Requests under `/tools/` now skip the worker entirely.
+
 **Read the runners-up, not just the top line.** The scorer matches names, and
 a name matches best across the very difference that matters: it offered *Mango*
 for dried mango, *Papaya* for dried papaya, *Dill färsk* for dried dill and
