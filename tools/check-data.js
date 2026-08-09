@@ -307,6 +307,54 @@ Object.keys(FODMAP_SERVES).forEach(function (name) {
   }
 });
 
+/* ---- The audit's two memories against the food data ---------------------
+
+   lmv-aliases.json says "this food is that database entry"; lmv-absent.json
+   says "this food is in no entry"; and foods-data.js carries the published
+   claim in `lmv`, which is what sources.html shows. Three places, one
+   question — so they can disagree, and did: five foods sat on both lists at
+   once and six confirmed matches were never written back, so the site said
+   "not in the database" about foods the audit had already matched. */
+const aliases = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "lmv-aliases.json"), "utf8"));
+const absentList = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "lmv-absent.json"), "utf8"));
+
+function entries(o) { return Object.keys(o).filter(function (k) { return k[0] !== "_"; }); }
+
+entries(aliases).forEach(function (name) {
+  const food = byName[name];
+  if (!food) {
+    faults.push("lmv-aliases.json confirms \"" + name + "\", which is not a food");
+    return;
+  }
+  if (absentList[name]) {
+    faults.push(name + " is both confirmed in lmv-aliases.json and listed absent");
+  }
+  if (!food.lmv) {
+    faults.push(name + " is confirmed as \"" + aliases[name] +
+      "\" but carries no lmv entry name, so sources.html calls it unlisted");
+  } else if (food.lmv !== aliases[name]) {
+    faults.push(name + " carries lmv \"" + food.lmv +
+      "\" but lmv-aliases.json confirms \"" + aliases[name] + "\"");
+  }
+});
+
+entries(absentList).forEach(function (name) {
+  const food = byName[name];
+  if (!food) {
+    faults.push("lmv-absent.json lists \"" + name + "\", which is not a food");
+  } else if (food.lmv) {
+    faults.push(name + " is listed absent but carries lmv \"" + food.lmv + "\"");
+  }
+});
+
+foods.forEach(function (food) {
+  if (!aliases[food.name] && !absentList[food.name]) {
+    faults.push(food.name + " is neither confirmed nor listed absent — the audit has not resolved it");
+  }
+});
+
 const fodmapFoods = foods.filter(carriesFodmap);
 const withServe = fodmapFoods.filter(function (f) { return FODMAP_SERVES[f.name]; });
 const inMeals = fodmapFoods.filter(function (f) { return NUTRITION[f.name]; });
