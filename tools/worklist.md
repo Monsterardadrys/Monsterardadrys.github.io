@@ -25,6 +25,15 @@ The page asking for `foods-data.js` with `cache: "no-store"` did nothing about
 it — the service worker answers before the browser's own cache is consulted.
 Requests under `/tools/` now skip the worker entirely.
 
+**Livsmedelsverket carries one form of a herb and not the other, with no
+pattern to it.** Basilika färsk and Dill färsk but neither dried; Oregano,
+Timjan and Rosmarin only torkad. Fresh ginger and no ground. Garlic, and garlic
+sauce, but no powder. Yellow chanterelle but no trumpet and no porcini. Every
+one of those came back as its nearest wrong form — canned yellow chanterelle
+for dried trumpet chanterelle, garlic sauce at 12% fat for garlic powder — so
+all eight are on the absent list. The audit is at zero to confirm and zero
+unmatched.
+
 **Read the runners-up, not just the top line.** The scorer matches names, and
 a name matches best across the very difference that matters: it offered *Mango*
 for dried mango, *Papaya* for dried papaya, *Dill färsk* for dried dill and

@@ -563,6 +563,17 @@
         return out;
     }
 
+    /* Departures from what the numbers alone would say, each argued in
+       tools/worklist.md and on the method page. Kept here rather than in
+       check-data.js because the audit needs them too: without this the report
+       re-raised the same two findings every single run, and a report that
+       always says the same thing stops being read. check-data.js parses this
+       list out of here, so there is one place to add or remove one. */
+    const DELIBERATE = {
+        "Turmeric (dried)|bile_stimulant": "carries it on its own evidence, not on its fat content",
+        "Cinnamon Bun|over_3g_lactose": "the sugar is sucrose, not lactose"
+    };
+
     function auditFood(food, record) {
         const n = food.madeUp ? madeUpNutrients(record.nutrients, food.madeUp) : record.nutrients;
         const findings = [];
@@ -593,11 +604,14 @@
                 text = rule.nutrient + " " + value + " vs over " + rule.min;
             }
             if (has === expected) return;
+            const why = DELIBERATE[food.name + "|" + rule.trait];
             findings.push({
                 trait: rule.trait,
                 soft: Boolean(rule.soft),
                 missing: expected,
-                text: (expected ? "missing" : "extra") + " — " + text
+                deliberate: why || null,
+                text: (expected ? "missing" : "extra") + " — " + text +
+                      (why ? " · deliberate: " + why : "")
             });
         });
 
@@ -606,11 +620,14 @@
             const load = bileLoad(n, portion);
             const expected = load >= DOSE.bile;
             if (has !== expected) {
+                const whyBile = DELIBERATE[food.name + "|bile_stimulant"];
                 findings.push({
                     trait: "bile_stimulant",
                     soft: false,
                     missing: expected,
-                    text: (expected ? "missing" : "extra") + " — " +
+                    deliberate: whyBile || null,
+                    text: (whyBile ? "deliberate: " + whyBile + " — " : "") +
+                          (expected ? "missing" : "extra") + " — " +
                           inPortion(n.fat || 0, portion) + " g fat + 0.2 x " +
                           inPortion(n.protein || 0, portion) + " g protein = " +
                           Math.round(load * 100) / 100 + " in a " + portion +
@@ -734,6 +751,7 @@
         parseExport: parseExport,
         parseCsv: parseCsv,
         parseXlsx: parseXlsx,
+        DELIBERATE: DELIBERATE,
         score: score,
         auditFood: auditFood,
         runAudit: runAudit,

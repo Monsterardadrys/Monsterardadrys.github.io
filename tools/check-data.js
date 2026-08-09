@@ -47,12 +47,10 @@ const ALLOWED_BROAD_ONLY = {
   cross_reactive: "ragweed cross-reactivity has no pollen subtype here"
 };
 
-/* Deliberate departures from what the numbers alone would say. Each is
-   argued in tools/worklist.md and on the method page. */
-const DOSE_EXCEPTIONS = {
-  "Turmeric (dried)|bile_stimulant": "carries it on its own evidence, not on its fat content",
-  "Cinnamon Bun|over_3g_lactose": "the sugar is sucrose, not lactose"
-};
+/* Deliberate departures from what the numbers alone would say, read out of
+   lmv-core.js so the audit and this check cannot disagree about which ones
+   are intended. Each is argued in tools/worklist.md and on the method page. */
+const DOSE_EXCEPTIONS = require("./lmv-core.js").DELIBERATE;
 
 const faults = [];
 const warnings = [];

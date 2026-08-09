@@ -1,5 +1,5 @@
 {
-  "_comment": "Foods confirmed by hand to have no Livsmedelsverket entry. The audit skips them entirely, so they stop appearing as a suggestion for whatever happens to look vaguely similar — Halva was being offered sesame oil, black pepper was being offered horseradish. Only add a food here after actually searching the database for it. A dried herb or spice whose only candidates are the fresh plant belongs here too: the audit offered Basilika färsk for dried basil and four fresh peppers for paprika powder, which is the wrong form rather than a near miss. If a later export turns out to hold Basilika torkad, Dill torkad, Chilipulver or Paprikapulver, take those four back out.",
+  "_comment": "Foods confirmed by hand to have no Livsmedelsverket entry. The audit skips them entirely, so they stop appearing as a suggestion for whatever happens to look vaguely similar — Halva was being offered sesame oil, black pepper was being offered horseradish. Only add a food here after actually searching the database for it. A dried herb or spice whose only candidates are the fresh plant belongs here too: the audit offered Basilika färsk for dried basil and four fresh peppers for paprika powder, which is the wrong form rather than a near miss. If a later export turns out to hold Basilika torkad, Dill torkad, Chilipulver or Paprikapulver, take those four back out. Livsmedelsverket turns out to carry one form of a herb and not the other, with no pattern to it: Basilika färsk and Dill färsk but no dried; Oregano, Timjan and Rosmarin only torkad. It has fresh ginger and no ground, garlic and garlic sauce but no powder, yellow chanterelle but no trumpet and no porcini. Every one of those was offered as its nearest wrong form.",
   "Curry Powder": true,
   "Chai Tea": true,
   "Halva": true,
@@ -109,5 +109,13 @@
   "Sourdough Bread (wheat)": true,
   "Basil (dried)": true,
   "Dill (dried)": true,
-  "Chili (dried)": true
+  "Chili (dried)": true,
+  "Trumpet Chanterelle (dried)": true,
+  "Ginger (dried)": true,
+  "Garlic Powder": true,
+  "Oregano (fresh)": true,
+  "Thyme (fresh)": true,
+  "Rosemary (fresh)": true,
+  "Mint (dried)": true,
+  "Porcini Mushrooms (dried)": true
 }
