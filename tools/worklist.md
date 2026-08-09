@@ -1,13 +1,14 @@
 # Worklist
 
-484 foods · 43 traits · 365 with nutrient figures, 119 without.
+484 foods · 43 traits · 371 matched to Livsmedelsverket, 113 confirmed absent.
+365 carry nutrient figures; 119 do not.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
 ## Done
 
-**Livsmedelsverket audit** — 365 of 474 foods checked against the Swedish Food
-Agency database, 109 confirmed absent, none unmatched. Each verified food
+**Livsmedelsverket audit** — 371 of 484 foods checked against the Swedish Food
+Agency database, 113 confirmed absent, none unmatched. Each verified food
 carries its entry name in `lmv`, and departures carry an `lmvNote`; both show on
 `sources.html`.
 
@@ -33,6 +34,23 @@ one of those came back as its nearest wrong form — canned yellow chanterelle
 for dried trumpet chanterelle, garlic sauce at 12% fat for garlic powder — so
 all eight are on the absent list. The audit is at zero to confirm and zero
 unmatched.
+
+**Three places held the same fact and two of them were wrong.**
+`lmv-aliases.json` says a food is a given database entry, `lmv-absent.json`
+says it is in none, and the `lmv` field in `foods-data.js` is the claim the
+site actually publishes. Nothing held them together, and they came apart in
+both directions at once: **five foods sat on both lists** — dried mango and
+dried papaya in their two versions each, and brie — and **six confirmed
+matches had never been written back into `foods-data.js`**, so `sources.html`
+said "not in the database" about foods the audit had already matched, and the
+nutrition builder had no reason to give them figures.
+
+The rule in `check-data.js` now holds all three to each other: an alias must
+name a real food, that food must carry the same `lmv` string, an absent entry
+must carry none, no food may be on both lists, and no food may be on neither.
+Eleven faults on the first run, zero now. Same shape as `DELIBERATE` moving
+into `lmv-core.js` — when one fact is written down twice, write the check that
+makes them equal rather than trusting the copy.
 
 **Read the runners-up, not just the top line.** The scorer matches names, and
 a name matches best across the very difference that matters: it offered *Mango*
@@ -288,16 +306,40 @@ into `lmv-aliases.json` and rebuild.
   no export, so this will always be hand-entered. Checked in the app: cauliflower
   is fructans, as we had it. Asparagus was not — it is excess fructose, and the
   tag has been corrected.
-- **107 foods still have no figures**, so they cannot go in a meal. The source
-  ladder is decided and short — Frida (DK), then USDA SR Legacy, then Ciqual
-  for the European cheeses — and `nutrition-manual.js` is where entries go, one
-  per food with `src` and a verbatim `ref`. Nobody has downloaded those tables
-  yet. Roughly fifteen of the 107 (the vegan cheeses, protein bars, kombucha)
-  are branded products no national table analyses; they will stay without.
+- **119 foods still have no figures**, so they cannot go in a meal. Six of
+  those are matched to Livsmedelsverket now and only wait on the next
+  nutrition rebuild — dried mango and papaya in both versions, sun-dried
+  tomato and brie — which leaves **113**, and those 113 are exactly the
+  confirmed-absent list. So there is no third set to work out: whatever the
+  next source covers, it is being asked the same question the absent list
+  already answered.
+
+  The source ladder is decided and short — Frida (DK), then USDA SR Legacy,
+  then Ciqual for the European cheeses — and `nutrition-manual.js` is where
+  entries go, one per food with `src` and a verbatim `ref`. Roughly fifteen of
+  the 113 (the vegan cheeses, protein bars, kombucha) are branded products no
+  national table analyses; they will stay without.
+
+  Where the 113 sit, largest groups first: spices 21, dried fruit 13,
+  beverages 11, condiments 10, sauces 10, mushrooms 9, dairy 9, grains 8,
+  ferments 7. The spices and mushrooms are the ones that change what the tool
+  says — dried porcini and trumpet chanterelle carry mannitol, garlic powder
+  fructans, dried chili capsaicin — and a spice portion is 2g, so a figure
+  that is merely close is good enough there. The dairy is where precision
+  matters and where Frida is likely to be thinnest on the European cheeses.
+
+  Hand-entering 113 foods is not the plan. `tools/lmv-core.js` already holds
+  the parts a second source needs — the xlsx/csv/zip readers, the bigram
+  scorer, the audit rules, `DOSE` — with the Swedish-specific parts sitting
+  next to them as data: `NUTRIENT_PATTERNS`, `NAME_KEYS`, `STOPWORDS`,
+  `WEAK_TOKENS` and the `ENDINGS` stemmer. A Danish import is that seam plus
+  a language pack, not a fork. Frida publishes English food names alongside
+  Danish ones, so the `lmv-swedish.json` step may not be needed at all —
+  worth checking against the real file before building anything.
 
 ## Known and expected
 
-- **107 foods have no Livsmedelsverket entry** — Roquefort, Fontina, za'atar,
+- **113 foods have no Livsmedelsverket entry** — Roquefort, Fontina, za'atar,
   sumak, kombucha, seitan, most Asian sauces, the vegan cheeses and yoghurts.
   Their figures come from published nutrition data and clinical literature, and
   `sources.html` says so per food. Not a backlog.
