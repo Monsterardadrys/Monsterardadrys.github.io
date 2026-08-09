@@ -6,7 +6,7 @@
     That is the only step needed when deploying: bump VERSION.
 */
 
-const VERSION = "v1.24";
+const VERSION = "v1.25";
 const CACHE = "food-intolerance-guide-" + VERSION;
 
 const ASSETS = [
@@ -84,7 +84,18 @@ self.addEventListener("fetch", function (event) {
     const request = event.request;
 
     if (request.method !== "GET") return;
-    if (new URL(request.url).origin !== self.location.origin) return;
+
+    const url = new URL(request.url);
+    if (url.origin !== self.location.origin) return;
+
+    /* Never cache the workbench. tools/ holds the audit and its three lookup
+       files, and an audit run against yesterday's aliases draws the wrong
+       conclusions — it did: a food confirmed one day was still offered as
+       unmatched the next, and foods added to the absent list came back. The
+       page asks for foods-data.js with cache: "no-store", which does nothing
+       here, because this handler answers from the cache before the browser's
+       own cache is ever consulted. Let tools/ go straight to the network. */
+    if (url.pathname.indexOf("/tools/") !== -1) return;
 
     event.respondWith(
         caches.open(CACHE).then(function (cache) {
