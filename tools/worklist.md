@@ -1,14 +1,14 @@
 # Worklist
 
-493 foods · 43 traits · 374 matched to Livsmedelsverket, 28 to Denmark's Frida.
+493 foods · 43 traits · 378 matched to Livsmedelsverket, 28 to Denmark's Frida.
 402 carry nutrient figures; 91 do not.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
 ## Done
 
-**Livsmedelsverket audit** — 374 of 493 foods checked against the Swedish Food
-Agency database, 114 confirmed absent, none unmatched. Each verified food
+**Livsmedelsverket audit** — 378 of 493 foods checked against the Swedish Food
+Agency database, 115 confirmed absent, none unmatched. Each verified food
 carries its entry name in `lmv`, and departures carry an `lmvNote`; both show on
 `sources.html`.
 
@@ -308,6 +308,21 @@ sprouts are in Livsmedelsverket and this one is not, which is the herb pattern
 again in a different aisle. It is on the absent list, so the Swedish audit
 stops offering it and the Danish page picks it up — the ladder working as
 designed for the first time, rather than a food falling off the end of it.
+
+**The canned fruit round, and the disagreement that finally went away.** Four
+confirmed — pear, pineapple, apricot and cherry in syrup — and strawberry
+recorded absent, which leaves the audit at zero to confirm and zero unmatched
+again. **Rosehip soup is no longer among the disagreements**, for the first
+time since the field was added: two remain and both are the deliberate ones.
+That is the v1.33 fix showing up where it should, in a report generated on a
+different machine from the one that made the change.
+
+The cherry is worth reading twice. Livsmedelsverket's only canned cherry is
+*Körsbär surkörsbär konserv. m. sockerlag* — **sour** cherries, where the fresh
+Cherries entry above it is *Sötkörsbär*, the sweet kind. It is also what is
+actually sold in a tin here, so the match stands with an `lmvNote` saying which
+it is. Worth looking at the traits again once its figures arrive: sour cherries
+carry less sugar and more acid than sweet.
 
 **Read the runners-up, not just the top line.** The scorer matches names, and
 a name matches best across the very difference that matters: it offered *Mango*
