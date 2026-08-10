@@ -1,14 +1,14 @@
 # Worklist
 
 493 foods · 43 traits · 374 matched to Livsmedelsverket, 28 to Denmark's Frida.
-399 carry nutrient figures; 94 do not.
+402 carry nutrient figures; 91 do not.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
 ## Done
 
 **Livsmedelsverket audit** — 374 of 493 foods checked against the Swedish Food
-Agency database, 113 confirmed absent, none unmatched. Each verified food
+Agency database, 114 confirmed absent, none unmatched. Each verified food
 carries its entry name in `lmv`, and departures carry an `lmvNote`; both show on
 `sources.html`.
 
@@ -52,21 +52,26 @@ Eleven faults on the first run, zero now. Same shape as `DELIBERATE` moving
 into `lmv-core.js` — when one fact is written down twice, write the check that
 makes them equal rather than trusting the copy.
 
-**A phone build can be stale in one field and look right.** The rebuild that
-gave those six foods their figures came back with rosehip soup undiluted —
-91g of carbohydrate and 1.8g of water per 100g, the powder rather than the
-bowl. The confirmed matches were fresh, so the new foods came through; only
-`madeUp` was missing, which means the phone was reading a `foods-data.js` from
-before that field existed. `sw.js` stopped caching `/tools/` in v1.25, but
-`foods-data.js` sits at the root and is cached like any other page asset.
+**The builder never applied a recipe, and it took three rounds to see why.**
+Every rebuild came back with rosehip soup undiluted — 91g of carbohydrate and
+1.8g of water per 100g, the powder rather than the bowl.
 
-Nothing was typed in to fix it: `dilute()` from `tools/nutrition-core.js` was
-applied to the one affected food, and it reproduced the previous figures
-exactly. The blast radius is knowable — the nutrition build reads only `name`
-and `madeUp` out of the food data — and `check-data.js` named the fault in
-three different ways without being told what to look for, including "the
-dilution looks as though it has not been applied". **Run the checks on a
-downloaded build before committing it**, which is the whole reason they exist.
+The first explanation was a stale cache: `sw.js` stopped caching `/tools/` in
+v1.25, but `foods-data.js` sits at the root and is cached like any other page
+asset, so the phone looked like it was reading a food list from before
+`madeUp` existed. **That was wrong, and hard-reloading would not have helped.**
+The real cause was `flattenCategories` dropping the field before either the
+builder or the audit ever saw it — see below. A plausible explanation that
+predicts the symptom is not the same as the cause, and the way to tell them
+apart was available: the cache story could not explain why the *audit* also
+disagreed, on a different machine, in the same way.
+
+Nothing was typed in to fix any of the rounds: `dilute()` from
+`tools/nutrition-core.js` was applied to the affected foods, and it reproduced
+the previous figures exactly. `check-data.js` named the fault three different
+ways without being told what to look for, including "the dilution looks as
+though it has not been applied". **Run the checks on a downloaded build before
+committing it**, which is the whole reason they exist.
 
 **Figures arriving is how a hand-made tag gets tested.** Brie had carried
 `bile_stimulant` since before it had numbers. At 34.2% fat in a 20g portion the
@@ -298,6 +303,12 @@ intact — which is what the "everything on file plus what was just picked" rule
 was written for. Adzuki Bean Sprouts was left open, and Livsmedelsverket does
 carry the other three, so it is worth another look rather than an absence.
 
+**Adzuki sprouts: absent from Sweden, present in Denmark.** The three other
+sprouts are in Livsmedelsverket and this one is not, which is the herb pattern
+again in a different aisle. It is on the absent list, so the Swedish audit
+stops offering it and the Danish page picks it up — the ladder working as
+designed for the first time, rather than a food falling off the end of it.
+
 **Read the runners-up, not just the top line.** The scorer matches names, and
 a name matches best across the very difference that matters: it offered *Mango*
 for dried mango, *Papaya* for dried papaya, *Dill färsk* for dried dill and
@@ -358,7 +369,7 @@ running without the export in hand) and
 every link and anchor, the scripts each page needs, and the numbers quoted in
 About and the method page against the code). Each exits non-zero on a fault.
 
-**Nutrition per 100g** — 399 foods carry fat, protein, carbohydrate, fiber,
+**Nutrition per 100g** — 402 foods carry fat, protein, carbohydrate, fiber,
 sugars and alcohol per 100g, each recording its `src`. Livsmedelsverket for
 all of them so far; `nutrition-manual.js` holds hand-entered figures for the
 foods it does not cover, and the builder merges the two with Livsmedelsverket
@@ -481,7 +492,7 @@ would have been used on. The signal also requires a water figure for *every*
 food in the meal, since a food short of one puts weight in the denominator and
 no water in the numerator.
 
-All 399 foods carry a water figure. Adding the column immediately exposed two
+All 402 foods carry a water figure. Adding the column immediately exposed two
 faults nothing else could see, both of the same kind — dry figures against a
 wet portion:
 
@@ -552,7 +563,7 @@ into `lmv-aliases.json` and rebuild.
   no export, so this will always be hand-entered. Checked in the app: cauliflower
   is fructans, as we had it. Asparagus was not — it is excess fructose, and the
   tag has been corrected.
-- **94 foods still have no figures**, so they cannot go in a meal — down from
+- **91 foods still have no figures**, so they cannot go in a meal — down from
   117 after the first Danish round. What is left is the long tail Frida does
   not carry either: branded products, most Asian sauces, the vegan cheeses,
   and the dried fruits below.
