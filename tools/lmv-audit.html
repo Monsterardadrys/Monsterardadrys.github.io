@@ -160,7 +160,92 @@
 
         .note { font-size: 0.85rem; color: #5a615c; }
 
-        #results { display: none; }
+        /* One open food and its candidates. Same shape as the Danish page:
+           the answer is picked here rather than transcribed somewhere else. */
+        .food {
+            border-top: 1px solid var(--border);
+            padding: 0.7rem 0 0.3rem;
+        }
+
+        .food:first-child { border-top: none; }
+        .foodName { font-weight: 600; }
+
+        .chosen {
+            display: block;
+            font-weight: 400;
+            font-size: 0.82rem;
+            color: var(--clay-dark);
+        }
+
+        .cand {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: var(--linen);
+            border: 1px solid var(--border);
+            color: var(--ink);
+            font-size: 0.85rem;
+            padding: 0.45rem 0.6rem;
+            margin: 0.25rem 0 0;
+            border-radius: 6px;
+        }
+
+        .cand:hover { background: #efe8d8; }
+        .cand .sc { color: var(--clay-dark); font-variant-numeric: tabular-nums; }
+        .cand .fig { display: block; color: #5a615c; font-size: 0.78rem; }
+
+        .cand.isPicked {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--paper);
+        }
+
+        .cand.isPicked .sc, .cand.isPicked .fig { color: #cfe0e3; }
+
+        /* "Not in the database" is a real answer here, not a failure to pick
+           one — it is what lmv-absent.json is made of. */
+        .candAbsent { font-style: italic; }
+        .candAbsent.isPicked { background: #6b5a3e; border-color: #6b5a3e; }
+
+        .searchRow { margin-top: 0.35rem; }
+
+        .searchRow input {
+            width: 100%;
+            font-size: 16px;
+            font-family: inherit;
+            padding: 0.4rem 0.55rem;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            background: #fff;
+        }
+
+        .food.isDone .cand:not(.isPicked),
+        .food.isDone .searchRow { display: none; }
+
+        textarea {
+            width: 100%;
+            min-height: 8rem;
+            font-family: ui-monospace, "SF Mono", Menlo, monospace;
+            font-size: 0.72rem;
+            padding: 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--ink);
+        }
+
+        .picksBar {
+            position: sticky;
+            bottom: 0;
+            background: var(--paper);
+            border-top: 2px solid var(--primary);
+            padding: 0.5rem 0.75rem;
+            margin: 0 -1.1rem -1rem;
+            border-radius: 0 0 10px 10px;
+            font-size: 0.9rem;
+        }
+
+        #results, #open, #picks { display: none; }
     </style>
 </head>
 
@@ -202,6 +287,40 @@
             <div class="status" id="fetchStatus"></div>
         </section>
 
+        <section id="open">
+            <h2>Resolve what is open</h2>
+            <p class="note">Everything the audit could not settle by itself: foods with candidates to
+                choose between, and foods it found nothing for. <strong>Tap to pick</strong>, tap again to
+                unpick. The figures under each candidate are there to catch the wrong form — a dried food
+                with 80g of water is not the dried one. If the right entry is not offered, search for it.
+                <em>Not in the database</em> is an answer too, and the one that fills lmv-absent.json.</p>
+            <div class="status" id="staleWarning"></div>
+            <div id="list"></div>
+            <div class="picksBar">
+                <span id="pickCount">nothing picked yet</span> —
+                <a href="#picks">go to the files &darr;</a>
+            </div>
+        </section>
+
+        <section id="picks">
+            <h2>Take the answers away</h2>
+            <p>Two whole files, <strong>everything already confirmed plus what was just picked</strong> —
+                downloading one never loses what earlier rounds settled.</p>
+            <button id="downloadAliases">Download lmv-aliases.json</button>
+            <button id="downloadAbsent">Download lmv-absent.json</button>
+            <div class="status" id="pickStatus"></div>
+
+            <p class="note">Confirmed matches, <span id="aliasCount"></span>:</p>
+            <textarea id="aliasText" readonly></textarea>
+            <p class="note">Confirmed absent, <span id="absentCount"></span>:</p>
+            <textarea id="absentText" readonly></textarea>
+
+            <p class="note">Picks are kept in this browser as you go, so reloading does not lose them.
+                A confirmed match still has to be written into <strong>foods-data.js</strong> as its
+                <code>lmv</code> field — <code>check-data.js</code> fails the release until it is.</p>
+            <button id="clearPicks" class="secondary">Clear picks</button>
+        </section>
+
         <section id="results">
             <h2>Result</h2>
             <div class="counts" id="counts"></div>
@@ -239,10 +358,18 @@
             // Both files are optional — without them the audit still runs, just
             // with fewer matches. Loaded up front so a file picked immediately
             // still sees them.
+            /* The raw files are kept as well as the stripped maps. Both are
+               rewritten below from what is picked, and `_comment` in each
+               carries reasoning worth more than the entries — lmv-absent.json
+               explains why Livsmedelsverket has dried oregano and no fresh.
+               Regenerating without it would quietly throw that away. */
+            const rawFile = {};
+
             function loadMap(url, target) {
-                return fetch(url)
+                return fetch(url, { cache: "no-store" })
                     .then(function (r) { return r.ok ? r.json() : {}; })
                     .then(function (raw) {
+                        rawFile[url] = raw;
                         Object.keys(raw).forEach(function (k) { if (k[0] !== "_") target[k] = raw[k]; });
                     })
                     .catch(function () { /* fine — carry on without it */ });
@@ -397,6 +524,281 @@
                 return out.join("\n");
             }
 
+            /* ---- picking ---------------------------------------------------
+
+               Everything below mirrors tools/frida-audit.html. The lesson from
+               the first Danish round was that a page which knows the answer
+               should not make you carry it somewhere else by hand, and that
+               the right entry is often not in the top three — chili is
+               "Pepper, hot chili" in Frida and scores below foods it has
+               nothing to do with. What is different here is that "not in the
+               database" is a real answer: lmv-absent.json is an output of this
+               page, and 113 foods have reached it one round at a time. */
+
+            const STORE = "lmv-audit-picks";
+            let decision = {};
+            try { decision = JSON.parse(localStorage.getItem(STORE) || "{}"); } catch (e) { decision = {}; }
+
+            let records = [];
+            let byRecord = {};
+
+            function remember() {
+                try { localStorage.setItem(STORE, JSON.stringify(decision)); } catch (e) { /* private mode */ }
+            }
+
+            function esc(str) {
+                return String(str).replace(/[&<>"]/g, function (ch) {
+                    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch];
+                });
+            }
+
+            function fig(v) { return typeof v === "number" ? v.toFixed(1) : "\u2013"; }
+
+            function figLine(n) {
+                n = n || {};
+                return "fat " + fig(n.fat) + " \u00b7 water " + fig(n.water) +
+                    " \u00b7 sugars " + fig(n.sugars) + " \u00b7 fiber " + fig(n.fiber);
+            }
+
+            function jsonFile(comment, entries, valueOf) {
+                const names = Object.keys(entries).sort();
+                const lines = ["{"];
+                if (comment) lines.push('  "_comment": ' + JSON.stringify(comment) + (names.length ? "," : ""));
+                names.forEach(function (name, i) {
+                    lines.push("  " + JSON.stringify(name) + ": " + valueOf(entries[name]) +
+                        (i === names.length - 1 ? "" : ","));
+                });
+                lines.push("}");
+                return lines.join("\n") + "\n";
+            }
+
+            /* Everything on file plus everything just picked. Downloading has
+               to be safe: 371 confirmed matches and 113 absences took many
+               rounds, and a file that held only this round's answers would
+               undo all of it the moment it was saved over the old one. */
+            function collected() {
+                const match = {};
+                const gone = {};
+                Object.keys(aliases).forEach(function (k) { match[k] = aliases[k]; });
+                Object.keys(absent).forEach(function (k) { gone[k] = true; });
+                Object.keys(decision).forEach(function (name) {
+                    const d = decision[name];
+                    if (!d) return;
+                    if (d.kind === "absent") { gone[name] = true; delete match[name]; }
+                    else if (d.record) { match[name] = d.record; delete gone[name]; }
+                });
+                return { match: match, gone: gone };
+            }
+
+            function refreshPicks() {
+                const c = collected();
+                const picks = Object.keys(decision).length;
+                const el = document.getElementById("pickCount");
+                if (el) {
+                    el.textContent = picks
+                        ? picks + " picked this round, " + (openCount - picks) + " to go"
+                        : "nothing picked yet";
+                }
+                document.getElementById("aliasText").value = jsonFile(
+                    (rawFile["lmv-aliases.json"] || {})._comment, c.match,
+                    function (v) { return JSON.stringify(v); });
+                document.getElementById("absentText").value = jsonFile(
+                    (rawFile["lmv-absent.json"] || {})._comment, c.gone,
+                    function () { return "true"; });
+                document.getElementById("aliasCount").textContent =
+                    Object.keys(c.match).length + " in all";
+                document.getElementById("absentCount").textContent =
+                    Object.keys(c.gone).length + " in all";
+                document.getElementById("picks").style.display = picks ? "block" : "none";
+            }
+
+            let openCount = 0;
+
+            function paint(wrap, name) {
+                const d = decision[name];
+                wrap.classList.toggle("isDone", Boolean(d));
+                wrap.querySelector(".chosen").textContent = !d ? ""
+                    : d.kind === "absent" ? "\u2192 not in the database" : "\u2192 " + d.record;
+                Array.prototype.forEach.call(wrap.querySelectorAll(".cand"), function (b) {
+                    const on = d && (d.kind === "absent"
+                        ? b.classList.contains("candAbsent")
+                        : b.dataset.record === d.record);
+                    b.classList.toggle("isPicked", Boolean(on));
+                });
+                // A search hit that became the pick has to survive the fold.
+                if (d && d.kind === "match" && !wrap.querySelector(".cand.isPicked")) {
+                    addCandidate(wrap, byRecord[d.record], null, name);
+                    paint(wrap, name);
+                }
+            }
+
+            function choose(name, value, wrap) {
+                const now = decision[name];
+                const same = now && (value.kind === "absent"
+                    ? now.kind === "absent"
+                    : now.record === value.record);
+                if (same) delete decision[name];
+                else decision[name] = value;
+                remember();
+                paint(wrap, name);
+                refreshPicks();
+            }
+
+            function addCandidate(wrap, record, score, name) {
+                if (!record) return;
+                const b = document.createElement("button");
+                b.className = "cand";
+                b.dataset.record = record.name;
+                b.innerHTML = (score == null ? "" : '<span class="sc">' + score.toFixed(2) + "</span> ") +
+                    esc(record.name) + '<span class="fig">' + figLine(record.nutrients) + "</span>";
+                b.addEventListener("click", function () {
+                    choose(name, { kind: "match", record: record.name }, wrap);
+                });
+                wrap.insertBefore(b, wrap.querySelector(".searchRow"));
+                return b;
+            }
+
+            function renderOpen(result) {
+                const list = document.getElementById("list");
+                list.innerHTML = "";
+
+                /* A food already in lmv-aliases.json whose record is not in
+                   this file comes back unmatched, which looks exactly like an
+                   open question and is not one — the file is short, the match
+                   is fine. Offering it here would invite picking over a good
+                   match with whatever the partial export happens to contain.
+                   They are counted and named instead. */
+                const settled = function (f) { return Boolean(aliases[f.name]); };
+                const stale = result.unmatched.filter(settled)
+                    .concat(result.suggestions.filter(function (s) { return settled(s.food); })
+                        .map(function (s) { return s.food; }));
+
+                const blocks = result.suggestions
+                    .filter(function (s) { return !settled(s.food); })
+                    .map(function (s) {
+                        return {
+                            food: s.food,
+                            candidates: [{ record: s.record, score: s.score }].concat(s.alts || [])
+                        };
+                    })
+                    .concat(result.unmatched.filter(function (f) { return !settled(f); })
+                        .map(function (f) { return { food: f, candidates: [] }; }));
+
+                openCount = blocks.length;
+
+                const warn = document.getElementById("staleWarning");
+                if (stale.length) {
+                    warn.className = "status show bad";
+                    warn.textContent = stale.length + " food(s) already confirmed against " +
+                        "Livsmedelsverket did not resolve in this file. Usually that means a partial " +
+                        "export; on a full one it means the entry has been renamed and the alias needs " +
+                        "redoing. Either way they are left alone rather than offered: " +
+                        stale.slice(0, 6).map(function (f) { return f.name; }).join(", ") +
+                        (stale.length > 6 ? ", and " + (stale.length - 6) + " more." : ".");
+                } else {
+                    warn.className = "status";
+                    warn.textContent = "";
+                }
+
+                blocks.forEach(function (block) {
+                    const name = block.food.name;
+                    const wrap = document.createElement("div");
+                    wrap.className = "food";
+
+                    const h = document.createElement("div");
+                    h.className = "foodName";
+                    h.textContent = name;
+                    const chosen = document.createElement("span");
+                    chosen.className = "chosen";
+                    h.appendChild(chosen);
+                    wrap.appendChild(h);
+
+                    // Built before the candidates: addCandidate inserts in front of it.
+                    const row = document.createElement("div");
+                    row.className = "searchRow";
+                    const input = document.createElement("input");
+                    input.type = "search";
+                    /* Livsmedelsverket is in Swedish and our names are not, so
+                       a food with no entry in lmv-swedish.json scores nothing
+                       against anything and arrives here with no candidates at
+                       all. Searching a Swedish word is the way through, and
+                       the box says so rather than leaving it to be guessed. */
+                    input.placeholder = block.candidates.length
+                        ? "Not one of these? Search all " + records.length + "\u2026"
+                        : "Nothing matched \u2014 search a Swedish word (konserv, groddar\u2026)";
+                    row.appendChild(input);
+                    const hits = document.createElement("div");
+                    row.appendChild(hits);
+                    wrap.appendChild(row);
+
+                    block.candidates.forEach(function (c) {
+                        addCandidate(wrap, c.record, c.score, name);
+                    });
+
+                    const none = document.createElement("button");
+                    none.className = "cand candAbsent";
+                    none.textContent = "Not in the database";
+                    none.addEventListener("click", function () {
+                        choose(name, { kind: "absent" }, wrap);
+                    });
+                    wrap.appendChild(none);
+
+                    input.addEventListener("input", function () {
+                        const q = input.value.trim().toLowerCase();
+                        hits.innerHTML = "";
+                        if (q.length < 2) return;
+                        records.filter(function (r) {
+                            return String(r.name).toLowerCase().indexOf(q) !== -1;
+                        }).slice(0, 8).forEach(function (r) {
+                            const b = document.createElement("button");
+                            b.className = "cand";
+                            b.dataset.record = r.name;
+                            b.innerHTML = esc(r.name) + '<span class="fig">' + figLine(r.nutrients) + "</span>";
+                            b.addEventListener("click", function () {
+                                choose(name, { kind: "match", record: r.name }, wrap);
+                                input.value = "";
+                                hits.innerHTML = "";
+                            });
+                            hits.appendChild(b);
+                        });
+                    });
+
+                    list.appendChild(wrap);
+                    paint(wrap, name);
+                });
+
+                document.getElementById("open").style.display = blocks.length ? "block" : "none";
+                refreshPicks();
+            }
+
+            function save(text, filename) {
+                const blob = new Blob([text], { type: "application/json" });
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = filename;
+                a.click();
+                setTimeout(function () { URL.revokeObjectURL(a.href); }, 30000);
+                show(document.getElementById("pickStatus"), "good", "Saved as " + filename + ".");
+            }
+
+            document.getElementById("downloadAliases").addEventListener("click", function () {
+                save(document.getElementById("aliasText").value, "lmv-aliases.json");
+            });
+
+            document.getElementById("downloadAbsent").addEventListener("click", function () {
+                save(document.getElementById("absentText").value, "lmv-absent.json");
+            });
+
+            document.getElementById("clearPicks").addEventListener("click", function () {
+                if (!window.confirm("Forget every pick made this round?")) return;
+                decision = {};
+                remember();
+                Array.prototype.forEach.call(document.querySelectorAll(".food"), function (wrap) {
+                    paint(wrap, wrap.querySelector(".foodName").firstChild.textContent);
+                });
+                refreshPicks();
+            });
+
             function render(result, lmvCount) {
                 const counts = document.getElementById("counts");
                 counts.innerHTML = "";
@@ -418,11 +820,17 @@
                     ? "Nutrients read from the file: " + detected.join(", ")
                     : "No nutrient columns were recognised — this file may not be the right export.";
 
+                renderOpen(result);
+
                 lastReport = buildReport(result, lmvCount);
                 lastMarkdown = buildMarkdown(result, lmvCount, lastSource);
                 document.getElementById("report").textContent = lastReport;
                 document.getElementById("results").style.display = "block";
-                document.getElementById("results").scrollIntoView({ behavior: "smooth" });
+                /* The open list now sits above the report, and it is the part
+                   that needs doing — scroll there when there is anything in
+                   it, and to the report only when there is not. */
+                const landing = openCount ? "open" : "results";
+                document.getElementById(landing).scrollIntoView({ behavior: "smooth" });
             }
 
             function runOn(text, statusEl) {
@@ -466,6 +874,9 @@
                 show(statusEl, "info", "Read " + lmv.length + " records, matching…");
                 ready.then(function () {
                     show(statusEl, "good", "Read " + lmv.length + " records.");
+                    records = lmv;
+                    byRecord = {};
+                    lmv.forEach(function (r) { byRecord[r.name] = r; });
                     render(LMV.runAudit(ours, lmv, aliases, swedish, absent), lmv.length);
                 });
             }
