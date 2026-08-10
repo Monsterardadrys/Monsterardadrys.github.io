@@ -303,6 +303,7 @@
         <section id="results">
             <h2><span class="stepNum">3</span>Pick a match for each food</h2>
             <div class="counts" id="counts"></div>
+            <div id="unknown"></div>
             <p class="note">The top line is often the wrong form of the right food — that is how every
                 mismatch so far has looked, and a plain word-match on this set pairs "Dried Lychee" with
                 "Figs, dried" on the word <em>dried</em>. The figures under each candidate are there to
@@ -617,6 +618,26 @@
                     list.appendChild(wrap);
                     paint(wrap, t.food.name);
                 });
+
+                /* Codes neither list knows were dropped. Safe, but arbitrary
+                   until somebody looks, so they are shown in USDA's own words
+                   rather than left to be noticed as a food with one figure. */
+                const unknownBox = document.getElementById("unknown");
+                unknownBox.innerHTML = "";
+                const codes = Object.keys(read.unclassified || {});
+                if (codes.length) {
+                    const p = document.createElement("p");
+                    p.className = "dropped";
+                    p.innerHTML = "<strong>Derivation codes neither list knows</strong>, dropped for now:<br>" +
+                        codes.sort(function (a, b) {
+                            return read.unclassified[b].count - read.unclassified[a].count;
+                        }).map(function (c) {
+                            return escapeHtml(c) + " (" + read.unclassified[c].count + " figures) — " +
+                                escapeHtml(read.unclassified[c].says);
+                        }).join("<br>") +
+                        "<br>Each belongs in ACCEPTED or REJECTED in tools/usda-core.js.";
+                    unknownBox.appendChild(p);
+                }
 
                 document.getElementById("results").style.display = "block";
                 refreshPicks();
