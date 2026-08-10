@@ -153,7 +153,7 @@
         };
     }
 
-    const NutritionCore = { KEEP: KEEP, build: build };
+    const NutritionCore = { KEEP: KEEP, build: build, dilute: dilute };
 
     if (typeof module === "object" && module.exports) module.exports = NutritionCore;
     else root.NutritionCore = NutritionCore;
