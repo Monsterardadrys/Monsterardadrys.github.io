@@ -319,11 +319,18 @@
         return n - 1;
     }
 
+    /* The self-closing form has to be the FIRST alternative in both of these.
+       `<c[^>]*>` matches an empty `<c r="CS5" s="13"/>` all the way to its own
+       closing bracket, and then `[\s\S]*?</c>` runs on and swallows the next
+       real cell — so an empty cell silently steals its neighbour's value and
+       every column after it shifts by one. Frida writes 76 empty cells in a
+       single row, which is how this came to light: strawberry's sugars landed
+       in the raffinose column. Any export with an empty cell was affected. */
     function sheetToRows(xml, shared) {
         const rows = [];
-        (xml.match(/<row[^>]*>[\s\S]*?<\/row>|<row[^>]*\/>/g) || []).forEach(function (rowXml) {
+        (xml.match(/<row[^>]*\/>|<row[^>]*>[\s\S]*?<\/row>/g) || []).forEach(function (rowXml) {
             const cells = [];
-            (rowXml.match(/<c[^>]*>[\s\S]*?<\/c>|<c[^>]*\/>/g) || []).forEach(function (cellXml) {
+            (rowXml.match(/<c[^>]*\/>|<c[^>]*>[\s\S]*?<\/c>/g) || []).forEach(function (cellXml) {
                 const ref = (cellXml.match(/ r="([A-Z]+\d+)"/) || [])[1];
                 const type = (cellXml.match(/ t="([^"]+)"/) || [])[1];
                 let value = "";
@@ -343,20 +350,31 @@
         return rows;
     }
 
-    function parseXlsx(arrayBuffer) {
+    /* Every worksheet in the book as raw rows, in file order. Livsmedelsverket
+       exports one sheet and the reader below takes it; Denmark's Frida ships
+       seven, and the one we want is neither the first nor findable by
+       position, so that reader picks by what a sheet contains. */
+    function sheetsFromXlsx(arrayBuffer) {
         const entries = findZipEntries(arrayBuffer);
-        const sheetName = Object.keys(entries)
+        const names = Object.keys(entries)
             .filter(function (n) { return /^xl\/worksheets\/sheet\d+\.xml$/.test(n); })
-            .sort()[0];
-        if (!sheetName) throw new Error("no worksheet found in the file");
+            .sort(function (a, b) {
+                return Number(a.match(/\d+/)[0]) - Number(b.match(/\d+/)[0]);
+            });
+        if (!names.length) throw new Error("no worksheet found in the file");
 
         const sharedEntry = entries["xl/sharedStrings.xml"];
-        return Promise.all([
-            sharedEntry ? inflateEntry(sharedEntry) : Promise.resolve(""),
-            inflateEntry(entries[sheetName])
-        ]).then(function (parts) {
-            const rows = sheetToRows(parts[1], sharedStringsFrom(parts[0]));
-            return tableToObjects(rows).map(normalizeRecord).filter(Boolean);
+        return Promise.all([sharedEntry ? inflateEntry(sharedEntry) : Promise.resolve("")]
+            .concat(names.map(function (n) { return inflateEntry(entries[n]); })))
+            .then(function (parts) {
+                const shared = sharedStringsFrom(parts[0]);
+                return parts.slice(1).map(function (xml) { return sheetToRows(xml, shared); });
+            });
+    }
+
+    function parseXlsx(arrayBuffer) {
+        return sheetsFromXlsx(arrayBuffer).then(function (sheets) {
+            return tableToObjects(sheets[0]).map(normalizeRecord).filter(Boolean);
         });
     }
 
@@ -751,6 +769,7 @@
         parseExport: parseExport,
         parseCsv: parseCsv,
         parseXlsx: parseXlsx,
+        sheetsFromXlsx: sheetsFromXlsx,
         DELIBERATE: DELIBERATE,
         score: score,
         auditFood: auditFood,

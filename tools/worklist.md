@@ -81,6 +81,60 @@ have no figures yet, so nothing can be checked about them. Published fat for
 all three is close to brie's, which would put them under the dose too. Look at
 these three the moment they get figures.
 
+**An empty cell in a spreadsheet was stealing the next cell's value.**
+`sheetToRows` in `lmv-core.js` pulled cells out with
+`/<c[^>]*>[\s\S]*?<\/c>|<c[^>]*\/>/`. Put the self-closing form second and it
+never gets tried: `<c[^>]*>` matches an empty `<c r="CS5" s="13"/>` right up
+to its own bracket, and then `[\s\S]*?</c>` runs on and eats the next real
+cell. So the empty cell took its neighbour's number, and **every column after
+it shifted by one**.
+
+Frida writes 76 empty cells in a single row, which is how it surfaced:
+strawberry's sugars landed in the raffinose column and its own column read
+blank. Both alternatives are now ordered self-closing first, for `<row>` as
+well as `<c>`. Any export with an empty cell was affected — including
+Livsmedelsverket's, whenever it has one.
+
+Checked by reading the same 46 foods with openpyxl and comparing every figure:
+368 cells, no differences.
+
+**Denmark is wired up, and it needs no translation file.** Frida — the DTU
+National Food Institute's table, `fcdb.fooddata.dk`, version 6.1 — is the
+second source on the ladder, and it names every food in English as well as
+Danish. So our names go straight into the scorer with no `lmv-swedish.json`
+step, and for the first time the state words that decide fresh from dried are
+in the same language on both sides. That is worth more than it sounds: every
+wrong match this project has had was a form mismatch, and against Swedish the
+scorer could not see one, because our states were English and its were not.
+
+Figures are addressed by number, not by label. Frida gives every nutrient a
+stable ParameterID, so `PARAMETERS` in `tools/frida-core.js` is the whole
+mapping and there is no pattern-matching on column headings to drift: fat 141,
+protein 218, available carbohydrate 172, fibre 168, sum sugars 245, alcohol 19,
+water 268. **Lactose is its own figure (179)** — Livsmedelsverket gives only
+total sugars, which is why lactose-free dairy still reports lactose here and
+needs a soft marker. It is carried through so that caveat can eventually be
+dropped for Danish-sourced foods.
+
+The pipeline is the Swedish one, part for part: `tools/frida-audit.js` (or
+`tools/frida-audit.html` on a phone) proposes three candidates a food,
+confirmed pairs go in `tools/frida-aliases.json` by hand, and `--write`
+produces `nutrition-frida.js`. That file arrives in the slot
+`tools/nutrition-core.js` always had for a second source, so the builder
+needed no change — Livsmedelsverket still wins wherever both have a figure,
+and Frida wins over the hand-entered file, a national table read whole
+beating figures copied one at a time.
+
+Only foods with no figures are offered, and `check-data.js` fails a Danish
+alias for a food that already carries an `lmv`. The first time
+`nutrition-frida.js` is generated it has to be added to `ASSETS` in `sw.js`,
+or the stray-root-file check will fail it — `frida-audit.js` says so on the
+way out.
+
+`sources.html` still reads `lmv` alone, so a Danish-sourced food will keep
+saying "not in the database". True of Livsmedelsverket and misleading about
+the tool. Fix it when there are real Danish entries to describe, not before.
+
 **Read the runners-up, not just the top line.** The scorer matches names, and
 a name matches best across the very difference that matters: it offered *Mango*
 for dried mango, *Papaya* for dried papaya, *Dill färsk* for dried dill and

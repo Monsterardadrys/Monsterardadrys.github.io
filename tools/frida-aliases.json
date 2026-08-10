@@ -1,0 +1,3 @@
+{
+  "_comment": "Confirmed Danish matches: our food name -> the Frida FoodName it is. Confirmed by hand, one at a time, the same way tools/lmv-aliases.json is. Only foods with no Livsmedelsverket entry are candidates."
+}

@@ -355,6 +355,24 @@ foods.forEach(function (food) {
   }
 });
 
+/* Denmark's Frida is the second source on the ladder and is only ever asked
+   about foods Livsmedelsverket has no entry for. A confirmed Danish match for
+   a food that already has a Swedish one is dead weight at best and a second
+   opinion nobody reads at worst. */
+const fridaPath = path.join(__dirname, "frida-aliases.json");
+if (fs.existsSync(fridaPath)) {
+  const frida = JSON.parse(fs.readFileSync(fridaPath, "utf8"));
+  entries(frida).forEach(function (name) {
+    const food = byName[name];
+    if (!food) {
+      faults.push("frida-aliases.json confirms \"" + name + "\", which is not a food");
+    } else if (food.lmv) {
+      faults.push(name + " has a Danish match but already carries Livsmedelsverket's \"" +
+        food.lmv + "\" — Frida is only for the foods with no Swedish entry");
+    }
+  });
+}
+
 const fodmapFoods = foods.filter(carriesFodmap);
 const withServe = fodmapFoods.filter(function (f) { return FODMAP_SERVES[f.name]; });
 const inMeals = fodmapFoods.filter(function (f) { return NUTRITION[f.name]; });
