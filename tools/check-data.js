@@ -52,6 +52,16 @@ const ALLOWED_BROAD_ONLY = {
    are intended. Each is argued in tools/worklist.md and on the method page. */
 const DOSE_EXCEPTIONS = require("./lmv-core.js").DELIBERATE;
 
+/* Denmark's confirmed matches, if a round has been run. Read here rather than
+   where the rule sits, because the madeUp check needs it too — a recipe can
+   now be applied to figures from either table. */
+const fridaAliasPath = path.join(__dirname, "frida-aliases.json");
+const fridaAliases = {};
+if (fs.existsSync(fridaAliasPath)) {
+  const raw = JSON.parse(fs.readFileSync(fridaAliasPath, "utf8"));
+  Object.keys(raw).forEach(function (k) { if (k[0] !== "_") fridaAliases[k] = raw[k]; });
+}
+
 const faults = [];
 const warnings = [];
 
@@ -256,8 +266,15 @@ foods.forEach(function (food) {
     faults.push(food.name + " has a madeUp recipe that is not parts and water");
     return;
   }
-  if (!food.lmv) {
-    faults.push(food.name + " has a madeUp recipe but no source entry to apply it to");
+  /* A source can now be Swedish or Danish, so the recipe is checked against
+     whether figures actually arrived rather than against the `lmv` field
+     alone. A food still waiting for a match is a normal state to sit in. */
+  if (!NUTRITION[food.name]) {
+    warnings.push(food.name + " has a madeUp recipe and no figures yet — " +
+      "the recipe applies once it is matched to a source");
+  } else if (!food.lmv && !fridaAliases[food.name]) {
+    faults.push(food.name + " has figures and a madeUp recipe but no source entry " +
+      "naming where the figures came from");
   }
   const n = NUTRITION[food.name];
   if (n && n.water != null && n.water < (made.water / (made.parts + made.water)) * 90) {
@@ -349,9 +366,13 @@ entries(absentList).forEach(function (name) {
   }
 });
 
+/* A food in neither list is where every new food starts: it has not been
+   through an audit round yet. That is a normal state to add a food in, so it
+   is a warning — the faults above are for the three files contradicting each
+   other, which is never normal. */
 foods.forEach(function (food) {
   if (!aliases[food.name] && !absentList[food.name]) {
-    faults.push(food.name + " is neither confirmed nor listed absent — the audit has not resolved it");
+    warnings.push(food.name + " is neither confirmed nor listed absent — no audit has seen it yet");
   }
 });
 
@@ -359,10 +380,7 @@ foods.forEach(function (food) {
    about foods Livsmedelsverket has no entry for. A confirmed Danish match for
    a food that already has a Swedish one is dead weight at best and a second
    opinion nobody reads at worst. */
-const fridaPath = path.join(__dirname, "frida-aliases.json");
-if (fs.existsSync(fridaPath)) {
-  const frida = JSON.parse(fs.readFileSync(fridaPath, "utf8"));
-  entries(frida).forEach(function (name) {
+  entries(fridaAliases).forEach(function (name) {
     const food = byName[name];
     if (!food) {
       faults.push("frida-aliases.json confirms \"" + name + "\", which is not a food");
@@ -371,7 +389,6 @@ if (fs.existsSync(fridaPath)) {
         food.lmv + "\" — Frida is only for the foods with no Swedish entry");
     }
   });
-}
 
 const fodmapFoods = foods.filter(carriesFodmap);
 const withServe = fodmapFoods.filter(function (f) { return FODMAP_SERVES[f.name]; });

@@ -78,18 +78,33 @@
             }
         });
 
-        // Gaps only. A food Livsmedelsverket covers keeps its figure.
+        /* Gaps only. A food Livsmedelsverket covers keeps its figure.
+
+           `madeUp` is a property of the food, not of the table it was read
+           from, so the dilution applies here too — a matcha or a soup powder
+           sourced from Denmark is as much a powder as one sourced from
+           Sweden. Applying it only to the Swedish half was how rosehip soup
+           went wrong once already. */
+        const byName = {};
+        matched.forEach(function (m) { byName[m.food.name] = m.food; });
+        (result.skipped || []).forEach(function (f) {
+            const food = f && f.food ? f.food : f;
+            if (food && food.name) byName[food.name] = food;
+        });
+
         let manualUsed = 0;
         Object.keys(manual || {}).forEach(function (name) {
             if (fromLmv[name]) return;
             const entry = manual[name];
             if (!entry || !entry.values) return;
-            const values = {};
+            let values = {};
             KEEP.forEach(function (k) {
                 const v = entry.values[k];
                 if (typeof v === "number" && !isNaN(v)) values[k] = round(v);
             });
             if (!Object.keys(values).length) return;
+            const food = byName[name];
+            if (food && food.madeUp) values = dilute(values, food.madeUp);
             rows.push({ name: name, src: entry.src || "manual", values: values });
             manualUsed += 1;
         });

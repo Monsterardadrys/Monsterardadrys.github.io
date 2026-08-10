@@ -177,7 +177,62 @@
         .cand .sc { color: var(--clay-dark); font-variant-numeric: tabular-nums; }
         .cand .fig { display: block; color: #5a615c; font-size: 0.78rem; }
 
-        #results, #writeOut { display: none; }
+        .cand.isPicked {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--paper);
+        }
+
+        .cand.isPicked .sc, .cand.isPicked .fig { color: #cfe0e3; }
+
+        .chosen {
+            display: block;
+            font-weight: 400;
+            font-size: 0.82rem;
+            color: var(--clay-dark);
+        }
+
+        .searchRow { margin-top: 0.35rem; }
+
+        .searchRow input {
+            width: 100%;
+            font-size: 16px; /* stops iOS zooming on focus */
+            font-family: inherit;
+            padding: 0.4rem 0.55rem;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            background: #fff;
+        }
+
+        .food.isDone .cand:not(.isPicked),
+        .food.isDone .searchRow { display: none; }
+
+        textarea {
+            width: 100%;
+            min-height: 9rem;
+            font-family: ui-monospace, "SF Mono", Menlo, monospace;
+            font-size: 0.75rem;
+            padding: 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--ink);
+        }
+
+        /* Follows the page so the count and the buttons are always a thumb
+           away — the list is 113 foods long. */
+        .picksBar {
+            position: sticky;
+            bottom: 0;
+            background: var(--paper);
+            border-top: 2px solid var(--primary);
+            padding: 0.5rem 0.75rem;
+            margin: 0 -1.1rem -1rem;
+            border-radius: 0 0 10px 10px;
+            font-size: 0.9rem;
+        }
+
+        #results, #picks { display: none; }
     </style>
 </head>
 
@@ -205,21 +260,37 @@
         </section>
 
         <section id="results">
-            <h2><span class="stepNum">3</span>Read all three candidates</h2>
+            <h2><span class="stepNum">3</span>Pick a match for each food</h2>
             <div class="counts" id="counts"></div>
             <p class="note">The top line is often the wrong form of the right food — that is how every
                 mismatch so far has looked. The figures under each candidate are there to catch it: a
-                dried food with 80g of water is not the dried one. Tap a candidate to copy its line for
-                <strong>frida-aliases.json</strong>.</p>
-            <div class="status" id="copyStatus"></div>
+                dried food with 80g of water is not the dried one. <strong>Tap to pick</strong>, tap again
+                to unpick. If the right entry is not among the three, search for it — the box reaches
+                every food in the file.</p>
             <div id="list"></div>
+            <div class="picksBar">
+                <span id="pickCount">0 picked</span> —
+                <a href="#picks">go to the file &darr;</a>
+            </div>
         </section>
 
-        <section id="writeOut">
-            <h2><span class="stepNum">4</span>Download the figures</h2>
-            <p>Once pairs are confirmed in <strong>tools/frida-aliases.json</strong>, reload this page with
-                the same file and download <strong>nutrition-frida.js</strong> into the project root.
-                Livsmedelsverket still wins wherever both have a figure.</p>
+        <section id="picks">
+            <h2><span class="stepNum">4</span>Take the picks away</h2>
+            <p>Everything picked above, as the whole of <strong>tools/frida-aliases.json</strong>. Download
+                it, or copy the lot in one go — no need to transcribe anything.</p>
+            <button id="downloadAliases">Download frida-aliases.json</button>
+            <button id="copyAll" class="secondary">Copy all</button>
+            <div class="status" id="copyStatus"></div>
+            <textarea id="aliasText" readonly></textarea>
+
+            <p class="note">Picks are kept in this browser as you go, so reloading the page or coming
+                back tomorrow does not lose them.</p>
+            <button id="clearPicks" class="secondary">Clear picks</button>
+
+            <h2 style="margin-top:1.2rem">And the figures</h2>
+            <p>Built from the picks directly, so there is no second pass. Put it in the project root as
+                <strong>nutrition-frida.js</strong>. Livsmedelsverket still wins wherever both have a
+                figure.</p>
             <button id="downloadBtn">Download nutrition-frida.js</button>
             <pre id="preview"></pre>
         </section>
@@ -230,6 +301,18 @@
     <script>
         (function () {
             "use strict";
+
+            const STORE = "frida-audit-picks";
+
+            /* What has been picked, kept in this browser. The list is 113 foods
+               long and it is worked through on a phone, so losing it to a
+               stray reload is not acceptable. */
+            let picked = {};
+            try { picked = JSON.parse(localStorage.getItem(STORE) || "{}"); } catch (e) { picked = {}; }
+
+            function remember() {
+                try { localStorage.setItem(STORE, JSON.stringify(picked)); } catch (e) { /* full or private mode */ }
+            }
 
             /* Everything under /tools/ bypasses the service worker, but
                foods-data.js and nutrition-data.js sit at the root and do not.
@@ -255,6 +338,11 @@
                 return { needing: needing, aliases: aliases };
             });
 
+            let records = [];
+            let byName = {};
+            let needing = [];
+            let sourceName = "";
+
             function show(el, kind, msg) {
                 el.className = "status show " + kind;
                 el.textContent = msg;
@@ -262,86 +350,42 @@
 
             function fmt(v) { return typeof v === "number" ? v.toFixed(1) : "–"; }
 
-            function copy(text) {
-                const status = document.getElementById("copyStatus");
-                const done = function () { show(status, "good", "Copied: " + text); };
-                if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, function () {
-                    show(status, "info", text);
-                });
-                else show(status, "info", text);
-            }
-
-            let built = null;
-
-            function render(result, records, ourCount, sourceName) {
-                const counts = document.getElementById("counts");
-                counts.innerHTML = "";
-                [
-                    [records.length, "Danish foods"],
-                    [ourCount, "of ours need figures"],
-                    [result.confirmed.length, "confirmed"],
-                    [result.toConfirm.length, "to confirm"],
-                    [result.unmatched.length, "nothing close"]
-                ].forEach(function (pair) {
-                    const d = document.createElement("div");
-                    d.className = "count";
-                    d.innerHTML = "<b>" + pair[0] + "</b><span>" + pair[1] + "</span>";
-                    counts.appendChild(d);
-                });
-
-                const list = document.getElementById("list");
-                list.innerHTML = "";
-                result.toConfirm.forEach(function (t) {
-                    const wrap = document.createElement("div");
-                    wrap.className = "food";
-                    const h = document.createElement("div");
-                    h.className = "foodName";
-                    h.textContent = t.food.name;
-                    wrap.appendChild(h);
-
-                    t.candidates.forEach(function (c) {
-                        const n = c.record.nutrients;
-                        const b = document.createElement("button");
-                        b.className = "cand";
-                        b.innerHTML = '<span class="sc">' + c.score.toFixed(2) + "</span> " +
-                            escapeHtml(c.record.name) +
-                            '<span class="fig">fat ' + fmt(n.fat) + " · water " + fmt(n.water) +
-                            " · sugars " + fmt(n.sugars) + " · fiber " + fmt(n.fiber) + "</span>";
-                        b.addEventListener("click", function () {
-                            copy('  "' + t.food.name + '": "' + c.record.name + '",');
-                        });
-                        wrap.appendChild(b);
-                    });
-                    list.appendChild(wrap);
-                });
-
-                if (result.unmatched.length) {
-                    const p = document.createElement("p");
-                    p.className = "note";
-                    p.textContent = "Nothing close: " + result.unmatched.map(function (u) {
-                        return u.food.name;
-                    }).join(", ");
-                    list.appendChild(p);
-                }
-
-                document.getElementById("results").style.display = "block";
-
-                if (result.confirmed.length) {
-                    built = fileText(Frida.toManualEntries(result.confirmed), sourceName);
-                    document.getElementById("preview").textContent = built.slice(0, 3000);
-                    document.getElementById("writeOut").style.display = "block";
-                }
-            }
-
             function escapeHtml(s) {
                 return String(s).replace(/[&<>"]/g, function (ch) {
                     return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch];
                 });
             }
 
-            /* Same layout the command-line version writes, so the two front
-               ends cannot produce different files. */
-            function fileText(entries, sourceName) {
+            function figLine(n) {
+                return "fat " + fmt(n.fat) + " · water " + fmt(n.water) +
+                    " · sugars " + fmt(n.sugars) + " · fiber " + fmt(n.fiber);
+            }
+
+            /* ---- the collected picks, as the file itself ------------------ */
+
+            const HEADER = "Confirmed Danish matches: our food name -> the Frida FoodName it is. " +
+                "Confirmed by hand, one at a time, the same way tools/lmv-aliases.json is. " +
+                "Only foods with no Livsmedelsverket entry are candidates.";
+
+            function aliasFileText() {
+                const names = Object.keys(picked).sort();
+                const lines = ["{", '  "_comment": "' + HEADER + '"' + (names.length ? "," : "")];
+                names.forEach(function (name, i) {
+                    lines.push('  "' + name.replace(/"/g, '\\"') + '": "' +
+                        picked[name].replace(/"/g, '\\"') + '"' + (i === names.length - 1 ? "" : ","));
+                });
+                lines.push("}");
+                return lines.join("\n") + "\n";
+            }
+
+            function nutritionFileText() {
+                const confirmed = Object.keys(picked).map(function (name) {
+                    const food = needing.find(function (f) { return f.name === name; });
+                    const record = byName[picked[name]];
+                    return (food && record) ? { food: food, record: record } : null;
+                }).filter(Boolean);
+
+                const entries = Frida.toManualEntries(confirmed);
                 const names = Object.keys(entries).sort();
                 const lines = [
                     "/* =========================================================================",
@@ -375,11 +419,149 @@
                 return lines.join("\n");
             }
 
+            function refreshPicks() {
+                const n = Object.keys(picked).length;
+                document.getElementById("pickCount").textContent =
+                    n + (n === 1 ? " picked" : " picked") + ", " + (needing.length - n) + " to go";
+                document.getElementById("aliasText").value = aliasFileText();
+                document.getElementById("preview").textContent = nutritionFileText().slice(0, 2500);
+                document.getElementById("picks").style.display = n ? "block" : "none";
+            }
+
+            function pick(foodName, recordName, wrap) {
+                if (picked[foodName] === recordName) delete picked[foodName];
+                else picked[foodName] = recordName;
+                remember();
+                paint(wrap, foodName);
+                refreshPicks();
+            }
+
+            /* Repaints one food's block: which candidate is on, what the
+               chosen line says, whether the rest are folded away. */
+            function paint(wrap, foodName) {
+                const chosenName = picked[foodName];
+                wrap.classList.toggle("isDone", Boolean(chosenName));
+                const label = wrap.querySelector(".chosen");
+                label.textContent = chosenName ? "→ " + chosenName : "";
+                Array.prototype.forEach.call(wrap.querySelectorAll(".cand"), function (b) {
+                    b.classList.toggle("isPicked", b.dataset.record === chosenName);
+                });
+                // A search hit that is now the pick has to survive the fold.
+                if (chosenName && !wrap.querySelector(".cand.isPicked")) {
+                    addCandidate(wrap, byName[chosenName], null, foodName);
+                    paint(wrap, foodName);
+                }
+            }
+
+            function addCandidate(wrap, record, score, foodName) {
+                if (!record) return;
+                const b = document.createElement("button");
+                b.className = "cand";
+                b.dataset.record = record.name;
+                b.innerHTML = (score == null ? "" : '<span class="sc">' + score.toFixed(2) + "</span> ") +
+                    escapeHtml(record.name) + '<span class="fig">' + figLine(record.nutrients) + "</span>";
+                b.addEventListener("click", function () { pick(foodName, record.name, wrap); });
+                wrap.insertBefore(b, wrap.querySelector(".searchRow"));
+                return b;
+            }
+
+            function render(result, ourCount) {
+                const counts = document.getElementById("counts");
+                counts.innerHTML = "";
+                [
+                    [records.length, "Danish foods"],
+                    [ourCount, "of ours need figures"],
+                    [result.confirmed.length, "already in the file"],
+                    [result.toConfirm.length, "to pick"],
+                    [result.unmatched.length, "nothing close"]
+                ].forEach(function (pair) {
+                    const d = document.createElement("div");
+                    d.className = "count";
+                    d.innerHTML = "<b>" + pair[0] + "</b><span>" + pair[1] + "</span>";
+                    counts.appendChild(d);
+                });
+
+                const list = document.getElementById("list");
+                list.innerHTML = "";
+
+                const blocks = result.toConfirm.map(function (t) {
+                    return { food: t.food, candidates: t.candidates };
+                }).concat(result.unmatched.map(function (u) {
+                    return { food: u.food, candidates: [] };
+                }));
+
+                blocks.forEach(function (t) {
+                    const wrap = document.createElement("div");
+                    wrap.className = "food";
+
+                    const h = document.createElement("div");
+                    h.className = "foodName";
+                    h.textContent = t.food.name;
+                    const chosen = document.createElement("span");
+                    chosen.className = "chosen";
+                    h.appendChild(chosen);
+                    wrap.appendChild(h);
+
+                    /* The search box has to exist before the candidates, since
+                       addCandidate inserts in front of it. */
+                    const row = document.createElement("div");
+                    row.className = "searchRow";
+                    const input = document.createElement("input");
+                    input.type = "search";
+                    input.placeholder = "Not one of these? Search all " + records.length + "…";
+                    row.appendChild(input);
+                    const hits = document.createElement("div");
+                    row.appendChild(hits);
+                    wrap.appendChild(row);
+
+                    t.candidates.forEach(function (c) {
+                        addCandidate(wrap, c.record, c.score, t.food.name);
+                    });
+
+                    input.addEventListener("input", function () {
+                        const q = input.value.trim().toLowerCase();
+                        hits.innerHTML = "";
+                        if (q.length < 2) return;
+                        records.filter(function (r) {
+                            return r.name.toLowerCase().indexOf(q) !== -1;
+                        }).slice(0, 8).forEach(function (r) {
+                            const b = document.createElement("button");
+                            b.className = "cand";
+                            b.dataset.record = r.name;
+                            b.innerHTML = escapeHtml(r.name) +
+                                '<span class="fig">' + figLine(r.nutrients) + "</span>";
+                            b.addEventListener("click", function () {
+                                pick(t.food.name, r.name, wrap);
+                                input.value = "";
+                                hits.innerHTML = "";
+                            });
+                            hits.appendChild(b);
+                        });
+                    });
+
+                    list.appendChild(wrap);
+                    paint(wrap, t.food.name);
+                });
+
+                document.getElementById("results").style.display = "block";
+                refreshPicks();
+            }
+
+            function download(text, filename) {
+                const blob = new Blob([text], { type: "text/plain" });
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = filename;
+                a.click();
+                URL.revokeObjectURL(a.href);
+            }
+
             document.getElementById("fileInput").addEventListener("change", function (e) {
                 const file = e.target.files[0];
                 const status = document.getElementById("fileStatus");
                 if (!file) return;
                 show(status, "info", "Reading " + file.name + "…");
+                sourceName = file.name;
 
                 Promise.all([ready, file.arrayBuffer()]).then(function (parts) {
                     const ctx = parts[0];
@@ -391,22 +573,58 @@
                             show(status, "good", parsed.records.length + " Danish foods read from " +
                                 file.name + ".");
                         }
-                        const result = Frida.proposeMatches(ctx.needing, parsed.records, ctx.aliases);
-                        render(result, parsed.records, ctx.needing.length, file.name);
+                        records = parsed.records;
+                        byName = {};
+                        records.forEach(function (r) { byName[r.name] = r; });
+                        needing = ctx.needing;
+
+                        /* Anything already in frida-aliases.json counts as
+                           picked, so a half-finished round carries on rather
+                           than starting again. */
+                        Object.keys(ctx.aliases).forEach(function (k) {
+                            if (!picked[k]) picked[k] = ctx.aliases[k];
+                        });
+                        remember();
+
+                        const result = Frida.proposeMatches(needing, records, ctx.aliases);
+                        render(result, needing.length);
                     });
                 }).catch(function (err) {
                     show(status, "bad", "Could not read that file: " + err.message);
                 });
             });
 
+            document.getElementById("copyAll").addEventListener("click", function () {
+                const text = aliasFileText();
+                const status = document.getElementById("copyStatus");
+                const el = document.getElementById("aliasText");
+                el.select();
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(text).then(
+                        function () { show(status, "good", "Copied — " + Object.keys(picked).length + " matches."); },
+                        function () { show(status, "info", "Select the box and copy by hand."); });
+                } else {
+                    show(status, "info", "Select the box and copy by hand.");
+                }
+            });
+
+            document.getElementById("downloadAliases").addEventListener("click", function () {
+                download(aliasFileText(), "frida-aliases.json");
+            });
+
             document.getElementById("downloadBtn").addEventListener("click", function () {
-                if (!built) return;
-                const blob = new Blob([built], { type: "text/javascript" });
-                const a = document.createElement("a");
-                a.href = URL.createObjectURL(blob);
-                a.download = "nutrition-frida.js";
-                a.click();
-                URL.revokeObjectURL(a.href);
+                download(nutritionFileText(), "nutrition-frida.js");
+            });
+
+            document.getElementById("clearPicks").addEventListener("click", function () {
+                if (!window.confirm("Forget every pick made so far?")) return;
+                picked = {};
+                remember();
+                Array.prototype.forEach.call(document.querySelectorAll(".food"), function (wrap) {
+                    const name = wrap.querySelector(".foodName").firstChild.textContent;
+                    paint(wrap, name);
+                });
+                refreshPicks();
             });
         })();
     </script>
