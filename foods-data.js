@@ -987,10 +987,10 @@ const CATEGORIES = [
          how Canned Peaches was already built. Pear loses peel_skin: canned
          pears are peeled. */
       { name: "Canned Peaches in Syrup", lmv: "Persika konserv. m. sockerlag", portion: 100, traits: ["fodmaps", "polyols", "refined_carbs", "cross_reactive", "cross_birch"] },
-      { name: "Canned Pears in Syrup", portion: 100, traits: ["fodmaps", "fructose", "polyols", "refined_carbs", "irritant", "cross_reactive", "cross_birch", "salicylate"] },
-      { name: "Canned Pineapple in Syrup", portion: 100, traits: ["refined_carbs", "cross_reactive", "cross_latex"] },
-      { name: "Canned Apricots in Syrup", portion: 100, traits: ["fodmaps", "polyols", "refined_carbs", "cross_reactive", "cross_birch"] },
-      { name: "Canned Cherries in Syrup", portion: 100, traits: ["fodmaps", "polyols", "fructose", "refined_carbs", "cross_reactive", "cross_birch"] },
+      { name: "Canned Pears in Syrup", lmv: "Päron konserv. m. sockerlag", portion: 100, traits: ["fodmaps", "fructose", "polyols", "refined_carbs", "irritant", "cross_reactive", "cross_birch", "salicylate"] },
+      { name: "Canned Pineapple in Syrup", lmv: "Ananas konserv. m. sockerlag", portion: 100, traits: ["refined_carbs", "cross_reactive", "cross_latex"] },
+      { name: "Canned Apricots in Syrup", lmv: "Aprikos konserv. m. sockerlag", portion: 100, traits: ["fodmaps", "polyols", "refined_carbs", "cross_reactive", "cross_birch"] },
+      { name: "Canned Cherries in Syrup", lmv: "Körsbär surkörsbär konserv. m. sockerlag", lmvNote: "sour cherries — the only canned cherry listed, where fresh Cherries above is the sweet kind", portion: 100, traits: ["fodmaps", "polyols", "fructose", "refined_carbs", "cross_reactive", "cross_birch"] },
       { name: "Canned Strawberries in Syrup", portion: 100, traits: ["refined_carbs", "salicylate"] }
     ]
   },
