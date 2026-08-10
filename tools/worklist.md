@@ -1,13 +1,13 @@
 # Worklist
 
-488 foods · 43 traits · 371 matched to Livsmedelsverket, 113 confirmed absent.
-371 carry nutrient figures; 117 do not.
+493 foods · 43 traits · 371 matched to Livsmedelsverket, 28 to Denmark's Frida.
+399 carry nutrient figures; 94 do not.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
 ## Done
 
-**Livsmedelsverket audit** — 371 of 488 foods checked against the Swedish Food
+**Livsmedelsverket audit** — 371 of 493 foods checked against the Swedish Food
 Agency database, 113 confirmed absent, none unmatched. Each verified food
 carries its entry name in `lmv`, and departures carry an `lmvNote`; both show on
 `sources.html`.
@@ -76,10 +76,17 @@ alone. The tag was a judgement about rich European cheese, not a mechanism
 separate from its fat, so it is gone; brie keeps `over_10g_fat`, `histamine`
 and `dao_competitor`.
 
-Roquefort, Fontina and Raclette carry the same tag at the same 20g portion and
-have no figures yet, so nothing can be checked about them. Published fat for
-all three is close to brie's, which would put them under the dose too. Look at
-these three the moment they get figures.
+Roquefort, Fontina and Raclette turned out to be worse, and the code said so
+in a comment: *"Roquefort 30.6/21.5, Fontina 31.1/25.6, Raclette ~29/23 per
+100g — all clear both thresholds"*. **Per 100g is the error.** A dose is what
+arrives in one portion, and a portion here is 20g, so the fat line needs 30.5%
+and the protein line needs 75% — which no cheese on earth reaches. All three
+carried `over_10g_fat`, `bile_stimulant` and `protein` on that arithmetic.
+Roquefort's Danish figures settled it at 29.5% fat, 5.9g in a portion against
+a dose of 6.1, and the same applies to the other two. They now carry what Blue
+Cheese and Camembert carry, both of which were matched to Livsmedelsverket and
+so were checked properly. A comment recording *how* a tag was decided is what
+made this fixable without figures for two of the three.
 
 **An empty cell in a spreadsheet was stealing the next cell's value.**
 `sheetToRows` in `lmv-core.js` pulled cells out with
@@ -192,6 +199,46 @@ recipe on a food that has no figures yet is waiting, not wrong. Both are
 warnings now. The faults are kept for the three files contradicting each other,
 which is never a normal state.
 
+**The first Danish round: 28 foods, and five more tags it disproved.** 94
+foods are left without figures, down from 117. Every finding was a tag someone
+had reasoned out before there was anything to check it against:
+
+- **Goats Milk** gains `over_10g_fat` and `bile_stimulant`. At 4.1% fat a 200g
+  glass holds 8.3g, where cow's milk at 3% holds 6.0 against a dose of 6.1 —
+  so the two milks genuinely differ here, which is worth saying. Sheep's milk
+  is fattier again and still has no figures.
+- **Skyr** gains `protein` — 22g in a 200g pot against a dose of 15.
+- **Seitan** gains `over_10g_fat` and `bile_stimulant`.
+- **Dumplings** gains `bile_stimulant`.
+- The three blue-and-washed-rind cheeses lose three tags each; see above.
+
+**Tea is two foods and matcha is the third.** Black, green, mate, chai,
+chamomile and peppermint are brews — the leaf is steeped and thrown away — so
+they take Frida's *ready-to-drink* entry, which is water and almost nothing
+else, and their 200g portion already assumed as much. Matcha takes *Tea,
+leaves* with its recipe, and comes out at 99g of water per 100g, which is a
+cup of matcha. Six foods pointing at one entry is not a mistake here: what is
+drunk really is the same liquid.
+
+**Fruit is analysed in syrup, not dried.** Frida carries very little dried
+fruit and a good deal canned in syrup — which is also what a Swedish shop
+stocks. Five added beside the peaches that were already there: pear,
+pineapple, apricot, cherry and strawberry. Each is its fresh fruit's traits
+plus `refined_carbs` for the syrup, the rule Canned Peaches was already built
+on. Pear loses `peel_skin`, because canned pears are peeled.
+
+The nine dried fruits without figures were **not** removed to make room. They
+carry checked traits — sulphites, polyols, fructose, birch and latex
+cross-reactivity — and those work in the app and in Foods without, which do
+not need a gram figure at all; only the meal builder does. USDA SR Legacy
+covers every one of them, so they are waiting on source three rather than
+missing. Deleting them would throw away clinical information to tidy a count.
+
+**Chili is still unmatched.** Frida has hot chili fresh and canned but not
+dried, so `Chili (dried)` stays without figures; the canned entry went to
+`Pickled Jalapeno`, where it belongs. Blackcurrant was already on the list
+with Swedish figures.
+
 **Read the runners-up, not just the top line.** The scorer matches names, and
 a name matches best across the very difference that matters: it offered *Mango*
 for dried mango, *Papaya* for dried papaya, *Dill färsk* for dried dill and
@@ -252,7 +299,7 @@ running without the export in hand) and
 every link and anchor, the scripts each page needs, and the numbers quoted in
 About and the method page against the code). Each exits non-zero on a fault.
 
-**Nutrition per 100g** — 371 foods carry fat, protein, carbohydrate, fiber,
+**Nutrition per 100g** — 399 foods carry fat, protein, carbohydrate, fiber,
 sugars and alcohol per 100g, each recording its `src`. Livsmedelsverket for
 all of them so far; `nutrition-manual.js` holds hand-entered figures for the
 foods it does not cover, and the builder merges the two with Livsmedelsverket
@@ -375,7 +422,7 @@ would have been used on. The signal also requires a water figure for *every*
 food in the meal, since a food short of one puts weight in the denominator and
 no water in the numerator.
 
-All 371 foods carry a water figure. Adding the column immediately exposed two
+All 399 foods carry a water figure. Adding the column immediately exposed two
 faults nothing else could see, both of the same kind — dry figures against a
 wet portion:
 
@@ -440,15 +487,16 @@ into `lmv-aliases.json` and rebuild.
 ## Open
 
 - **The FODMAP serving table is partial and unverified.** 50 foods have a
-  serving, 49 of the 133 FODMAP foods that can go in a meal. Every figure was
+  serving, 50 of the 139 FODMAP foods that can go in a meal. Every figure was
   typed in from the Monash app and none has been checked against the current
   version — serving sizes are revised as foods are re-tested. Monash publishes
   no export, so this will always be hand-entered. Checked in the app: cauliflower
   is fructans, as we had it. Asparagus was not — it is excess fructose, and the
   tag has been corrected.
-- **117 foods still have no figures**, so they cannot go in a meal. 113 of
-  them are the confirmed-absent list exactly; the other four are the sprouted
-  legumes added since the last audit, which no round has seen yet.
+- **94 foods still have no figures**, so they cannot go in a meal — down from
+  117 after the first Danish round. What is left is the long tail Frida does
+  not carry either: branded products, most Asian sauces, the vegan cheeses,
+  and the dried fruits below.
 
   The source ladder is decided and short — Frida (DK), then USDA SR Legacy,
   then Ciqual for the European cheeses — and `nutrition-manual.js` is where

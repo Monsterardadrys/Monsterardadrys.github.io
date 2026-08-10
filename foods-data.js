@@ -980,7 +980,18 @@ const CATEGORIES = [
       // Monash: low FODMAP up to 64g, moderate fructans above that — a whole
       // persimmon is ~170g, so a normal serving is over the line.
       { name: "Persimmon", lmv: "Sharon", portion: 100, traits: ["fodmaps", "fructans", "salicylate"] },
-      { name: "Canned Peaches in Syrup", lmv: "Persika konserv. m. sockerlag", portion: 100, traits: ["fodmaps", "polyols", "refined_carbs", "cross_reactive", "cross_birch"] }
+      /* Fruit canned in syrup. Frida analyses very little fruit dried but a
+         good deal of it in syrup, which is also what a Swedish shop stocks —
+         so this row exists where the dried one could not be sourced. Each is
+         its fresh fruit's traits plus refined_carbs for the syrup, which is
+         how Canned Peaches was already built. Pear loses peel_skin: canned
+         pears are peeled. */
+      { name: "Canned Peaches in Syrup", lmv: "Persika konserv. m. sockerlag", portion: 100, traits: ["fodmaps", "polyols", "refined_carbs", "cross_reactive", "cross_birch"] },
+      { name: "Canned Pears in Syrup", portion: 100, traits: ["fodmaps", "fructose", "polyols", "refined_carbs", "irritant", "cross_reactive", "cross_birch", "salicylate"] },
+      { name: "Canned Pineapple in Syrup", portion: 100, traits: ["refined_carbs", "cross_reactive", "cross_latex"] },
+      { name: "Canned Apricots in Syrup", portion: 100, traits: ["fodmaps", "polyols", "refined_carbs", "cross_reactive", "cross_birch"] },
+      { name: "Canned Cherries in Syrup", portion: 100, traits: ["fodmaps", "polyols", "fructose", "refined_carbs", "cross_reactive", "cross_birch"] },
+      { name: "Canned Strawberries in Syrup", portion: 100, traits: ["refined_carbs", "salicylate"] }
     ]
   },
   {
@@ -1120,7 +1131,7 @@ const CATEGORIES = [
       { name: "Rice Cakes", portion: 20, traits: ["refined_carbs"] },
       { name: "Polenta", form: "cooked", lmv: "Majsgryn polenta kokt m. salt", portion: 175, traits: [] },
       { name: "Millet", form: "cooked", lmv: "Hirs kokt m. salt", portion: 175, traits: [] },
-      { name: "Seitan", portion: 125, traits: ["protein", "allergen_wheat"] },
+      { name: "Seitan", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen_wheat"] },
       { name: "Tapioca", portion: 20, traits: [] },
       { name: "Cornstarch", form: "dry", lmv: "Majsstärkelse", portion: 5, traits: ["refined_carbs"] },
       { name: "Sourdough Bread (wheat)", portion: 40, traits: ["refined_carbs", "allergen_wheat"] },
@@ -1240,7 +1251,10 @@ const CATEGORIES = [
     label: "Dairy",
     foods: [
       { name: "Cows Milk", lmv: "Mjölk fett 3% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen_milk"] },
-      { name: "Goats Milk", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen_milk"] },
+      /* Goat's milk at 4.1% fat clears both fat lines in a 200g glass where
+         cow's at 3% does not — 8.3g of fat, and 9.7 of bile load against 9.5.
+         Sheep's milk is fattier still and has no figures yet. */
+      { name: "Goats Milk", portion: 200, traits: ["over_10g_fat", "bile_stimulant", "over_3g_lactose", "fodmaps", "allergen_milk"] },
       { name: "Sheeps Milk", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen_milk"] },
       { name: "Cream Cheese (<10% fat)", lmv: "Färskost cream cheese extra light fett 5%", portion: 20, traits: ["allergen_milk"] },
       { name: "Cream Cheese (>10% fat)", lmv: "Färskost fett 33%", portion: 20, traits: ["over_10g_fat", "allergen_milk"] },
@@ -1265,11 +1279,18 @@ const CATEGORIES = [
       { name: "Mozzarella", lmv: "Ost mozzarella fett 18%", portion: 30, traits: ["allergen_milk"] },
       { name: "Blue Cheese", lmv: "Ädelost grönmögelost fett 17%", portion: 20, traits: ["histamine", "dao_competitor", "allergen_milk"] },
       // Added from the SIGHI review — named there as histamine sources.
-      // Fat/protein checked against nutrition data: Roquefort 30.6/21.5,
-      // Fontina 31.1/25.6, Raclette ~29/23 per 100g. All clear both thresholds.
-      { name: "Roquefort", portion: 20, traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen_milk", "histamine", "dao_competitor"] },
-      { name: "Fontina", portion: 20, traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen_milk", "histamine", "dao_competitor"] },
-      { name: "Raclette", portion: 20, traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen_milk", "histamine", "dao_competitor"] },
+      /* These three used to carry over_10g_fat, bile_stimulant and protein on
+         a comment reading "Roquefort 30.6/21.5, Fontina 31.1/25.6, Raclette
+         ~29/23 per 100g — all clear both thresholds". Per 100g is the error:
+         a dose is what arrives in one portion, and a portion here is 20g. The
+         protein tag needs 75g per 100g to fire at that size, which no cheese
+         reaches. Roquefort's Danish figures settled it — 29.5% fat is 5.9g in
+         a portion against a dose of 6.1 — and the same arithmetic applies to
+         all three. They now carry what Blue Cheese and Camembert carry, which
+         were matched to Livsmedelsverket and so were checked properly. */
+      { name: "Roquefort", portion: 20, traits: ["allergen_milk", "histamine", "dao_competitor"] },
+      { name: "Fontina", portion: 20, traits: ["allergen_milk", "histamine", "dao_competitor"] },
+      { name: "Raclette", portion: 20, traits: ["allergen_milk", "histamine", "dao_competitor"] },
       { name: "Camembert", lmv: "Vitmögelost camembert fett ca 22%", portion: 20, traits: ["histamine", "dao_competitor", "allergen_milk"] },
       { name: "Cheddar", lmv: "Ost hårdost fett 31%", lmvNote: "generic hard cheese entry", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_milk"] },
       { name: "Aged Gouda", lmv: "Ost hårdost fett 31%", lmvNote: "generic hard cheese entry", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_milk"] },
@@ -1279,7 +1300,7 @@ const CATEGORIES = [
       { name: "Feta Cheese", lmv: "Salladsost fett 22%", portion: 30, traits: ["over_10g_fat", "histamine", "allergen_milk"] },
       { name: "Labneh", portion: 30, traits: ["over_3g_lactose", "fodmaps", "allergen_milk"] },
       { name: "Paneer", lmv: "Paneer", portion: 60, traits: ["fodmaps", "over_10g_fat", "bile_stimulant", "over_3g_lactose", "allergen_milk"] },
-      { name: "Skyr", portion: 200, traits: ["fodmaps", "over_3g_lactose", "allergen_milk"] },
+      { name: "Skyr", portion: 200, traits: ["protein", "fodmaps", "over_3g_lactose", "allergen_milk"] },
       { name: "Buttermilk", lmv: "Filmjölk fett 3% berikad", portion: 200, traits: ["fodmaps", "over_3g_lactose", "allergen_milk"] },
       { name: "Kefir", lmv: "Kefir fett 3% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen_milk"] },
       // Lactase-treated dairy: lactose <0.1g/100g and Monash-tested low FODMAP,
@@ -1404,7 +1425,7 @@ const CATEGORIES = [
       { name: "Flavored Yogurt", lmv: "Fruktyoghurt fett 2%", portion: 200, traits: ["over_3g_lactose", "fodmaps", "refined_carbs", "allergen_milk"] },
       { name: "Pretzels", lmv: "Salta pinnar", portion: 20, traits: ["refined_carbs", "allergen_wheat"] },
       { name: "Instant Mashed Potato", lmv: "Potatismos hemlagad", portion: 175, traits: ["refined_carbs"] },
-      { name: "Dumplings", portion: 100, traits: ["allergen_wheat", "over_10g_fat"] },
+      { name: "Dumplings", portion: 100, traits: ["allergen_wheat", "over_10g_fat", "bile_stimulant"] },
       { name: "Fresh Pasta (w/ egg)", lmv: "Pasta färsk m. ägg kokt u. salt", portion: 175, traits: ["refined_carbs", "allergen_wheat", "allergen_egg", "fodmaps", "fructans"] }
     ]
   },
