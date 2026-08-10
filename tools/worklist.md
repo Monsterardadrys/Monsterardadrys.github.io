@@ -324,6 +324,39 @@ actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
 
+**SR Legacy is not uniformly laboratory-analysed, and the file says so.**
+`method.html` called it that, on the strength of its reputation. Its opening
+entries are Pillsbury refrigerated dough and a Kraft coating mix, and their
+figures carry derivation codes `MA` (manufacturer supplied, incomplete
+documentation), `MC` (manufacturer supplied, calculated by manufacturer or
+unknown) and `LC` (back-calculated from the label). Label data rounded to legal
+tolerances is precisely what Branded Foods is excluded for — sitting inside the
+set we were about to trust wholesale.
+
+The fix is not to reject SR Legacy but to stop trusting sources and start
+trusting figures. Every `foodNutrient` in FoodData Central records its own
+derivation, so `tools/usda-core.js` tests each number rather than the file it
+came in. Accepted: `A`, `AS`, and `NC` — the last because carbohydrate by
+difference and protein from nitrogen are calculations every national table
+performs by definition, and rejecting `NC` would empty the carbohydrate column
+for every source we have. Rejected: manufacturer-supplied, label-derived,
+recipe- and formulation-estimated, copied-from-another-nutrient, assumed-zero.
+A dropped figure keeps its reason, so it can be explained rather than silently
+missing.
+
+Tested both ways before it is trusted. Against Foundation it drops **nothing** —
+918 `A`, 138 `AS`, 638 `NC` across the figures we use, which is why that set
+never raised the question. Against the SR Legacy entries the codes were read
+from, the cinnamon rolls lose every figure, the biscuits keep only the one
+carbohydrate that was calculated rather than supplied, and a laboratory-measured
+waffle keeps all six. The graham-cracker crust loses its sugars to `NR`, "copied
+from another nutrient" — its Total Sugars is 18.1 and its sucrose is 18.1,
+the same number twice.
+
+Nothing is imported yet; SR Legacy is 64MB and arrives split. But the gate is
+built and checked, so the import is a matching problem now rather than a trust
+problem.
+
 **USDA Foundation Foods covers none of our gaps, and proves something better.**
 395 entries, of which 32 are literal `null` — a quirk any parser has to tolerate
 — leaving 363 real foods, weighted heavily toward raw commodity produce. That is
