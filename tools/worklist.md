@@ -327,6 +327,40 @@ actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
 
+**The whole chain, checked as one thing rather than four.** Driven in a browser
+with nothing touching the repo: the American audit read Foundation, a match was
+picked for Lion's Mane, both files downloaded, and those went into the build
+page together with the export. Out came `nutrition-data.js` with **407** foods —
+`lmv 378 · frida 28 · usda 1` — and Lion's Mane carrying `src: "usda"`. That the
+Danish 28 survived is the point: the build page had to read the repo's
+`nutrition-frida.js` correctly while the American file was being overridden.
+
+Two faults found doing it.
+
+**The build page was reading root files through the service worker.** It pulled
+`nutrition-manual.js`, `nutrition-usda.js` and `nutrition-frida.js` with
+`<script src="../...">`. `/tools/` bypasses the worker, but those requests are
+for files at the *root*, so they went through it and could be served stale —
+the same staleness that once had the audit offering foods it had already
+matched. All three are fetched with `cache: "no-store"` now, and the file inputs
+wait on that fetch rather than telling you to try again in a moment.
+
+**`usda-aliases.json` was validated by nothing.** `check-data.js` held the three
+Swedish files to each other and had a rule for Frida, and the American file had
+walked in without one. It now fails on an alias that names no food, on a food
+that already carries an `lmv` entry, and on a food that has **both** a Danish
+and an American match — which is exactly the shape running the audits out of
+order produces. Checked by planting all three: all three faults fired, and the
+file restored clean.
+
+**And the handoff is written down on the workbench**, because that is the page
+that gets opened on a phone: what you do, what each tool hands back, what Claude
+does in the repo, and the one constraint that is easy to trip over — a commit is
+needed *between* sources, since each audit offers the foods with no figures as
+of the `nutrition-data.js` in the repo. Finish Denmark, send it, let it land,
+then start America. `check-data.js` now fails on that pair rather than leaving
+it to be spotted.
+
 **The build page never read the files you had just downloaded.** It pulled
 `nutrition-frida.js`, `nutrition-usda.js` and `nutrition-manual.js` from
 `<script src="../...">` — the copies committed in the repo. So the working
