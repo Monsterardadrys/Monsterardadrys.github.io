@@ -207,6 +207,7 @@
             <h2><span class="stepNum">4</span>Save it into the repo</h2>
             <div class="counts" id="counts"></div>
             <p class="note" id="detected"></p>
+            <p class="dropped" id="rungs"></p>
             <p>Download it and put it in the project root as <strong>nutrition-data.js</strong>, replacing
                 what is there. It is generated — nothing in it is meant to be edited by hand.</p>
             <button id="downloadBtn">Download nutrition-data.js</button>
@@ -330,11 +331,22 @@
                    figures are the weakest, then USDA, then Frida. Same order
                    as loadFallbacks in build-nutrition.js — the two must not
                    disagree. An uploaded file replaces the repo's copy of that
-                   source rather than merging into it. */
+                   source rather than merging into it.
+
+                   Note what that does NOT do: uploading the Danish file leaves
+                   the American one alone, and vice versa. Each rung is replaced
+                   on its own, so a round for one source cannot drop the other.
+                   It is a fair thing to worry about, so the page says which
+                   rung came from where rather than asking to be believed. */
                 const manual = {};
+                const usedFrom = [];
                 LADDER.forEach(function (rung) {
-                    const src = uploaded[rung.symbol] || baked(rung.symbol);
+                    const mine = uploaded[rung.symbol];
+                    const src = mine || baked(rung.symbol);
+                    const n = src ? Object.keys(src).length : 0;
                     if (src) Object.assign(manual, src);
+                    usedFrom.push(rung.label + " " + n + (n === 1 ? " food" : " foods") +
+                        " (" + (mine ? "the file you added" : n ? "the repo" : "nothing in the repo") + ")");
                 });
                 built = NutritionCore.build(result, ours.length, sourceName, manual);
 
@@ -357,6 +369,12 @@
                 document.getElementById("detected").textContent = detected.length
                     ? "Nutrients read from the file: " + detected.join(", ")
                     : "No nutrient columns were recognised — this file may not be the right export.";
+
+                /* Which rung came from where. Uploading one source does not
+                   touch the others, and this is where that is visible. */
+                document.getElementById("rungs").textContent =
+                    "Below Livsmedelsverket: " + usedFrom.join(" · ") +
+                    ". Each is replaced on its own — adding one does not drop the others.";
 
                 // Anything unmatched or empty is a food that will show up with
                 // no figures in the meal builder, so it is worth naming here
