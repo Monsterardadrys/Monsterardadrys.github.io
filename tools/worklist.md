@@ -327,6 +327,36 @@ actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
 
+**The build page never read the files you had just downloaded.** It pulled
+`nutrition-frida.js`, `nutrition-usda.js` and `nutrition-manual.js` from
+`<script src="../...">` — the copies committed in the repo. So the working
+round-trip was: run the audit, get the generated file into the repo, *then*
+build. It worked, but only because the commit happened in between, and the
+workbench described the page as building "from an export plus the generated
+files", which was not true of anything the page could see.
+
+It takes them now. An optional input on the build page accepts the generated
+files, and each one replaces the repo's copy of that source outright — a
+generated file is meant to be the whole of that source, so a short one is a
+warning rather than something to merge around. The warning is the same net as
+the workbench, one step later: *"holds 2 foods but the repo's copy holds 28.
+Building with it drops the other 26."* Uploading after a build rebuilds, so the
+figures follow the files.
+
+**The obvious way to identify the files was wrong, and quietly.** Evaluate the
+text and ask `typeof NUTRITION_FRIDA` — except this page already carries all
+three as globals from its own script tags, and a name inside `new Function`
+falls through to the global when the file did not declare it. Every file
+matched the first rung and came back as the page's own empty hand-entered
+object, reporting "0 foods" and silently changing nothing. Testing the text for
+the declaration first fixes it: then the `const` inside the function body
+shadows the global and the value is the file's.
+
+Driven in a browser, four ways: the repo's own files build 406 as before; the
+real two-food Frida file is identified as Frida, warns, and rebuilds to 380 so
+the 26 lost are on screen; the full 28-food file restores 406 with no warning;
+`lmv-core.js` is ignored by name with a reason.
+
 **Re-running an audit shrank its own file, and would have cost 28 foods.**
 The Danish round came back with 30 confirmed matches in `frida-aliases.json`
 and a `nutrition-frida.js` holding **two**. Rebuilding with it would have
