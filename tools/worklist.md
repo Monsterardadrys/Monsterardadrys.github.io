@@ -239,6 +239,42 @@ dried, so `Chili (dried)` stays without figures; the canned entry went to
 `Pickled Jalapeno`, where it belongs. Blackcurrant was already on the list
 with Swedish figures.
 
+**The Swedish audit picks too now.** What the first Danish round taught applies
+here and the older page had none of it: candidates are tappable, each shows
+fat, water, sugars and fibre so a wrong form is visible, every food has a
+search box over the whole export, and picks survive a reload. The report is
+untouched — it is still what carries the disagreements — but it now sits below
+the part that needs doing.
+
+Three things are its own, because Livsmedelsverket is not Frida:
+
+**"Not in the database" is an answer, not a failure to answer.**
+`lmv-absent.json` is an output of this page and 113 foods reached it one round
+at a time, mostly by being described to me in a message. It is a button now,
+and it writes the file.
+
+**A download must not undo the last twenty rounds.** Frida's alias file was
+empty when its page was written, so producing it from the picks alone was
+safe. Here there are 371 confirmed matches and 113 absences on file, and a
+file holding only this round's answers would erase all of it the moment it was
+saved over the old one. Both downloads are *everything on file plus what was
+just picked* — and `_comment` is carried through from the file that was read,
+because the one in `lmv-absent.json` explains why Livsmedelsverket has dried
+oregano and no fresh, which is worth more than the entries around it.
+
+**A partial export makes settled foods look open.** Feeding the page a short
+file put 368 already-confirmed foods into "unmatched", one tap away from being
+overwritten with whatever the short file happened to contain. Anything already
+in `lmv-aliases.json` is now kept out of the picking list whichever bucket the
+audit put it in, and named in a warning instead: usually the export is partial,
+and on a full one it means Livsmedelsverket has renamed the entry and the alias
+needs redoing. Both readings are stated, since the page cannot tell them apart.
+
+One thing the search box cannot fix by itself: our names are English and the
+database is Swedish, so a food with no entry in `lmv-swedish.json` scores
+nothing against anything and arrives with no candidates at all — every canned
+fruit did. The box says so and suggests a Swedish word to try.
+
 **Read the runners-up, not just the top line.** The scorer matches names, and
 a name matches best across the very difference that matters: it offered *Mango*
 for dried mango, *Papaya* for dried papaya, *Dill färsk* for dried dill and
