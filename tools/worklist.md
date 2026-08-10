@@ -324,6 +324,34 @@ actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
 
+**USDA Foundation Foods covers none of our gaps, and proves something better.**
+395 entries, of which 32 are literal `null` — a quirk any parser has to tolerate
+— leaving 363 real foods, weighted heavily toward raw commodity produce. That is
+the part Livsmedelsverket already covers well. Against our 87 foods without
+figures it lands **three** name matches: enoki, maitake and lion's mane. All
+three are missing a sugars figure, with no individual sugars to sum, so under our
+own rule — a food with no figure gets none rather than a fabricated zero — the
+usable yield is **zero**. A naive token match claimed 44 of 87, which is worth
+recording as a warning: it paired "Dried Lychee" with "Figs, dried" on the word
+*dried*, and every one of our eight sauces with "Tomato, sauce, canned" on the
+word *sauce*. Same form-mismatch failure as every bad match this project has had.
+
+What it does carry is the only direct evidence we have for the fiber caution on
+the method page. Foundation runs both dietary-fiber methods on some of the same
+samples — 17 foods carry AOAC 991.43 and AOAC 2011.25 side by side — and the
+newer method reads higher on **all seventeen**, median +1.8g per 100g, which is
+30% of our 6.1g fiber dose. The gap falls on starch: white rice 0.15 → 2.77,
+potato flour 5.4 → 16.6, ripe banana 1.7 → 4.6. Resistant starch is what 2011.25
+counts and 991.43 misses. So mixing sources does not blur fiber randomly, it
+under-reads starchy foods specifically. "A couple of grams" was a hedge; it is
+now a measured, directional bias, and `method.html` says so.
+
+**Next source is SR Legacy, not FNDDS.** Our long tail is 18 spices, 8 sauces, 9
+dried fruits, 9 mushrooms — SR Legacy has a full spice and sauce set and roughly
+7,800 foods against Foundation's 363. FNDDS is survey data: mixed dishes costed
+out of recipes rather than analysed, which is the same objection that keeps
+Branded Foods off the ladder. Take it only where nothing else exists, if at all.
+
 **The syrup figures argue for themselves, and caught one thing.** Canned in
 syrup roughly doubles the sugar against the same fruit fresh — apricot 6.6 to
 18.5 per 100g, pineapple 10.1 to 20, cherry 11.5 to 20.2, peach 8.3 to 16.6 —
