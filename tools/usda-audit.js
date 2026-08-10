@@ -179,6 +179,15 @@ read(file).then(function (out) {
   lines.push("};");
   lines.push("");
 
+  if (built.refused.length) {
+    lines.push("/* Confirmed, but not imported — too little to be worth a place in a meal:");
+    built.refused.forEach(function (row) {
+      lines.push("     " + row.name + " — " + row.why);
+    });
+    lines.push("*/");
+    lines.push("");
+  }
+
   if (built.incomplete.length) {
     lines.push("/* Short of a full set, and why:");
     built.incomplete.forEach(function (row) {
@@ -190,6 +199,10 @@ read(file).then(function (out) {
 
   fs.writeFileSync(path.join(root, "nutrition-usda.js"), lines.join("\n"));
   console.log("\nwrote nutrition-usda.js — " + names.length + " foods");
+  if (built.refused.length) {
+    console.log(built.refused.length + " confirmed but not imported, for want of a backbone figure:");
+    built.refused.forEach(function (r) { console.log("  " + r.name + " — no " + r.missing.join(", ")); });
+  }
   if (built.incomplete.length) {
     console.log(built.incomplete.length + " of them are short of a full set — the reasons are in the file");
   }

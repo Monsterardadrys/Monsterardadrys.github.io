@@ -11,7 +11,7 @@
    rest come from nutrition-manual.js, which records a source per food;
    `src` on each line below says which.
 
-   449 of 493 foods have figures — 378 from Livsmedelsverket, 71 entered by
+   444 of 493 foods have figures — 378 from Livsmedelsverket, 66 entered by
    hand. The rest have none, and the meal builder will not let them into a
    meal.
 
@@ -131,7 +131,6 @@ const NUTRITION = {
   "Crispbread (rye)": { src: "lmv", fat: 2.6, protein: 9.3, carbs: 65.7, fiber: 13.2, sugars: 2.7, alcohol: 0, water: 6.6 },
   "Cucumber": { src: "lmv", fat: 0, protein: 0.8, carbs: 2.3, fiber: 0, sugars: 1.7, alcohol: 0, water: 96.5 },
   "Cumin (dried)": { src: "lmv", fat: 16.6, protein: 13.9, carbs: 22.6, fiber: 30.4, sugars: 1.4, alcohol: 0, water: 10.6 },
-  "Currants (dried)": { src: "usda", protein: 3.43, carbs: 77, fiber: 4.4, alcohol: 0, water: 17.6 },
   "Curry Powder": { src: "frida", fat: 13.81, protein: 12.7, carbs: 5.42, fiber: 53, sugars: 2.8, alcohol: 0, water: 9.5 },
   "Daikon Radish": { src: "lmv", fat: 0.1, protein: 1, carbs: 2.5, fiber: 1.6, sugars: 2.2, alcohol: 0, water: 94 },
   "Dark Chocolate": { src: "lmv", fat: 37, protein: 9.7, carbs: 50.7, fiber: 0, sugars: 22.1, alcohol: 0, water: 0.4 },
@@ -166,7 +165,6 @@ const NUTRITION = {
   "Elk Meat": { src: "lmv", fat: 2.3, protein: 22.5, carbs: 0.2, fiber: 0, sugars: 0, alcohol: 0, water: 73.9 },
   "Emmental": { src: "lmv", fat: 31.2, protein: 25.2, carbs: 3.3, fiber: 0, sugars: 0, alcohol: 0, water: 37 },
   "Energy Drinks": { src: "lmv", fat: 0, protein: 0.4, carbs: 9.8, fiber: 0, sugars: 10.4, alcohol: 0, water: 89.7 },
-  "Enoki Mushrooms": { src: "usda", fat: 0.29, protein: 2.66, carbs: 7.81, sugars: 0.22, alcohol: 0 },
   "Espresso": { src: "lmv", fat: 0.2, protein: 0.1, carbs: 1.7, fiber: 0, sugars: 0, alcohol: 0, water: 97.8 },
   "Falafel": { src: "lmv", fat: 12.6, protein: 9, carbs: 23.6, fiber: 6.8, sugars: 4.8, alcohol: 0, water: 45.3 },
   "Fava Beans": { src: "lmv", fat: 1, protein: 9, carbs: 9.7, fiber: 9, sugars: 1.1, alcohol: 0, water: 70.2 },
@@ -229,7 +227,6 @@ const NUTRITION = {
   "Kefir": { src: "lmv", fat: 3, protein: 3.4, carbs: 4.8, fiber: 0, sugars: 3.8, alcohol: 0, water: 88 },
   "Ketchup": { src: "lmv", fat: 0.5, protein: 1, carbs: 18.5, fiber: 3.9, sugars: 19.4, alcohol: 0, water: 73.6 },
   "Kidney Beans": { src: "lmv", fat: 0.7, protein: 8.8, carbs: 13.4, fiber: 7.2, sugars: 1, alcohol: 0, water: 68.5 },
-  "Kimchi": { src: "usda", carbs: 2.4, alcohol: 0 },
   "King Oyster Mushrooms": { src: "lmv", fat: 0.4, protein: 2, carbs: 2.6, fiber: 2.4, sugars: 2.6, alcohol: 0, water: 92 },
   "Kiwi": { src: "lmv", fat: 0.7, protein: 0.9, carbs: 9, fiber: 3.3, sugars: 8.7, alcohol: 0, water: 85.4 },
   "Kohlrabi": { src: "lmv", fat: 0.1, protein: 1.7, carbs: 4.4, fiber: 1.8, sugars: 2.9, alcohol: 0, water: 91 },
@@ -431,7 +428,6 @@ const NUTRITION = {
   "Taro": { src: "usda", fat: 0.11, protein: 0.52, carbs: 34.6, fiber: 5.1, alcohol: 0, water: 63.8 },
   "Teff": { src: "lmv", fat: 2.3, protein: 10.3, carbs: 65.3, fiber: 8.2, sugars: 1.3, alcohol: 0, water: 11.7 },
   "Tempeh": { src: "lmv", fat: 10.8, protein: 18.6, carbs: 8.2, fiber: 1.3, sugars: 1.1, alcohol: 0, water: 59.6 },
-  "Teriyaki Sauce": { src: "usda", protein: 5.93, carbs: 15.6, fiber: 0.1, alcohol: 0, water: 67.7 },
   "Thousand Island Dressing": { src: "lmv", fat: 25, protein: 0.5, carbs: 9.7, fiber: 0, sugars: 3.6, alcohol: 0, water: 63 },
   "Thyme (dried)": { src: "usda", fat: 7.43, protein: 9.11, carbs: 63.9, fiber: 37, alcohol: 0, water: 7.79 },
   "Thyme (fresh)": { src: "usda", fat: 1.68, protein: 5.56, carbs: 24.4, fiber: 14, water: 65.1 },
@@ -461,7 +457,6 @@ const NUTRITION = {
   "White Sugar": { src: "lmv", fat: 0, protein: 0, carbs: 99.6, fiber: 0, sugars: 100, alcohol: 0, water: 0.4 },
   "White Wine": { src: "lmv", fat: 0, protein: 0, carbs: 1, fiber: 0, sugars: 0.9, alcohol: 9.53, water: 89.4 },
   "Whole Egg": { src: "lmv", fat: 9.8, protein: 12.1, carbs: 0, fiber: 0, sugars: 0.3, alcohol: 0, water: 77.8 },
-  "Worcestershire Sauce": { src: "usda", fat: 0, protein: 0, carbs: 19.2, fiber: 0, alcohol: 0 },
   "Yam": { src: "lmv", fat: 0.2, protein: 1.6, carbs: 27.4, fiber: 2.3, sugars: 1.9, alcohol: 0, water: 67.9 },
   "Yeast Extract (Marmite type)": { src: "frida", fat: 0.6, protein: 27.8, carbs: 8.2, fiber: 3, sugars: 0, alcohol: 0, water: 37 },
   "Yoghurt 0,5%": { src: "lmv", fat: 0.5, protein: 3.6, carbs: 5, fiber: 0, sugars: 3, alcohol: 0, water: 90.1 },
