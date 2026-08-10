@@ -5,6 +5,9 @@
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
+Audits: `tools/lmv-audit.html` (Sweden), `tools/frida-audit.html` (Denmark),
+`tools/usda-audit.html` (United States) — all three run on a phone.
+
 ## Done
 
 **Livsmedelsverket audit** — 378 of 493 foods checked against the Swedish Food
@@ -323,6 +326,41 @@ Cherries entry above it is *Sötkörsbär*, the sweet kind. It is also what is
 actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
+
+**The USDA audit runs on the phone, because the file cannot come here.**
+SR Legacy is 64MB and all three sets together are 200MB — more than a chat
+window carries, and splitting it into parts was a worse idea than it looked.
+`tools/usda-audit.html` is the same two-pass tool as the Swedish and Danish
+audits, with `tools/usda-audit.js` as its command-line twin, and the file never
+leaves the device.
+
+**It is scanned, not parsed.** `JSON.parse` on 70MB costs 240MB of memory
+against 70MB for the streaming reader, measured on the same file — and the real
+gap is wider, because SR Legacy carries far more nutrients per food than the
+fixture did. So the file is read 4MB at a time and each food is parsed alone,
+reduced to the seven figures we keep, and dropped.
+
+Two details that would each have been a bug:
+
+- **Boundaries are found by depth, not by newline.** Both exports put one food
+  per line and splitting on `"\n"` would have been less code, but that is a
+  property of today's file rather than of the format. The scanner tracks brace
+  depth and quoting, so a brace inside a description cannot end a food early —
+  checked with `Weird {food} "quoted" [x]` as a name.
+- **Chunks are decoded with a streaming `TextDecoder`.** Slicing a Blob cuts
+  bytes, and the µ in "µg" is two of them; decoding each slice on its own would
+  corrupt every record straddling a boundary.
+
+Verified rather than assumed. Fed the same file at 3-byte, 997-byte and 64KB
+chunks, the reader returns identical results, and agrees with the whole-file
+path on all 355 records. The page itself was driven in a real browser: 70MB in,
+87 food blocks rendered, a pick made, the alias file and the figures preview
+updated, and the pick still there after a reload. No page errors.
+
+One thing the run makes obvious. Against Foundation the candidates are honestly
+bad — Durian's best offer is "Cheese, American, restaurant" at 0.27 — and that
+is the tool working. The score is shown, the figures are shown, and a human
+throws it out in a second. A silent importer would have taken it.
 
 **SR Legacy is not uniformly laboratory-analysed, and the file says so.**
 `method.html` called it that, on the strength of its reputation. Its opening
