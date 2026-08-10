@@ -1,8 +1,10 @@
 {
   "_comment": "Confirmed Danish matches: our food name -> the Frida FoodName it is. Confirmed by hand, one at a time, the same way tools/lmv-aliases.json is. Only foods with no Livsmedelsverket entry are candidates.",
+  "Adzuki Bean Sprouts": "Bean, adzuki, sprouted, raw",
   "Barbecue Sauce": "Sauce, barbeque",
   "Black Pepper": "Pepper, black",
   "Black Tea": "Tea, ready-to-drink",
+  "Canned Strawberries in Syrup": "Strawberries, canned",
   "Cassava": "Cassava, raw",
   "Chai Tea": "Tea, ready-to-drink",
   "Chamomile Tea": "Tea, ready-to-drink",

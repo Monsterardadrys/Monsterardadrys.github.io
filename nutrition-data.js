@@ -11,7 +11,7 @@
    rest come from nutrition-manual.js, which records a source per food;
    `src` on each line below says which.
 
-   406 of 493 foods have figures — 378 from Livsmedelsverket, 28 entered by
+   408 of 493 foods have figures — 378 from Livsmedelsverket, 30 entered by
    hand. The rest have none, and the meal builder will not let them into a
    meal.
 
@@ -19,6 +19,7 @@
    ========================================================================= */
 
 const NUTRITION = {
+  "Adzuki Bean Sprouts": { src: "frida", fat: 0.18, protein: 10, carbs: 19.62, fiber: 5.2, sugars: 0.8, alcohol: 0, water: 64.2 },
   "Aged Gouda": { src: "lmv", fat: 31.2, protein: 25.2, carbs: 3.3, fiber: 0, sugars: 0, alcohol: 0, water: 37 },
   "Aioli": { src: "lmv", fat: 84.8, protein: 1.7, carbs: 1.2, fiber: 0.3, sugars: 0.3, alcohol: 0, water: 11 },
   "Ajvar": { src: "lmv", fat: 3.5, protein: 1.2, carbs: 6.9, fiber: 3.2, sugars: 7.6, alcohol: 0, water: 83.4 },
@@ -75,6 +76,7 @@ const NUTRITION = {
   "Canned Peaches in Syrup": { src: "lmv", fat: 0.1, protein: 0.4, carbs: 19.5, fiber: 0.8, sugars: 16.6, alcohol: 0, water: 79 },
   "Canned Pears in Syrup": { src: "lmv", fat: 0.1, protein: 0.2, carbs: 17.6, fiber: 1.9, sugars: 15.9, alcohol: 0, water: 80 },
   "Canned Pineapple in Syrup": { src: "lmv", fat: 0.1, protein: 0.4, carbs: 20.2, fiber: 1, sugars: 20, alcohol: 0, water: 78 },
+  "Canned Strawberries in Syrup": { src: "frida", fat: 0.4, protein: 0.4, carbs: 18.59, fiber: 0.91, sugars: 20.1, alcohol: 0, water: 79.4 },
   "Cardamom (dried)": { src: "lmv", fat: 2.8, protein: 6.7, carbs: 48, fiber: 23.5, sugars: 2.3, alcohol: 0, water: 11.2 },
   "Carrot": { src: "lmv", fat: 0.2, protein: 0.7, carbs: 6.6, fiber: 2.4, sugars: 6.2, alcohol: 0, water: 89.4 },
   "Cashew Nut": { src: "lmv", fat: 48.7, protein: 18, carbs: 19.1, fiber: 8.3, sugars: 5.9, alcohol: 0, water: 2.7 },

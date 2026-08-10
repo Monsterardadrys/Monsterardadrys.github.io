@@ -2,6 +2,7 @@
    nutrition-frida.js — per 100g figures from Denmark, GENERATED
 
        node tools/frida-audit.js <FCDB_dataset.xlsx> --write
+       tools/frida-audit.html   (works on a phone)
 
    The second source on the ladder, for the foods Livsmedelsverket has no
    entry for. Matched through tools/frida-aliases.json — confirmed by hand,
@@ -11,10 +12,14 @@
    Livsmedelsverket still wins wherever both have a figure: see
    tools/nutrition-core.js. Generated — never hand-edit it.
 
-   28 foods, from: FCDB_6.1_Dataset.xlsx
+   30 foods, from: FCDB_6.1_Dataset.xlsx
    ========================================================================= */
 
 const NUTRITION_FRIDA = {
+  "Adzuki Bean Sprouts": {
+    src: "frida", ref: "Bean, adzuki, sprouted, raw (Frida 384)",
+    values: { fat: 0.18, protein: 10, carbs: 19.62, fiber: 5.2, sugars: 0.8, alcohol: 0, water: 64.2 }
+  },
   "Barbecue Sauce": {
     src: "frida", ref: "Sauce, barbeque (Frida 459)",
     values: { fat: 0.29, protein: 0, carbs: 35.76, fiber: 0.5, sugars: 33.24, alcohol: 0, water: 60.34 }
@@ -26,6 +31,10 @@ const NUTRITION_FRIDA = {
   "Black Tea": {
     src: "frida", ref: "Tea, ready-to-drink (Frida 115)",
     values: { fat: 0, protein: 0, carbs: 0, fiber: 0, sugars: 0, alcohol: 0, water: 99.9 }
+  },
+  "Canned Strawberries in Syrup": {
+    src: "frida", ref: "Strawberries, canned (Frida 497)",
+    values: { fat: 0.4, protein: 0.4, carbs: 18.59, fiber: 0.91, sugars: 20.1, alcohol: 0, water: 79.4 }
   },
   "Cassava": {
     src: "frida", ref: "Cassava, raw (Frida 939)",
