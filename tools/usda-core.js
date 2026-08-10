@@ -134,6 +134,105 @@
         return { values: values, dropped: dropped, fiberMethod: fiberMethod };
     }
 
+    /* ---- reading without holding the file -------------------------------
+
+       SR Legacy is 64MB and FNDDS is bigger. JSON.parse on that returns an
+       object several times the size of the file, which a phone will not do,
+       and the audit runs on a phone. So the file is scanned in chunks and
+       each food is parsed alone, reduced to the handful of figures we keep,
+       and thrown away. Peak memory is one food plus one chunk.
+
+       The scan finds object boundaries by depth rather than by line. Both
+       exports we have put one food per line and it would have been less code
+       to split on "\n", but that is a property of today's file rather than of
+       the format, and a wrong guess here is a tool that fails on a phone with
+       no way to see why. Depth 1 is the wrapper object, depth 2 the array, so
+       a food is what opens at depth 3 and closes back to 2. Quoting is
+       tracked, so a brace inside a description cannot end a food early. */
+    function makeScanner(onFood) {
+        let depth = 0, inString = false, escaped = false;
+        let collecting = false, carry = "";
+
+        return function (chunk) {
+            let start = collecting ? 0 : -1;
+
+            for (let i = 0; i < chunk.length; i++) {
+                const ch = chunk.charCodeAt(i);
+
+                if (inString) {
+                    if (escaped) escaped = false;
+                    else if (ch === 92) escaped = true;        // backslash
+                    else if (ch === 34) inString = false;      // closing quote
+                    continue;
+                }
+                if (ch === 34) { inString = true; continue; }
+
+                if (ch === 123 || ch === 91) {                 // { or [
+                    depth += 1;
+                    if (!collecting && ch === 123 && depth === 3) {
+                        collecting = true;
+                        start = i;
+                    }
+                } else if (ch === 125 || ch === 93) {           // } or ]
+                    depth -= 1;
+                    if (collecting && depth === 2) {
+                        onFood(carry + chunk.slice(start < 0 ? 0 : start, i + 1));
+                        carry = "";
+                        collecting = false;
+                        start = -1;
+                    }
+                }
+            }
+
+            if (collecting) carry += chunk.slice(start < 0 ? 0 : start);
+        };
+    }
+
+    /* A food object's text -> a record, or null for the nulls in the array
+       and for anything that keeps no figure at all. A record that lost every
+       figure to the derivation test cannot contribute to a match, so it is
+       not offered as one; the count of those is worth reporting, because for
+       SR Legacy it is the size of the manufacturer-supplied part. */
+    function recordFromText(text, set) {
+        let food;
+        try { food = JSON.parse(text); } catch (e) { return null; }
+        if (!food || !food.description) return null;
+
+        const read = nutrientsOf(food);
+        return {
+            name: String(food.description),
+            id: String(food.fdcId == null ? "" : food.fdcId),
+            dataType: String(food.dataType || set || ""),
+            category: (food.foodCategory && food.foodCategory.description) || "",
+            nutrients: read.values,
+            dropped: read.dropped,
+            fiberMethod: read.fiberMethod
+        };
+    }
+
+    /* Push text in, take records out. The caller owns the file handle and the
+       decoding, so the same reader serves a Blob in the browser and a read
+       stream in node, and neither has to hold the file. */
+    function makeReader(set) {
+        const records = [];
+        let seen = 0, empty = 0;
+
+        const feed = makeScanner(function (text) {
+            seen += 1;
+            const r = recordFromText(text, set);
+            if (!r) return;
+            if (!Object.keys(r.nutrients).length) { empty += 1; return; }
+            records.push(r);
+        });
+
+        return {
+            push: feed,
+            done: function () {
+                return { records: records, seen: seen, empty: empty, set: set || "" };
+            }
+        };
+    }
+
     /* One record per food, in the shape lmv-core's audit already consumes.
        Nulls in the array are skipped rather than assumed to be foods. */
     function recordsFromJson(parsed) {
@@ -231,10 +330,38 @@
         return { entries: out, incomplete: incomplete };
     }
 
+    /* Reads a Blob or File without holding it. 4MB at a time, decoded with a
+       streaming TextDecoder — slicing a Blob cuts bytes, not characters, and
+       the µ in "µg" is two of them, so decoding each slice on its own would
+       corrupt every record that straddles a boundary. */
+    const CHUNK = 4 * 1024 * 1024;
+
+    function fromBlob(blob, onProgress) {
+        const reader = makeReader("");
+        const decoder = new TextDecoder("utf-8");
+
+        function step(offset) {
+            if (offset >= blob.size) {
+                reader.push(decoder.decode());       // flush a trailing partial character
+                return Promise.resolve(reader.done());
+            }
+            const end = Math.min(offset + CHUNK, blob.size);
+            return blob.slice(offset, end).arrayBuffer().then(function (buf) {
+                reader.push(decoder.decode(buf, { stream: true }));
+                if (onProgress) onProgress(end, blob.size);
+                return step(end);
+            });
+        }
+
+        return Promise.resolve().then(function () { return step(0); });
+    }
+
     const USDA = {
         NUTRIENTS: NUTRIENTS,
         ACCEPTED: ACCEPTED,
         REJECTED: REJECTED,
+        makeReader: makeReader,
+        fromBlob: fromBlob,
         recordsFromJson: recordsFromJson,
         fromText: fromText,
         proposeMatches: proposeMatches,

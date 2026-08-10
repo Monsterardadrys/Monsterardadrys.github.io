@@ -1,0 +1,3 @@
+{
+  "_comment": "Confirmed American matches: our food name -> the USDA description it is. Confirmed by hand, one at a time, the same way tools/lmv-aliases.json is. Only foods with no Livsmedelsverket and no Frida entry are candidates. Fill this from tools/usda-audit.html or tools/usda-audit.js."
+}
