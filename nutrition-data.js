@@ -11,7 +11,7 @@
    rest come from nutrition-manual.js, which records a source per food;
    `src` on each line below says which.
 
-   402 of 493 foods have figures — 374 from Livsmedelsverket, 28 entered by
+   406 of 493 foods have figures — 378 from Livsmedelsverket, 28 entered by
    hand. The rest have none, and the meal builder will not let them into a
    meal.
 
@@ -70,7 +70,11 @@ const NUTRITION = {
   "Cabbage": { src: "lmv", fat: 0, protein: 1.2, carbs: 5.7, fiber: 2, sugars: 4.5, alcohol: 0, water: 90.6 },
   "Camembert": { src: "lmv", fat: 21.9, protein: 19.3, carbs: 1.9, fiber: 0, sugars: 0.1, alcohol: 0, water: 54 },
   "Candy bars": { src: "lmv", fat: 28.2, protein: 7.6, carbs: 54.4, fiber: 2.8, sugars: 46.1, alcohol: 0, water: 5.4 },
+  "Canned Apricots in Syrup": { src: "lmv", fat: 0.1, protein: 0.5, carbs: 27.7, fiber: 1.3, sugars: 18.5, alcohol: 0, water: 70 },
+  "Canned Cherries in Syrup": { src: "lmv", fat: 0.1, protein: 0.7, carbs: 21.5, fiber: 1.5, sugars: 20.2, alcohol: 0, water: 76 },
   "Canned Peaches in Syrup": { src: "lmv", fat: 0.1, protein: 0.4, carbs: 19.5, fiber: 0.8, sugars: 16.6, alcohol: 0, water: 79 },
+  "Canned Pears in Syrup": { src: "lmv", fat: 0.1, protein: 0.2, carbs: 17.6, fiber: 1.9, sugars: 15.9, alcohol: 0, water: 80 },
+  "Canned Pineapple in Syrup": { src: "lmv", fat: 0.1, protein: 0.4, carbs: 20.2, fiber: 1, sugars: 20, alcohol: 0, water: 78 },
   "Cardamom (dried)": { src: "lmv", fat: 2.8, protein: 6.7, carbs: 48, fiber: 23.5, sugars: 2.3, alcohol: 0, water: 11.2 },
   "Carrot": { src: "lmv", fat: 0.2, protein: 0.7, carbs: 6.6, fiber: 2.4, sugars: 6.2, alcohol: 0, water: 89.4 },
   "Cashew Nut": { src: "lmv", fat: 48.7, protein: 18, carbs: 19.1, fiber: 8.3, sugars: 5.9, alcohol: 0, water: 2.7 },

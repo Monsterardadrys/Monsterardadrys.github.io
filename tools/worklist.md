@@ -1,7 +1,7 @@
 # Worklist
 
 493 foods · 43 traits · 378 matched to Livsmedelsverket, 28 to Denmark's Frida.
-402 carry nutrient figures; 91 do not.
+406 carry nutrient figures; 87 do not.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
@@ -324,6 +324,19 @@ actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
 
+**The syrup figures argue for themselves, and caught one thing.** Canned in
+syrup roughly doubles the sugar against the same fruit fresh — apricot 6.6 to
+18.5 per 100g, pineapple 10.1 to 20, cherry 11.5 to 20.2, peach 8.3 to 16.6 —
+and fibre falls, because the fruit is peeled and softened. `refined_carbs` on
+all five is not a guess about syrup, it is the difference in the column.
+
+The warning about foods carrying `irritant` with no subtype earned its keep the
+same run: **Canned Pears in Syrup** turned up in it, the only canned fruit
+there. The fresh pear carries the umbrella for its peel and nothing else, so
+dropping `peel_skin` when the fruit is peeled — which v1.31 did — left the
+umbrella standing on a mechanism that had been removed. A warning nobody had to
+read closely was enough, because it named the odd one out.
+
 **Read the runners-up, not just the top line.** The scorer matches names, and
 a name matches best across the very difference that matters: it offered *Mango*
 for dried mango, *Papaya* for dried papaya, *Dill färsk* for dried dill and
@@ -384,7 +397,7 @@ running without the export in hand) and
 every link and anchor, the scripts each page needs, and the numbers quoted in
 About and the method page against the code). Each exits non-zero on a fault.
 
-**Nutrition per 100g** — 402 foods carry fat, protein, carbohydrate, fiber,
+**Nutrition per 100g** — 406 foods carry fat, protein, carbohydrate, fiber,
 sugars and alcohol per 100g, each recording its `src`. Livsmedelsverket for
 all of them so far; `nutrition-manual.js` holds hand-entered figures for the
 foods it does not cover, and the builder merges the two with Livsmedelsverket
@@ -507,7 +520,7 @@ would have been used on. The signal also requires a water figure for *every*
 food in the meal, since a food short of one puts weight in the denominator and
 no water in the numerator.
 
-All 402 foods carry a water figure. Adding the column immediately exposed two
+All 406 foods carry a water figure. Adding the column immediately exposed two
 faults nothing else could see, both of the same kind — dry figures against a
 wet portion:
 
@@ -578,7 +591,7 @@ into `lmv-aliases.json` and rebuild.
   no export, so this will always be hand-entered. Checked in the app: cauliflower
   is fructans, as we had it. Asparagus was not — it is excess fructose, and the
   tag has been corrected.
-- **91 foods still have no figures**, so they cannot go in a meal — down from
+- **87 foods still have no figures**, so they cannot go in a meal — down from
   117 after the first Danish round. What is left is the long tail Frida does
   not carry either: branded products, most Asian sauces, the vegan cheeses,
   and the dried fruits below.
