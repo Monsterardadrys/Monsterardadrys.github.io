@@ -748,17 +748,23 @@
     }
 
     // Flattens CATEGORIES from foods-data.js into what runAudit wants.
+    /* Copies the whole food and fills in the two defaults, rather than naming
+       the fields to keep. Naming them meant a new field had to be added here
+       as well to reach the audit, and `madeUp` never was: auditFood asks for
+       `food.madeUp`, got undefined on every food, and reported rosehip soup's
+       powder against a 200g bowl for four releases running — a fiber tag
+       "missing" that a made-up bowl does not earn. The nutrition builder had
+       the same fault in its own half. A field that exists on the food should
+       reach whatever reads the food. */
     function flattenCategories(categories) {
         const out = [];
         categories.forEach(function (cat) {
             cat.foods.forEach(function (food) {
-                out.push({
-                    name: food.name,
+                out.push(Object.assign({}, food, {
                     category: cat.label,
-                    traits: food.traits,
                     portion: food.portion == null ? 100 : food.portion,
                     wholeSeed: Boolean(food.wholeSeed)
-                });
+                }));
             });
         });
         return out;

@@ -357,6 +357,20 @@ entries(aliases).forEach(function (name) {
   }
 });
 
+/* A confirmed match whose figures have not been built yet. Harmless in
+   itself, but it is the state six foods sat in unnoticed once, matched on
+   paper and missing from every meal — so it gets said out loud. */
+const pendingBuild = entries(aliases).filter(function (name) {
+  return byName[name] && !NUTRITION[name];
+}).concat(entries(fridaAliases).filter(function (name) {
+  return byName[name] && !NUTRITION[name];
+}));
+
+if (pendingBuild.length) {
+  warnings.push(pendingBuild.length + " food(s) are matched but have no figures yet — " +
+    "rebuild nutrition-data.js: " + pendingBuild.join(", "));
+}
+
 entries(absentList).forEach(function (name) {
   const food = byName[name];
   if (!food) {
