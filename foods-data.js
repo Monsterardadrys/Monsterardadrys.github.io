@@ -915,7 +915,9 @@ const CATEGORIES = [
       { name: "Kale", lmv: "Grönkål", portion: 100, traits: [] },
       { name: "Onion", lmv: "Lök gul", portion: 60, traits: ["fodmaps", "fructans", "irritant", "allyl_compounds", "allergen_onion"] },
       { name: "Tomato", form: "fresh", lmv: "Tomat", portion: 100, traits: ["histamine", "irritant", "cross_reactive", "cross_grass", "cross_latex", "dao_competitor"] },
-      { name: "Sun-dried Tomato", lmv: "Tomat torkad m. olja", lmvNote: "the oil-packed kind, which is what is usually sold — dry-packed carries much less fat", form: "dried", portion: 15, traits: ["histamine", "irritant", "cross_reactive", "cross_grass", "cross_latex", "dao_competitor"] },
+      // Named dried but carries no `form`: the only entry is the oil-packed
+      // jar, which is rehydrated and half water, so "dried" would be false.
+      { name: "Sun-dried Tomato", lmv: "Tomat torkad m. olja", lmvNote: "the oil-packed jar, which is what is usually sold — rehydrated and drained of its oil, so it is neither dry nor fresh; dry-packed carries less water and much less fat", portion: 15, traits: ["histamine", "irritant", "cross_reactive", "cross_grass", "cross_latex", "dao_competitor"] },
       { name: "Cauliflower", lmv: "Blomkål", portion: 100, traits: ["fodmaps", "fructans"] },
       { name: "Aubergine", lmv: "Aubergine", portion: 100, traits: ["histamine", "fodmaps", "fructans", "dao_competitor"] },
       { name: "Parsley", form: "fresh", lmv: "Persilja blad", portion: 5, traits: ["cross_reactive", "cross_mugwort"] },
@@ -1273,7 +1275,7 @@ const CATEGORIES = [
       { name: "Lactose-free Yogurt", lmv: "Yoghurt naturell lätt laktosfri fett ca 0,4% berikad", portion: 200, traits: ["allergen_milk"] },
       { name: "Filmjolk", lmv: "Filmjölk fett 3% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen_milk"] },
       { name: "Creme Fraiche", lmv: "Crème fraiche fett 34%", portion: 25, traits: ["over_10g_fat", "allergen_milk"] },
-      { name: "Brie", lmv: "Vitmögelost brie fett ca 38%", lmvNote: "the 38% fat grade — brie is sold from about 30% to 60%", portion: 20, traits: ["over_10g_fat", "bile_stimulant", "histamine", "dao_competitor", "allergen_milk"] },
+      { name: "Brie", lmv: "Vitmögelost brie fett ca 38%", lmvNote: "the 38% fat grade — brie is sold from about 30% to 60%", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_milk"] },
       { name: "Emmental", lmv: "Ost hårdost fett 31%", lmvNote: "generic hard cheese entry", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_milk"] },
       { name: "Lactose-free Cheese", lmv: "Ost hårdost fett 31%", lmvNote: "ordinary hard cheese — the lactose-free version is not listed", portion: 20, traits: ["over_10g_fat", "allergen_milk"] },
       { name: "Lactose-free Cream", lmv: "Vispgrädde fett 40%", lmvNote: "ordinary cream — the lactose-free version is not listed", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_milk"] }

@@ -11,7 +11,7 @@
    rest come from nutrition-manual.js, which records a source per food;
    `src` on each line below says which.
 
-   365 of 472 foods have figures — 365 from Livsmedelsverket, 0 entered by
+   371 of 484 foods have figures — 371 from Livsmedelsverket, 0 entered by
    hand. The rest have none, and the meal builder will not let them into a
    meal.
 
@@ -56,6 +56,7 @@ const NUTRITION = {
   "Blueberry": { src: "lmv", fat: 0.8, protein: 0.7, carbs: 9.1, fiber: 3.1, sugars: 6.4, alcohol: 0, water: 86 },
   "Bok Choy": { src: "lmv", fat: 0.2, protein: 1.4, carbs: 1.8, fiber: 1.9, sugars: 0.5, alcohol: 0, water: 93.6 },
   "Brazil Nut": { src: "lmv", fat: 67.8, protein: 14.2, carbs: 0, fiber: 13.7, sugars: 1.8, alcohol: 0, water: 1.8 },
+  "Brie": { src: "lmv", fat: 34.2, protein: 15.6, carbs: 1.9, fiber: 0, sugars: 0.1, alcohol: 0, water: 45.6 },
   "Broccoli": { src: "lmv", fat: 0.6, protein: 2.9, carbs: 3.5, fiber: 2.6, sugars: 2.2, alcohol: 0, water: 89.4 },
   "Brussels Sprouts": { src: "lmv", fat: 0.3, protein: 3.4, carbs: 4.7, fiber: 4.2, sugars: 2.6, alcohol: 0, water: 86 },
   "Buckwheat": { src: "lmv", fat: 3.6, protein: 13.5, carbs: 65.1, fiber: 5.5, sugars: 1.2, alcohol: 0, water: 12.8 },
@@ -124,6 +125,10 @@ const NUTRITION = {
   "Dried Cranberry (No Sugar Added)": { src: "lmv", fat: 0.6, protein: 0, carbs: 72.1, fiber: 5.6, sugars: 70.5, alcohol: 0, water: 21.4 },
   "Dried Fig": { src: "lmv", fat: 1.2, protein: 3.1, carbs: 55.9, fiber: 10, sugars: 43.3, alcohol: 0, water: 27.5 },
   "Dried Goji Berry": { src: "lmv", fat: 2.4, protein: 11.2, carbs: 47.2, fiber: 10.8, sugars: 50.5, alcohol: 0, water: 24.3 },
+  "Dried Mango (Added Sugar)": { src: "lmv", fat: 0.9, protein: 2.6, carbs: 64, fiber: 9.2, sugars: 61.9, alcohol: 0, water: 21.5 },
+  "Dried Mango (No Sugar Added)": { src: "lmv", fat: 0.9, protein: 2.6, carbs: 64, fiber: 9.2, sugars: 61.9, alcohol: 0, water: 21.5 },
+  "Dried Papaya (Added Sugar)": { src: "lmv", fat: 0.6, protein: 3.4, carbs: 57.6, fiber: 5, sugars: 52.2, alcohol: 0, water: 30 },
+  "Dried Papaya (No Sugar Added)": { src: "lmv", fat: 0.6, protein: 3.4, carbs: 57.6, fiber: 5, sugars: 52.2, alcohol: 0, water: 30 },
   "Dried Peach": { src: "lmv", fat: 0.8, protein: 3.6, carbs: 52.9, fiber: 8.2, sugars: 50.8, alcohol: 0, water: 32 },
   "Dried Pear": { src: "lmv", fat: 0.6, protein: 1.9, carbs: 63.4, fiber: 6, sugars: 42.3, alcohol: 0, water: 27 },
   "Dried Reindeer Meat": { src: "lmv", fat: 17.6, protein: 40, carbs: 3, fiber: 0, sugars: 0, alcohol: 0, water: 33.5 },
@@ -346,6 +351,7 @@ const NUTRITION = {
   "Sugary Breakfast Cereal": { src: "lmv", fat: 0.9, protein: 4.3, carbs: 86.4, fiber: 3.1, sugars: 35.9, alcohol: 0, water: 4.3 },
   "Sugary soft drinks": { src: "lmv", fat: 0, protein: 0, carbs: 8.8, fiber: 0, sugars: 9.6, alcohol: 0, water: 91.2 },
   "Sultanas": { src: "lmv", fat: 0.5, protein: 1.9, carbs: 64.4, fiber: 6.1, sugars: 60, alcohol: 0, water: 22.6 },
+  "Sun-dried Tomato": { src: "lmv", fat: 12.5, protein: 5, carbs: 8.7, fiber: 12.7, sugars: 8.7, alcohol: 0, water: 55 },
   "Sunflower Oil": { src: "lmv", fat: 100, protein: 0, carbs: 0, fiber: 0, sugars: 0, alcohol: 0, water: 0 },
   "Sunflower Seeds": { src: "lmv", fat: 56.1, protein: 20.6, carbs: 3.9, fiber: 11.5, sugars: 2.9, alcohol: 0, water: 4.4 },
   "Surimi / Crab Sticks": { src: "lmv", fat: 0.7, protein: 0.8, carbs: 23.5, fiber: 0, sugars: 3.5, alcohol: 0, water: 72.8 },

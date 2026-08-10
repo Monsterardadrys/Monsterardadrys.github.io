@@ -1,7 +1,7 @@
 # Worklist
 
 484 foods · 43 traits · 371 matched to Livsmedelsverket, 113 confirmed absent.
-365 carry nutrient figures; 119 do not.
+371 carry nutrient figures; 113 do not.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
@@ -51,6 +51,35 @@ must carry none, no food may be on both lists, and no food may be on neither.
 Eleven faults on the first run, zero now. Same shape as `DELIBERATE` moving
 into `lmv-core.js` — when one fact is written down twice, write the check that
 makes them equal rather than trusting the copy.
+
+**A phone build can be stale in one field and look right.** The rebuild that
+gave those six foods their figures came back with rosehip soup undiluted —
+91g of carbohydrate and 1.8g of water per 100g, the powder rather than the
+bowl. The confirmed matches were fresh, so the new foods came through; only
+`madeUp` was missing, which means the phone was reading a `foods-data.js` from
+before that field existed. `sw.js` stopped caching `/tools/` in v1.25, but
+`foods-data.js` sits at the root and is cached like any other page asset.
+
+Nothing was typed in to fix it: `dilute()` from `tools/nutrition-core.js` was
+applied to the one affected food, and it reproduced the previous figures
+exactly. The blast radius is knowable — the nutrition build reads only `name`
+and `madeUp` out of the food data — and `check-data.js` named the fault in
+three different ways without being told what to look for, including "the
+dilution looks as though it has not been applied". **Run the checks on a
+downloaded build before committing it**, which is the whole reason they exist.
+
+**Figures arriving is how a hand-made tag gets tested.** Brie had carried
+`bile_stimulant` since before it had numbers. At 34.2% fat in a 20g portion the
+load is 7.46 against a dose of 9.5, and every other cheese at that portion and
+that fat — cheddar, aged gouda, emmental, parmesan — carries `over_10g_fat`
+alone. The tag was a judgement about rich European cheese, not a mechanism
+separate from its fat, so it is gone; brie keeps `over_10g_fat`, `histamine`
+and `dao_competitor`.
+
+Roquefort, Fontina and Raclette carry the same tag at the same 20g portion and
+have no figures yet, so nothing can be checked about them. Published fat for
+all three is close to brie's, which would put them under the dose too. Look at
+these three the moment they get figures.
 
 **Read the runners-up, not just the top line.** The scorer matches names, and
 a name matches best across the very difference that matters: it offered *Mango*
@@ -112,7 +141,7 @@ running without the export in hand) and
 every link and anchor, the scripts each page needs, and the numbers quoted in
 About and the method page against the code). Each exits non-zero on a fault.
 
-**Nutrition per 100g** — 365 foods carry fat, protein, carbohydrate, fiber,
+**Nutrition per 100g** — 371 foods carry fat, protein, carbohydrate, fiber,
 sugars and alcohol per 100g, each recording its `src`. Livsmedelsverket for
 all of them so far; `nutrition-manual.js` holds hand-entered figures for the
 foods it does not cover, and the builder merges the two with Livsmedelsverket
@@ -235,7 +264,7 @@ would have been used on. The signal also requires a water figure for *every*
 food in the meal, since a food short of one puts weight in the denominator and
 no water in the numerator.
 
-All 365 foods carry a water figure. Adding the column immediately exposed two
+All 371 foods carry a water figure. Adding the column immediately exposed two
 faults nothing else could see, both of the same kind — dry figures against a
 wet portion:
 
@@ -300,19 +329,16 @@ into `lmv-aliases.json` and rebuild.
 ## Open
 
 - **The FODMAP serving table is partial and unverified.** 50 foods have a
-  serving, 49 of the 131 FODMAP foods that can go in a meal. Every figure was
+  serving, 49 of the 133 FODMAP foods that can go in a meal. Every figure was
   typed in from the Monash app and none has been checked against the current
   version — serving sizes are revised as foods are re-tested. Monash publishes
   no export, so this will always be hand-entered. Checked in the app: cauliflower
   is fructans, as we had it. Asparagus was not — it is excess fructose, and the
   tag has been corrected.
-- **119 foods still have no figures**, so they cannot go in a meal. Six of
-  those are matched to Livsmedelsverket now and only wait on the next
-  nutrition rebuild — dried mango and papaya in both versions, sun-dried
-  tomato and brie — which leaves **113**, and those 113 are exactly the
-  confirmed-absent list. So there is no third set to work out: whatever the
-  next source covers, it is being asked the same question the absent list
-  already answered.
+- **113 foods still have no figures**, so they cannot go in a meal, and those
+  113 are exactly the confirmed-absent list. There is no third set to work
+  out: whatever the next source covers, it is being asked the same question
+  the absent list already answered.
 
   The source ladder is decided and short — Frida (DK), then USDA SR Legacy,
   then Ciqual for the European cheeses — and `nutrition-manual.js` is where
@@ -320,8 +346,8 @@ into `lmv-aliases.json` and rebuild.
   the 113 (the vegan cheeses, protein bars, kombucha) are branded products no
   national table analyses; they will stay without.
 
-  Where the 113 sit, largest groups first: spices 21, dried fruit 13,
-  beverages 11, condiments 10, sauces 10, mushrooms 9, dairy 9, grains 8,
+  Where the 113 sit, largest groups first: spices 21, beverages 11,
+  condiments 10, sauces 10, dried fruit 9, mushrooms 9, grains 8, dairy 8,
   ferments 7. The spices and mushrooms are the ones that change what the tool
   says — dried porcini and trumpet chanterelle carry mannitol, garlic powder
   fructans, dried chili capsaicin — and a spice portion is 2g, so a figure
