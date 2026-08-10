@@ -904,7 +904,7 @@ const CATEGORIES = [
       { name: "Cassava", portion: 175, traits: [] },
       { name: "Yam", lmv: "Jams kokt u. salt", portion: 175, traits: [] },
       { name: "Taro", portion: 175, traits: ["fodmaps", "fructans", "fiber"] },
-      { name: "Lotus Root", portion: 80, traits: ["fiber"] }
+      { name: "Lotus Root", portion: 80, traits: [] }
     ]
   },
   {
@@ -973,7 +973,7 @@ const CATEGORIES = [
       { name: "Pomegranate", lmv: "Granatäpple", portion: 100, traits: ["salicylate"] },
       { name: "Lychee", lmv: "Litchi", portion: 100, traits: ["fructose", "fodmaps", "polyols", "cross_reactive", "cross_mugwort"] },
       { name: "Star Fruit", lmv: "Carambole stjärnfrukt", portion: 100, traits: [] },
-      { name: "Durian", portion: 100, traits: ["over_10g_fat", "fodmaps", "fructose"] },
+      { name: "Durian", portion: 100, traits: ["fodmaps", "fructose"] },
       { name: "Peach", lmv: "Persika", portion: 100, traits: ["fodmaps", "polyols", "cross_reactive", "cross_birch"] },
       { name: "Nectarine", lmv: "Nektarin", portion: 100, traits: ["fodmaps", "polyols", "cross_reactive", "cross_birch", "salicylate"] },
       { name: "Passion Fruit", lmv: "Passionsfrukt", portion: 5, traits: [] },
@@ -1052,7 +1052,7 @@ const CATEGORIES = [
       { name: "Dried Goji Berry", lmv: "Gojibär torkade", portion: 30, traits: ["fodmaps", "fructans"] },
       { name: "Dried Kiwi (Added Sugar)", portion: 30, traits: ["cross_reactive", "cross_birch", "cross_grass", "cross_latex", "refined_carbs"] },
       { name: "Dried Kiwi (No Sugar Added)", portion: 30, traits: ["fiber", "cross_reactive", "cross_birch", "cross_grass", "cross_latex"] },
-      { name: "Currants (dried)", portion: 30, traits: ["fiber", "fodmaps", "fructans"] },
+      { name: "Currants (dried)", portion: 30, traits: ["fodmaps", "fructans"] },
       { name: "Dried Lychee", portion: 30, traits: ["fructose", "fodmaps", "polyols", "cross_reactive", "cross_mugwort"] }
     ]
   },
@@ -1094,7 +1094,7 @@ const CATEGORIES = [
       { name: "Pine Nuts", portion: 15, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "allergen_treenut"] },
       { name: "Hemp Seeds", lmv: "Hampafrö u. skal", portion: 15, traits: ["over_10g_fat"] },
       { name: "Poppy Seeds", lmv: "Vallmofrö", portion: 5, traits: [] },
-      { name: "Sunflower Seed Butter", portion: 25, traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "fructans", "cross_reactive", "cross_mugwort"] }
+      { name: "Sunflower Seed Butter", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "cross_reactive", "cross_mugwort"] }
     ]
   },
   {
@@ -1124,7 +1124,7 @@ const CATEGORIES = [
       { name: "Bulgur", form: "cooked", lmv: "Bulgur kokt", portion: 175, traits: ["fiber", "fodmaps", "fructans", "allergen_wheat"] },
       { name: "Freekeh", portion: 175, traits: ["allergen_wheat", "fodmaps", "fructans"] },
       { name: "Pita Bread", lmv: "Bröd vitt vete vatten fibrer ca 3,5% typ pitabröd", portion: 60, traits: ["allergen_wheat", "fodmaps", "fructans", "refined_carbs"] },
-      { name: "Naan Bread", portion: 60, traits: ["allergen_wheat", "fodmaps", "fructans", "refined_carbs", "over_10g_fat"] },
+      { name: "Naan Bread", portion: 60, traits: ["allergen_wheat", "fodmaps", "fructans", "refined_carbs"] },
       { name: "Soba Noodles", portion: 175, traits: ["refined_carbs", "allergen_wheat", "fodmaps", "fructans"] },
       { name: "Rice Noodles", form: "cooked", lmv: "Nudlar risnudlar kokta", portion: 175, traits: ["refined_carbs"] },
       { name: "White Bread", lmv: "Bröd vitt fibrer 3,5%", portion: 40, traits: ["allergen_wheat", "fodmaps", "fructans", "refined_carbs"] },
@@ -1259,7 +1259,7 @@ const CATEGORIES = [
          cow's at 3% does not — 8.3g of fat, and 9.7 of bile load against 9.5.
          Sheep's milk is fattier still and has no figures yet. */
       { name: "Goats Milk", portion: 200, traits: ["over_10g_fat", "bile_stimulant", "over_3g_lactose", "fodmaps", "allergen_milk"] },
-      { name: "Sheeps Milk", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen_milk"] },
+      { name: "Sheeps Milk", portion: 200, traits: ["over_3g_lactose", "over_10g_fat", "bile_stimulant", "fodmaps", "allergen_milk"] },
       { name: "Cream Cheese (<10% fat)", lmv: "Färskost cream cheese extra light fett 5%", portion: 20, traits: ["allergen_milk"] },
       { name: "Cream Cheese (>10% fat)", lmv: "Färskost fett 33%", portion: 20, traits: ["over_10g_fat", "allergen_milk"] },
       { name: "Hard Cheese (~15% fat)", lmv: "Ost hårdost fett 17%", lmvNote: "closest entry is 17 % fat", portion: 20, traits: ["histamine", "dao_competitor", "allergen_milk"] },
@@ -1293,7 +1293,7 @@ const CATEGORIES = [
          all three. They now carry what Blue Cheese and Camembert carry, which
          were matched to Livsmedelsverket and so were checked properly. */
       { name: "Roquefort", portion: 20, traits: ["allergen_milk", "histamine", "dao_competitor"] },
-      { name: "Fontina", portion: 20, traits: ["allergen_milk", "histamine", "dao_competitor"] },
+      { name: "Fontina", portion: 20, traits: ["over_10g_fat", "allergen_milk", "histamine", "dao_competitor"] },
       { name: "Raclette", portion: 20, traits: ["allergen_milk", "histamine", "dao_competitor"] },
       { name: "Camembert", lmv: "Vitmögelost camembert fett ca 22%", portion: 20, traits: ["histamine", "dao_competitor", "allergen_milk"] },
       { name: "Cheddar", lmv: "Ost hårdost fett 31%", lmvNote: "generic hard cheese entry", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_milk"] },
@@ -1502,7 +1502,7 @@ const CATEGORIES = [
       { name: "Barbecue Sauce", portion: 25, traits: ["aceticAcid", "irritant", "refined_carbs"] },
       { name: "Hot Sauce", portion: 5, traits: ["histamine", "irritant", "capsaicin"] },
       { name: "Worcestershire Sauce", portion: 5, traits: ["histamine", "allergen_fish"] },
-      { name: "Horseradish Sauce", portion: 25, traits: ["irritant", "over_10g_fat"] },
+      { name: "Horseradish Sauce", portion: 25, traits: ["irritant", "over_10g_fat", "bile_stimulant"] },
       { name: "Tartar Sauce", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_egg"] },
       { name: "Salsa", lmv: "Tomatsalsa kall", portion: 25, traits: ["irritant"] },
       { name: "Ranch Dressing", lmv: "Dressing konserv. fett ca 25%", portion: 25, traits: ["over_10g_fat", "allergen_milk", "allergen_egg"] },
