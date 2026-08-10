@@ -1,7 +1,7 @@
 # Worklist
 
-493 foods · 43 traits · 378 matched to Livsmedelsverket, 30 to Denmark's Frida.
-408 carry nutrient figures; 85 do not.
+493 foods · 43 traits · 378 matched to Livsmedelsverket, 30 to Denmark's Frida,
+41 to USDA's SR Legacy. 449 carry nutrient figures; 44 do not.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
@@ -329,6 +329,50 @@ Cherries entry above it is *Sötkörsbär*, the sweet kind. It is also what is
 actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
+
+**The American round landed, and figures arriving retagged eight foods.** 41
+confirmed out of 43 picked, 449 with figures. The build was +43 and nothing
+else, so the ladder held: no Swedish or Danish food moved.
+
+**`T` and `JA` finally said what they are**, because the export explains its own
+codes and the reader now keeps the description. `T` is *"taken from another
+source — other tables of food composition"*: a figure borrowed from a table USDA
+does not name, which is the one thing this ladder cannot allow, since every rung
+exists so a food can say which national table its figure came from. `JA` is
+*"aggregated data involving combinations of data with only source codes 1 and 12
+and/or 13"* — analytical mixed with a manufacturer's own analysis. Both are now
+named in `REJECTED` rather than sitting unclassified.
+
+**Eight foods were tagged by hand and the numbers disagreed.** Five carried a
+trait their figures do not reach: Lotus Root and Currants lose `fiber`, Durian
+and Naan Bread lose `over_10g_fat`, Sunflower Seed Butter loses `protein` and
+`fiber` while keeping the fat it genuinely has. Three reached a dose nobody had
+tagged: Sheeps Milk gains `over_10g_fat` and `bile_stimulant` at 14g of fat in a
+200g glass, and Horseradish Sauce gains `bile_stimulant` at 50.9% fat.
+
+**Fontina is the interesting one.** It had been reasoned about rather than
+measured: Roquefort's Danish figure of 29.5% fat gives 5.9g in a 20g portion,
+just under the 6.1 dose, and Fontina and Raclette were given the same answer by
+analogy. Fontina's own figure is 31.1%, which is 6.22g — just over. So it gains
+`over_10g_fat` and the analogy was wrong by a third of a gram. Raclette still
+has no figures and still sits on the inference.
+
+**Two matches were dropped rather than imported.** *Instant Ramen* matched
+"Soup, ramen noodle, any flavor, dry" — 6.52g of water per 100g against a 175g
+served portion, which `check-data` names on its own as the dry form of a food
+served wet. *Brown Gravy* matched "Gravy, au jus, canned" at 0.2% fat, which is
+a thin pan juice and not a thickened gravy; the traits and the figures disagree
+by two orders of magnitude. Both are form mismatches of exactly the kind this
+project keeps meeting, and neither is fixable by retagging — the ramen needs a
+`madeUp` ratio off the packet or a prepared entry, the gravy needs a different
+food. They are out of `usda-aliases.json` until then.
+
+**Three foods arrive without a water figure** — Enoki, Kimchi and Worcestershire
+Sauce, all of it lost to `T` or `JA`. That is not silently wrong: the meal
+builder already refuses to report how dry a meal is unless every food in it has
+water, so those meals simply do not get the water signal. Kimchi is the thinnest
+entry in the file at two figures out of seven, and it is worth deciding whether
+it earns its place at all.
 
 **The Danish round landed: 30 confirmed, 408 with figures.** Adzuki Bean
 Sprouts and Canned Strawberries in Syrup, both of which had been sitting in the

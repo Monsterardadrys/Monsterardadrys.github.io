@@ -111,7 +111,24 @@
         BF: "taken from another form of the food",
         BFNN: "taken from another form of the food",
         BFSN: "taken from another form of the food",
-        BFZN: "taken from another form of the food"
+        BFZN: "taken from another form of the food",
+
+        /* The two that came back unclassified from the first real SR Legacy
+           run, now named by the export's own descriptions.
+
+           T is "taken from another source — other tables of food composition".
+           That is a figure borrowed from a table USDA does not name, which is
+           the one thing this ladder cannot allow: every rung exists so a food
+           can say which national table its figure came from. Accepting T would
+           smuggle an unnamed fourth source in under the American one.
+
+           JA is "aggregated data involving combinations of data with only
+           source codes 1 and 12 and/or 13" — analytical mixed with a
+           manufacturer's own analysis and partial documentation. The mix
+           cannot be separated back out, so it inherits the objection to the
+           worst thing in it. */
+        T: "taken from another table of food composition, unnamed",
+        JA: "aggregated, mixing analytical with manufacturer-supplied data"
     };
 
     function derivationOf(nutrient) {
