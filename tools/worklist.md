@@ -330,6 +330,28 @@ actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
 
+**Does uploading one source drop the other? No — and the page proves it now.**
+A fair thing to be suspicious of: the build always needs the Livsmedelsverket
+export, so what happens to the Danish foods when you hand it the American file?
+Nothing. `Object.assign` walks the rungs in ladder order and an uploaded file
+replaces **that rung only**; the rest still come from the repo.
+
+Measured rather than asserted, with a stand-in USDA file in the repo and a
+Danish file carrying one food more than the committed one:
+
+- nothing uploaded → `lmv 378 · frida 28 · usda 2`
+- only the new Danish file uploaded → `lmv 378 · frida 29 · usda 2`
+
+The extra Danish food arrives, the American ones stay. The caveat is the obvious
+one and worth saying out loud: a rung falls back to *what is in the repo*, so a
+round that has not been committed contributes nothing to a build that does not
+upload it.
+
+So the build page prints the rungs: *"Below Livsmedelsverket: by hand 0 foods
+(nothing in the repo) · USDA 2 foods (the repo) · Frida 29 foods (the file you
+added)."* The question answers itself every build, instead of needing to be
+asked.
+
 **Chasing the extension was the wrong fight, and the real fault was elsewhere.**
 Setting the blob to `text/javascript` so a phone would write `.js` made it write
 `.bin` instead, which the widened `accept` list did not cover either. There is
