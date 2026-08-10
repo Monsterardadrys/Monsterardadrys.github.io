@@ -1,7 +1,7 @@
 # Worklist
 
 493 foods · 43 traits · 378 matched to Livsmedelsverket, 30 to Denmark's Frida,
-41 to USDA's SR Legacy. 449 carry nutrient figures; 44 do not.
+36 to USDA's SR Legacy. 444 carry nutrient figures; 49 do not.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
@@ -329,6 +329,46 @@ Cherries entry above it is *Sötkörsbär*, the sweet kind. It is also what is
 actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
+
+**A partial entry can be worse than no entry, and the meal builder is where
+that shows.** The doubt was about mixing in foods with thin data, and it turned
+out to be sharper than it sounded. A food with *no* figures is set aside: it
+contributes neither weight nor nutrient, so it changes nothing. A food with
+*some* figures puts its whole weight into the denominator of every
+concentration and its missing figures into the numerator as zero — so the meal
+reads leaner, drier and less sugary than it is. That is the direction that
+hides a real load rather than inventing one, and only water was guarded
+against it.
+
+**The fix is to bound the unknown rather than assume it.** A food cannot hold
+more of a nutrient than it weighs, so its grams are the most it can be hiding.
+Every signal is now read at both ends of that bound and reported only where
+they agree; where they disagree the honest answer is silence. Refusing outright
+whenever any figure is missing was tried first and is too blunt: 26 of the
+American entries lack sugars, so a 5g pinch of oregano would have silenced the
+sugar line for a whole plate.
+
+Checked on real meals. 200g of raisins with 50g of kimchi: sugars 48–68% of the
+meal, so the sugar line holds at both ends and is reported; fat is 1g known
+against 51g possible, so the fat line goes quiet. Fully figured meals have zero
+headroom, so nothing about them changed.
+
+**And then five entries were refused outright, by a rule in the tool.** Fat,
+protein, carbohydrate and water are the backbone every line leans on, and
+`REQUIRED` in `usda-core.js` now turns away any food short of one. Kimchi is
+the case that settled it: two figures of seven, *neither of which drives any
+signal*, and 50g of missing fat, protein and water able to quiet all of them.
+It gave nothing and cost the meal its answers. Currants, Enoki, Teriyaki Sauce
+and Worcestershire Sauce go with it — 36 of 41 stay.
+
+Fibre, sugars and alcohol are deliberately not in that rule. A gap there
+silences its own line and nothing else, and most of the foods carrying one are
+spices at 5g, where the headroom is far too small to change any answer.
+Refusing those would throw away 26 sound entries to avoid a rounding error.
+
+The rule lives in the tool rather than in a decision made once, so the next
+round applies it without anyone remembering to, and both the page and the
+command line say what they turned away and why.
 
 **The American round landed, and figures arriving retagged eight foods.** 41
 confirmed out of 43 picked, 449 with figures. The build was +43 and nothing

@@ -417,8 +417,31 @@
        reason, not by the builder defaulting a number to zero. */
     const KEEP = ["fat", "protein", "carbs", "fiber", "sugars", "alcohol", "water"];
 
+    /* The backbone. A partial entry is not merely less useful than a full one
+       — it can be worse than no entry at all, and the meal builder is where
+       that shows.
+
+       A food with no figures is set aside there: it contributes neither weight
+       nor nutrient, so it silences nothing. A food with *some* figures puts its
+       whole weight into the denominator of every concentration, and the meal
+       can only report a line when the missing figures could not change the
+       answer. So a gap buys silence in proportion to the portion, and these
+       four are what every line leans on — fat for two of them, protein for
+       one, water for the dryness line, carbohydrate for the rest.
+
+       Kimchi is the case that settled it: two figures of seven, neither of
+       which drives any signal, and 50g of missing fat, protein and water able
+       to quiet all of them. It gave nothing and cost the meal its answers.
+
+       Fibre, sugars and alcohol are not here on purpose. A gap in those
+       silences its own line and nothing else, and most of the foods carrying
+       one are spices at 5g, where the headroom is too small to change any
+       answer. Refusing those would throw away 26 good entries to avoid a
+       rounding error. */
+    const REQUIRED = ["fat", "protein", "carbs", "water"];
+
     function toManualEntries(confirmed) {
-        const out = {}, incomplete = [];
+        const out = {}, incomplete = [], refused = [];
 
         confirmed.forEach(function (m) {
             const values = {}, missing = [];
@@ -428,6 +451,18 @@
                 else missing.push(k + (m.record.dropped[k] ? " (" + m.record.dropped[k] + ")" : " (not in the file)"));
             });
             if (!Object.keys(values).length) return;
+
+            const short = REQUIRED.filter(function (k) { return values[k] == null; });
+            if (short.length) {
+                refused.push({
+                    name: m.food.name,
+                    missing: short,
+                    why: "no " + short.join(", ") + " — a food with no figures at all is cleaner " +
+                        "than one that holds a place in every meal and answers nothing"
+                });
+                return;
+            }
+
             if (missing.length) incomplete.push({ name: m.food.name, missing: missing });
 
             out[m.food.name] = {
@@ -438,7 +473,7 @@
             };
         });
 
-        return { entries: out, incomplete: incomplete };
+        return { entries: out, incomplete: incomplete, refused: refused };
     }
 
     /* Reads a Blob or File without holding it. 4MB at a time, decoded with a

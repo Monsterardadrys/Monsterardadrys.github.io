@@ -18,7 +18,7 @@
    Livsmedelsverket and Frida both still win wherever they have a figure:
    see tools/nutrition-core.js. Generated — never hand-edit it.
 
-   41 foods, from: FoodData_Central_sr_legacy_food_json_2018-04.json
+   36 foods, from: FoodData_Central_sr_legacy_food_json_2018-04.json
    ========================================================================= */
 
 const NUTRITION_USDA = {
@@ -46,10 +46,6 @@ const NUTRITION_USDA = {
     src: "usda", ref: "Cranberry sauce, canned, sweetened (FDC 173961, SR Legacy, fibre AOAC 991.43)",
     values: { fat: 0.15, protein: 0.9, carbs: 40.4, fiber: 1.1, sugars: 31.8, alcohol: 0, water: 58.4 }
   },
-  "Currants (dried)": {
-    src: "usda", ref: "Currants, zante, dried (FDC 171724, SR Legacy, fibre AOAC 991.43)",
-    values: { protein: 3.43, carbs: 77, fiber: 4.4, alcohol: 0, water: 17.6 }
-  },
   "Dill (dried)": {
     src: "usda", ref: "Spices, dill weed, dried (FDC 171322, SR Legacy, fibre AOAC 991.43)",
     values: { fat: 4.36, protein: 20, carbs: 55.8, fiber: 13.6, water: 7.3 }
@@ -57,10 +53,6 @@ const NUTRITION_USDA = {
   "Durian": {
     src: "usda", ref: "Durian, raw or frozen (FDC 168192, SR Legacy, fibre AOAC 991.43)",
     values: { fat: 5.33, protein: 1.47, carbs: 27.1, fiber: 3.8, water: 65 }
-  },
-  "Enoki Mushrooms": {
-    src: "usda", ref: "Mushrooms, enoki, raw (FDC 169382, SR Legacy)",
-    values: { fat: 0.29, protein: 2.66, carbs: 7.81, sugars: 0.22, alcohol: 0 }
   },
   "Fontina": {
     src: "usda", ref: "Cheese, fontina (FDC 170843, SR Legacy, fibre AOAC 991.43)",
@@ -77,10 +69,6 @@ const NUTRITION_USDA = {
   "Horseradish Sauce": {
     src: "usda", ref: "Sauce, horseradish (FDC 171833, SR Legacy, fibre AOAC 991.43)",
     values: { fat: 50.9, protein: 1.09, carbs: 10, fiber: 1, sugars: 8.98, water: 35.8 }
-  },
-  "Kimchi": {
-    src: "usda", ref: "Cabbage, kimchi (FDC 170392, SR Legacy)",
-    values: { carbs: 2.4, alcohol: 0 }
   },
   "Lotus Root": {
     src: "usda", ref: "Lotus root, raw (FDC 169250, SR Legacy, fibre AOAC 991.43)",
@@ -166,10 +154,6 @@ const NUTRITION_USDA = {
     src: "usda", ref: "Taro, cooked, without salt (FDC 168486, SR Legacy, fibre AOAC 991.43)",
     values: { fat: 0.11, protein: 0.52, carbs: 34.6, fiber: 5.1, alcohol: 0, water: 63.8 }
   },
-  "Teriyaki Sauce": {
-    src: "usda", ref: "Sauce, teriyaki, ready-to-serve (FDC 171167, SR Legacy, fibre AOAC 991.43)",
-    values: { protein: 5.93, carbs: 15.6, fiber: 0.1, alcohol: 0, water: 67.7 }
-  },
   "Thyme (dried)": {
     src: "usda", ref: "Spices, thyme, dried (FDC 170938, SR Legacy, fibre AOAC 991.43)",
     values: { fat: 7.43, protein: 9.11, carbs: 63.9, fiber: 37, alcohol: 0, water: 7.79 }
@@ -181,18 +165,23 @@ const NUTRITION_USDA = {
   "Tofu (silken)": {
     src: "usda", ref: "Tofu, soft, prepared with calcium sulfate and magnesium chloride (nigari) (FDC 172449, SR Legacy, fibre AOAC 991.43)",
     values: { fat: 3.69, protein: 7.17, carbs: 1.18, fiber: 0.2, sugars: 0.7, alcohol: 0, water: 87.3 }
-  },
-  "Worcestershire Sauce": {
-    src: "usda", ref: "Sauce, worcestershire (FDC 171610, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 0, protein: 0, carbs: 19.2, fiber: 0, alcohol: 0 }
   }
 };
+
+/* Confirmed, but not imported — too little to be worth a place in a meal:
+     Currants (dried) — no fat
+     Enoki Mushrooms — no water
+     Kimchi — no fat, protein, water
+     Teriyaki Sauce — no fat
+     Worcestershire Sauce — no water
+   A food with no figures at all is cleaner than one that holds a place in
+   every meal and answers nothing. See REQUIRED in tools/usda-core.js.
+*/
 
 /* Short of a full set, and why:
      Lotus Root — missing sugars (not in the file), alcohol (not in the file)
      Taro — missing sugars (taken from another form of the food)
      Durian — missing sugars (not in the file), alcohol (not in the file)
-     Currants (dried) — missing fat (copied from another nutrient), sugars (copied from another nutrient)
      Sunflower Seed Butter — missing alcohol (not in the file)
      Naan Bread — missing alcohol (not in the file)
      Soba Noodles — missing fiber (not in the file), sugars (not in the file), alcohol (not in the file)
@@ -210,14 +199,10 @@ const NUTRITION_USDA = {
      Mint (dried) — missing fiber (manufacturer supplied, incomplete documentation), sugars (not in the file), alcohol (not in the file)
      Allspice — missing sugars (not in the file)
      Maple Syrup — missing fiber (taken from another source--other tables of food composition), sugars (taken from another source--other tables of food composition), alcohol (not in the file)
-     Worcestershire Sauce — missing sugars (estimated from the ingredient list), water (estimated from the ingredient list)
      Horseradish Sauce — missing alcohol (estimated from the ingredient list)
-     Teriyaki Sauce — missing fat (estimated from the ingredient list), sugars (estimated from the ingredient list)
      Hoisin Sauce — missing sugars (estimated from the ingredient list)
      Oyster Sauce — missing sugars (estimated from the ingredient list)
-     Enoki Mushrooms — missing fiber (aggregated data involving combinations of data with only source codes 1 and 12 and/or 13), water (aggregated data involving combinations of data with only source codes 1 and 12 and/or 13)
      Morel Mushrooms — missing alcohol (not in the file)
-     Kimchi — missing fat (taken from another source--other tables of food composition), protein (taken from another source--other tables of food composition), fiber (taken from another source--other tables of food composition), sugars (taken from another form of the food), water (taken from another source--other tables of food composition)
      Pickle Relish — missing sugars (taken from another form of the food)
      Capers — missing sugars (taken from another form of the food)
      Natto — missing sugars (taken from another form of the food)

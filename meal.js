@@ -184,23 +184,40 @@
     // weight of the plate — a food with no figures contributes grams but no
     // sugar, and would water every concentration down.
     let coveredGrams = 0;
-    let wateredGrams = 0;
+    const gramsWith = {};
     items.forEach(function (item) {
       const values = NUTRITION[item.food];
       if (!values) return;
       coveredGrams += item.grams;
-      if (values.water != null) wateredGrams += item.grams;
+      NUTRIENTS.forEach(function (n) {
+        if (values[n.key] != null) gramsWith[n.key] = (gramsWith[n.key] || 0) + item.grams;
+      });
+    });
+
+    /* What is not known, in grams. A food missing a figure contributes weight
+       to the denominator and nothing to the numerator, so the meal reads
+       leaner, drier or less sugary than it is — the direction that hides a
+       real load rather than inventing one. Water alone used to be guarded,
+       by refusing the question outright if any food lacked it.
+
+       Refusing outright is too blunt now. The American set takes figures one
+       at a time, so a food can legitimately arrive with fat and no sugars —
+       26 of its 41 do — and a 5g pinch of oregano would silence the sugar
+       line for the whole plate.
+
+       So the unknown is bounded instead of assumed. A food cannot hold more
+       of a nutrient than it weighs, so its grams are the most it could be
+       hiding. `headroom` is that bound per nutrient, and a signal is reported
+       only when it reads the same way at both ends of it. */
+    const headroom = {};
+    NUTRIENTS.forEach(function (n) {
+      headroom[n.key] = coveredGrams - (gramsWith[n.key] || 0);
     });
 
     return {
       totals: totals, covered: covered, uncovered: uncovered,
       coveredGrams: coveredGrams,
-      /* How dry a meal is can only be asked when every food in it has a water
-         figure. One food short and the meal looks drier than it is — the
-         missing food contributes weight to the denominator and no water to
-         the numerator, which is the direction that raises a false alarm.
-         Hand-entered figures in nutrition-manual.js have no water column. */
-      waterComplete: coveredGrams > 0 && wateredGrams === coveredGrams
+      headroom: headroom
     };
   }
 
@@ -299,14 +316,31 @@
          concentration. A teaspoon of honey is three quarters sugar and
          nobody's osmotic load; without this floor it was flagged as one. */
       if (signal.floor != null && total < signal.floor) return null;
-      // A signal can depend on there being enough of something else.
-      if (signal.key === "water" && !n.waterComplete) return null;
+
+      /* Both ends of what is not known. `total` is the least this meal can
+         hold of the nutrient; `most` is the largest, since a food cannot hold
+         more of anything than it weighs. */
+      const most = total + (n.headroom[signal.key] || 0);
+      const asValue = function (grams) {
+        return signal.kind === "share" ? grams / n.coveredGrams * 100 : grams;
+      };
+      const fires = function (v) {
+        // Most lines are a ceiling. Water is a floor: too little, not too much.
+        // Both boundaries are inclusive, as they were before this was a range.
+        return signal.below != null ? v <= signal.below : v >= signal.line;
+      };
+      /* Report only what holds at both ends. Where they disagree the honest
+         answer is silence: the figures cannot settle it. */
+      if (fires(asValue(total)) !== fires(asValue(most))) return null;
+      if (!fires(asValue(total))) return null;
+
+      // A signal can depend on there being enough of something else, and that
+      // has to be certain too — not merely true of the figures that arrived.
       if (signal.needs && Object.keys(signal.needs).some(function (key) {
         return !(n.totals[key] >= signal.needs[key]);
       })) return null;
-      const value = signal.kind === "share" ? total / n.coveredGrams * 100 : total;
-      // Most lines are a ceiling. Water is a floor: too little, not too much.
-      if (signal.below != null ? value > signal.below : value < signal.line) return null;
+
+      const value = asValue(total);
       /* A share is a ratio, so it does not move when the whole meal is
          scaled — the same 60g per 100g at 30g of raisins and at 400g. That
          reads as a stuck number unless the amount it came from is next to
