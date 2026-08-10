@@ -329,10 +329,108 @@
         </section>
 
         <section>
+            <h2>Where the source files come from</h2>
+            <p class="note">None of them are kept in the repo — they are large and they are somebody
+                else's. Download fresh each round.</p>
+            <ul>
+                <li><strong>Livsmedelsverket</strong> —
+                    <a href="https://soknaringsinnehall.livsmedelsverket.se/" target="_blank" rel="noopener">Sök
+                    näringsinnehåll</a>, <em>Ladda ner Livsmedelsdatabasen</em>. Excel, CSV or JSON all
+                    work.</li>
+                <li><strong>Frida</strong> — <a href="https://frida.fooddata.dk/" target="_blank"
+                    rel="noopener">frida.fooddata.dk</a>, the full dataset as Excel. Built against
+                    version 6.1. Names every food in English as well as Danish, so there is no
+                    translation step.</li>
+                <li><strong>USDA</strong> — <a href="https://fdc.nal.usda.gov/download-datasets"
+                    target="_blank" rel="noopener">fdc.nal.usda.gov</a>, as <strong>JSON</strong>.
+                    <em>SR Legacy</em> (64MB, ~7,800 foods — the one worth having) and
+                    <em>Foundation Foods</em> (7MB, 363 foods, mostly raw produce Sweden already
+                    covers).</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Decisions already made</h2>
+            <p class="note">Settled, with the reasoning in method.html. Listed here so they are not
+                reopened from scratch.</p>
+            <ul>
+                <li><strong>Two sets are refused outright.</strong> USDA <em>Branded Foods</em> is
+                    manufacturer label data rounded to legal tolerances. <em>FNDDS</em> is survey data
+                    costed out of recipes rather than measured. Neither is read.</li>
+                <li><strong>USDA figures are taken one at a time, not by food.</strong> Every figure
+                    records how it was arrived at. Taken: measured, calculated by definition
+                    (carbohydrate by difference, protein from nitrogen), and the table's own "not
+                    naturally present". Dropped: manufacturer-supplied, label-derived, recipe- or
+                    formulation-estimated, copied from another nutrient, and <em>carried over from
+                    another form of the same food</em>. An unrecognised code is dropped and reported in
+                    USDA's own words — decide it in <code>ACCEPTED</code> or <code>REJECTED</code> in
+                    <strong>usda-core.js</strong>, once. Two are still undecided: <code>T</code> and
+                    <code>JA</code>.</li>
+                <li><strong>No fabricated zeros.</strong> A food with no figure gets none, and the meal
+                    builder refuses it rather than counting it as zero. A USDA entry may therefore carry
+                    fewer fields than a Swedish one, and the gaps are deliberate.</li>
+                <li><strong>Fiber is not comparable across methods.</strong> AOAC 2011.25 reads higher
+                    than 991.43 on all 17 foods that carry both, median +1.8g/100g — 30% of the 6.1g
+                    dose — and the gap falls on starch, because resistant starch is what the newer
+                    method counts. We take 991.43 first to match Sweden and Denmark; each entry records
+                    which was used.</li>
+                <li><strong>Generated files are never hand-edited.</strong>
+                    <code>nutrition-data.js</code>, <code>nutrition-frida.js</code> and
+                    <code>nutrition-usda.js</code> all come out of a tool. Edit the alias file and
+                    re-run instead.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Traps that have actually bitten</h2>
+            <p class="note">Each of these cost real time once. They are all guarded now — this is so the
+                guard is not mistaken for noise.</p>
+            <ul>
+                <li><strong>A generated file smaller than its alias file.</strong> A re-run once wrote
+                    only the newly confirmed matches: 30 confirmed came out as a 2-food file, and
+                    rebuilding would have stripped the other 28. Both this page and the build page warn
+                    on it now.</li>
+                <li><strong>Running the audits out of order.</strong> Each one offers the foods with no
+                    figures as of the repo's <code>nutrition-data.js</code>, so the first one run claims
+                    them. <code>check-data.js</code> fails on a food holding two matches.</li>
+                <li><strong>The top candidate is usually the wrong <em>form</em>.</strong> Every bad
+                    match this project has had was fresh-for-dried or raw-for-cooked. That is what the
+                    figures under each candidate are for: a dried food with 80g of water is not the
+                    dried one.</li>
+                <li><strong>Stale files served by the service worker.</strong> Anything at the root goes
+                    through it even when the page asking sits under <code>/tools/</code>. Every tool
+                    fetches with <code>cache: "no-store"</code> for that reason; keep it that way.</li>
+                <li><strong>Foods sold dry and eaten made up.</strong> Soup powder, drink mix. The table
+                    lists the powder, the portion is the bowl. A <code>madeUp</code> recipe on the food
+                    scales it — do not type diluted figures in by hand.</li>
+                <li><strong>A plausible explanation is not the cause.</strong> A caching story once
+                    explained a wrong figure perfectly and was wrong; the real fault was a field being
+                    dropped before either tool saw it. The checks named it three different ways without
+                    being told what to look for. Run them before believing anything.</li>
+            </ul>
+        </section>
+
+        <section>
             <h2>Every tool</h2>
             <ul id="tools"></ul>
             <p class="note">Before a release, from the project root:<br>
                 <code>node tools/check-data.js &amp;&amp; node tools/check-site.js</code></p>
+        </section>
+
+        <section>
+            <h2>Where the long version lives</h2>
+            <ul>
+                <li><strong>tools/worklist.md</strong> — every decision and every fault, in the order
+                    they happened, with the numbers. The place to look when something here reads as
+                    arbitrary.</li>
+                <li><strong>method.html</strong> — the published reasoning: doses, portions, sources,
+                    what the fiber methods do to the column.</li>
+                <li><strong>The header comment in each core file</strong> — <code>lmv-core.js</code>,
+                    <code>frida-core.js</code>, <code>usda-core.js</code> each open with what is
+                    different about that source and why the file exists.</li>
+            </ul>
+            <p class="note">Nothing important lives only in a conversation. If it is not in one of those
+                three, it is not written down.</p>
         </section>
     </main>
 

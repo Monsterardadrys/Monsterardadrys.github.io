@@ -5,8 +5,11 @@
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
-Start at **`tools/index.html`** — the workbench. It reads the files and says
-what is outstanding and in what order. All the tools run on a phone.
+Start at **`tools/index.html`** — the workbench. It reads the files and says what
+is outstanding and in what order, and it now carries the durable notes too:
+where each source file is downloaded from, the decisions already settled, and
+the traps that have actually bitten. It is written to be enough on its own after
+a long gap; this file is the long version behind it.
 
 ## Done
 
