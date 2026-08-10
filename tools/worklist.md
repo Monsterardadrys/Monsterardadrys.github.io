@@ -330,6 +330,29 @@ actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
 
+**"No food records found" was true, unhelpful, and partly the page's own fault.**
+The Danish workbook went into the build page's step 2, which takes
+Livsmedelsverket's export, and the answer was *"no row had a recognisable name
+column"* — accurate, and useless: it reads as a fault in the file rather than a
+file in the wrong slot.
+
+Step 2 invited it. Its text said *"the same file the audit takes"*, written when
+there was one audit. There are three now, and it reads as "whichever audit you
+just ran". It names Livsmedelsverket outright, and says in as many words that
+Frida's workbook and USDA's JSON go into their own audits while the small
+`nutrition-*.js` that comes back goes in step 3.
+
+And the failure diagnoses the file instead of the columns. Both are recognisable
+on sight: Frida's sheet carries `↓FoodName` and `ParameterID` markers, USDA's
+JSON carries `SRLegacyFoods` or `FoundationFoods`, and a generated file declares
+`NUTRITION_FRIDA` and friends. All three now come back naming the file and the
+page it belongs on. The Swedish audit had the identical message and the
+identical trap, so it got the same treatment.
+
+Checked in a browser, four files each: Frida-shaped workbook, USDA JSON, a
+generated file, and the real export — the first three named correctly, the
+fourth still reading 378 records and building 406.
+
 **The workbench sent you to the wrong tool, because it could only see the repo.**
 It read frida 28 aliases / 28 generated / 28 live, found no drift, and moved on
 to "87 foods have no figures" — while a finished Danish round sat in the
