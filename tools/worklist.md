@@ -1,13 +1,13 @@
 # Worklist
 
-493 foods · 43 traits · 371 matched to Livsmedelsverket, 28 to Denmark's Frida.
+493 foods · 43 traits · 374 matched to Livsmedelsverket, 28 to Denmark's Frida.
 399 carry nutrient figures; 94 do not.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
 ## Done
 
-**Livsmedelsverket audit** — 371 of 493 foods checked against the Swedish Food
+**Livsmedelsverket audit** — 374 of 493 foods checked against the Swedish Food
 Agency database, 113 confirmed absent, none unmatched. Each verified food
 carries its entry name in `lmv`, and departures carry an `lmvNote`; both show on
 `sources.html`.
@@ -274,6 +274,29 @@ One thing the search box cannot fix by itself: our names are English and the
 database is Swedish, so a food with no entry in `lmv-swedish.json` scores
 nothing against anything and arrives with no candidates at all — every canned
 fruit did. The box says so and suggests a Swedish word to try.
+
+**A field that exists on the food should reach whatever reads the food.**
+`flattenCategories` in `lmv-core.js` built a reduced object naming the five
+fields the audit was thought to need. `madeUp` was never added to that list,
+so `auditFood` asked for `food.madeUp`, got undefined on every food, and read
+rosehip soup's powder against a 200g bowl — reporting a fiber tag missing that
+a made-up bowl does not earn. **Four releases running**, in every report, while
+`check-data.js` said the data was fine: it reads the built figures, which are
+diluted, so the two could not see the same thing. The fix is to copy the food
+and fill in the defaults rather than name the keepers. Exactly the same fault
+the nutrition builder had in its own half, found the same way — by a number in
+a report that did not match the number in the file.
+
+`check-data.js` now also names foods that are matched but have no figures yet.
+Harmless in itself, but it is the state six foods sat in unnoticed once,
+confirmed on paper and missing from every meal.
+
+**Three sprouts confirmed, and the download that could have gone wrong did
+not.** Mungbönsgroddar, Linsgroddar and Alfalfagroddar. The returned files
+carried exactly three additions, nothing removed, both `_comment` blocks
+intact — which is what the "everything on file plus what was just picked" rule
+was written for. Adzuki Bean Sprouts was left open, and Livsmedelsverket does
+carry the other three, so it is worth another look rather than an absence.
 
 **Read the runners-up, not just the top line.** The scorer matches names, and
 a name matches best across the very difference that matters: it offered *Mango*

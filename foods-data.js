@@ -1181,10 +1181,10 @@ const CATEGORIES = [
 
          Eaten raw and mostly water, so the portion is a handful in a salad or
          a stir-fry rather than a cooked legume's 150g. */
-      { name: "Mung Bean Sprouts", form: "fresh", portion: 75, traits: [] },
+      { name: "Mung Bean Sprouts", lmv: "Mungbönsgroddar", form: "fresh", portion: 75, traits: [] },
       { name: "Adzuki Bean Sprouts", form: "fresh", portion: 75, traits: [] },
-      { name: "Lentil Sprouts", form: "fresh", portion: 75, traits: [] },
-      { name: "Alfalfa Sprouts", form: "fresh", portion: 30, traits: [] }
+      { name: "Lentil Sprouts", lmv: "Linsgroddar", form: "fresh", portion: 75, traits: [] },
+      { name: "Alfalfa Sprouts", lmv: "Alfalfagroddar", form: "fresh", portion: 30, traits: [] }
     ]
   },
   {
