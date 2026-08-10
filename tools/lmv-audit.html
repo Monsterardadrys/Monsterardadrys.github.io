@@ -841,7 +841,7 @@
                     show(statusEl, "bad", "Could not read that file: " + e.message);
                     return;
                 }
-                finish(lmv, statusEl);
+                finish(lmv, statusEl, sniffText(text));
             }
 
             document.getElementById("fetchBtn").addEventListener("click", function () {
@@ -866,9 +866,41 @@
                     .then(function () { btn.disabled = false; });
             });
 
-            function finish(lmv, statusEl) {
+            /* The same trap as the build page: "no recognisable name column" is
+               true of the Danish workbook and of USDA's JSON, and saying only
+               that sends you hunting for a fault in a file that is merely in
+               the wrong slot. There are three databases now; this page takes
+               one of them. */
+            const WRONG_SLOT = {
+                frida: "This looks like Frida, the Danish database. It goes into the Danish audit " +
+                    "(frida-audit.html) — this page takes Livsmedelsverket's export.",
+                usda: "This looks like USDA's FoodData Central. It goes into the American audit " +
+                    "(usda-audit.html) — this page takes Livsmedelsverket's export."
+            };
+
+            function sniffText(text) {
+                return (/"(SRLegacyFoods|FoundationFoods)"/.test(text) || /"foodNutrients"/.test(text))
+                    ? WRONG_SLOT.usda : null;
+            }
+
+            function sniffSheets(sheets) {
+                const marks = ["\u2193FoodName", "ParameterID", "FoodID"];
+                for (let s = 0; s < sheets.length; s++) {
+                    const rows = sheets[s] || [];
+                    for (let r = 0; r < Math.min(rows.length, 12); r++) {
+                        const line = (rows[r] || []).join(" ");
+                        for (let m = 0; m < marks.length; m++) {
+                            if (line.indexOf(marks[m]) !== -1) return WRONG_SLOT.frida;
+                        }
+                    }
+                }
+                return null;
+            }
+
+            function finish(lmv, statusEl, hint) {
                 if (!lmv.length) {
-                    show(statusEl, "bad", "No food records found — no row had a recognisable name column.");
+                    show(statusEl, "bad", hint ||
+                        "No food records found — no row had a recognisable name column.");
                     return;
                 }
                 show(statusEl, "info", "Read " + lmv.length + " records, matching…");
@@ -895,7 +927,12 @@
                 if (/\.xlsx$/i.test(file.name)) {
                     reader.onload = function () {
                         LMV.parseXlsx(reader.result)
-                            .then(function (lmv) { finish(lmv, status); })
+                            .then(function (lmv) {
+                                if (lmv.length) { finish(lmv, status); return null; }
+                                return LMV.sheetsFromXlsx(reader.result).then(function (sheets) {
+                                    finish(lmv, status, sniffSheets(sheets));
+                                });
+                            })
                             .catch(function (err) {
                                 show(status, "bad", "Could not read that spreadsheet: " + err.message);
                             });

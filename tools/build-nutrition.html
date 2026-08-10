@@ -159,12 +159,16 @@
 
     <main>
         <section>
-            <h2><span class="stepNum">1</span>Get the export</h2>
-            <p>The same file the audit takes. Open
+            <h2><span class="stepNum">1</span>Get the Livsmedelsverket export</h2>
+            <p><strong>Livsmedelsverket's, and only that one.</strong> Open
                 <a href="https://soknaringsinnehall.livsmedelsverket.se/" target="_blank"
-                   rel="noopener">Sök näringsinnehåll</a> and use <em>Ladda ner Livsmedelsdatabasen</em>.</p>
-            <p class="note">Already have it open for the audit? Use the same file — this page reads it the
-                same way and matches through the same confirmed list, so the two cannot disagree.</p>
+                   rel="noopener">Sök näringsinnehåll</a> and use <em>Ladda ner Livsmedelsdatabasen</em>.
+                It is the same file <a href="lmv-audit.html">the Swedish audit</a> takes, read the same
+                way and matched through the same confirmed list, so the two cannot disagree.</p>
+            <p class="dropped"><strong>The Danish and American databases do not go here.</strong> Frida's
+                workbook belongs in <a href="frida-audit.html">the Danish audit</a> and USDA's JSON in
+                <a href="usda-audit.html">the American audit</a>. What comes back from those is a small
+                <code>nutrition-*.js</code>, and that goes in <strong>step 3</strong> below — not here.</p>
         </section>
 
         <section>
@@ -356,9 +360,49 @@
                 document.getElementById("results").scrollIntoView({ behavior: "smooth" });
             }
 
-            function finish(lmv, statusEl, sourceName) {
+            /* "No recognisable name column" is true of the Danish workbook and
+               of USDA's JSON, and saying only that sends you looking for a
+               fault in a file that is simply in the wrong slot. Both are
+               recognisable on sight, so say which one it is. */
+            const WRONG_SLOT = {
+                frida: "This looks like Frida, the Danish database. It goes into the Danish audit " +
+                    "(frida-audit.html), not here — this step takes Livsmedelsverket's export. What " +
+                    "the Danish audit gives back, nutrition-frida.js, goes in step 3.",
+                usda: "This looks like USDA's FoodData Central. It goes into the American audit " +
+                    "(usda-audit.html), not here — this step takes Livsmedelsverket's export. What " +
+                    "the American audit gives back, nutrition-usda.js, goes in step 3.",
+                generated: "This looks like one of the generated files. It goes in step 3, below — " +
+                    "this step takes the Livsmedelsverket export."
+            };
+
+            function sniffText(text) {
+                if (/"(SRLegacyFoods|FoundationFoods)"/.test(text) || /"foodNutrients"/.test(text)) return WRONG_SLOT.usda;
+                if (/NUTRITION_(FRIDA|USDA|MANUAL)\s*=/.test(text)) return WRONG_SLOT.generated;
+                return null;
+            }
+
+            function sniffSheets(sheets) {
+                const marks = ["\u2193FoodName", "ParameterID", "FoodID"];
+                for (let s = 0; s < sheets.length; s++) {
+                    const rows = sheets[s] || [];
+                    for (let r = 0; r < Math.min(rows.length, 12); r++) {
+                        const line = (rows[r] || []).join(" ");
+                        for (let m = 0; m < marks.length; m++) {
+                            if (line.indexOf(marks[m]) !== -1) return WRONG_SLOT.frida;
+                        }
+                    }
+                }
+                return null;
+            }
+
+            function noRecords(statusEl, hint) {
+                show(statusEl, "bad", hint ||
+                    "No food records found — no row had a recognisable name column.");
+            }
+
+            function finish(lmv, statusEl, sourceName, hint) {
                 if (!lmv.length) {
-                    show(statusEl, "bad", "No food records found — no row had a recognisable name column.");
+                    noRecords(statusEl, hint);
                     return;
                 }
                 show(statusEl, "good", "Read " + lmv.length + " records.");
@@ -436,7 +480,13 @@
                     if (/\.xlsx$/i.test(file.name)) {
                         reader.onload = function () {
                             LMV.parseXlsx(reader.result)
-                                .then(function (lmv) { finish(lmv, status, file.name); })
+                                .then(function (lmv) {
+                                    if (lmv.length) { finish(lmv, status, file.name); return null; }
+                                    // Nothing read. Before blaming the columns, look at the workbook.
+                                    return LMV.sheetsFromXlsx(reader.result).then(function (sheets) {
+                                        noRecords(status, sniffSheets(sheets));
+                                    });
+                                })
                                 .catch(function (err) {
                                     show(status, "bad", "Could not read that spreadsheet: " + err.message);
                                 });
@@ -444,14 +494,16 @@
                         reader.readAsArrayBuffer(file);
                     } else {
                         reader.onload = function () {
+                            const text = String(reader.result);
                             let lmv;
                             try {
-                                lmv = LMV.parseExport(String(reader.result));
+                                lmv = LMV.parseExport(text);
                             } catch (err) {
-                                show(status, "bad", "Could not read that file: " + err.message);
+                                show(status, "bad", sniffText(text) ||
+                                    ("Could not read that file: " + err.message));
                                 return;
                             }
-                            finish(lmv, status, file.name);
+                            finish(lmv, status, file.name, sniffText(text));
                         };
                         reader.readAsText(file);
                     }
