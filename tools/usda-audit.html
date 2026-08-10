@@ -667,9 +667,12 @@
                reads what is inside a file rather than trusting its name, so a
                download that arrives as 0d4ebe24-....txt still works. */
             function download(text, filename) {
-                const type = /\.json$/i.test(filename) ? "application/json"
-                    : /\.js$/i.test(filename) ? "text/javascript"
-                    : "text/plain";
+                /* text/plain for anything that is not JSON. Asking for
+                   text/javascript made Android save nutrition-frida.js as a
+                   .bin, and text/plain at least yields a .txt you can open and
+                   the builder will take. The extension cannot be relied on
+                   either way — every tool reads the contents. */
+                const type = /\.json$/i.test(filename) ? "application/json" : "text/plain";
                 const url = URL.createObjectURL(new Blob([text], { type: type }));
                 const a = document.createElement("a");
                 a.href = url;

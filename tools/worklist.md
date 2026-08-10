@@ -330,6 +330,26 @@ actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
 
+**Chasing the extension was the wrong fight, and the real fault was elsewhere.**
+Setting the blob to `text/javascript` so a phone would write `.js` made it write
+`.bin` instead, which the widened `accept` list did not cover either. There is
+no type that reliably yields `.js`, so the page stopped asking: `text/plain` at
+least gives a `.txt` you can open, and the picker has **no** `accept` filter at
+all. Nothing was ever trusted from the name — `symbolFrom` reads the file — so
+the filter was only ever hiding the file you actually had.
+
+The thing that was really blocking, though, was not the extension. Loading the
+generated file in step 3 reported *"Using: … → Frida, 30 foods"* and then
+produced nothing, for as long as it took to work out that **step 2 was still
+empty**. There is nothing to build without the Livsmedelsverket export — 378 of
+406 foods come from it, and these files only fill in the rest — but the page
+said none of that, so it read as a hang. It says it now, in the same status
+line, and the heading admits that step 3 is optional while step 2 is not.
+
+Reproduced end to end: a `.bin` in step 3 with step 2 empty is accepted, named
+as Frida with its food count, and told what is missing; adding the export then
+builds 406 and downloads `nutrition-data.js`.
+
 **A phone renamed the download and the builder then refused to show it.**
 `nutrition-frida.js` arrived in the downloads folder as
 `0d4ebe24-37ce-4567-ac1e-ac34f102abbd.txt`, and step 3's

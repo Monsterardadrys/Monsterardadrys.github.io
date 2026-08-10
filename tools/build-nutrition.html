@@ -180,7 +180,8 @@
         </section>
 
         <section>
-            <h2><span class="stepNum">3</span>The audit files <span class="note">(optional)</span></h2>
+            <h2><span class="stepNum">3</span>The audit files
+                <span class="note">(optional — step 2 is still required)</span></h2>
             <p>Everything below Livsmedelsverket on the ladder — <strong>nutrition-frida.js</strong>,
                 <strong>nutrition-usda.js</strong>, <strong>nutrition-manual.js</strong>. Leave this empty
                 and the copies already in the repo are used, which is what you want when nothing has
@@ -188,15 +189,17 @@
             <p class="note">Add them here to build straight from a round you have just finished, without
                 committing first. Each file replaces the repo's copy of that source entirely, because a
                 generated file is meant to be the whole of it — so a short one is a warning, not a merge.</p>
-            <p class="note"><strong>The filename does not matter.</strong> A phone often saves these as
-                something like <code>0d4ebe24-….txt</code>. Add it anyway — each file is identified by
-                what it declares inside, and the status line below says which one it took it for.</p>
-            <!-- Deliberately wide. A phone often saves nutrition-frida.js as
-                 something like 0d4ebe24-....txt, and accept=".js" then hides it
-                 from the picker entirely. Nothing is trusted from the name
-                 anyway: the file is identified by the symbol it declares. -->
-            <input type="file" id="genInput" multiple
-                   accept=".js,.json,.txt,text/javascript,application/json,text/plain">
+            <p class="note"><strong>The filename does not matter.</strong> A phone saves these under
+                whatever name and extension it likes — <code>0d4ebe24-….txt</code>,
+                <code>….bin</code>. Add it anyway: each file is identified by what it declares inside,
+                and the status line below says which one it was taken for and how many foods it holds.
+                That count is the thing to check.</p>
+            <!-- No accept filter, on purpose. A phone renames these on the way
+                 out and there is no predicting to what: text/plain gave .txt,
+                 text/javascript gave .bin. Any filter hides the file you
+                 actually have. Nothing is trusted from the name anyway — the
+                 file is identified by the symbol it declares. -->
+            <input type="file" id="genInput" multiple>
             <div class="status" id="genStatus"></div>
         </section>
 
@@ -458,6 +461,19 @@
                     if (took.length) lines.push("Using: " + took.join(" · "));
                     if (ignored.length) lines.push("Ignored: " + ignored.join(" · "));
                     warn.forEach(function (w) { lines.push("WARNING: " + w); });
+
+                    /* Accepting a file here produces nothing on its own, and
+                       saying nothing about that reads as the page hanging:
+                       "Using: … → Frida, 30 foods" and then no download, for as
+                       long as it takes to work out that step 2 is still empty.
+                       These files fill in the foods Livsmedelsverket does not
+                       cover — 28 of 406 — so there is nothing to build until
+                       the export is in. */
+                    if (took.length && !built) {
+                        lines.push("Nothing to download yet: nutrition-data.js is built from the " +
+                            "Livsmedelsverket export, and step 2 above is still empty. Add it and the " +
+                            "file appears — these figures are folded in for the foods it does not cover.");
+                    }
 
                     show(status, warn.length ? "bad" : (took.length ? "good" : "bad"), lines.join("\n"));
 
