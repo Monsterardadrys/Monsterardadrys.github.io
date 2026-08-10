@@ -1,7 +1,7 @@
 # Worklist
 
-493 foods · 43 traits · 378 matched to Livsmedelsverket, 28 to Denmark's Frida.
-406 carry nutrient figures; 87 do not.
+493 foods · 43 traits · 378 matched to Livsmedelsverket, 30 to Denmark's Frida.
+408 carry nutrient figures; 85 do not.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
@@ -329,6 +329,26 @@ Cherries entry above it is *Sötkörsbär*, the sweet kind. It is also what is
 actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
+
+**The Danish round landed: 30 confirmed, 408 with figures.** Adzuki Bean
+Sprouts and Canned Strawberries in Syrup, both of which had been sitting in the
+American audit's offer list waiting for Denmark to be asked first. The build
+came back +2 and nothing else: no food changed, none was dropped, 378 from
+Livsmedelsverket and 30 from Frida.
+
+`nutrition-frida.js` was reconstructed rather than re-downloaded, because it
+could be proved rather than guessed: the repo's 28 entries plus the two from
+the earlier short download, all with their `ref` lines. Every value was checked
+against the built `nutrition-data.js` — 29 matched exactly and **Matcha did
+not**, by a factor of a hundred. That is the dilution, not a fault:
+`madeUp: { parts: 1, water: 100 }`, powder in the source file and bowl in the
+build, and `dilute()` reproduces the built figures to the last decimal. The
+check that looked like a mismatch is the one that confirms the dilution is
+still being applied.
+
+Canned strawberries came in at 20.1g of sugar against fresh strawberry's ~5,
+which is the same pattern the four canned fruits showed in v1.36, and it
+carries `refined_carbs` already.
 
 **Does uploading one source drop the other? No — and the page proves it now.**
 A fair thing to be suspicious of: the build always needs the Livsmedelsverket
