@@ -1159,7 +1159,21 @@ const CATEGORIES = [
       { name: "Green Lentils", form: "cooked", lmv: "Gröna linser torkade kokta m. salt", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Mung Beans", form: "cooked", lmv: "Mungbönor torkade kokta u. salt", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Adzuki Beans", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
-      { name: "Butter Beans", portion: 150, traits: ["fiber", "fodmaps", "galactans"] }
+      { name: "Butter Beans", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
+
+      /* Sprouted legumes. Every other legume above carries galactans; these
+         carry none, which is the whole reason they are worth listing. The
+         seed spends its own stored oligosaccharides germinating, so a sprout
+         is a legume with the load largely gone — Monash rates mung bean and
+         alfalfa sprouts low at an ordinary serving. Kept in Legumes rather
+         than Vegetables so the contrast with the row above is visible.
+
+         Eaten raw and mostly water, so the portion is a handful in a salad or
+         a stir-fry rather than a cooked legume's 150g. */
+      { name: "Mung Bean Sprouts", form: "fresh", portion: 75, traits: [] },
+      { name: "Adzuki Bean Sprouts", form: "fresh", portion: 75, traits: [] },
+      { name: "Lentil Sprouts", form: "fresh", portion: 75, traits: [] },
+      { name: "Alfalfa Sprouts", form: "fresh", portion: 30, traits: [] }
     ]
   },
   {
@@ -1344,7 +1358,11 @@ const CATEGORIES = [
       { name: "Soy Milk", lmv: "Sojadryck", portion: 200, traits: ["allergen_soy", "fodmaps", "galactans", "dao_competitor"] },
       { name: "Oat Drink", lmv: "Havredryck fett 1,5% berikad", portion: 200, traits: ["allergen_wheat"] },
       { name: "Coconut Milk", lmv: "Kokosmjölk fett ca 6%", portion: 200, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "polyols"] },
-      { name: "Matcha", portion: 5, traits: ["irritant", "caffeine"] },
+      /* Matcha is the one tea where the leaf is drunk rather than steeped and
+         thrown away, so its figures are a dried tea leaf's, scaled by the
+         bowl: about 2g of powder in 200ml. Every other tea here is matched to
+         a ready-to-drink brew and needs no recipe. */
+      { name: "Matcha", form: "cooked", lmvNote: "dried tea leaf, whisked into water at about 2g in a 200ml bowl", madeUp: { parts: 1, water: 100 }, portion: 200, traits: ["irritant", "caffeine"] },
       { name: "Chai Tea", portion: 200, traits: ["irritant", "caffeine"] },
       // Added for the salicylate work; carries no histamine per the review.
       // Caffeine-free. Cross-reacts with mugwort/ragweed pollen (Asteraceae) —
@@ -1421,7 +1439,11 @@ const CATEGORIES = [
       { name: "Mango Chutney", lmv: "Mango chutney", portion: 25, traits: ["refined_carbs"] },
       { name: "Cranberry Sauce", portion: 25, traits: ["fodmaps", "refined_carbs", "fructose"] },
       { name: "Fish Roe Spread", lmv: "Påläggskaviar original", portion: 20, traits: ["over_10g_fat", "histamine", "allergen_fish"] },
-      { name: "Yeast Extract", portion: 5, traits: [] },
+      /* The dark savoury spread — Marmite, Vegemite. Nutritional yeast is a
+         different product and has its own entry below. The name alone was
+         ambiguous enough to be read either way. Yeast extract is one of the
+         higher-histamine foods on any elimination list. */
+      { name: "Yeast Extract (Marmite type)", portion: 5, traits: ["histamine"] },
       { name: "Ajvar", lmv: "Ajvar relish", portion: 25, traits: ["irritant"] },
       { name: "Harissa", portion: 5, traits: ["irritant", "capsaicin"] },
       { name: "Tahini", lmv: "Tahini", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_sesame"] },

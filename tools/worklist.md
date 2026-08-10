@@ -1,13 +1,13 @@
 # Worklist
 
-484 foods · 43 traits · 371 matched to Livsmedelsverket, 113 confirmed absent.
-371 carry nutrient figures; 113 do not.
+488 foods · 43 traits · 371 matched to Livsmedelsverket, 113 confirmed absent.
+371 carry nutrient figures; 117 do not.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
 ## Done
 
-**Livsmedelsverket audit** — 371 of 484 foods checked against the Swedish Food
+**Livsmedelsverket audit** — 371 of 488 foods checked against the Swedish Food
 Agency database, 113 confirmed absent, none unmatched. Each verified food
 carries its entry name in `lmv`, and departures carry an `lmvNote`; both show on
 `sources.html`.
@@ -134,6 +134,63 @@ way out.
 `sources.html` still reads `lmv` alone, so a Danish-sourced food will keep
 saying "not in the database". True of Livsmedelsverket and misleading about
 the tool. Fix it when there are real Danish entries to describe, not before.
+
+**Picking, not transcribing.** The first real round of the Danish audit showed
+the page had the wrong shape: it offered three candidates a food and told you
+to go and type the winner into a JSON file. 113 foods, on a phone. Two things
+were missing and both were the same mistake — the page knew the answer and made
+you carry it somewhere else.
+
+Candidates are a **choice** now. Tap to pick, tap again to unpick; the picked
+one stays and the rest fold away. Every pick lands in a panel at the bottom
+holding the whole of `frida-aliases.json`, ready to download or copy in one go,
+and `nutrition-frida.js` is built from the picks directly — the second pass is
+gone, since the page already has both the food and its record in hand. Picks
+are kept in local storage as they are made, because a stray reload halfway
+through 113 foods is not a survivable event.
+
+And **the right entry is not always in the top three**. Chili is
+"Pepper, hot chili, …" in Frida and scores below foods it has nothing to do
+with; matcha shares no word at all with "Tea". Each food now carries a search
+box over every name in the file, so nothing is unreachable. Anything already in
+`frida-aliases.json` counts as picked, so a half-finished round carries on
+rather than starting again.
+
+**A recipe belongs to the food, not to the table.** `dilute()` was applied to
+Livsmedelsverket matches only, so a `madeUp` food sourced from Denmark would
+have gone in undiluted — the rosehip soup fault again, one source over. It is
+applied to every source now, in `tools/nutrition-core.js`.
+
+**Matcha is the one tea where the leaf is drunk.** Every other tea here is a
+brew: the leaf is steeped and thrown away, so a ready-to-drink entry is the
+right match and the 200g cup is already the portion. Matcha is powdered leaf
+whisked into the water and swallowed, so it takes the dried-leaf figures with
+a recipe — `madeUp: { parts: 1, water: 100 }`, about 2g in a 200ml bowl. Its
+portion moves from 5g to 200g to match: a cup of matcha brings 200g of water
+to a meal, and at 5g it would have counted as a spoonful of dust and pulled
+the dry-meal line the wrong way.
+
+**Sprouted legumes.** Every legume in that category carries galactans; these
+carry none, which is the whole reason they are worth listing — the seed spends
+its own stored oligosaccharides germinating. Mung bean, adzuki, lentil and
+alfalfa sprouts, kept in Legumes rather than Vegetables so the contrast with
+the row above them is visible. Monash rates mung bean and alfalfa sprouts low
+at an ordinary serving. They carry no trait at all, which is a real answer
+rather than an empty one: a legume that carries none of the things tracked here
+is exactly what Foods without exists to find.
+
+**Yeast extract is the spread, not the flakes.** "Yeast Extract" was ambiguous
+enough that its own author could not tell which product it meant, and it
+carried no traits at all. It is Marmite and Vegemite — renamed
+**Yeast Extract (Marmite type)** and given `histamine`, which it has as much of
+as anything on an elimination list. Nutritional yeast is a different product
+and already had its own entry.
+
+**Two checks were too strict to add a food through.** A food in neither the
+confirmed nor the absent list is where every new food starts, and a `madeUp`
+recipe on a food that has no figures yet is waiting, not wrong. Both are
+warnings now. The faults are kept for the three files contradicting each other,
+which is never a normal state.
 
 **Read the runners-up, not just the top line.** The scorer matches names, and
 a name matches best across the very difference that matters: it offered *Mango*
@@ -389,10 +446,9 @@ into `lmv-aliases.json` and rebuild.
   no export, so this will always be hand-entered. Checked in the app: cauliflower
   is fructans, as we had it. Asparagus was not — it is excess fructose, and the
   tag has been corrected.
-- **113 foods still have no figures**, so they cannot go in a meal, and those
-  113 are exactly the confirmed-absent list. There is no third set to work
-  out: whatever the next source covers, it is being asked the same question
-  the absent list already answered.
+- **117 foods still have no figures**, so they cannot go in a meal. 113 of
+  them are the confirmed-absent list exactly; the other four are the sprouted
+  legumes added since the last audit, which no round has seen yet.
 
   The source ladder is decided and short — Frida (DK), then USDA SR Legacy,
   then Ciqual for the European cheeses — and `nutrition-manual.js` is where
