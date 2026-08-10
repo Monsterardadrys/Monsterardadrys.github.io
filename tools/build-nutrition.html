@@ -113,7 +113,7 @@
             display: none;
         }
 
-        .status.show { display: block; }
+        .status.show { display: block; white-space: pre-line; }
         .status.info { background: #eaf1f2; }
         .status.bad { background: #f8e8e0; }
         .status.good { background: #e9f0e6; }
@@ -175,8 +175,21 @@
             <div class="status" id="fileStatus"></div>
         </section>
 
+        <section>
+            <h2><span class="stepNum">3</span>The audit files <span class="note">(optional)</span></h2>
+            <p>Everything below Livsmedelsverket on the ladder — <strong>nutrition-frida.js</strong>,
+                <strong>nutrition-usda.js</strong>, <strong>nutrition-manual.js</strong>. Leave this empty
+                and the copies already in the repo are used, which is what you want when nothing has
+                changed since they were committed.</p>
+            <p class="note">Add them here to build straight from a round you have just finished, without
+                committing first. Each file replaces the repo's copy of that source entirely, because a
+                generated file is meant to be the whole of it — so a short one is a warning, not a merge.</p>
+            <input type="file" id="genInput" multiple accept=".js,text/javascript">
+            <div class="status" id="genStatus"></div>
+        </section>
+
         <section id="results">
-            <h2><span class="stepNum">3</span>Save it into the repo</h2>
+            <h2><span class="stepNum">4</span>Save it into the repo</h2>
             <div class="counts" id="counts"></div>
             <p class="note" id="detected"></p>
             <p>Download it and put it in the project root as <strong>nutrition-data.js</strong>, replacing
@@ -217,6 +230,48 @@
             const swedish = {};
             const absent = {};
             let built = null;
+            let lastResult = null, lastSource = "";
+
+            /* The generated files, as uploaded. Empty means "use the repo's",
+               which is the <script src> copies below the ladder. Keyed by the
+               symbol each file declares, so a file is identified by what it
+               contains rather than by what it happens to be named. */
+            const uploaded = {};
+
+            const LADDER = [
+                { symbol: "NUTRITION_MANUAL", label: "by hand" },
+                { symbol: "NUTRITION_USDA", label: "USDA" },
+                { symbol: "NUTRITION_FRIDA", label: "Frida" }
+            ];
+
+            function baked(symbol) {
+                if (symbol === "NUTRITION_MANUAL") return typeof NUTRITION_MANUAL !== "undefined" ? NUTRITION_MANUAL : null;
+                if (symbol === "NUTRITION_USDA") return typeof NUTRITION_USDA !== "undefined" ? NUTRITION_USDA : null;
+                if (symbol === "NUTRITION_FRIDA") return typeof NUTRITION_FRIDA !== "undefined" ? NUTRITION_FRIDA : null;
+                return null;
+            }
+
+            /* Which of the three a file is, decided by what it declares.
+
+               The obvious version — evaluate and ask `typeof NUTRITION_MANUAL`
+               — is wrong, and quietly so: this page already carries all three
+               as globals from the <script> tags below, and a name inside
+               `new Function` falls through to the global if the file did not
+               declare it. So every file matched the first rung and came back
+               as the page's own empty hand-entered object. Test the text for
+               the declaration first; then the const inside the function body
+               shadows the global and the value is the file's. */
+            function symbolFrom(text) {
+                for (let i = 0; i < LADDER.length; i++) {
+                    const name = LADDER[i].symbol;
+                    if (!new RegExp("(^|[\\s;])(const|let|var)\\s+" + name + "\\s*=").test(text)) continue;
+                    let value = null;
+                    try { value = new Function(text + "; return " + name + ";")(); }
+                    catch (e) { value = null; }
+                    if (value && typeof value === "object") return { symbol: name, value: value };
+                }
+                return null;
+            }
 
             function loadMap(url, target) {
                 return fetch(url)
@@ -237,11 +292,18 @@
             }
 
             function render(result, sourceName) {
-                const manual = Object.assign(
-                    {},
-                    typeof NUTRITION_MANUAL !== "undefined" ? NUTRITION_MANUAL : {},
-                    typeof NUTRITION_USDA !== "undefined" ? NUTRITION_USDA : {},
-                    typeof NUTRITION_FRIDA !== "undefined" ? NUTRITION_FRIDA : {});
+                lastResult = result;
+                lastSource = sourceName;
+                /* Later wins, so this is the ladder upside down: hand-typed
+                   figures are the weakest, then USDA, then Frida. Same order
+                   as loadFallbacks in build-nutrition.js — the two must not
+                   disagree. An uploaded file replaces the repo's copy of that
+                   source rather than merging into it. */
+                const manual = {};
+                LADDER.forEach(function (rung) {
+                    const src = uploaded[rung.symbol] || baked(rung.symbol);
+                    if (src) Object.assign(manual, src);
+                });
                 built = NutritionCore.build(result, ours.length, sourceName, manual);
 
                 const counts = document.getElementById("counts");
@@ -285,6 +347,54 @@
                 show(statusEl, "good", "Read " + lmv.length + " records.");
                 render(LMV.runAudit(ours, lmv, aliases, swedish, absent), sourceName);
             }
+
+            document.getElementById("genInput").addEventListener("change", function (e) {
+                const files = Array.prototype.slice.call(e.target.files || []);
+                const status = document.getElementById("genStatus");
+                if (!files.length) return;
+
+                Promise.all(files.map(function (f) {
+                    return f.text().then(function (t) { return { name: f.name, text: t }; });
+                })).then(function (read) {
+                    const took = [], ignored = [], warn = [];
+
+                    read.forEach(function (r) {
+                        const found = symbolFrom(r.text);
+                        if (!found) {
+                            ignored.push(r.name + " — declares none of nutrition-frida.js, " +
+                                "nutrition-usda.js or nutrition-manual.js");
+                            return;
+                        }
+                        const rung = LADDER.filter(function (x) { return x.symbol === found.symbol; })[0];
+                        const mine = Object.keys(found.value).length;
+                        const theirs = Object.keys(baked(found.symbol) || {}).length;
+
+                        uploaded[found.symbol] = found.value;
+                        took.push(r.name + " → " + rung.label + ", " + mine +
+                            (mine === 1 ? " food" : " foods"));
+
+                        /* The same net as the workbench, one step later. A
+                           generated file smaller than the repo's copy is how
+                           28 Danish foods nearly lost their figures: a re-run
+                           used to write only the newly confirmed matches. */
+                        if (theirs && mine < theirs) {
+                            warn.push(r.name + " holds " + mine + " foods but the repo's copy holds " +
+                                theirs + ". Building with it drops the other " + (theirs - mine) +
+                                ". Re-run that audit and download the file again unless you meant this.");
+                        }
+                    });
+
+                    const lines = [];
+                    if (took.length) lines.push("Using: " + took.join(" · "));
+                    if (ignored.length) lines.push("Ignored: " + ignored.join(" · "));
+                    warn.forEach(function (w) { lines.push("WARNING: " + w); });
+
+                    show(status, warn.length ? "bad" : (took.length ? "good" : "bad"), lines.join("\n"));
+
+                    // Already built? Rebuild, so the figures follow the files.
+                    if (built && lastResult) render(lastResult, lastSource);
+                });
+            });
 
             document.getElementById("fileInput").addEventListener("change", function (e) {
                 const file = e.target.files[0];

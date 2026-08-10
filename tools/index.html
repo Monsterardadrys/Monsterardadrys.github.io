@@ -489,7 +489,8 @@
                 [["lmv-audit.html", "Swedish matches — first on the ladder"],
                  ["frida-audit.html", "Danish matches — for what Sweden has no entry for"],
                  ["usda-audit.html", "American matches — for what neither of those covers"],
-                 ["build-nutrition.html", "Build nutrition-data.js from an export plus the generated files"]
+                 ["build-nutrition.html", "Build nutrition-data.js from an export. The generated files come " +
+                     "from the repo unless you add them on the page"]
                 ].forEach(function (row) {
                     const li = document.createElement("li");
                     li.innerHTML = '<a href="' + row[0] + '">' + row[0] + "</a> — " + row[1];
