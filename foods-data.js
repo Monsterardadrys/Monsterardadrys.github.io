@@ -987,7 +987,11 @@ const CATEGORIES = [
          how Canned Peaches was already built. Pear loses peel_skin: canned
          pears are peeled. */
       { name: "Canned Peaches in Syrup", lmv: "Persika konserv. m. sockerlag", portion: 100, traits: ["fodmaps", "polyols", "refined_carbs", "cross_reactive", "cross_birch"] },
-      { name: "Canned Pears in Syrup", lmv: "Päron konserv. m. sockerlag", portion: 100, traits: ["fodmaps", "fructose", "polyols", "refined_carbs", "irritant", "cross_reactive", "cross_birch", "salicylate"] },
+      // No `irritant`: the fresh pear carries the umbrella for its peel and
+      // nothing else, and a canned pear is peeled. Dropping peel_skin without
+      // it left the umbrella standing on a mechanism that had been removed —
+      // and made this the one canned fruit tagged an irritant.
+      { name: "Canned Pears in Syrup", lmv: "Päron konserv. m. sockerlag", portion: 100, traits: ["fodmaps", "fructose", "polyols", "refined_carbs", "cross_reactive", "cross_birch", "salicylate"] },
       { name: "Canned Pineapple in Syrup", lmv: "Ananas konserv. m. sockerlag", portion: 100, traits: ["refined_carbs", "cross_reactive", "cross_latex"] },
       { name: "Canned Apricots in Syrup", lmv: "Aprikos konserv. m. sockerlag", portion: 100, traits: ["fodmaps", "polyols", "refined_carbs", "cross_reactive", "cross_birch"] },
       { name: "Canned Cherries in Syrup", lmv: "Körsbär surkörsbär konserv. m. sockerlag", lmvNote: "sour cherries — the only canned cherry listed, where fresh Cherries above is the sweet kind", portion: 100, traits: ["fodmaps", "polyols", "fructose", "refined_carbs", "cross_reactive", "cross_birch"] },
