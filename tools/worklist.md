@@ -330,6 +330,28 @@ actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
 
+**The workbench sent you to the wrong tool, because it could only see the repo.**
+It read frida 28 aliases / 28 generated / 28 live, found no drift, and moved on
+to "87 foods have no figures" — while a finished Danish round sat in the
+downloads folder, uncommitted. From the repo's side everything was consistent.
+The state that mattered was not in the repo at all.
+
+It is in the browser, though. Every audit page keeps its picks in
+`localStorage` so a half-finished round survives a reload, and that same store
+says when a round is *finished* and merely uncommitted. The workbench reads all
+three keys now and leads with what has not landed: *"2 Danish picks have not
+reached the repo yet — Adzuki Bean Sprouts, Canned Strawberries in Syrup.
+Finish this before starting a source further down the ladder."* The shapes
+differ and both are handled: the Swedish page records `{record}` or
+`{kind:"absent"}`, because "not in the database" is an answer there; the other
+two record a plain name.
+
+**And it stopped guessing which audit is next.** The old rule was
+`frida aliases === 0 ? Denmark : America` — which is not ladder order, it is
+"has Denmark ever been run". Whether a source covers a given food is only
+knowable with that file open, so the page states the order and leaves the
+choice rather than naming a tool it cannot actually choose.
+
 **The whole chain, checked as one thing rather than four.** Driven in a browser
 with nothing touching the repo: the American audit read Foundation, a match was
 picked for Lion's Mane, both files downloaded, and those went into the build
