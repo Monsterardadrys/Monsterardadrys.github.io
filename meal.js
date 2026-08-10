@@ -314,10 +314,15 @@
       const against = signal.below != null
         ? "under the " + signal.below + "g per 100g below which a meal counts as dry."
         : "against " + signal.line + (signal.kind === "share" ? "g per 100g." : "g.");
-      const text = signal.kind === "share"
-        ? fmt(value) + "g per 100g — " + fmt(total) + "g in " +
-          Math.round(n.coveredGrams) + "g of meal — " + against
-        : fmt(value) + "g, " + against;
+      /* On a meal that happens to weigh about 100g the two are the same
+         sentence twice — "58g per 100g — 58g in 100g of meal". Say it once. */
+      const meal = Math.round(n.coveredGrams);
+      const sameTwice = meal === 100;
+      const text = signal.kind === "share" && !sameTwice
+        ? fmt(value) + "g per 100g — " + fmt(total) + "g in " + meal + "g of meal — " + against
+        : signal.kind === "share"
+          ? fmt(value) + "g in the meal's 100g — " + against
+          : fmt(value) + "g, " + against;
       return { label: signal.label, text: text, why: signal.why };
     }).filter(Boolean);
   }
@@ -597,6 +602,8 @@
     const count = found[traitId].count;
     let where;
     if (totalItems === 1) where = "in the only ingredient.";
+    // "in all 2 ingredients" is not how anyone says it.
+    else if (count === totalItems && totalItems === 2) where = "in both ingredients.";
     else if (count === totalItems) where = "in all " + totalItems + " ingredients.";
     else where = "in " + count + " of the " + totalItems + " ingredients.";
     return {
