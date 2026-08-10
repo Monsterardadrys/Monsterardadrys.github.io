@@ -458,6 +458,38 @@
                 }).catch(function () { return null; });
             }
 
+            /* What the audit pages have recorded in this browser but the repo
+               has not seen. Each page keeps its picks in localStorage so a
+               half-finished round survives a reload; the same store tells this
+               page about a round that is finished and simply has not been
+               committed. Without it the workbench reads a repo that looks
+               perfectly consistent and sends you on to the next source, which
+               is exactly the wrong advice with a finished round sitting in
+               your downloads.
+
+               Shapes differ: the Swedish page records {record} or
+               {kind:"absent"}, because "not in the database" is an answer
+               there. The other two record a plain name. */
+            function picksFor(store) {
+                try { return JSON.parse(localStorage.getItem(store) || "{}") || {}; }
+                catch (e) { return {}; }
+            }
+
+            function unlandedLmv(picks, aliasFile, absentFile) {
+                return Object.keys(picks).filter(function (name) {
+                    const d = picks[name];
+                    if (!d) return false;
+                    if (d.kind === "absent") return !absentFile[name];
+                    return d.record && aliasFile[name] !== d.record;
+                });
+            }
+
+            function unlandedFlat(picks, aliasFile) {
+                return Object.keys(picks).filter(function (name) {
+                    return picks[name] && aliasFile[name] !== picks[name];
+                });
+            }
+
             function keysOf(obj) {
                 if (!obj) return [];
                 return Object.keys(obj).filter(function (k) { return k[0] !== "_"; });
@@ -563,19 +595,58 @@
                     }
                 }
 
+                /* Uncommitted work first: it is the only thing here that the
+                   repo cannot show, and doing anything else while it is
+                   outstanding is what puts a food on two rungs of the ladder. */
+                const unlanded = [
+                    { key: "lmv", label: "Swedish", href: "lmv-audit.html",
+                      files: "lmv-aliases.json and lmv-absent.json",
+                      names: unlandedLmv(picksFor("lmv-audit-picks"), lmvAliases, lmvAbsent) },
+                    { key: "frida", label: "Danish", href: "frida-audit.html",
+                      files: "frida-aliases.json and nutrition-frida.js",
+                      names: unlandedFlat(picksFor("frida-audit-picks"), aliases.frida) },
+                    { key: "usda", label: "American", href: "usda-audit.html",
+                      files: "usda-aliases.json and nutrition-usda.js",
+                      names: unlandedFlat(picksFor("usda-audit-picks"), aliases.usda) }
+                ].filter(function (r) { return r.names.length; });
+
+                unlanded.forEach(function (r) {
+                    steps.push({
+                        kind: "bad",
+                        what: r.names.length + " " + r.label + " " +
+                            (r.names.length === 1 ? "pick has" : "picks have") +
+                            " not reached the repo yet.",
+                        why: "Made in this browser and not in the repo's files: " +
+                            r.names.slice(0, 8).join(", ") +
+                            (r.names.length > 8 ? " and " + (r.names.length - 8) + " more" : "") +
+                            ". Open that audit, download " + r.files +
+                            ", build nutrition-data.js, and send all of it over. Finish this before " +
+                            "starting a source further down the ladder, or the same food ends up " +
+                            "confirmed twice.",
+                        href: r.href
+                    });
+                });
+
                 ladderStep("frida", "frida", "frida-audit.html", "the Danish audit", "nutrition-frida.js");
                 ladderStep("usda", "usda", "usda-audit.html", "the American audit", "nutrition-usda.js");
 
                 if (without.length) {
-                    const nextUp = keysOf(aliases.frida).length === 0
-                        ? "frida-audit.html" : "usda-audit.html";
+                    /* Which audit is next is not something this page can work
+                       out: whether Denmark has an entry for a given food is
+                       only knowable with the Danish file open. So it says the
+                       order and leaves the choice, rather than guessing —
+                       which it used to, on nothing better than whether any
+                       Danish match had ever been confirmed. */
                     steps.push({
                         kind: "info",
                         what: without.length + " foods still have no figures.",
-                        why: "Run the audits in ladder order — Livsmedelsverket, then Denmark, then " +
-                            "the United States — so a food Denmark covers is not confirmed against " +
-                            "America by hand for nothing. " + shortList(without),
-                        href: nextUp
+                        why: unlanded.length
+                            ? "Land the outstanding picks above first. " + shortList(without)
+                            : "Work down the ladder: Livsmedelsverket, then Denmark, then the United " +
+                              "States, rebuilding in between. Whether a source covers a given food is " +
+                              "only knowable with that file open, so pick up where the ladder left " +
+                              "off rather than skipping ahead. " + shortList(without),
+                        href: "build-nutrition.html"
                     });
                 }
 
