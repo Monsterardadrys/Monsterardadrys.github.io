@@ -43,10 +43,16 @@ if (!file) {
   process.exit(2);
 }
 
-// Every food with no figures — from either earlier source.
-const needing = [];
+/* Two lists, and they are not the same. `needing` is what gets offered for
+   confirming — foods with no figures from either earlier source. `allFoods` is
+   what the generated file is built from, because a match confirmed last time
+   still belongs in it even though the food now has figures. */
+const needing = [], allFoods = [];
 CATEGORIES.forEach(function (c) {
-  c.foods.forEach(function (f) { if (!NUTRITION[f.name]) needing.push(f); });
+  c.foods.forEach(function (f) {
+    allFoods.push(f);
+    if (!NUTRITION[f.name]) needing.push(f);
+  });
 });
 
 /* Streamed, not read whole. A TextDecoder in stream mode is what makes the
@@ -128,7 +134,12 @@ read(file).then(function (out) {
     return;
   }
 
-  const built = USDA.toManualEntries(result.confirmed);
+  const all = USDA.confirmedFrom(allFoods, out.records, aliases);
+  if (all.missing.length) {
+    console.log("\nconfirmed but not written:");
+    all.missing.forEach(function (m) { console.log("  " + m.name + " — " + m.why); });
+  }
+  const built = USDA.toManualEntries(all.confirmed);
   const entries = built.entries;
   const names = Object.keys(entries).sort();
   const lines = [

@@ -1,0 +1,515 @@
+<!--
+    The workbench — where the data stands, and what to do next.
+
+    Internal tool, not linked from the site. Nothing here is written down: the
+    page reads foods-data.js, nutrition-data.js, the three alias files and the
+    three generated files, and works out the state from them. So it cannot go
+    stale the way a hand-kept checklist does, and it reports the mistakes that
+    have actually happened rather than the ones that sound likely.
+
+    The one it exists for: a generated file holding fewer foods than its own
+    alias file. That is what a re-run used to produce, and rebuilding with it
+    would quietly strip figures off every food confirmed in an earlier round.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workbench — Food Intolerance Guide</title>
+    <link rel="icon" href="../favicon.ico" sizes="any">
+
+    <style>
+        :root {
+            --ink: #232b27;
+            --primary: #15414c;
+            --clay: #c98a5e;
+            --clay-dark: #a96b41;
+            --linen: #f6f1e6;
+            --paper: #fffdf8;
+            --border: #ddd6c6;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0 0 3rem;
+            background: var(--linen);
+            color: var(--ink);
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        header {
+            background: var(--primary);
+            color: var(--paper);
+            padding: 1rem 1.25rem;
+        }
+
+        header h1 { margin: 0; font-size: 1.25rem; }
+        header p { margin: 0.35rem 0 0; font-size: 0.85rem; opacity: 0.85; }
+
+        main { padding: 1.25rem; max-width: 46rem; margin: 0 auto; }
+
+        section {
+            background: var(--paper);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem 1.1rem;
+            margin-bottom: 1.1rem;
+        }
+
+        h2 { margin: 0 0 0.6rem; font-size: 1.05rem; color: var(--primary); }
+
+        .stepNum {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--paper);
+            width: 1.6rem; height: 1.6rem;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 1.6rem;
+            font-size: 0.9rem;
+            margin-right: 0.4rem;
+        }
+
+        p, li { font-size: 0.95rem; }
+        p { margin: 0.5rem 0; }
+        a { color: var(--clay-dark); }
+
+        input[type="file"] {
+            width: 100%;
+            font-size: 16px; /* stops iOS zooming on focus */
+            font-family: inherit;
+            padding: 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #fff;
+            margin: 0.4rem 0;
+        }
+
+        button {
+            font-family: inherit;
+            font-size: 1rem;
+            padding: 0.65rem 1.1rem;
+            border: none;
+            border-radius: 8px;
+            background: var(--clay);
+            color: #fff;
+            cursor: pointer;
+            margin: 0.3rem 0.3rem 0.3rem 0;
+        }
+
+        button:hover { background: var(--clay-dark); }
+        button.secondary { background: var(--primary); }
+
+        .status {
+            margin-top: 0.6rem;
+            padding: 0.6rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .status.show { display: block; }
+        .status.info { background: #eaf1f2; }
+        .status.bad { background: #f8e8e0; }
+        .status.good { background: #e9f0e6; }
+
+        pre {
+            background: #1e2a2e;
+            color: #e8e4d8;
+            padding: 0.9rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.75rem;
+            line-height: 1.45;
+            white-space: pre;
+            margin: 0.6rem 0;
+            max-height: 24rem;
+        }
+
+        .counts { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.6rem 0; }
+
+        .count {
+            flex: 1 1 6.5rem;
+            background: var(--linen);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+        .count b { display: block; font-size: 1.35rem; color: var(--primary); }
+        .count span { font-size: 0.75rem; }
+
+        .note { font-size: 0.85rem; color: #5a615c; }
+
+        /* One food and its three candidates. Tapping a candidate copies the
+           JSON line for it, because the confirming is done by hand in
+           usda-aliases.json and typing American names on a phone is misery. */
+        .food {
+            border-top: 1px solid var(--border);
+            padding: 0.7rem 0 0.3rem;
+        }
+
+        .food:first-child { border-top: none; }
+        .foodName { font-weight: 600; }
+
+        .cand {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: var(--linen);
+            border: 1px solid var(--border);
+            color: var(--ink);
+            font-size: 0.85rem;
+            padding: 0.45rem 0.6rem;
+            margin: 0.25rem 0 0;
+            border-radius: 6px;
+        }
+
+        .cand:hover { background: #efe8d8; }
+        .cand .sc { color: var(--clay-dark); font-variant-numeric: tabular-nums; }
+        .cand .fig { display: block; color: #5a615c; font-size: 0.78rem; }
+
+        .cand.isPicked {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--paper);
+        }
+
+        .cand.isPicked .sc, .cand.isPicked .fig { color: #cfe0e3; }
+
+        .chosen {
+            display: block;
+            font-weight: 400;
+            font-size: 0.82rem;
+            color: var(--clay-dark);
+        }
+
+        .searchRow { margin-top: 0.35rem; }
+
+        .searchRow input {
+            width: 100%;
+            font-size: 16px; /* stops iOS zooming on focus */
+            font-family: inherit;
+            padding: 0.4rem 0.55rem;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            background: #fff;
+        }
+
+        .food.isDone .cand:not(.isPicked),
+        .food.isDone .searchRow { display: none; }
+
+        textarea {
+            width: 100%;
+            min-height: 9rem;
+            font-family: ui-monospace, "SF Mono", Menlo, monospace;
+            font-size: 0.75rem;
+            padding: 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--ink);
+        }
+
+        /* Follows the page so the count and the buttons are always a thumb
+           away — the list is 87 foods long. */
+        .picksBar {
+            position: sticky;
+            bottom: 0;
+            background: var(--paper);
+            border-top: 2px solid var(--primary);
+            padding: 0.5rem 0.75rem;
+            margin: 0 -1.1rem -1rem;
+            border-radius: 0 0 10px 10px;
+            font-size: 0.9rem;
+        }
+
+        /* SR Legacy is 64MB, so the scan takes seconds rather than being
+           instant. Without this the page looks hung on a phone. */
+        .bar {
+            height: 6px;
+            background: var(--linen);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+            display: none;
+        }
+
+        .bar.show { display: block; }
+        .bar i { display: block; height: 100%; width: 0; background: var(--clay); }
+
+        .dropped {
+            font-size: 0.8rem;
+            color: #5a615c;
+            border-left: 3px solid var(--clay);
+            padding-left: 0.5rem;
+            margin: 0.35rem 0 0;
+        }
+
+        #results, #picks { display: none; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Workbench</h1>
+        <p>Where the data stands, and what to do next. Read from the files themselves — nothing here is
+            kept by hand.</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Where it stands</h2>
+            <div class="counts" id="counts"></div>
+            <div id="loadStatus" class="status"></div>
+        </section>
+
+        <section>
+            <h2>What to do next</h2>
+            <p class="note">In order. Each source fills the gaps the one above it leaves, so running them
+                out of order means confirming a match by hand that a better source would have covered.</p>
+            <div id="steps"></div>
+        </section>
+
+        <section>
+            <h2>The ladder</h2>
+            <p class="note">Which source wins where two of them have a figure for the same food. Set in
+                <strong>tools/nutrition-core.js</strong> and <strong>loadFallbacks</strong> in both
+                builders — not here.</p>
+            <ol id="ladder"></ol>
+        </section>
+
+        <section>
+            <h2>Every tool</h2>
+            <ul id="tools"></ul>
+            <p class="note">Before a release, from the project root:<br>
+                <code>node tools/check-data.js &amp;&amp; node tools/check-site.js</code></p>
+        </section>
+    </main>
+
+    <script>
+        (function () {
+            "use strict";
+
+            function show(el, kind, msg) { el.className = "status show " + kind; el.textContent = msg; }
+
+            function text(url) {
+                return fetch(url, { cache: "no-store" }).then(function (r) {
+                    return r.ok ? r.text() : null;
+                }).catch(function () { return null; });
+            }
+
+            function symbol(body, name) {
+                if (!body) return null;
+                try { return new Function(body + "; return typeof " + name + " !== 'undefined' ? " + name + " : null;")(); }
+                catch (e) { return null; }
+            }
+
+            function json(url) {
+                return fetch(url, { cache: "no-store" }).then(function (r) {
+                    return r.ok ? r.json() : null;
+                }).catch(function () { return null; });
+            }
+
+            function keysOf(obj) {
+                if (!obj) return [];
+                return Object.keys(obj).filter(function (k) { return k[0] !== "_"; });
+            }
+
+            Promise.all([
+                text("../foods-data.js"),
+                text("../nutrition-data.js"),
+                text("../nutrition-frida.js"),
+                text("../nutrition-usda.js"),
+                text("../nutrition-manual.js"),
+                json("lmv-aliases.json"),
+                json("lmv-absent.json"),
+                json("frida-aliases.json"),
+                json("usda-aliases.json")
+            ]).then(function (p) {
+                const CATEGORIES = symbol(p[0], "CATEGORIES");
+                const NUTRITION = symbol(p[1], "NUTRITION");
+                if (!CATEGORIES || !NUTRITION) {
+                    show(document.getElementById("loadStatus"), "bad",
+                        "Could not read foods-data.js or nutrition-data.js. Serve the project over http " +
+                        "rather than opening this file directly — fetch does not work from file://.");
+                    return;
+                }
+
+                const generated = {
+                    frida: symbol(p[2], "NUTRITION_FRIDA"),
+                    usda: symbol(p[3], "NUTRITION_USDA"),
+                    manual: symbol(p[4], "NUTRITION_MANUAL")
+                };
+                const lmvAliases = p[5] || {};
+                const lmvAbsent = p[6] || {};
+                const aliases = { frida: p[7] || {}, usda: p[8] || {} };
+
+                const foods = [];
+                CATEGORIES.forEach(function (c) { c.foods.forEach(function (f) { foods.push(f); }); });
+
+                const withFigures = foods.filter(function (f) { return NUTRITION[f.name]; });
+                const without = foods.filter(function (f) { return !NUTRITION[f.name]; });
+
+                const bySrc = {};
+                withFigures.forEach(function (f) {
+                    const s = NUTRITION[f.name].src || "?";
+                    bySrc[s] = (bySrc[s] || 0) + 1;
+                });
+
+                /* ---- the counts ---- */
+                const counts = document.getElementById("counts");
+                const rows = [[foods.length, "foods"], [withFigures.length, "with figures"],
+                              [without.length, "without"]];
+                ["lmv", "frida", "usda", "manual"].forEach(function (s) {
+                    if (bySrc[s]) rows.push([bySrc[s], "from " + s]);
+                });
+                rows.forEach(function (pair) {
+                    const d = document.createElement("div");
+                    d.className = "count";
+                    d.innerHTML = "<b>" + pair[0] + "</b><span>" + pair[1] + "</span>";
+                    counts.appendChild(d);
+                });
+
+                /* ---- what to do next ----
+
+                   Three kinds of thing go wrong, and only the first is obvious
+                   from looking at the site:
+
+                     1. foods with no figures        -> run the next audit
+                     2. alias file ahead of its generated file
+                                                     -> re-run the audit's write
+                     3. generated file ahead of nutrition-data.js
+                                                     -> rebuild
+
+                   The second is the one that bites. A re-run used to write only
+                   the newly confirmed matches, so the generated file came back
+                   smaller than the alias file it was built from, and rebuilding
+                   with it stripped figures off everything confirmed earlier. */
+                const steps = [];
+
+                function ladderStep(key, label, auditHref, auditName, buildName) {
+                    const confirmed = keysOf(aliases[key]).length;
+                    const written = keysOf(generated[key]).length;
+                    const live = bySrc[key] || 0;
+                    if (!confirmed && !written) return;
+
+                    if (written < confirmed) {
+                        steps.push({
+                            kind: "bad",
+                            what: "Re-run " + auditName + " and download " + buildName + " again.",
+                            why: confirmed + " matches are confirmed in " + label +
+                                "-aliases.json but only " + written + " are in " + buildName +
+                                ". Rebuilding with it as it stands would take the figures off the " +
+                                (confirmed - written) + " that are missing.",
+                            href: auditHref
+                        });
+                    } else if (live < written) {
+                        steps.push({
+                            kind: "info",
+                            what: "Rebuild nutrition-data.js.",
+                            why: buildName + " holds " + written + " foods but only " + live +
+                                " carry a " + key + " figure in nutrition-data.js, so the build has not " +
+                                "caught up.",
+                            href: "build-nutrition.html"
+                        });
+                    }
+                }
+
+                ladderStep("frida", "frida", "frida-audit.html", "the Danish audit", "nutrition-frida.js");
+                ladderStep("usda", "usda", "usda-audit.html", "the American audit", "nutrition-usda.js");
+
+                if (without.length) {
+                    const nextUp = keysOf(aliases.frida).length === 0
+                        ? "frida-audit.html" : "usda-audit.html";
+                    steps.push({
+                        kind: "info",
+                        what: without.length + " foods still have no figures.",
+                        why: "Run the audits in ladder order — Livsmedelsverket, then Denmark, then " +
+                            "the United States — so a food Denmark covers is not confirmed against " +
+                            "America by hand for nothing. " + shortList(without),
+                        href: nextUp
+                    });
+                }
+
+                const lmvNamed = keysOf(lmvAliases).length + keysOf(lmvAbsent).length;
+                if (lmvNamed < foods.length) {
+                    steps.push({
+                        kind: "bad",
+                        what: "Run the Swedish audit — " + (foods.length - lmvNamed) +
+                            " foods are on neither the alias list nor the absent list.",
+                        why: "Every food has to be one or the other. check-data.js fails on this too.",
+                        href: "lmv-audit.html"
+                    });
+                }
+
+                const box = document.getElementById("steps");
+                if (!steps.length) {
+                    const d = document.createElement("div");
+                    d.className = "status show good";
+                    d.textContent = "Nothing outstanding. Every confirmed match is written, every " +
+                        "generated file is built in, and every food is accounted for.";
+                    box.appendChild(d);
+                } else {
+                    steps.forEach(function (s, i) {
+                        const d = document.createElement("div");
+                        d.className = "food";
+                        d.innerHTML = '<div class="foodName"><span class="stepNum">' + (i + 1) + "</span>" +
+                            escapeHtml(s.what) + "</div>" +
+                            '<p class="note">' + escapeHtml(s.why) + "</p>" +
+                            '<p><a href="' + s.href + '">' + s.href + "</a></p>";
+                        if (s.kind === "bad") d.style.borderLeft = "3px solid var(--clay)";
+                        box.appendChild(d);
+                    });
+                }
+
+                /* ---- the ladder, with what each source actually covers ---- */
+                const ladder = document.getElementById("ladder");
+                [["Livsmedelsverket", "lmv", "the Swedish national table, matched food by food"],
+                 ["Frida", "frida", "Denmark — same shelf, names in English"],
+                 ["USDA", "usda", "SR Legacy and Foundation, figure by figure"],
+                 ["By hand", "manual", "typed in one at a time, weakest of the four"]
+                ].forEach(function (row) {
+                    const li = document.createElement("li");
+                    li.innerHTML = "<strong>" + row[0] + "</strong> — " + row[2] +
+                        " <em>(" + (bySrc[row[1]] || 0) + " foods)</em>";
+                    ladder.appendChild(li);
+                });
+
+                /* ---- every tool ---- */
+                const tools = document.getElementById("tools");
+                [["lmv-audit.html", "Swedish matches — first on the ladder"],
+                 ["frida-audit.html", "Danish matches — for what Sweden has no entry for"],
+                 ["usda-audit.html", "American matches — for what neither of those covers"],
+                 ["build-nutrition.html", "Build nutrition-data.js from an export plus the generated files"]
+                ].forEach(function (row) {
+                    const li = document.createElement("li");
+                    li.innerHTML = '<a href="' + row[0] + '">' + row[0] + "</a> — " + row[1];
+                    tools.appendChild(li);
+                });
+
+                function shortList(list) {
+                    const names = list.slice(0, 6).map(function (f) { return f.name; });
+                    return "Waiting: " + names.join(", ") +
+                        (list.length > names.length ? " and " + (list.length - names.length) + " more." : ".");
+                }
+            });
+
+            function escapeHtml(s) {
+                return String(s).replace(/[&<>"]/g, function (ch) {
+                    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch];
+                });
+            }
+        })();
+    </script>
+</body>
+
+</html>

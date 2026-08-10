@@ -374,16 +374,26 @@
                 Object.keys(parts[2]).forEach(function (k) {
                     if (k[0] !== "_") aliases[k] = parts[2][k];
                 });
-                const needing = [];
+                /* Two lists, and they are not the same. `needing` is what
+                   gets offered for confirming — foods with no figures.
+                   `allFoods` is what the generated file is built from, because
+                   a match confirmed last time still belongs in it even though
+                   the food now has figures. Building the file from `needing`
+                   was a bug that shrank thirty confirmed matches to two. */
+                const needing = [], allFoods = [];
                 CATEGORIES.forEach(function (c) {
-                    c.foods.forEach(function (f) { if (!NUTRITION[f.name]) needing.push(f); });
+                    c.foods.forEach(function (f) {
+                        allFoods.push(f);
+                        if (!NUTRITION[f.name]) needing.push(f);
+                    });
                 });
-                return { needing: needing, aliases: aliases };
+                return { needing: needing, allFoods: allFoods, aliases: aliases };
             });
 
             let records = [];
             let byName = {};
             let needing = [];
+            let allFoods = [];
             let sourceName = "";
 
             function show(el, kind, msg) {
@@ -433,7 +443,7 @@
 
             function nutritionFileText() {
                 const confirmed = Object.keys(picked).map(function (name) {
-                    const food = needing.find(function (f) { return f.name === name; });
+                    const food = allFoods.find(function (f) { return f.name === name; });
                     const record = byName[picked[name]];
                     return (food && record) ? { food: food, record: record } : null;
                 }).filter(Boolean);
@@ -684,6 +694,7 @@
                         byName = {};
                         records.forEach(function (r) { byName[r.name] = r; });
                         needing = ctx.needing;
+                        allFoods = ctx.allFoods;
 
                         /* Anything already in usda-aliases.json counts as
                            picked, so a half-finished round carries on rather
