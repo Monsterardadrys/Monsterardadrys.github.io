@@ -8,11 +8,12 @@
    Mostly Livsmedelsverket's food database, matched food by food through
    tools/lmv-aliases.json — the same confirmed matches the audit uses. A
    food appears from there only if its match was confirmed by hand. The
-   rest come from nutrition-frida.js and nutrition-manual.js, which record a
-   source per food; `src` on each line below says which.
+   rest come from nutrition-manual.js, which records a source per food;
+   `src` on each line below says which.
 
-   399 of 488 foods have figures — 371 from Livsmedelsverket, 28 from Denmark's Frida.
-   The rest have none, and the meal builder will not let them into a meal.
+   402 of 493 foods have figures — 374 from Livsmedelsverket, 28 entered by
+   hand. The rest have none, and the meal builder will not let them into a
+   meal.
 
    Built from: LivsmedelsDB_202607270043.xlsx
    ========================================================================= */
@@ -22,6 +23,7 @@ const NUTRITION = {
   "Aioli": { src: "lmv", fat: 84.8, protein: 1.7, carbs: 1.2, fiber: 0.3, sugars: 0.3, alcohol: 0, water: 11 },
   "Ajvar": { src: "lmv", fat: 3.5, protein: 1.2, carbs: 6.9, fiber: 3.2, sugars: 7.6, alcohol: 0, water: 83.4 },
   "Alcohol-free Beer": { src: "lmv", fat: 0, protein: 0.4, carbs: 3.1, fiber: 0, sugars: 0.9, alcohol: 0.17, water: 96.2 },
+  "Alfalfa Sprouts": { src: "lmv", fat: 0.7, protein: 4, carbs: 0.9, fiber: 3, sugars: 0.8, alcohol: 0, water: 91 },
   "Almond": { src: "lmv", fat: 53.2, protein: 20.7, carbs: 0.5, fiber: 18.7, sugars: 3.6, alcohol: 0, water: 3.7 },
   "Almond Flour": { src: "lmv", fat: 53.1, protein: 22.4, carbs: 7.4, fiber: 9.8, sugars: 4, alcohol: 0, water: 4.3 },
   "Almond Milk": { src: "lmv", fat: 1.3, protein: 0, carbs: 3.5, fiber: 0.2, sugars: 3.1, alcohol: 0, water: 94.5 },
@@ -217,6 +219,7 @@ const NUTRITION = {
   "Lamb": { src: "lmv", fat: 9.4, protein: 19.9, carbs: 0, fiber: 0, sugars: 0, alcohol: 0, water: 69.2 },
   "Leek": { src: "lmv", fat: 0.2, protein: 1.6, carbs: 4.1, fiber: 2.7, sugars: 4, alcohol: 0, water: 90.9 },
   "Lemon": { src: "lmv", fat: 0.7, protein: 0.9, carbs: 7.6, fiber: 4.9, sugars: 2.6, alcohol: 0, water: 85.3 },
+  "Lentil Sprouts": { src: "lmv", fat: 0.6, protein: 9, carbs: 19.1, fiber: 3, sugars: 0.8, alcohol: 0, water: 67.3 },
   "Lentils": { src: "lmv", fat: 0.6, protein: 10.6, carbs: 14.6, fiber: 9.1, sugars: 0.6, alcohol: 0, water: 63.7 },
   "Lime": { src: "lmv", fat: 0.2, protein: 0.7, carbs: 10.3, fiber: 0.5, sugars: 0.6, alcohol: 0, water: 88 },
   "Lingonberry": { src: "lmv", fat: 0.7, protein: 0.5, carbs: 10.7, fiber: 2.6, sugars: 8.1, alcohol: 0, water: 85.3 },
@@ -245,6 +248,7 @@ const NUTRITION = {
   "Mozzarella": { src: "lmv", fat: 16.6, protein: 15.6, carbs: 0.8, fiber: 0, sugars: 0.4, alcohol: 0, water: 65.5 },
   "Muesli (no added sugar)": { src: "lmv", fat: 4.5, protein: 8.2, carbs: 69.9, fiber: 8.8, sugars: 12.1, alcohol: 0, water: 7.1 },
   "Mulberry": { src: "lmv", fat: 0.4, protein: 1.2, carbs: 10.5, fiber: 2.2, sugars: 8.1, alcohol: 0, water: 85 },
+  "Mung Bean Sprouts": { src: "lmv", fat: 0.4, protein: 3, carbs: 3.2, fiber: 3, sugars: 0.8, alcohol: 0, water: 90 },
   "Mung Beans": { src: "lmv", fat: 0.7, protein: 8.6, carbs: 14.5, fiber: 6.1, sugars: 0.4, alcohol: 0, water: 69.3 },
   "Mussels": { src: "lmv", fat: 0.7, protein: 7.9, carbs: 3.1, fiber: 0, sugars: 0, alcohol: 0, water: 86 },
   "Mustard": { src: "lmv", fat: 6.8, protein: 4.5, carbs: 23.1, fiber: 0, sugars: 10.8, alcohol: 0, water: 62.6 },
