@@ -280,6 +280,47 @@
         </section>
 
         <section>
+            <h2>Who does what</h2>
+            <p class="note">You never touch the repo. Everything below happens on this device, and the
+                files come back to Claude to be committed.</p>
+
+            <h3 style="font-size:0.95rem;margin:0.8rem 0 0.3rem">You, on the phone</h3>
+            <ol>
+                <li>Open <strong>this page</strong>. It says what is outstanding and which tool is next.</li>
+                <li>Run that tool. Pick a match for each food — the score and the figures are both on
+                    screen, and the top line is often the wrong <em>form</em> of the right food.</li>
+                <li>Download the two files it offers: the <strong>aliases</strong> (what you confirmed) and
+                    the <strong>generated figures</strong>.</li>
+                <li>Open <a href="build-nutrition.html">build-nutrition.html</a>. Step 2 takes the
+                    Livsmedelsverket export; step 3 takes the generated file you just downloaded. Download
+                    <strong>nutrition-data.js</strong>.</li>
+                <li>Send Claude all three, and say which round they came from.</li>
+            </ol>
+
+            <h3 style="font-size:0.95rem;margin:0.8rem 0 0.3rem">Claude, in the repo</h3>
+            <ul>
+                <li>Commits the three files, and adds a new <code>nutrition-*.js</code> to
+                    <code>ASSETS</code> in <strong>sw.js</strong> the first time one appears — otherwise
+                    check-site calls it a stray root file.</li>
+                <li>Runs <code>check-data.js</code> and <code>check-site.js</code>, bumps the version,
+                    pushes. Those two never run on a phone.</li>
+                <li>Owns anything the pages cannot reach: <strong>foods-data.js</strong> — new foods,
+                    traits, portions — the doses, the ladder, and which derivation codes USDA figures are
+                    accepted on.</li>
+            </ul>
+
+            <p class="dropped"><strong>One commit is needed between sources.</strong> Each audit offers the
+                foods with no figures <em>as of the nutrition-data.js in the repo</em>, and these pages read
+                it from there. So finish Denmark, send it over, wait for it to land — then start the
+                American round, or it will offer you foods Denmark has already covered.
+                <code>check-data.js</code> fails on that pair rather than leaving it to be noticed.</p>
+
+            <p class="note">Reloading a tool page after a commit is enough to pick up the change: nothing
+                under <code>/tools/</code> is ever cached. Your picks live in this browser and are merged
+                with whatever is in the repo, so a half-finished round survives both a reload and a commit.</p>
+        </section>
+
+        <section>
             <h2>The ladder</h2>
             <p class="note">Which source wins where two of them have a figure for the same food. Set in
                 <strong>tools/nutrition-core.js</strong> and <strong>loadFallbacks</strong> in both
@@ -486,11 +527,17 @@
 
                 /* ---- every tool ---- */
                 const tools = document.getElementById("tools");
-                [["lmv-audit.html", "Swedish matches — first on the ladder"],
-                 ["frida-audit.html", "Danish matches — for what Sweden has no entry for"],
-                 ["usda-audit.html", "American matches — for what neither of those covers"],
-                 ["build-nutrition.html", "Build nutrition-data.js from an export. The generated files come " +
-                     "from the repo unless you add them on the page"]
+                [["lmv-audit.html", "Swedish matches, first on the ladder. Gives you " +
+                     "<em>lmv-aliases.json</em> and <em>lmv-absent.json</em> — every food has to be in one " +
+                     "or the other. Figures come from the export itself, so there is no generated file."],
+                 ["frida-audit.html", "Danish matches, for what Sweden has no entry for. Gives you " +
+                     "<em>frida-aliases.json</em> and <em>nutrition-frida.js</em>."],
+                 ["usda-audit.html", "American matches, for what neither of those covers. Gives you " +
+                     "<em>usda-aliases.json</em> and <em>nutrition-usda.js</em>. Reads SR Legacy and " +
+                     "Foundation; FNDDS is refused."],
+                 ["build-nutrition.html", "Turns the export into <em>nutrition-data.js</em>. The generated " +
+                     "files come from the repo unless you add them in step 3 — add them to build straight " +
+                     "from a round you have just finished."]
                 ].forEach(function (row) {
                     const li = document.createElement("li");
                     li.innerHTML = '<a href="' + row[0] + '">' + row[0] + "</a> — " + row[1];

@@ -55,6 +55,13 @@ const DOSE_EXCEPTIONS = require("./lmv-core.js").DELIBERATE;
 /* Denmark's confirmed matches, if a round has been run. Read here rather than
    where the rule sits, because the madeUp check needs it too — a recipe can
    now be applied to figures from either table. */
+const usdaAliasPath = path.join(__dirname, "usda-aliases.json");
+const usdaAliases = {};
+if (fs.existsSync(usdaAliasPath)) {
+  const raw = JSON.parse(fs.readFileSync(usdaAliasPath, "utf8"));
+  Object.keys(raw).forEach(function (k) { if (k[0] !== "_") usdaAliases[k] = raw[k]; });
+}
+
 const fridaAliasPath = path.join(__dirname, "frida-aliases.json");
 const fridaAliases = {};
 if (fs.existsSync(fridaAliasPath)) {
@@ -364,6 +371,8 @@ const pendingBuild = entries(aliases).filter(function (name) {
   return byName[name] && !NUTRITION[name];
 }).concat(entries(fridaAliases).filter(function (name) {
   return byName[name] && !NUTRITION[name];
+})).concat(entries(usdaAliases).filter(function (name) {
+  return byName[name] && !NUTRITION[name];
 }));
 
 if (pendingBuild.length) {
@@ -403,6 +412,28 @@ foods.forEach(function (food) {
         food.lmv + "\" — Frida is only for the foods with no Swedish entry");
     }
   });
+
+/* USDA is third on the ladder and is only ever asked about foods neither of
+   the two above it covers. A confirmed American match for a food that already
+   has a Swedish or a Danish one is dead weight — and it is the shape the wrong
+   audit order produces, so it is worth failing on rather than tidying later.
+
+   This is the same rule Frida carries one rung up. It exists because the audit
+   pages can only offer what had no figures at the last build: run them out of
+   order and a food Denmark covers gets confirmed against America instead. */
+entries(usdaAliases).forEach(function (name) {
+  const food = byName[name];
+  if (!food) {
+    faults.push("usda-aliases.json confirms \"" + name + "\", which is not a food");
+  } else if (food.lmv) {
+    faults.push(name + " has an American match but already carries Livsmedelsverket's \"" +
+      food.lmv + "\" — USDA is only for the foods no table above it has");
+  } else if (fridaAliases[name]) {
+    faults.push(name + " has both a Danish and an American match — Denmark is above " +
+      "America on the ladder, so the American one is dead weight. Drop it from " +
+      "usda-aliases.json.");
+  }
+});
 
 const fodmapFoods = foods.filter(carriesFodmap);
 const withServe = fodmapFoods.filter(function (f) { return FODMAP_SERVES[f.name]; });
