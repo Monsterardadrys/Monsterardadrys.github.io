@@ -354,6 +354,43 @@
         return { confirmed: confirmed, toConfirm: toConfirm, unmatched: unmatched };
     }
 
+    /* Every confirmed pair, regardless of whether the food currently has
+       figures — which is not the same set proposeMatches walks.
+
+       proposeMatches only offers foods with no figures, because there is no
+       point asking a human to confirm a match for a food already covered.
+       Building the generated file from that set was a bug with teeth: on a
+       second run the foods confirmed the first time already had figures, so
+       they were never offered, never landed in `confirmed`, and the rewritten
+       file held only the new ones. Thirty confirmed matches came out as a
+       two-food file, and rebuilding with it would have taken the figures off
+       the other twenty-eight.
+
+       The alias file is the record of what has been confirmed. The generated
+       file is that record with figures attached, so it is built from the
+       aliases and from the whole food list. A food an earlier source now
+       covers is harmless here: the ladder in nutrition-core.js still puts that
+       source first. */
+    function confirmedFrom(allFoods, records, aliases) {
+        const byFood = {};
+        allFoods.forEach(function (f) { byFood[f.name] = f; });
+        const byRecord = {};
+        records.forEach(function (r) { if (byRecord[r.name] === undefined) byRecord[r.name] = r; });
+
+        const confirmed = [], missing = [];
+        Object.keys(aliases || {}).forEach(function (name) {
+            const food = byFood[name];
+            const record = byRecord[aliases[name]];
+            if (food && record) confirmed.push({ food: food, record: record });
+            else missing.push({
+                name: name,
+                why: !food ? "no food of that name any more"
+                    : "\"" + aliases[name] + "\" is not in this file"
+            });
+        });
+        return { confirmed: confirmed, missing: missing };
+    }
+
     /* The confirmed matches as a nutrition-manual.js-shaped object, the same
        slot Frida arrives in, so the builder needs no change.
 
@@ -422,6 +459,7 @@
         recordsFromJson: recordsFromJson,
         fromText: fromText,
         proposeMatches: proposeMatches,
+        confirmedFrom: confirmedFrom,
         toManualEntries: toManualEntries
     };
 

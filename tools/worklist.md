@@ -5,8 +5,8 @@
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
-Audits: `tools/lmv-audit.html` (Sweden), `tools/frida-audit.html` (Denmark),
-`tools/usda-audit.html` (United States) — all three run on a phone.
+Start at **`tools/index.html`** — the workbench. It reads the files and says
+what is outstanding and in what order. All the tools run on a phone.
 
 ## Done
 
@@ -326,6 +326,49 @@ Cherries entry above it is *Sötkörsbär*, the sweet kind. It is also what is
 actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
+
+**Re-running an audit shrank its own file, and would have cost 28 foods.**
+The Danish round came back with 30 confirmed matches in `frida-aliases.json`
+and a `nutrition-frida.js` holding **two**. Rebuilding with it would have
+stripped the figures off the other 28 — Roquefort, Skyr, every tea, Pine Nuts,
+the lot — silently, because the builder has no way to know a generated file is
+short.
+
+The cause is one list doing two jobs. `proposeMatches` walks the foods with no
+figures, which is right for deciding what to *offer* a human: there is no point
+asking about a food already covered. But the writer built the generated file
+from that same result, so on a second run the foods confirmed the first time
+already had figures, were never offered, never landed in `confirmed`, and fell
+out of the file.
+
+The alias file is the record of what has been confirmed; the generated file is
+that record with figures attached. So `confirmedFrom` now builds it from the
+aliases against the **whole** food list, in both readers and all four writers —
+two command-line tools and two pages. Checked against the real 30-alias file:
+the old path returns 2, the new one returns 30, nothing missing. A food an
+earlier source now covers is harmless in there, because the ladder in
+`nutrition-core.js` still puts that source first.
+
+**And the workbench, `tools/index.html`.** Where the data stands and what to do
+next, computed from the files rather than kept by hand — foods-data.js,
+nutrition-data.js, the three alias files and the three generated files. It
+knows three things go wrong and only the first is visible on the site:
+
+1. foods with no figures → run the next audit
+2. an alias file ahead of its generated file → re-run that audit's write
+3. a generated file ahead of nutrition-data.js → rebuild
+
+Number two is the one that just bit, so the page was tested by putting the real
+two-food `nutrition-frida.js` and 30-alias file in place: it says *"30 matches
+are confirmed but only 2 are in nutrition-frida.js. Rebuilding with it as it
+stands would take the figures off the 28 that are missing."* A checklist would
+have had to be told that. This works it out.
+
+**The order, written down once.** Livsmedelsverket, then Frida, then USDA, then
+by hand. It matters at audit time, not at build time: each audit offers the
+foods without figures *as of the last build*, so whichever runs first claims
+them. The build is safe either way — precedence is enforced there — so running
+out of order costs confirming work, not correctness.
 
 **The first real SR Legacy round found the gate's blind spot.** 37 foods
 confirmed, and the "short of a full set" list at the bottom of the generated

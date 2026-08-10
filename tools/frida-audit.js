@@ -38,10 +38,16 @@ if (!file) {
   process.exit(2);
 }
 
-// Every food with no figures — which is exactly the confirmed-absent list.
-const needing = [];
+/* Two lists, and they are not the same. `needing` is what gets offered for
+   confirming — foods with no figures. `allFoods` is what the generated file is
+   built from, because a match confirmed last time still belongs in it even
+   though the food now has figures. */
+const needing = [], allFoods = [];
 CATEGORIES.forEach(function (c) {
-  c.foods.forEach(function (f) { if (!NUTRITION[f.name]) needing.push(f); });
+  c.foods.forEach(function (f) {
+    allFoods.push(f);
+    if (!NUTRITION[f.name]) needing.push(f);
+  });
 });
 
 const buf = fs.readFileSync(file);
@@ -87,7 +93,12 @@ Frida.fromXlsx(ab).then(function (parsed) {
     return;
   }
 
-  const entries = Frida.toManualEntries(result.confirmed);
+  const all = Frida.confirmedFrom(allFoods, records, aliases);
+  if (all.missing.length) {
+    console.log("\nconfirmed but not written:");
+    all.missing.forEach(function (m) { console.log("  " + m.name + " — " + m.why); });
+  }
+  const entries = Frida.toManualEntries(all.confirmed);
   const names = Object.keys(entries).sort();
   const lines = [
     "/* =========================================================================",
