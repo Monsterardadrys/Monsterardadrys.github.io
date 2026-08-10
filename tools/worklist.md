@@ -330,6 +330,28 @@ actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
 
+**A phone renamed the download and the builder then refused to show it.**
+`nutrition-frida.js` arrived in the downloads folder as
+`0d4ebe24-37ce-4567-ac1e-ac34f102abbd.txt`, and step 3's
+`accept=".js,text/javascript"` hid it from the picker completely. Two ends of
+one problem, and both are fixed at the end that can actually be relied on.
+
+The download helper was asking for it: a `text/plain` blob for a `.js` file,
+an anchor that was never put in the document, and the object URL revoked on the
+very next line. All three are things a desktop forgives and a phone does not.
+It picks the type from the extension now, appends the link before clicking, and
+waits before revoking.
+
+But a phone may rename the file regardless, so the picker stopped caring.
+`accept` is deliberately wide — `.js`, `.json`, `.txt` and their types — and
+nothing is trusted from the name anyway: `symbolFrom` reads the file and takes
+it for whichever of `NUTRITION_FRIDA`, `NUTRITION_USDA` or `NUTRITION_MANUAL`
+it declares. Checked with the real filename from the phone: a file called
+`0d4ebe24-….txt` is read, reported as *"→ Frida, 28 foods"*, and builds 406.
+
+The step says so too, and so does the workbench: **the filename does not
+matter.**
+
 **"No food records found" was true, unhelpful, and partly the page's own fault.**
 The Danish workbook went into the build page's step 2, which takes
 Livsmedelsverket's export, and the answer was *"no row had a recognisable name

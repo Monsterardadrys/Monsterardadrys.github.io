@@ -188,7 +188,15 @@
             <p class="note">Add them here to build straight from a round you have just finished, without
                 committing first. Each file replaces the repo's copy of that source entirely, because a
                 generated file is meant to be the whole of it — so a short one is a warning, not a merge.</p>
-            <input type="file" id="genInput" multiple accept=".js,text/javascript">
+            <p class="note"><strong>The filename does not matter.</strong> A phone often saves these as
+                something like <code>0d4ebe24-….txt</code>. Add it anyway — each file is identified by
+                what it declares inside, and the status line below says which one it took it for.</p>
+            <!-- Deliberately wide. A phone often saves nutrition-frida.js as
+                 something like 0d4ebe24-....txt, and accept=".js" then hides it
+                 from the picker entirely. Nothing is trusted from the name
+                 anyway: the file is identified by the symbol it declares. -->
+            <input type="file" id="genInput" multiple
+                   accept=".js,.json,.txt,text/javascript,application/json,text/plain">
             <div class="status" id="genStatus"></div>
         </section>
 

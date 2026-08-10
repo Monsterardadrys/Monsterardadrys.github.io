@@ -653,13 +653,35 @@
                 refreshPicks();
             }
 
+            /* Downloading on a phone is fussier than on a desktop, and gets
+               all three of these wrong if you let it:
+
+                 - text/plain makes Android save a .js as somebody-else's .txt,
+                   so the type is picked from the extension instead;
+                 - some browsers ignore a link that was never in the document,
+                   so it is appended before the click and taken out after;
+                 - revoking the object URL on the next line can beat the
+                   download to it, so it waits.
+
+               Even so, a phone may rename the file — the picker in the builder
+               reads what is inside a file rather than trusting its name, so a
+               download that arrives as 0d4ebe24-....txt still works. */
             function download(text, filename) {
-                const blob = new Blob([text], { type: "text/plain" });
+                const type = /\.json$/i.test(filename) ? "application/json"
+                    : /\.js$/i.test(filename) ? "text/javascript"
+                    : "text/plain";
+                const url = URL.createObjectURL(new Blob([text], { type: type }));
                 const a = document.createElement("a");
-                a.href = URL.createObjectURL(blob);
+                a.href = url;
                 a.download = filename;
+                a.rel = "noopener";
+                a.style.display = "none";
+                document.body.appendChild(a);
                 a.click();
-                URL.revokeObjectURL(a.href);
+                setTimeout(function () {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 2000);
             }
 
             document.getElementById("fileInput").addEventListener("change", function (e) {
