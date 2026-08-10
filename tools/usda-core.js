@@ -81,8 +81,19 @@
        silently missing. */
     const ACCEPTED = {
         A: "analytical",
+        AR: "analytical, rounded",
         AS: "analytical, summed",
-        NC: "calculated — carbohydrate by difference, protein from nitrogen"
+        NC: "calculated — carbohydrate by difference, protein from nitrogen",
+
+        /* USDA's own words for Z are "insignificant amount or not naturally
+           occurring in a food, such as fiber in meat". That is the source
+           stating a nutrient is not there, which is a fact about the food and
+           not a number invented to fill a hole. Our rule against fabricated
+           zeros is about this project inventing them, and taking the table's
+           documented zero is the opposite of that. Without it every dried
+           herb loses its alcohol figure and can never be checked against the
+           alcohol dose at all. */
+        Z: "assumed zero by the source — not naturally present"
     };
 
     const REJECTED = {
@@ -92,12 +103,27 @@
         FLA: "estimated from the ingredient list",
         RA: "estimated from a recipe",
         NR: "copied from another nutrient",
-        Z: "assumed zero"
+
+        /* The BF family means the figure was taken from a different form of
+           the same food — raw applied to cooked, and so on. Every wrong match
+           this project has had was a form mismatch, so a figure that is itself
+           a form substitution is the last thing to let in quietly. */
+        BF: "taken from another form of the food",
+        BFNN: "taken from another form of the food",
+        BFSN: "taken from another form of the food",
+        BFZN: "taken from another form of the food"
     };
 
     function derivationOf(nutrient) {
         const d = nutrient && nutrient.foodNutrientDerivation;
-        return (d && d.code) ? String(d.code) : "";
+        return {
+            code: (d && d.code) ? String(d.code) : "",
+            /* The export explains its own codes. Keeping the description means
+               a code neither list knows is reported in USDA's words rather
+               than as "derivation BFSN", which is what a human needs to decide
+               whether it belongs above or below the line. */
+            description: (d && d.description) ? String(d.description) : ""
+        };
     }
 
     /* The figures one food offers, after the test above. Returns the values
@@ -109,7 +135,7 @@
             if (id != null && n.amount != null && byId[id] === undefined) byId[id] = n;
         });
 
-        const values = {}, dropped = {};
+        const values = {}, dropped = {}, droppedCodes = {};
         let fiberMethod = null;
 
         Object.keys(NUTRIENTS).forEach(function (key) {
@@ -117,8 +143,8 @@
             for (let i = 0; i < ids.length; i++) {
                 const n = byId[ids[i]];
                 if (!n) continue;
-                const code = derivationOf(n);
-                if (ACCEPTED[code] || code === "") {
+                const d = derivationOf(n);
+                if (ACCEPTED[d.code] || d.code === "") {
                     // An absent code means the export did not say. Foundation
                     // leaves it off only on figures it also marks analytical
                     // elsewhere, so it is taken and recorded as unstated.
@@ -126,12 +152,23 @@
                     if (key === "fiber") fiberMethod = ids[i] === 2033 ? "AOAC 2011.25" : "AOAC 991.43";
                     return;
                 }
-                dropped[key] = REJECTED[code] || ("derivation " + code);
+                /* Unknown codes are dropped, which is the safe direction, but
+                   they are dropped loudly: the code is kept so the audit can
+                   list what it did not recognise, and the reason falls back to
+                   the file's own description rather than to the bare code. */
+                dropped[key] = REJECTED[d.code] ||
+                    (d.description ? d.description.toLowerCase() : "derivation " + d.code);
+                droppedCodes[key] = d.code;
                 return;                  // do not fall through to a worse id
             }
         });
 
-        return { values: values, dropped: dropped, fiberMethod: fiberMethod };
+        return {
+            values: values,
+            dropped: dropped,
+            droppedCodes: droppedCodes,
+            fiberMethod: fiberMethod
+        };
     }
 
     /* ---- reading without holding the file -------------------------------
@@ -206,6 +243,7 @@
             category: (food.foodCategory && food.foodCategory.description) || "",
             nutrients: read.values,
             dropped: read.dropped,
+            droppedCodes: read.droppedCodes,
             fiberMethod: read.fiberMethod
         };
     }
@@ -215,12 +253,25 @@
        stream in node, and neither has to hold the file. */
     function makeReader(set) {
         const records = [];
+        const unclassified = {};
         let seen = 0, empty = 0;
 
         const feed = makeScanner(function (text) {
             seen += 1;
             const r = recordFromText(text, set);
             if (!r) return;
+
+            /* A code in neither list was dropped. That is the safe direction,
+               but a silent drop is how a food ends up with one figure and
+               nobody asks why, so every unknown code is counted and reported
+               with the export's own description of it. */
+            Object.keys(r.droppedCodes || {}).forEach(function (k) {
+                const code = r.droppedCodes[k];
+                if (!code || ACCEPTED[code] || REJECTED[code]) return;
+                if (!unclassified[code]) unclassified[code] = { count: 0, says: r.dropped[k] };
+                unclassified[code].count += 1;
+            });
+
             if (!Object.keys(r.nutrients).length) { empty += 1; return; }
             records.push(r);
         });
@@ -228,7 +279,13 @@
         return {
             push: feed,
             done: function () {
-                return { records: records, seen: seen, empty: empty, set: set || "" };
+                return {
+                    records: records,
+                    seen: seen,
+                    empty: empty,
+                    unclassified: unclassified,
+                    set: set || ""
+                };
             }
         };
     }

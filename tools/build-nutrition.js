@@ -36,9 +36,15 @@ function loadFallbacks() {
         if (!fs.existsSync(p)) return {};
         return new Function(fs.readFileSync(p, "utf8") + "; return " + symbol + ";")() || {};
     }
+    /* Later wins, so this is the ladder upside down: hand-typed figures are
+       the weakest, then USDA, then Frida. A national table read whole beats
+       figures copied by hand, and Denmark beats America because it describes
+       food off the same shelf. Livsmedelsverket beats all of them, in
+       nutrition-core.js. */
     return Object.assign(
         {},
         read("nutrition-manual.js", "NUTRITION_MANUAL"),
+        read("nutrition-usda.js", "NUTRITION_USDA"),
         read("nutrition-frida.js", "NUTRITION_FRIDA")
     );
 }

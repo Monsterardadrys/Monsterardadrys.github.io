@@ -77,6 +77,20 @@ read(file).then(function (out) {
     " kept no figure once the manufacturer-supplied ones were dropped");
   console.log(needing.length + " of ours have no figures");
 
+  /* Codes neither list knows were dropped, which is safe but arbitrary until
+     somebody looks. Reported in the export's own words so the call can be
+     made once and written into ACCEPTED or REJECTED in usda-core.js. */
+  const unknown = Object.keys(out.unclassified || {});
+  if (unknown.length) {
+    console.log("\n--- derivation codes neither list knows (dropped for now) ---");
+    unknown.sort(function (a, b) { return out.unclassified[b].count - out.unclassified[a].count; })
+      .forEach(function (code) {
+        console.log("  " + code + " (" + out.unclassified[code].count + " figures) — " +
+          out.unclassified[code].says);
+      });
+    console.log("  Decide each in ACCEPTED or REJECTED in tools/usda-core.js.");
+  }
+
   const result = USDA.proposeMatches(needing, out.records, aliases);
 
   console.log("\nconfirmed " + result.confirmed.length +

@@ -327,6 +327,52 @@ actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
 
+**The first real SR Legacy round found the gate's blind spot.** 37 foods
+confirmed, and the "short of a full set" list at the bottom of the generated
+file was full of `derivation BFSN`, `derivation BFZN`, `derivation T`,
+`derivation JA` — codes neither ACCEPTED nor REJECTED knew. Unknown codes are
+dropped, which is the safe direction, but they were dropped **silently**, and
+the result was Kimchi reduced to `{ carbs: 2.4 }` and Worcestershire sauce with
+no water figure at all. A food with one figure is worse than a food with none,
+because it looks like data.
+
+The fix was sitting in the file. Every derivation carries a `description` as
+well as a `code` — `"Manufacturer supplied(industry or trade association),
+Analytical data, incomplete documentation"` — and the reader was throwing it
+away and printing the bare code. Now an unrecognised code is reported in USDA's
+own words, and both audits list every unknown code with a count so it can be
+classified once rather than rediscovered per food.
+
+Three decisions came out of that list:
+
+- **The BF family is rejected**, and named. It means the figure was taken from
+  another form of the same food — raw applied to cooked. Every wrong match this
+  project has had was a form mismatch, so a figure that is itself a form
+  substitution is the last thing to admit quietly.
+- **`Z` is now accepted.** USDA's wording is "insignificant amount or not
+  naturally occurring in a food, such as fiber in meat" — the source stating a
+  nutrient is not there, which is a fact about the food, not a number invented
+  to fill a hole. Our rule against fabricated zeros is about *us* inventing
+  them. Without this every dried herb lost its alcohol figure and could never be
+  checked against the alcohol dose at all.
+- **`T` and `JA` stay dropped** until the descriptions are read. They are now
+  visible instead of buried.
+
+**And nutrition-usda.js was not on the ladder at all.** `loadFallbacks` in both
+builders read `nutrition-manual.js` and `nutrition-frida.js` and nothing else,
+so the generated USDA file would have been produced, downloaded, put in the root
+— and silently ignored. It is now third, in the order the ladder says: later
+wins in `Object.assign`, so the list reads manual, USDA, Frida, which is the
+ladder upside down. Livsmedelsverket still beats all three in
+`nutrition-core.js`.
+
+**Order matters, and only at audit time.** Each audit offers the foods with no
+figures *as of the last build*, so whichever is run first claims them. Run them
+in ladder order after adding foods — Livsmedelsverket, then Frida, then USDA —
+or a food Denmark covers gets confirmed against America instead. The build is
+safe either way, because precedence is enforced there; what is lost is the work
+of confirming the wrong match by hand.
+
 **The USDA audit runs on the phone, because the file cannot come here.**
 SR Legacy is 64MB and all three sets together are 200MB — more than a chat
 window carries, and splitting it into parts was a worse idea than it looked.
