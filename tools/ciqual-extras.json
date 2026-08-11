@@ -8,8 +8,8 @@
   "Béarnaise Sauce": "Béarnaise sauce, prepacked",
   "Camembert": "Camembert cheese, from cow's milk",
   "Cheddar": "Cheddar cheese, from cow's milk",
-  "Cows Milk": "Milk, whole (average)",
-  "Cream": "Cream 30% fat, thick, refrigerated",
+  "Cows Milk (3% fat)": "Milk, whole (average)",
+  "Cream (40% fat)": "Cream 30% fat, thick, refrigerated",
   "Cream Cheese (<10% fat)": "Fresh cream cheese, petit-suisse type, plain, around 4% fat",
   "Cream Cheese (>10% fat)": "Fresh cream cheese, petit-suisse type, plain, around 10% fat",
   "Emmental": "Emmental cheese, from cow's milk",
@@ -24,7 +24,7 @@
   "Ice Cream": "Ice cream, in box",
   "Kefir": "Milk kefir",
   "Lactose-free Cheese": "Emmental cheese, from cow's milk, from Savoy",
-  "Lactose-free Cream": "Milk, semi-skimmed, UHT, reduced lactose",
+  "Lactose-free Cream (40% fat)": "Milk, semi-skimmed, UHT, reduced lactose",
   "Lactose-free Milk": "Milk, semi-skimmed, UHT, reduced lactose",
   "Lactose-free Yogurt": "Milk, semi-skimmed, UHT, reduced lactose",
   "Mascarpone": "Mascarpone cheese, from cow's milk",
@@ -37,6 +37,5 @@
   "Ricotta Cheese": "Ricotta cheese, from cow's milk",
   "Sheeps Milk": "Sheep milk, whole",
   "Tzatziki": "Tzatziki, with yogurt, prepacked",
-  "Yoghurt 3%": "Yoghurt or fermented milk, plain (average)",
-  "Yogurt": "Yoghurt or fermented milk, plain (average)"
+  "Yogurt (3% fat)": "Yoghurt or fermented milk, plain (average)"
 }

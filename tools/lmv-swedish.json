@@ -263,7 +263,7 @@
     "Sjögräs nori",
     "Alger nori"
   ],
-  "Cows Milk": [
+  "Cows Milk (3% fat)": [
     "Mjölk",
     "Komjölk"
   ],
@@ -283,9 +283,8 @@
     "Ost hårdost fett 31%",
     "Ost hårdost fett 28%"
   ],
-  "Yogurt": "Yoghurt",
-  "Yoghurt 0,5%": "Yoghurt naturell",
-  "Yoghurt 3%": "Yoghurt naturell",
+  "Yogurt (0.5% fat)": "Yoghurt naturell",
+  "Yogurt (3% fat)": "Yoghurt naturell",
   "Greek Yogurt (10% fat)": "Grekisk yoghurt",
   "Butter": "Smör",
   "Quark (~1%)": "Kvarg",
@@ -320,9 +319,9 @@
     "Kärnmjölk"
   ],
   "Lactose-free Yogurt": "Laktosfri yoghurt",
-  "Cream": "Grädde",
-  "Sour Cream": "Gräddfil",
-  "Cottage Cheese": "Keso",
+  "Cream (40% fat)": "Grädde",
+  "Sour Cream (12% fat)": "Gräddfil",
+  "Cottage Cheese (4% fat)": "Keso",
   "Ricotta Cheese": "Ricotta",
   "Cream Cheese (<10% fat)": [
     "Färskost fett 5%",
@@ -516,7 +515,6 @@
     "Socker vitt"
   ],
   "White Button Mushrooms": "Champinjon vit",
-  "White Cheese (~0% fat)": "Kvarg",
   "Split Peas": [
     "Gula ärtor kokta"
   ],

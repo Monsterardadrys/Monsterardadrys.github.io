@@ -106,11 +106,11 @@ const NUTRITION_CIQUAL_EXTRAS = {
     src: "ciqual", ref: "Cheddar cheese, from cow's milk (Ciqual 12726) [lactose below 0,01]",
     values: { lactose: 0, polyols: 0 }
   },
-  "Cows Milk": {
+  "Cows Milk (3% fat)": {
     src: "ciqual", ref: "Milk, whole (average) (Ciqual 19016)",
     values: { lactose: 4.29, polyols: 0 }
   },
-  "Cream": {
+  "Cream (40% fat)": {
     src: "ciqual", ref: "Cream 30% fat, thick, refrigerated (Ciqual 19410)",
     values: { lactose: 1.38, polyols: 0 }
   },
@@ -170,7 +170,7 @@ const NUTRITION_CIQUAL_EXTRAS = {
     src: "ciqual", ref: "Emmental cheese, from cow's milk, from Savoy (Ciqual 12099) [lactose below 0,1]",
     values: { lactose: 0, polyols: 0 }
   },
-  "Lactose-free Cream": {
+  "Lactose-free Cream (40% fat)": {
     src: "ciqual", ref: "Milk, semi-skimmed, UHT, reduced lactose (Ciqual 19060) [lactose below 0,2]",
     values: { lactose: 0, polyols: 0 }
   },
@@ -222,11 +222,10 @@ const NUTRITION_CIQUAL_EXTRAS = {
     src: "ciqual", ref: "Tzatziki, with yogurt, prepacked (Ciqual 19863) [polyols traces]",
     values: { lactose: 1.9, polyols: 0 }
   },
-  "Yoghurt 3%": {
+  "Yogurt (3% fat)": {
     src: "ciqual", ref: "Yoghurt or fermented milk, plain (average) (Ciqual 19600)",
     values: { lactose: 3.21, polyols: 0 }
   },
-  "Yogurt": {
     src: "ciqual", ref: "Yoghurt or fermented milk, plain (average) (Ciqual 19600)",
     values: { lactose: 3.21, polyols: 0 }
   }

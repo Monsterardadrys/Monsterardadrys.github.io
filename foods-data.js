@@ -1254,7 +1254,7 @@ const CATEGORIES = [
     id: "dairy",
     label: "Dairy",
     foods: [
-      { name: "Cows Milk", lmv: "Mjölk fett 3% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen_milk"] },
+      { name: "Cows Milk (3% fat)", lmv: "Mjölk fett 3% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen_milk"] },
       /* Goat's milk at 4.1% fat clears both fat lines in a 200g glass where
          cow's at 3% does not — 8.3g of fat, and 9.7 of bile load against 9.5.
          Sheep's milk is fattier still and has no figures yet. */
@@ -1264,17 +1264,15 @@ const CATEGORIES = [
       { name: "Cream Cheese (>10% fat)", lmv: "Färskost fett 33%", portion: 20, traits: ["over_10g_fat", "allergen_milk"] },
       { name: "Hard Cheese (~15% fat)", lmv: "Ost hårdost fett 17%", lmvNote: "closest entry is 17 % fat", portion: 20, traits: ["histamine", "dao_competitor", "allergen_milk"] },
       { name: "Hard Cheese (~28-35% fat)", lmv: "Ost hårdost fett 31%", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_milk"] },
-      { name: "White Cheese (~0% fat)", lmv: "Kvarg naturell fett 0,2%", portion: 30, traits: ["allergen_milk"] },
-      { name: "Yogurt", lmv: "Yoghurt naturell fett 3% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen_milk"] },
-      { name: "Yoghurt 0,5%", lmv: "Yoghurt naturell lätt fett 0,5% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen_milk"] },
-      { name: "Yoghurt 3%", lmv: "Yoghurt naturell fett 3% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen_milk"] },
+      { name: "Yogurt (0.5% fat)", lmv: "Yoghurt naturell lätt fett 0,5% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen_milk"] },
+      { name: "Yogurt (3% fat)", lmv: "Yoghurt naturell fett 3% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen_milk"] },
       { name: "Greek Yogurt (10% fat)", lmv: "Yoghurt naturell fett 10%", lmvNote: "entry measures 8.3 g fat, below the 10 g threshold", portion: 200, traits: ["over_10g_fat", "bile_stimulant", "over_3g_lactose", "fodmaps", "allergen_milk"] },
       { name: "Butter", lmv: "Smör fett 80%", portion: 10, traits: ["over_10g_fat", "allergen_milk"] },
-      { name: "Cream", lmv: "Vispgrädde fett 40%", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_milk"] },
+      { name: "Cream (40% fat)", lmv: "Vispgrädde fett 40%", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_milk"] },
       { name: "Quark (~1%)", lmv: "Kvarg färskost fett 1%", portion: 200, traits: ["fodmaps", "protein", "over_3g_lactose", "allergen_milk"] },
       { name: "Quark (~10%)", lmv: "Kvarg färskost fett 10%", portion: 200, traits: ["fodmaps", "over_10g_fat", "bile_stimulant", "protein", "over_3g_lactose", "allergen_milk"] },
-      { name: "Cottage Cheese", lmv: "Färskost cottage cheese naturell fett 4%", portion: 100, traits: ["allergen_milk"] },
-      { name: "Sour Cream", lmv: "Gräddfil fett 12%", portion: 25, traits: ["allergen_milk"] },
+      { name: "Cottage Cheese (4% fat)", lmv: "Färskost cottage cheese naturell fett 4%", portion: 100, traits: ["allergen_milk"] },
+      { name: "Sour Cream (12% fat)", lmv: "Gräddfil fett 12%", portion: 25, traits: ["allergen_milk"] },
       { name: "Ricotta Cheese", lmv: "Färskost ricotta fett ca 10%", portion: 60, traits: ["over_10g_fat", "allergen_milk"] },
       { name: "Mascarpone", lmv: "Färskost fett 33%", portion: 20, traits: ["over_10g_fat", "allergen_milk"] },
       { name: "Parmesan", lmv: "Ost hårdost parmesan fett 30% typ Parmiggiano Reggiano", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_milk"] },
@@ -1312,11 +1310,11 @@ const CATEGORIES = [
       { name: "Lactose-free Milk", lmv: "Mjölk fett 3% berikad", lmvNote: "ordinary milk — the lactose-free version is not listed", portion: 200, traits: ["allergen_milk"] },
       { name: "Lactose-free Yogurt", lmv: "Yoghurt naturell lätt laktosfri fett ca 0,4% berikad", portion: 200, traits: ["allergen_milk"] },
       { name: "Filmjolk", lmv: "Filmjölk fett 3% berikad", portion: 200, traits: ["over_3g_lactose", "fodmaps", "allergen_milk"] },
-      { name: "Creme Fraiche", lmv: "Crème fraiche fett 34%", portion: 25, traits: ["over_10g_fat", "allergen_milk"] },
+      { name: "Creme Fraiche (34% fat)", lmv: "Crème fraiche fett 34%", portion: 25, traits: ["over_10g_fat", "allergen_milk"] },
       { name: "Brie", lmv: "Vitmögelost brie fett ca 38%", lmvNote: "the 38% fat grade — brie is sold from about 30% to 60%", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_milk"] },
       { name: "Emmental", lmv: "Ost hårdost fett 31%", lmvNote: "generic hard cheese entry", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_milk"] },
       { name: "Lactose-free Cheese", lmv: "Ost hårdost fett 31%", lmvNote: "ordinary hard cheese — the lactose-free version is not listed", portion: 20, traits: ["over_10g_fat", "allergen_milk"] },
-      { name: "Lactose-free Cream", lmv: "Vispgrädde fett 40%", lmvNote: "ordinary cream — the lactose-free version is not listed", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_milk"] }
+      { name: "Lactose-free Cream (40% fat)", lmv: "Vispgrädde fett 40%", lmvNote: "ordinary cream — the lactose-free version is not listed", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_milk"] }
     ]
   },
   {

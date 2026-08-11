@@ -111,7 +111,7 @@ const FODMAP_SERVES = {
   "Soybeans":             { low: 0,   src: "monash" },
 
   /* ---- Dairy ---- */
-  "Cows Milk":            { low: 0,   note: "lactose; the lactose-free version is unrestricted", src: "monash" },
+  "Cows Milk (3% fat)":            { low: 0,   note: "lactose; the lactose-free version is unrestricted", src: "monash" },
   "Kefir":                { low: 0,   src: "monash" },
   "Ice Cream":            { low: 0,   src: "monash" },
   "Milk chocolate":       { low: 20,  note: "four squares", src: "monash" },

@@ -1,7 +1,7 @@
 # Worklist
 
-492 foods · 43 traits · 377 matched to Livsmedelsverket, 30 to Denmark's Frida,
-9 to France's Ciqual, 36 to USDA's SR Legacy. 449 carry nutrient figures; 43 do not.
+490 foods · 43 traits · 375 matched to Livsmedelsverket, 30 to Denmark's Frida,
+9 to France's Ciqual, 36 to USDA's SR Legacy. 447 carry nutrient figures; 43 do not.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
@@ -13,7 +13,7 @@ a long gap; this file is the long version behind it.
 
 ## Done
 
-**Livsmedelsverket audit** — 377 of 492 foods checked against the Swedish Food
+**Livsmedelsverket audit** — 375 of 490 foods checked against the Swedish Food
 Agency database, 115 confirmed absent, none unmatched. Each verified food
 carries its entry name in `lmv`, and departures carry an `lmvNote`; both show on
 `sources.html`.
@@ -508,6 +508,48 @@ The drift rule is now `written + refused < confirmed`, and a pick the repo has
 declined stops being reported as outstanding. Checked with the real 43 picks in
 a browser against the repo as it stands: no alarms, and the only thing left to
 say is that 49 foods still have no figures.
+
+**An English dairy name does not name one product.** *Cream* is anything from
+18% to 48% depending on which country's shelf it came off; *sour cream* is 20%
+in America and 12% in Sweden; *crème fraîche* is 34% unless it is the *légère*
+at 15%. The figures behind those names are one specific product each, and the
+name was not saying which. Eight now do: **Creme Fraiche (34% fat)**, **Sour
+Cream (12% fat)**, **Cream (40% fat)**, **Lactose-free Cream (40% fat)**, **Cows
+Milk (3% fat)**, **Cottage Cheese (4% fat)**, and the two plain yoghurts.
+
+The number in the name is the **shelf** figure — the one on the tub — not the
+measured one, which is what makes it useful when you are standing in front of
+the tub. Gräddfil is sold as 12% and analyses at 11.5.
+
+Not every food gets one. Butter is 80% everywhere, parmesan is parmesan, and a
+suffix that distinguishes nothing is noise on the list. The rule is whether the
+same English word buys materially different things in different countries.
+
+The landing page's demo strips the parenthesis for display — one of each food
+there, so the fat level is answering a question nobody asked.
+
+**Two more of the same duplicate as Sour Cream.** `Yogurt` and `Yoghurt 3%` were
+the same Livsmedelsverket entry, the same portion and the same three traits —
+one product under two names, and the bare one was also the only food spelling it
+the Swedish way while `Greek Yogurt`, `Flavored Yogurt` and `Lactose-free
+Yogurt` did not. Now `Yogurt (0.5% fat)` and `Yogurt (3% fat)`, and the bare one
+is gone.
+
+**And `White Cheese (~0% fat)` was a third quark.** It matched *Kvarg naturell
+fett 0,2%*, and the mistake goes back further than the match: `lmv-swedish.json`
+gave its search term as *Kvarg*, so the audit was asked for a quark and found
+one. Everything downstream followed — a 0.2% "fat" level no brined white cheese
+has, sitting on a 30g cheese portion where the two real quarks carry 200g. The
+French round confirmed it from the other side by offering it a feta's lactose,
+which would have reported a sixth of what a quark holds.
+
+White cheese is a brined feta- or halloumi-like cheese — beyaz peynir, sirene,
+brynza — and Livsmedelsverket's word for that shelf is *salladsost*, which
+`Feta Cheese` already holds at 22%. So the food was removed rather than
+re-pointed: what it added was a near-zero-fat variant that does not exist, and
+what it would become is a food we have. If a genuinely low-fat white cheese is
+wanted later it is a new food with its own search term, not this one repaired.
+490 foods.
 
 **The first extras round: 39 foods, and a rule the borrowing needed.** France
 lent lactose to 37 foods and polyols to two, which is most of the dairy shelf.
