@@ -1,0 +1,3 @@
+{
+  "_comment": "Confirmed Danish extras: our food name -> the Frida FoodName it lends a column to. These foods already have Livsmedelsverket figures and keep every one of them. Only lactose is taken — Frida has no polyols column — because Livsmedelsverket publishes no lactose column for any food, so no Swedish round can ever fill it. Confirmed by hand, one at a time, from tools/frida-audit.html. These win over ciqual-extras.json where both have the food."
+}

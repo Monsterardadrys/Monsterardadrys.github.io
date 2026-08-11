@@ -57,6 +57,25 @@ function loadFallbacks() {
     );
 }
 
+/* The extras rungs, in the same order and for the same reason. These carry
+   lactose and polyols for foods Livsmedelsverket already answers — the two
+   columns it does not publish for anything. Same file, separate symbol, so a
+   borrowed column can never be mistaken for a full match. */
+function loadExtras() {
+    function read(file, symbol) {
+        const p = path.join(ROOT, file);
+        if (!fs.existsSync(p)) return {};
+        const text = fs.readFileSync(p, "utf8");
+        if (!new RegExp("(^|[\\s;])(const|let|var)\\s+" + symbol + "\\s*=").test(text)) return {};
+        return new Function(text + "; return " + symbol + ";")() || {};
+    }
+    return Object.assign(
+        {},
+        read("nutrition-ciqual.js", "NUTRITION_CIQUAL_EXTRAS"),
+        read("nutrition-frida.js", "NUTRITION_FRIDA_EXTRAS")
+    );
+}
+
 function loadMap(name) {
     const p = path.join(__dirname, name);
     if (!fs.existsSync(p)) return {};
@@ -85,7 +104,8 @@ function main() {
     load.then(function (lmv) {
         const result = LMV.runAudit(ours, lmv, aliases, swedish, absent);
         const manual = loadFallbacks();
-        const built = NutritionCore.build(result, ours.length, path.basename(file), manual);
+        const built = NutritionCore.build(
+            result, ours.length, path.basename(file), manual, loadExtras());
 
         fs.writeFileSync(OUT, built.text, "utf8");
 
@@ -93,6 +113,9 @@ function main() {
         console.log("Wrote " + built.rows.length + " of " + ours.length + " foods to nutrition-data.js" +
             " (" + built.manualUsed + " from below Livsmedelsverket on the ladder)");
         console.log("No Livsmedelsverket entry: " + built.skipped);
+        if (built.borrowed.length) {
+            console.log("Borrowed columns (lactose and polyols only): " + built.borrowed.length);
+        }
         if (built.unmatched.length) {
             console.log("Unmatched (no figures, and not on the absent list): " + built.unmatched.length);
             built.unmatched.forEach(function (n) { console.log("  " + n); });

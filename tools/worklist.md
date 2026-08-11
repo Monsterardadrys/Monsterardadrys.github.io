@@ -509,6 +509,42 @@ declined stops being reported as outstanding. Checked with the real 43 picks in
 a browser against the repo as it stands: no alarms, and the only thing left to
 say is that 49 foods still have no figures.
 
+**Lactose and polyols can be borrowed a column at a time, and nothing else
+can.** Everywhere else on the ladder a source answers for a food or it does
+not, and Livsmedelsverket wins where both have a figure. These two are
+different in kind: Livsmedelsverket publishes neither for any food, so there is
+no Swedish figure to override and no Swedish round that could ever produce one.
+51 foods with `allergen_milk` had Swedish figures and no lactose figure, so
+their lactose line is checked against total sugars — which is why lactose-free
+milk still reads as full of it — and 35 foods tagged `polyols` have never had a
+figure behind the tag.
+
+So an **extras match**: `tools/frida-extras.json` and `tools/ciqual-extras.json`,
+confirmed by hand one food at a time exactly like a full match, but made *for* a
+food a table above already covers. It lends lactose and polyols and nothing
+else. The backbone stays wholly Swedish, and each borrowed number is marked
+`borrowed: { lactose: "ciqual" }` on its own line so a reader can see it is not
+the row's own source.
+
+The backbone rule deliberately does not apply here. It exists to keep a food
+with a hole in the middle of it out of meals; an extras match adds no food to
+any meal and no weight to any denominator, it adds one number to a food that is
+already whole. A French record with a lactose figure and no water is useless as
+a food and perfectly good as a lactose figure.
+
+The ladder rules in `check-data.js` run backwards for extras, and that is the
+point: a food with *no* figures cannot take one — it would arrive carrying
+lactose and nothing else, which is exactly the partial entry the backbone keeps
+out — and a food cannot hold both a full match and an extras match from the same
+table, because the full match already brings every column that table has. Which
+columns may be borrowed is written down in three places, so that is checked too.
+All five rules verified by planting them.
+
+Frida lends lactose only; it has no polyols column. Ciqual lends both. Both
+audit pages now offer these foods at the bottom of the list behind their own
+heading, with their own download, and say plainly that skipping them changes
+nothing that works today.
+
 **A declined food came back, because the browser outlived the decision.** The
 next USDA export carried 38 foods instead of 36: Brown Gravy and Instant Ramen,
 declined in v1.53 and written up with reasons, were back — and `check-data.js`
@@ -522,6 +558,20 @@ one place that could act on it. Both audit pages now fetch their declined list
 alongside the alias file, drop any pick the repo has turned down, save the
 result, and say which ones they dropped and where the reason is written. A
 decision made in the repo now survives contact with a browser that disagrees.
+
+**And the workbench had the same blind spot, twice over.** It read the browser's
+picks against the alias files and called anything missing outstanding work. Two
+things are missing from an alias file without being unfinished. A *refused*
+food: the match was right and the figures too thin. And a *superseded* one:
+Teriyaki Sauce was an American match until France produced a complete record for
+it, so the American alias was dropped — correctly — while the pick stayed in the
+browser that made it, where it read as a whole round gone missing. Both are
+settled now, alongside declined.
+
+Superseded and extras look identical from there — a pick for a food that already
+has figures — so they are told apart by whether a column is left to lend. If
+there is one, the pick is real work waiting for its file, and the page says
+which file.
 
 The same round found `check-data.js` reporting the five *refused* foods as
 "matched but have no figures yet — rebuild nutrition-data.js". No rebuild will

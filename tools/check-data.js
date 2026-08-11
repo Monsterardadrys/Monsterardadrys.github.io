@@ -99,6 +99,20 @@ fs.readdirSync(root).filter(function (f) {
   });
 });
 
+const ciqualExtrasPath = path.join(__dirname, "ciqual-extras.json");
+const ciqualExtras = {};
+if (fs.existsSync(ciqualExtrasPath)) {
+  const raw = JSON.parse(fs.readFileSync(ciqualExtrasPath, "utf8"));
+  Object.keys(raw).forEach(function (k) { if (k[0] !== "_") ciqualExtras[k] = raw[k]; });
+}
+
+const fridaExtrasPath = path.join(__dirname, "frida-extras.json");
+const fridaExtras = {};
+if (fs.existsSync(fridaExtrasPath)) {
+  const raw = JSON.parse(fs.readFileSync(fridaExtrasPath, "utf8"));
+  Object.keys(raw).forEach(function (k) { if (k[0] !== "_") fridaExtras[k] = raw[k]; });
+}
+
 const fridaAliasPath = path.join(__dirname, "frida-aliases.json");
 const fridaAliases = {};
 if (fs.existsSync(fridaAliasPath)) {
@@ -520,6 +534,75 @@ entries(ciqualDeclined).forEach(function (name) {
   } else if (ciqualAliases[name]) {
     faults.push(name + " is in both ciqual-aliases.json and ciqual-declined.json — " +
       "a match is either confirmed or declined, not both");
+  }
+});
+
+/* Extras are the one place the ladder rules above are deliberately inverted:
+   an extras match is only ever made FOR a food a table above already covers,
+   because it exists to lend a column that table does not publish. So the
+   checks run the other way round.
+
+   A food with no figures of its own has nothing to lend a column to — it would
+   arrive carrying lactose and nothing else, which is exactly the partial entry
+   the backbone rule exists to keep out of meals. And a food cannot hold both a
+   full match and an extras match from the same table: the full match already
+   brings every column that table has. */
+[
+  { name: "ciqual-extras.json", map: ciqualExtras, full: ciqualAliases, table: "French" },
+  { name: "frida-extras.json", map: fridaExtras, full: fridaAliases, table: "Danish" }
+].forEach(function (r) {
+  entries(r.map).forEach(function (name) {
+    if (!byName[name]) {
+      faults.push(r.name + " lends a column to \"" + name + "\", which is not a food");
+    } else if (!NUTRITION[name]) {
+      faults.push(name + " has a " + r.table + " extras match but no figures of its own. " +
+        "An extras match lends a column to a food that is already whole — for a food " +
+        "with nothing, use " + r.name.replace("extras", "aliases") + " and take the lot.");
+    } else if (r.full[name]) {
+      faults.push(name + " is in both " + r.name + " and " +
+        r.name.replace("extras", "aliases") + " — a full match already brings every " +
+        "column that table has, so the extras entry is dead weight");
+    }
+  });
+});
+
+/* Which columns may be borrowed is written down in three places — the merge in
+   nutrition-core.js and one reader per table — so it is checked rather than
+   trusted. Frida has no polyols column, so it is allowed to lend fewer; what
+   it must not do is lend something the merge would ignore. */
+(function () {
+  const allowed = require("./nutrition-core.js").BORROWABLE;
+  [
+    { name: "ciqual-core.js", keys: require("./ciqual-core.js").EXTRA_KEYS },
+    { name: "frida-core.js", keys: require("./frida-core.js").EXTRA_KEYS }
+  ].forEach(function (r) {
+    const stray = r.keys.filter(function (k) { return allowed.indexOf(k) === -1; });
+    if (stray.length) {
+      faults.push(r.name + " lends [" + stray.join(", ") + "], which nutrition-core.js " +
+        "does not borrow — the figure would be written and never read");
+    }
+  });
+})();
+
+/* Every borrowed figure in nutrition-data.js has to be one an extras match
+   could actually have produced. A `borrowed` marker on a column no table lends,
+   or on a food with no extras match, means the generated file and the confirmed
+   matches have come apart. */
+Object.keys(NUTRITION).forEach(function (name) {
+  const row = NUTRITION[name];
+  if (!row.borrowed) return;
+  Object.keys(row.borrowed).forEach(function (key) {
+    if (require("./nutrition-core.js").BORROWABLE.indexOf(key) === -1) {
+      faults.push(name + " marks " + key + " as borrowed, but only " +
+        require("./nutrition-core.js").BORROWABLE.join(" and ") + " can be");
+    }
+    if (row[key] == null) {
+      faults.push(name + " marks " + key + " as borrowed and carries no " + key + " figure");
+    }
+  });
+  if (!ciqualExtras[name] && !fridaExtras[name]) {
+    faults.push(name + " carries borrowed figures but is in neither ciqual-extras.json " +
+      "nor frida-extras.json — rebuild nutrition-data.js");
   }
 });
 

@@ -292,7 +292,11 @@
                 <li>Download the two files it offers: the <strong>aliases</strong> (what you confirmed) and
                     the <strong>generated figures</strong>. A phone often renames them on the way out —
                     <code>0d4ebe24-….txt</code> rather than <code>nutrition-frida.js</code>. That is fine;
-                    every tool identifies a file by what is inside it, not by its name.</li>
+                    every tool identifies a file by what is inside it, not by its name.
+                    <br>The Danish and French pages offer a third file, <strong>*-extras.json</strong>, but
+                    only once you have picked something under the <em>lactose and polyols</em> heading at
+                    the bottom of the list. Those foods already have Swedish figures; the extras lend the
+                    one or two columns Sweden does not publish. Nothing breaks if you skip them.</li>
                 <li>Open <a href="build-nutrition.html">build-nutrition.html</a>. Step 2 takes the
                     Livsmedelsverket export — <strong>always</strong>, it is where 378 of the figures come
                     from. Step 3 takes the generated file you just downloaded. Download
@@ -409,13 +413,26 @@
                     dose — and the gap falls on starch, because resistant starch is what the newer
                     method counts. We take 991.43 first to match Sweden and Denmark; each entry records
                     which was used.</li>
-                <li><strong>There are two ways a confirmed match does not become figures</strong>, and
+                <li><strong>Lactose and polyols are the one exception to "one source per food".</strong>
+                    Livsmedelsverket publishes neither column for anything, so no Swedish round can ever
+                    fill them — which is why the lactose line is checked against total sugars and
+                    lactose-free milk still reads as full of it. A match in
+                    <strong>frida-extras.json</strong> or <strong>ciqual-extras.json</strong> lends those
+                    two figures and <em>nothing else</em> to a food that already has Swedish figures; the
+                    backbone stays Swedish and <code>borrowed</code> on the line says which numbers are
+                    not the row's own. Extras are offered at the bottom of the Danish and French audit
+                    pages, behind their own heading, and skipping them changes nothing that works
+                    today.</li>
+                <li><strong>There are three ways a pick does not appear in an alias file</strong>, and
                     neither is unfinished work. The match can be right while the figures are too thin —
                     the tool refuses those itself and names them in <code>NUTRITION_USDA_REFUSED</code>,
                     and they stay in the alias file because the match still stands. Or the match can be
                     wrong, in which case it goes in <strong>usda-declined.json</strong> with the reason,
-                    the same way <code>lmv-absent.json</code> records "not in the database". This page
-                    counts both, so it does not report either as drift.</li>
+                    the same way <code>lmv-absent.json</code> records "not in the database". Or the food
+                    moved up a rung — Teriyaki Sauce was an American match until France produced a
+                    complete record for it, so the American alias was dropped and the pick stayed in the
+                    browser that made it. This page counts all three, so it reports none of them as
+                    drift.</li>
                 <li><strong>Generated files are never hand-edited.</strong>
                     <code>nutrition-data.js</code>, <code>nutrition-frida.js</code> and
                     <code>nutrition-usda.js</code> all come out of a tool. Edit the alias file and
@@ -531,9 +548,16 @@
                 });
             }
 
-            function unlandedFlat(picks, aliasFile) {
+            /* A pick has landed if it matches either file the page can send it
+               to. Extras go to their own file — same shape, different meaning —
+               so checking only the alias file would report every confirmed
+               extras pick as outstanding forever. */
+            function unlandedFlat(picks, aliasFile, extrasFile) {
                 return Object.keys(picks).filter(function (name) {
-                    return picks[name] && aliasFile[name] !== picks[name];
+                    if (!picks[name]) return false;
+                    if (aliasFile[name] === picks[name]) return false;
+                    if (extrasFile && extrasFile[name] === picks[name]) return false;
+                    return true;
                 });
             }
 
@@ -555,7 +579,9 @@
                 json("ciqual-aliases.json"),
                 json("ciqual-declined.json"),
                 json("usda-aliases.json"),
-                json("usda-declined.json")
+                json("usda-declined.json"),
+                json("frida-extras.json"),
+                json("ciqual-extras.json")
             ]).then(function (p) {
                 const CATEGORIES = symbol(p[0], "CATEGORIES");
                 const NUTRITION = symbol(p[1], "NUTRITION");
@@ -575,6 +601,10 @@
                 const lmvAliases = p[6] || {};
                 const lmvAbsent = p[7] || {};
                 const aliases = { frida: p[8] || {}, ciqual: p[9] || {}, usda: p[11] || {} };
+                /* The extras files: a confirmed match that lends lactose and
+                   polyols to a food that already has Swedish figures, and
+                   nothing else. America lends nothing — it is below both. */
+                const extraAliases = { frida: p[13] || {}, ciqual: p[14] || {}, usda: {} };
                 /* Two kinds of "not in the generated file", and only one is a
                    problem. A match can be right while its figures are too thin
                    to import — the tool refuses those itself and lists them in
@@ -592,6 +622,22 @@
 
                 const foods = [];
                 CATEGORIES.forEach(function (c) { c.foods.forEach(function (f) { foods.push(f); }); });
+
+                const foodByName = {};
+                foods.forEach(function (f) { foodByName[f.name] = f; });
+
+                /* Whether a food still has a column worth borrowing. Sweden
+                   publishes no lactose and no polyols for anything, so a milk
+                   food with no lactose figure is checked against total sugars
+                   and a food tagged polyols has no figure behind the tag. */
+                function wantsExtra(name) {
+                    const f = foodByName[name];
+                    const n = NUTRITION[name];
+                    if (!f || !n) return false;
+                    const traits = f.traits || [];
+                    return (traits.indexOf("allergen_milk") !== -1 && n.lactose == null) ||
+                        (traits.indexOf("polyols") !== -1 && n.polyols == null);
+                }
 
                 const withFigures = foods.filter(function (f) { return NUTRITION[f.name]; });
                 const without = foods.filter(function (f) { return !NUTRITION[f.name]; });
@@ -672,17 +718,40 @@
                       names: unlandedLmv(picksFor("lmv-audit-picks"), lmvAliases, lmvAbsent) },
                     { key: "frida", label: "Danish", href: "frida-audit.html",
                       files: "frida-aliases.json and nutrition-frida.js",
-                      names: unlandedFlat(picksFor("frida-audit-picks"), aliases.frida) },
+                      names: unlandedFlat(picksFor("frida-audit-picks"), aliases.frida, extraAliases.frida) },
                     { key: "ciqual", label: "French", href: "ciqual-audit.html",
                       files: "ciqual-aliases.json and nutrition-ciqual.js",
-                      names: unlandedFlat(picksFor("ciqual-audit-picks"), aliases.ciqual) },
+                      names: unlandedFlat(picksFor("ciqual-audit-picks"), aliases.ciqual, extraAliases.ciqual) },
                     { key: "usda", label: "American", href: "usda-audit.html",
                       files: "usda-aliases.json and nutrition-usda.js",
-                      names: unlandedFlat(picksFor("usda-audit-picks"), aliases.usda) }
+                      names: unlandedFlat(picksFor("usda-audit-picks"), aliases.usda, extraAliases.usda) }
                 ].map(function (r) {
-                    // A pick the repo has already looked at and declined is not
-                    // waiting on anything, and should stop being asked about.
-                    r.names = r.names.filter(function (n) { return !declined[r.key][n]; });
+                    /* Three ways a pick can be settled without appearing in the
+                       alias file, and none of them is work left to do.
+
+                       Declined: the repo looked at the match and turned it down.
+
+                       Refused: the match was right and the figures too thin, so
+                       the tool would not import them.
+
+                       Superseded: the food moved up a rung. Teriyaki Sauce was
+                       an American match until France produced a complete record
+                       for it; the American alias was dropped, correctly, and the
+                       pick stayed in the browser that made it — where it read as
+                       a whole round gone missing. A pick for a food some other
+                       source now answers is finished, whoever answered it.
+
+                       An extras pick looks exactly like a superseded one — a
+                       food with figures from a table above — so the two are told
+                       apart by whether there is a column left to lend. If there
+                       is, the pick is real work waiting for its file. */
+                    r.names = r.names.filter(function (n) {
+                        if (declined[r.key][n]) return false;
+                        if ((refused[r.key] || []).indexOf(n) !== -1) return false;
+                        const have = NUTRITION[n];
+                        if (have && have.src && have.src !== r.key && !wantsExtra(n)) return false;
+                        return true;
+                    });
                     return r;
                 }).filter(function (r) { return r.names.length; });
 
@@ -696,6 +765,11 @@
                             r.names.slice(0, 8).join(", ") +
                             (r.names.length > 8 ? " and " + (r.names.length - 8) + " more" : "") +
                             ". Open that audit, download " + r.files +
+                            (r.names.some(wantsExtra)
+                                ? " — and " + r.key + "-extras.json, since some of these are " +
+                                  "extras picks, lending lactose or polyols to a food that already " +
+                                  "has figures —"
+                                : "") +
                             ", build nutrition-data.js, and send all of it over. Finish this before " +
                             "starting a source further down the ladder, or the same food ends up " +
                             "confirmed twice.",

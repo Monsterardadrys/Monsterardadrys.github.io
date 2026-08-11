@@ -28,6 +28,12 @@ const { NUTRITION } = new Function(
 const aliasPath = path.join(__dirname, "frida-aliases.json");
 const aliasFile = fs.existsSync(aliasPath)
   ? JSON.parse(fs.readFileSync(aliasPath, "utf8")) : {};
+const extrasPath = path.join(__dirname, "frida-extras.json");
+const extrasFile = fs.existsSync(extrasPath)
+  ? JSON.parse(fs.readFileSync(extrasPath, "utf8")) : {};
+const extraAliases = {};
+Object.keys(extrasFile).forEach(function (k) { if (k[0] !== "_") extraAliases[k] = extrasFile[k]; });
+
 const aliases = {};
 Object.keys(aliasFile).forEach(function (k) { if (k[0] !== "_") aliases[k] = aliasFile[k]; });
 
@@ -130,6 +136,37 @@ Frida.fromXlsx(ab).then(function (parsed) {
   lines.push("};");
   lines.push("");
 
+
+  /* The extras: lactose only, for foods Livsmedelsverket already answers. It
+     publishes no lactose column for anything, so this is not a Danish figure
+     beating a Swedish one — there is no Swedish one, and no Swedish round that
+     could produce it. Every other figure on those foods stays Swedish, and
+     nutrition-data.js marks each borrowed number in `borrowed`. */
+  const extraAll = Frida.confirmedFrom(allFoods, records, extraAliases);
+  const extraBuilt = Frida.toExtrasEntries(extraAll.confirmed);
+  const extraNames = Object.keys(extraBuilt.entries).sort();
+
+  lines.push("/* The extras: lactose only, for foods Livsmedelsverket already");
+  lines.push("   answers. Matched through tools/frida-extras.json. */");
+  lines.push("");
+  lines.push("const NUTRITION_FRIDA_EXTRAS = {");
+  extraNames.forEach(function (name, i) {
+    const e = extraBuilt.entries[name];
+    const vals = Object.keys(e.values).map(function (k) { return k + ": " + e.values[k]; });
+    lines.push('  "' + name.replace(/"/g, '\\"') + '": {');
+    lines.push('    src: "' + e.src + '", ref: "' + e.ref.replace(/"/g, '\\"') + '",');
+    lines.push("    values: { " + vals.join(", ") + " }");
+    lines.push("  }" + (i === extraNames.length - 1 ? "" : ","));
+  });
+  lines.push("};");
+  lines.push("");
+
+  if (extraBuilt.empty.length) {
+    lines.push("/* Picked and carrying nothing to lend:");
+    extraBuilt.empty.forEach(function (row) { lines.push("     " + row.name + " — " + row.why); });
+    lines.push("*/");
+    lines.push("");
+  }
   fs.writeFileSync(path.join(root, "nutrition-frida.js"), lines.join("\n"));
   console.log("\nwrote nutrition-frida.js — " + names.length + " foods");
   console.log("Next: add \"nutrition-frida.js\" to ASSETS in sw.js the first time — until\n" +
