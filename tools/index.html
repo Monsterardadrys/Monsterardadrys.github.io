@@ -689,6 +689,45 @@
                 ladderStep("ciqual", "ciqual", "ciqual-audit.html", "the French audit", "nutrition-ciqual.js");
                 ladderStep("usda", "usda", "usda-audit.html", "the American audit", "nutrition-usda.js");
 
+                /* A generated file can be complete and still be out of date, if
+                   what a reader keeps has widened since it was written. That
+                   is not drift — the counts agree — and nothing else here
+                   would notice. It happened the moment lactose and polyols
+                   were added to KEEP: three files, all the right length, and
+                   two of them carrying neither column.
+
+                   The test is what the reader can fetch against what the file
+                   actually holds. A source with no dairy among its foods would
+                   honestly have no lactose, so this is a prompt to re-run
+                   rather than a fault. */
+                const CAN_CARRY = {
+                    frida: ["lactose"],
+                    ciqual: ["lactose", "polyols"],
+                    usda: ["lactose"]
+                };
+                Object.keys(CAN_CARRY).forEach(function (key) {
+                    const file = generated[key];
+                    if (!file) return;
+                    const rows = Object.keys(file).map(function (n) { return file[n]; })
+                        .filter(function (e) { return e && e.values; });
+                    if (!rows.length) return;
+                    const absent = CAN_CARRY[key].filter(function (col) {
+                        return !rows.some(function (e) { return e.values[col] != null; });
+                    });
+                    if (!absent.length) return;
+                    steps.push({
+                        kind: "info",
+                        what: "nutrition-" + key + ".js carries no " + absent.join(" or ") +
+                            " figure, though that source publishes " +
+                            (absent.length === 1 ? "it" : "them") + ".",
+                        why: "Most likely written before the column was kept. Re-run that audit — " +
+                            "your picks are already stored, so it is only feeding the file in again " +
+                            "and downloading — then rebuild. If the source genuinely has none for " +
+                            "these foods, nothing changes and this will keep saying so.",
+                        href: key + "-audit.html"
+                    });
+                });
+
                 if (without.length) {
                     /* Which audit is next is not something this page can work
                        out: whether Denmark has an entry for a given food is
