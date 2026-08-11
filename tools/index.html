@@ -380,6 +380,13 @@
                     dose — and the gap falls on starch, because resistant starch is what the newer
                     method counts. We take 991.43 first to match Sweden and Denmark; each entry records
                     which was used.</li>
+                <li><strong>There are two ways a confirmed match does not become figures</strong>, and
+                    neither is unfinished work. The match can be right while the figures are too thin —
+                    the tool refuses those itself and names them in <code>NUTRITION_USDA_REFUSED</code>,
+                    and they stay in the alias file because the match still stands. Or the match can be
+                    wrong, in which case it goes in <strong>usda-declined.json</strong> with the reason,
+                    the same way <code>lmv-absent.json</code> records "not in the database". This page
+                    counts both, so it does not report either as drift.</li>
                 <li><strong>Generated files are never hand-edited.</strong>
                     <code>nutrition-data.js</code>, <code>nutrition-frida.js</code> and
                     <code>nutrition-usda.js</code> all come out of a tool. Edit the alias file and
@@ -510,7 +517,8 @@
                 json("lmv-aliases.json"),
                 json("lmv-absent.json"),
                 json("frida-aliases.json"),
-                json("usda-aliases.json")
+                json("usda-aliases.json"),
+                json("usda-declined.json")
             ]).then(function (p) {
                 const CATEGORIES = symbol(p[0], "CATEGORIES");
                 const NUTRITION = symbol(p[1], "NUTRITION");
@@ -529,6 +537,19 @@
                 const lmvAliases = p[5] || {};
                 const lmvAbsent = p[6] || {};
                 const aliases = { frida: p[7] || {}, usda: p[8] || {} };
+                /* Two kinds of "not in the generated file", and only one is a
+                   problem. A match can be right while its figures are too thin
+                   to import — the tool refuses those itself and lists them in
+                   NUTRITION_USDA_REFUSED. And a match can simply be wrong, in
+                   which case it is recorded in usda-declined.json with the
+                   reason. Neither is unfinished work, and calling either one
+                   drift is how a tool cries wolf. */
+                const declined = { lmv: {}, frida: {}, usda: p[9] || {} };
+                const refused = {
+                    frida: symbol(p[2], "NUTRITION_FRIDA_REFUSED") || [],
+                    usda: symbol(p[3], "NUTRITION_USDA_REFUSED") || [],
+                    manual: []
+                };
 
                 const foods = [];
                 CATEGORIES.forEach(function (c) { c.foods.forEach(function (f) { foods.push(f); }); });
@@ -576,17 +597,19 @@
                 function ladderStep(key, label, auditHref, auditName, buildName) {
                     const confirmed = keysOf(aliases[key]).length;
                     const written = keysOf(generated[key]).length;
+                    const turnedAway = (refused[key] || []).length;
                     const live = bySrc[key] || 0;
                     if (!confirmed && !written) return;
 
-                    if (written < confirmed) {
+                    if (written + turnedAway < confirmed) {
                         steps.push({
                             kind: "bad",
                             what: "Re-run " + auditName + " and download " + buildName + " again.",
                             why: confirmed + " matches are confirmed in " + label +
-                                "-aliases.json but only " + written + " are in " + buildName +
-                                ". Rebuilding with it as it stands would take the figures off the " +
-                                (confirmed - written) + " that are missing.",
+                                "-aliases.json, " + written + " are in " + buildName +
+                                (turnedAway ? " and " + turnedAway + " were refused for thin figures" : "") +
+                                ". That leaves " + (confirmed - written - turnedAway) +
+                                " unaccounted for, and rebuilding as it stands would take their figures off.",
                             href: auditHref
                         });
                     } else if (live < written) {
@@ -614,7 +637,12 @@
                     { key: "usda", label: "American", href: "usda-audit.html",
                       files: "usda-aliases.json and nutrition-usda.js",
                       names: unlandedFlat(picksFor("usda-audit-picks"), aliases.usda) }
-                ].filter(function (r) { return r.names.length; });
+                ].map(function (r) {
+                    // A pick the repo has already looked at and declined is not
+                    // waiting on anything, and should stop being asked about.
+                    r.names = r.names.filter(function (n) { return !declined[r.key][n]; });
+                    return r;
+                }).filter(function (r) { return r.names.length; });
 
                 unlanded.forEach(function (r) {
                     steps.push({

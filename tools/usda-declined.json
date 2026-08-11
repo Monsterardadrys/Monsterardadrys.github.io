@@ -1,0 +1,6 @@
+{
+  "_comment": "Matches confirmed by hand and then declined, with the reason. The counterpart of lmv-absent.json: a decision recorded so it is not made again. A name here is NOT in usda-aliases.json — the match itself is the thing being rejected. Foods whose match is right but whose figures are too thin to import stay in the alias file; the tool refuses those on its own, see REQUIRED in usda-core.js.",
+
+  "Instant Ramen": "matched \"Soup, ramen noodle, any flavor, dry\" — 6.52g of water per 100g against our 175g served portion, so the figures are the dry block and the portion is a bowl. Needs a madeUp ratio off the packet, or a prepared entry.",
+  "Brown Gravy": "matched \"Gravy, au jus, canned\" at 0.2% fat — a thin pan juice, not a thickened gravy. Our traits assume a roux. Needs a different food."
+}

@@ -62,6 +62,13 @@ if (fs.existsSync(usdaAliasPath)) {
   Object.keys(raw).forEach(function (k) { if (k[0] !== "_") usdaAliases[k] = raw[k]; });
 }
 
+const usdaDeclinedPath = path.join(__dirname, "usda-declined.json");
+const usdaDeclined = {};
+if (fs.existsSync(usdaDeclinedPath)) {
+  const raw = JSON.parse(fs.readFileSync(usdaDeclinedPath, "utf8"));
+  Object.keys(raw).forEach(function (k) { if (k[0] !== "_") usdaDeclined[k] = raw[k]; });
+}
+
 const fridaAliasPath = path.join(__dirname, "frida-aliases.json");
 const fridaAliases = {};
 if (fs.existsSync(fridaAliasPath)) {
@@ -432,6 +439,19 @@ entries(usdaAliases).forEach(function (name) {
     faults.push(name + " has both a Danish and an American match — Denmark is above " +
       "America on the ladder, so the American one is dead weight. Drop it from " +
       "usda-aliases.json.");
+  }
+});
+
+/* A declined American match is a decision written down so it is not made
+   again — the counterpart of lmv-absent.json. It only means anything while it
+   contradicts nothing: a food cannot be both confirmed and declined, and
+   declining a name that is not a food is a leftover from a rename. */
+entries(usdaDeclined).forEach(function (name) {
+  if (!byName[name]) {
+    faults.push("usda-declined.json names \"" + name + "\", which is not a food");
+  } else if (usdaAliases[name]) {
+    faults.push(name + " is in both usda-aliases.json and usda-declined.json — " +
+      "a match is either confirmed or declined, not both");
   }
 });
 

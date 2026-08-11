@@ -330,6 +330,33 @@ actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
 
+**The workbench cried wolf about work that was already decided.** It read 36
+foods in `nutrition-usda.js` against 41 in `usda-aliases.json` and called it
+drift — the same shape as a half-written file, and exactly the fault it was
+built to catch. But five of those were refused on purpose, and two more picks
+still sitting in the browser were matches the repo had looked at and turned
+down. Neither is unfinished work, and a tool that cannot tell the difference
+between "not done yet" and "decided against" is a tool that gets ignored.
+
+Two kinds of exclusion, so two records:
+
+- **The match is right, the figures are too thin.** The tool refuses those
+  itself, and the generated file now ends with `NUTRITION_USDA_REFUSED` — the
+  names, in a form a reader can use rather than a comment for a person. They
+  stay in the alias file, because the match still stands and re-confirming it
+  next round would be work done twice.
+- **The match is wrong.** `tools/usda-declined.json`, food to reason, the
+  counterpart of `lmv-absent.json`. Instant Ramen and Brown Gravy are its first
+  two entries, each with what was wrong with it and what it would take to fix.
+  `check-data.js` holds it to the alias file: a food cannot be both confirmed
+  and declined, and declining something that is not a food is a leftover from a
+  rename.
+
+The drift rule is now `written + refused < confirmed`, and a pick the repo has
+declined stops being reported as outstanding. Checked with the real 43 picks in
+a browser against the repo as it stands: no alarms, and the only thing left to
+say is that 49 foods still have no figures.
+
 **A partial entry can be worse than no entry, and the meal builder is where
 that shows.** The doubt was about mixing in foods with thin data, and it turned
 out to be sharper than it sounded. A food with *no* figures is set aside: it
