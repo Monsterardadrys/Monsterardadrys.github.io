@@ -330,6 +330,49 @@ actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
 
+**Ciqual's polyols column is not what it looks like, and the number says so.**
+The idea was sound — borrow only the columns the sources above do not publish,
+and keep the rest from Sweden and Denmark — but it is worth for lactose and not
+for polyols, and the difference is measurable.
+
+Of Ciqual's 3,484 records, 3,036 carry a polyols figure and **only 182 are above
+zero**. The top of that list is sugar-free confectionery: hard candy 95.6g,
+breath mints 94.6, chewing gum 65.7, no-added-sugar chocolate 42.6. The column
+is measuring *added* sweeteners, which is what a French label must declare. The
+naturally occurring sorbitol and mannitol the trait is about barely register —
+mushroom 0.45, peach 0.72, apple 0.59, pear 2.02, and avocado, blackberry and
+watermelon flat zero, though Monash rates all three as polyol foods. Fresh plum
+has no figure at all.
+
+So it cannot audit the tagging, and it could not drive it either: `polyols` has
+**no dose**. It is a categorical FODMAP subtype tagged from Monash servings, and
+`check-data.js` measures only fat, protein, fibre, lactose and the bile load
+against figures. A polyol figure would be carried and never read. Of our 46
+polyol-tagged foods, exactly one — Sugar-free Chewing Gum — is the kind the
+column is authoritative about.
+
+**Lactose is the opposite case and the mechanism is worth building there.** It
+has a dose, it is checked, and Livsmedelsverket has no such column: 51 dairy
+foods are checked against total sugars today with a soft marker saying the
+figure is not really lactose, which is why lactose-free milk still reads as
+full of it. Borrowing the lactose column from Frida or Ciqual for a
+Swedish-sourced food would turn 51 soft warnings into hard checks and settle a
+reading we know is wrong.
+
+That needs three things and none of them are free: a per-key merge in
+`nutrition-core.js` so a lower source can fill a column the higher one does not
+publish without touching the seven it does; a separate record of "this food is
+that food, for the extra columns only", because `check-data.js` rightly fails
+today on a French match for a food Sweden already covers; and per-figure
+provenance, since `src` would no longer name one table. Not built — the
+evidence changed the shape of it, and the shape should be chosen rather than
+assumed.
+
+**Nothing holds a lactose or polyols figure yet in any case.** `KEEP` was
+extended after the last build, so the columns are ready and empty until
+`nutrition-data.js` is rebuilt. `nutrition-ciqual.js` has been regenerated and
+now carries both; all six read zero, and none of the six is tagged `polyols`.
+
 **The French round landed, and the answer to "rank it higher?" is no — but not
 for the reason it looked like.** Six foods: Butter Beans, Corn Tortilla,
 Harissa, Kombucha, Raclette and a complete Teriyaki Sauce, which is the one the
