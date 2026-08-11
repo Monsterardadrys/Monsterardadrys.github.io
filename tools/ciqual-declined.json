@@ -1,0 +1,3 @@
+{
+  "_comment": "French matches confirmed by hand and then declined, with the reason. The counterpart of lmv-absent.json: a decision recorded so it is not made again. A name here is NOT in ciqual-aliases.json — the match itself is what is being rejected. Foods whose match is right but whose figures are too thin stay in the alias file; the tool refuses those on its own, see REQUIRED in ciqual-core.js."
+}

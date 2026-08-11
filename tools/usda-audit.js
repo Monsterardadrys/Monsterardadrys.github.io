@@ -1,6 +1,6 @@
 /* =========================================================================
-   usda-audit.js — offer American matches for the foods neither
-   Livsmedelsverket nor Frida covers.
+   usda-audit.js — offer American matches for the foods none of
+   Livsmedelsverket, Frida or Ciqual covers.
 
        node tools/usda-audit.js <FoodData_Central_*.json>            report
        node tools/usda-audit.js <FoodData_Central_*.json> --write    write figures
@@ -149,8 +149,8 @@ read(file).then(function (out) {
     "       node tools/usda-audit.js <FoodData_Central_*.json> --write",
     "       tools/usda-audit.html   (works on a phone)",
     "",
-    "   The third source on the ladder, for the foods neither Livsmedelsverket",
-    "   nor Frida has an entry for. Matched through tools/usda-aliases.json —",
+    "   The fourth source on the ladder, for the foods none of Livsmedelsverket,",
+    "   Frida or Ciqual has an entry for. Matched through tools/usda-aliases.json —",
     "   confirmed by hand, one food at a time, the same way the other two are.",
     "   Each entry records the USDA food it came from in `ref`.",
     "",

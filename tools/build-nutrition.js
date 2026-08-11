@@ -37,14 +37,22 @@ function loadFallbacks() {
         return new Function(fs.readFileSync(p, "utf8") + "; return " + symbol + ";")() || {};
     }
     /* Later wins, so this is the ladder upside down: hand-typed figures are
-       the weakest, then USDA, then Frida. A national table read whole beats
-       figures copied by hand, and Denmark beats America because it describes
-       food off the same shelf. Livsmedelsverket beats all of them, in
-       nutrition-core.js. */
+       the weakest, then USDA, then Ciqual, then Frida.
+
+       A national table read whole beats figures copied by hand. Denmark beats
+       everyone below it because it describes food off the same shelf as
+       Sweden. France beats America because it is a European table for a
+       European diet, and because where the two overlap America is answering
+       about a different shelf — but it sits below Denmark, since Ciqual
+       carries no confidence code per figure and so cannot be tested value by
+       value the way the American set is.
+
+       Livsmedelsverket beats all four, in nutrition-core.js. */
     return Object.assign(
         {},
         read("nutrition-manual.js", "NUTRITION_MANUAL"),
         read("nutrition-usda.js", "NUTRITION_USDA"),
+        read("nutrition-ciqual.js", "NUTRITION_CIQUAL"),
         read("nutrition-frida.js", "NUTRITION_FRIDA")
     );
 }

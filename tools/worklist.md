@@ -330,6 +330,56 @@ actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
 
+**Ciqual is on the ladder, third — below Frida, above USDA.** ANSES's French
+table, 3,484 foods, English names, every figure we keep in its own column plus
+lactose and **polyols**, which nothing else has ever given us and which we tag
+a trait for.
+
+**The placement is the interesting part.** Denmark stays second because it
+describes food off the same shelf as Sweden. France goes above America because
+where the two overlap, the American set is answering about a different shelf —
+the Mediterranean and French tail is exactly what the Nordic tables do not
+carry. But France stays *below* Denmark because Ciqual publishes no confidence
+code per figure. It has to be taken on the table's standing, the way Sweden and
+Denmark are, while every American figure can be tested one at a time. Being
+checkable more closely does not make a source better; between two tables of
+equal standing, the one describing the food you actually buy wins.
+
+**Four things in a Ciqual cell are not a number**, and they do not mean the
+same: `-` is not measured, `traces` and `< 0,2` are below quantification, and
+plain numbers are stored as text with a comma. The first is left missing; the
+other two are read as zero, and the entry says which figures came that way —
+Raclette's carbohydrate and sugars both do. Reading them as missing instead
+would put the food's whole weight into the meal builder's headroom, buying a
+great deal of silence to avoid an error of a few tenths of a gram. The largest
+limits in the file are 3g per 100g and they sit on fibre in cream, cheese,
+cured meat and wine, where zero is the truth rather than an approximation.
+
+**What it is worth**, checked before building anything: 2,862 of 3,484 pass the
+backbone rule, and the finds against our 49 empty foods are Raclette, Kombucha,
+Harissa, Butter Beans, Freekeh (Ciqual calls it *Frik*), Porcini (*Cep or
+boletus*), Rice Milk, Corn Tortilla and a complete Teriyaki Sauce — which
+rescues one of the five the American reader refused.
+
+**Raclette is the one that mattered.** It had been sitting on an inference since
+Fontina: Roquefort's Danish figure of 29.5% fat gives 5.9g in a 20g portion,
+just under the dose, and Fontina and Raclette were both given that answer by
+analogy. Fontina's own figure later proved the analogy wrong by a third of a
+gram. Raclette's own figure is 27.5% — **5.50g, under**. The analogy was right
+for this one. It no longer rests on it either way.
+
+**One rule now written down twice, and checked.** `REQUIRED` — the fat, protein,
+carbohydrate and water backbone — lives in both `usda-core.js` and
+`ciqual-core.js`, so `check-data.js` compares them and fails if they drift. It
+found something immediately: `usda-core.js` had never exported `REQUIRED` at
+all. Same shape as `DOSE` moving into `lmv-core.js` — when one fact is written
+twice, write the check that makes them equal.
+
+`check-data.js` also holds the French rung to the two above it: a French match
+for a food with a Swedish entry, or with a Danish match, is dead weight and
+fails. So does an American match for a food France covers. All four rules
+checked by planting them.
+
 **The workbench cried wolf about work that was already decided.** It read 36
 foods in `nutrition-usda.js` against 41 in `usda-aliases.json` and called it
 drift — the same shape as a half-written file, and exactly the fault it was

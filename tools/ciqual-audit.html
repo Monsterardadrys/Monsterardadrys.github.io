@@ -1,25 +1,23 @@
 <!--
-    American matches — the browser version of tools/usda-audit.js.
+    French matches — the browser version of tools/ciqual-audit.js.
 
     Internal tool, not linked from the site. It runs entirely in your browser,
-    so it works on a phone and nothing is uploaded anywhere. That is not a
-    nicety here: SR Legacy is 64MB and FNDDS is bigger, which is more than a
-    chat window or an email will carry.
+    so it works on a phone and nothing is uploaded anywhere.
 
-    USDA is fourth on the ladder, behind Livsmedelsverket, Frida and Ciqual,
-    and it is offered only for the foods none of those covers.
+    Third on the ladder: below Frida, above USDA. France goes above America
+    because it is a European table for a European diet — the Mediterranean and
+    French tail is exactly what Sweden and Denmark do not carry.
 
-    Two things are different from the Danish audit, and both are about USDA
-    rather than about the page:
+    Two things to know about Ciqual, and both are in tools/ciqual-core.js:
 
-    1. The file is scanned in chunks and never held whole. JSON.parse on 64MB
-       returns an object several times that size, which a phone will not do.
+    1. It carries no confidence code per value, so unlike the American audit
+       there is no per-figure test. Ciqual is taken on the table's standing,
+       as Livsmedelsverket and Frida are. That is why it sits below Denmark.
 
-    2. Not every figure is taken. Each one records how it was arrived at, and
-       manufacturer-supplied, label-derived and recipe-estimated figures are
-       dropped — see tools/usda-core.js. A candidate shows what it kept, so a
-       food that lost its sugars can be seen to have lost them before it is
-       picked rather than after.
+    2. Four things in a cell are not a number and do not mean the same: "-" is
+       not measured, "traces" and "< 0,2" are below quantification, and plain
+       numbers are stored as text with a comma. The first is left missing; the
+       other two are read as zero, and the entry says so.
 -->
 
 <!DOCTYPE html>
@@ -28,7 +26,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>American matches — Food Intolerance Guide</title>
+    <title>French matches — Food Intolerance Guide</title>
     <link rel="icon" href="../favicon.ico" sizes="any">
 
     <style>
@@ -161,7 +159,7 @@
 
         /* One food and its three candidates. Tapping a candidate copies the
            JSON line for it, because the confirming is done by hand in
-           usda-aliases.json and typing American names on a phone is misery. */
+           ciqual-aliases.json and typing French names on a phone is misery. */
         .food {
             border-top: 1px solid var(--border);
             padding: 0.7rem 0 0.3rem;
@@ -242,21 +240,6 @@
             font-size: 0.9rem;
         }
 
-        /* SR Legacy is 64MB, so the scan takes seconds rather than being
-           instant. Without this the page looks hung on a phone. */
-        .bar {
-            height: 6px;
-            background: var(--linen);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 0.5rem 0;
-            display: none;
-        }
-
-        .bar.show { display: block; }
-        .bar i { display: block; height: 100%; width: 0; background: var(--clay); }
-
         .dropped {
             font-size: 0.8rem;
             color: #5a615c;
@@ -270,46 +253,41 @@
 </head>
 <body>
     <header>
-        <h1>American matches</h1>
-        <p>Offers USDA entries for the foods Livsmedelsverket, Frida and Ciqual have none for. Runs on your
-            device — the file never leaves it.</p>
+        <h1>French matches</h1>
+        <p>Offers Ciqual entries for the foods Livsmedelsverket and Frida have none for. Runs on your
+            device — nothing is uploaded.</p>
     </header>
 
     <main>
         <section>
-            <h2><span class="stepNum">1</span>Get the dataset</h2>
-            <p>From <a href="https://fdc.nal.usda.gov/download-datasets" target="_blank" rel="noopener">fdc.nal.usda.gov</a>,
-                as <strong>JSON</strong>. Two of the four sets are read here:</p>
-            <ul>
-                <li><strong>SR Legacy</strong> — 7,800-odd foods and the reason to be here. It is where
-                    the spices, the sauces and the dried fruit live.</li>
-                <li><strong>Foundation Foods</strong> — 363 foods, mostly raw produce that
-                    Livsmedelsverket already covers. Small and clean; little left to gain.</li>
-            </ul>
-            <p class="note"><strong>FNDDS is not read.</strong> It is survey data costed out of recipes
-                rather than measured, which is the same objection that keeps the Branded Foods set off
-                the ladder entirely. Feeding it in here will produce nothing.</p>
+            <h2><span class="stepNum">1</span>Get the table</h2>
+            <p>From <a href="https://ciqual.anses.fr/" target="_blank" rel="noopener">ciqual.anses.fr</a>,
+                the full table as Excel. Built against the 2025 English release.</p>
+            <p class="dropped"><strong>Take the English export, not the French one.</strong> Both sides
+                speaking the same language is the whole advantage this audit has over the Swedish one:
+                a candidate that disagrees about fresh or dried gets pushed down instead of being left
+                for you to catch.</p>
+            <p class="note">Ciqual gives no confidence code per figure, so there is no per-value test
+                here as there is for the American set. It is taken on the table's standing, the way
+                Sweden and Denmark are — which is why France sits below Denmark on the ladder.</p>
         </section>
 
         <section>
             <h2><span class="stepNum">2</span>Open the file here</h2>
-            <input type="file" id="fileInput" accept=".json,application/json">
-            <div class="bar" id="bar"><i></i></div>
+            <input type="file" id="fileInput"
+                   accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
             <div class="status" id="fileStatus"></div>
-            <p class="note">A 64MB file takes a few seconds and is read a piece at a time, so the page
-                stays under a phone's memory rather than loading the lot.</p>
         </section>
 
         <section id="results">
             <h2><span class="stepNum">3</span>Pick a match for each food</h2>
             <div class="counts" id="counts"></div>
-            <div id="unknown"></div>
             <p class="note">The top line is often the wrong form of the right food — that is how every
-                mismatch so far has looked, and a plain word-match on this set pairs "Dried Lychee" with
-                "Figs, dried" on the word <em>dried</em>. The figures under each candidate are there to
-                catch it: a dried food with 80g of water is not the dried one. <strong>Tap to pick</strong>,
-                tap again to unpick. If the right entry is not among the three, search for it — the box
-                reaches every food in the file.</p>
+                mismatch so far has looked, and this table is no kinder: it will offer you plain yoghurt
+                for labneh, sesame seed for halva and raw lemon for a preserved one. The figures under
+                each candidate are there to catch it: a dried food with 80g of water is not the dried
+                one. <strong>Tap to pick</strong>, tap again to unpick. If the right entry is not among
+                the three, search for it — the box reaches every food in the file.</p>
             <div id="list"></div>
             <div class="picksBar">
                 <span id="pickCount">0 picked</span> —
@@ -319,9 +297,9 @@
 
         <section id="picks">
             <h2><span class="stepNum">4</span>Take the picks away</h2>
-            <p>Everything picked above, as the whole of <strong>tools/usda-aliases.json</strong>. Download
-                it, or copy the lot in one go — no need to transcribe anything.</p>
-            <button id="downloadAliases">Download usda-aliases.json</button>
+            <p>Everything picked above, as the whole of <strong>tools/ciqual-aliases.json</strong>.
+                Download it, or copy the lot in one go.</p>
+            <button id="downloadAliases">Download ciqual-aliases.json</button>
             <button id="copyAll" class="secondary">Copy all</button>
             <div class="status" id="copyStatus"></div>
             <textarea id="aliasText" readonly></textarea>
@@ -331,21 +309,21 @@
             <button id="clearPicks" class="secondary">Clear picks</button>
 
             <h2 style="margin-top:1.2rem">And the figures</h2>
-            <p>Built from the picks directly, so there is no second pass. Put it in the project root as
-                <strong>nutrition-usda.js</strong>. Livsmedelsverket and Frida both still win wherever
-                they have a figure.</p>
-            <button id="downloadBtn">Download nutrition-usda.js</button>
+            <p>Built from the picks directly. Put it in the project root as
+                <strong>nutrition-ciqual.js</strong>. Livsmedelsverket and Frida both still win wherever
+                they have a figure; USDA now yields to this one.</p>
+            <button id="downloadBtn">Download nutrition-ciqual.js</button>
             <pre id="preview"></pre>
         </section>
     </main>
 
     <script src="lmv-core.js"></script>
-    <script src="usda-core.js"></script>
+    <script src="ciqual-core.js"></script>
     <script>
         (function () {
             "use strict";
 
-            const STORE = "usda-audit-picks";
+            const STORE = "ciqual-audit-picks";
 
             /* What has been picked, kept in this browser. The list is 87 foods
                long and it is worked through on a phone, so losing it to a
@@ -364,7 +342,7 @@
             const ready = Promise.all([
                 fetch("../foods-data.js", { cache: "no-store" }).then(function (r) { return r.text(); }),
                 fetch("../nutrition-data.js", { cache: "no-store" }).then(function (r) { return r.text(); }),
-                fetch("usda-aliases.json", { cache: "no-store" })
+                fetch("ciqual-aliases.json", { cache: "no-store" })
                     .then(function (r) { return r.ok ? r.json() : {}; })
                     .catch(function () { return {}; })
             ]).then(function (parts) {
@@ -426,9 +404,9 @@
 
             /* ---- the collected picks, as the file itself ------------------ */
 
-            const HEADER = "Confirmed American matches: our food name -> the USDA description it is. " +
+            const HEADER = "Confirmed French matches: our food name -> the Ciqual alim_nom_eng it is. " +
                 "Confirmed by hand, one at a time, the same way tools/lmv-aliases.json is. " +
-                "Only foods with no Livsmedelsverket and no Frida entry are candidates.";
+                "Third on the ladder: only foods with no Livsmedelsverket and no Frida entry are candidates.";
 
             function aliasFileText() {
                 const names = Object.keys(picked).sort();
@@ -448,26 +426,25 @@
                     return (food && record) ? { food: food, record: record } : null;
                 }).filter(Boolean);
 
-                const built = USDA.toManualEntries(confirmed);
+                const built = Ciqual.toManualEntries(confirmed);
                 const entries = built.entries;
                 const names = Object.keys(entries).sort();
                 const lines = [
                     "/* =========================================================================",
-                    "   nutrition-usda.js — per 100g figures from the United States, GENERATED",
+                    "   nutrition-ciqual.js — per 100g figures from the United States, GENERATED",
                     "",
-                    "       node tools/usda-audit.js <FoodData_Central_*.json> --write",
-                    "       tools/usda-audit.html   (works on a phone)",
+                    "       node tools/ciqual-audit.js <Table_Ciqual_*_ENG_*.xlsx> --write",
+                    "       tools/ciqual-audit.html   (works on a phone)",
                     "",
-                    "   The fourth source on the ladder, for the foods none of Livsmedelsverket,",
-                    "   Frida or Ciqual has an entry for. Matched through tools/usda-aliases.json —",
+                    "   The third source on the ladder, for the foods neither Livsmedelsverket",
+                    "   nor Frida has an entry for. Matched through tools/ciqual-aliases.json —",
                     "   confirmed by hand, one food at a time, the same way the other two are.",
-                    "   Each entry records the USDA food it came from in `ref`.",
+                    "   Each entry records the Ciqual food it came from in `ref`.",
                     "",
-                    "   Figures are taken per figure, not per food: anything a manufacturer",
-                    "   supplied, anything read off a label and anything estimated from a recipe",
-                    "   is dropped by tools/usda-core.js before it reaches here. So an entry",
-                    "   below may carry fewer fields than a Swedish or Danish one, and the",
-                    "   missing ones are missing on purpose.",
+                    "   Ciqual carries no confidence code per value, so unlike the American",
+                    "   file these figures are taken on the table's standing rather than",
+                    "   tested one at a time. Where a figure was read off \"traces\" or a",
+                    "   detection limit rather than measured, `ref` says so in brackets.",
                     "",
                     "   Livsmedelsverket and Frida both still win wherever they have a figure:",
                     "   see tools/nutrition-core.js. Generated — never hand-edit it.",
@@ -475,7 +452,7 @@
                     "   " + names.length + (names.length === 1 ? " food" : " foods") + ", from: " + sourceName,
                     "   ========================================================================= */",
                     "",
-                    "const NUTRITION_USDA = {"
+                    "const NUTRITION_CIQUAL = {"
                 ];
                 names.forEach(function (name, i) {
                     const e = entries[name];
@@ -491,7 +468,7 @@
                 /* The refusals, for a reader rather than a person. Without this
                    the workbench sees a generated file shorter than its alias
                    file and calls it drift. */
-                lines.push("const NUTRITION_USDA_REFUSED = [" +
+                lines.push("const NUTRITION_CIQUAL_REFUSED = [" +
                     built.refused.map(function (r) { return '"' + r.name.replace(/"/g, '\\"') + '"'; }).join(", ") +
                     "];");
                 lines.push("");
@@ -569,8 +546,7 @@
                 const counts = document.getElementById("counts");
                 counts.innerHTML = "";
                 [
-                    [records.length, "American foods usable"],
-                    [read.empty, "kept no figure"],
+                    [records.length, "French foods"],
                     [ourCount, "of ours need figures"],
                     [result.confirmed.length, "already in the file"],
                     [result.toConfirm.length, "to pick"],
@@ -646,26 +622,6 @@
                     paint(wrap, t.food.name);
                 });
 
-                /* Codes neither list knows were dropped. Safe, but arbitrary
-                   until somebody looks, so they are shown in USDA's own words
-                   rather than left to be noticed as a food with one figure. */
-                const unknownBox = document.getElementById("unknown");
-                unknownBox.innerHTML = "";
-                const codes = Object.keys(read.unclassified || {});
-                if (codes.length) {
-                    const p = document.createElement("p");
-                    p.className = "dropped";
-                    p.innerHTML = "<strong>Derivation codes neither list knows</strong>, dropped for now:<br>" +
-                        codes.sort(function (a, b) {
-                            return read.unclassified[b].count - read.unclassified[a].count;
-                        }).map(function (c) {
-                            return escapeHtml(c) + " (" + read.unclassified[c].count + " figures) — " +
-                                escapeHtml(read.unclassified[c].says);
-                        }).join("<br>") +
-                        "<br>Each belongs in ACCEPTED or REJECTED in tools/usda-core.js.";
-                    unknownBox.appendChild(p);
-                }
-
                 document.getElementById("results").style.display = "block";
                 refreshPicks();
             }
@@ -707,30 +663,26 @@
             document.getElementById("fileInput").addEventListener("change", function (e) {
                 const file = e.target.files[0];
                 const status = document.getElementById("fileStatus");
-                const bar = document.getElementById("bar");
-                const fill = bar.querySelector("i");
                 if (!file) return;
 
-                const mb = (file.size / 1048576).toFixed(1);
-                show(status, "info", "Reading " + file.name + " (" + mb + "MB)…");
-                bar.className = "bar show";
-                fill.style.width = "0";
+                show(status, "info", "Reading " + file.name + "…");
                 sourceName = file.name;
 
-                ready.then(function (ctx) {
-                    return USDA.fromBlob(file, function (done, total) {
-                        fill.style.width = Math.round(done / total * 100) + "%";
-                    }).then(function (read) {
+                Promise.all([ready, file.arrayBuffer()]).then(function (parts) {
+                    const ctx = parts[0];
+                    return Ciqual.fromXlsx(parts[1]).then(function (read) {
                         if (!read.records.length) {
-                            show(status, "bad", "No usable foods in that file. If it is FNDDS, that one " +
-                                "is not read — see step 1.");
-                            bar.className = "bar";
+                            show(status, "bad", "No foods in that file. Is it the Ciqual table?");
                             return;
                         }
-                        show(status, "good", read.records.length + " usable foods read from " + file.name +
-                            " (" + read.seen + " in the file, " + read.empty +
-                            " kept no figure once the manufacturer-supplied ones were dropped).");
-                        bar.className = "bar";
+                        if (read.missing.length) {
+                            show(status, "bad", "No column for " + read.missing.join(", ") +
+                                " — this looks like the French export rather than the English one.");
+                        } else {
+                            show(status, "good", read.records.length + " French foods read from " +
+                                file.name + ". " + read.softened + " cells were read as zero because " +
+                                "the table said \"traces\" or gave a limit rather than a value.");
+                        }
 
                         records = read.records;
                         byName = {};
@@ -738,7 +690,7 @@
                         needing = ctx.needing;
                         allFoods = ctx.allFoods;
 
-                        /* Anything already in usda-aliases.json counts as
+                        /* Anything already in ciqual-aliases.json counts as
                            picked, so a half-finished round carries on rather
                            than starting again. */
                         Object.keys(ctx.aliases).forEach(function (k) {
@@ -746,11 +698,10 @@
                         });
                         remember();
 
-                        const result = USDA.proposeMatches(needing, records, ctx.aliases);
+                        const result = Ciqual.proposeMatches(needing, records, ctx.aliases);
                         render(result, needing.length, read);
                     });
                 }).catch(function (err) {
-                    bar.className = "bar";
                     show(status, "bad", "Could not read that file: " + err.message);
                 });
             });
@@ -770,11 +721,11 @@
             });
 
             document.getElementById("downloadAliases").addEventListener("click", function () {
-                download(aliasFileText(), "usda-aliases.json");
+                download(aliasFileText(), "ciqual-aliases.json");
             });
 
             document.getElementById("downloadBtn").addEventListener("click", function () {
-                download(nutritionFileText(), "nutrition-usda.js");
+                download(nutritionFileText(), "nutrition-ciqual.js");
             });
 
             document.getElementById("clearPicks").addEventListener("click", function () {

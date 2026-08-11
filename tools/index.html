@@ -347,6 +347,10 @@
                     rel="noopener">frida.fooddata.dk</a>, the full dataset as Excel. Built against
                     version 6.1. Names every food in English as well as Danish, so there is no
                     translation step.</li>
+                <li><strong>Ciqual</strong> — <a href="https://ciqual.anses.fr/" target="_blank"
+                    rel="noopener">ciqual.anses.fr</a>, the full table as Excel, <strong>English</strong>
+                    export. Built against the 2025 release. 3,484 foods. Carries lactose and polyols in
+                    their own columns, which nothing else does.</li>
                 <li><strong>USDA</strong> — <a href="https://fdc.nal.usda.gov/download-datasets"
                     target="_blank" rel="noopener">fdc.nal.usda.gov</a>, as <strong>JSON</strong>.
                     <em>SR Legacy</em> (64MB, ~7,800 foods — the one worth having) and
@@ -363,6 +367,18 @@
                 <li><strong>Two sets are refused outright.</strong> USDA <em>Branded Foods</em> is
                     manufacturer label data rounded to legal tolerances. <em>FNDDS</em> is survey data
                     costed out of recipes rather than measured. Neither is read.</li>
+                <li><strong>Why France sits above America and below Denmark.</strong> Denmark stays
+                    second because it describes food off the same shelf as Sweden. France beats America
+                    because it is a European table for a European diet, and where the two overlap the
+                    American one is answering about a different shelf. But it stays below Denmark
+                    because Ciqual carries <em>no confidence code per figure</em> — it is taken on the
+                    table's standing, the way Sweden and Denmark are, and cannot be tested value by
+                    value the way the American set is.</li>
+                <li><strong>Ciqual says four things that are not numbers.</strong> <code>-</code> is not
+                    measured and is left missing. <code>traces</code> and <code>&lt; 0,2</code> are below
+                    quantification and are read as zero — left missing they would put the food's whole
+                    weight into the meal builder's headroom, which buys a lot of silence to avoid an
+                    error of a few tenths of a gram. Entries say which figures came that way.</li>
                 <li><strong>USDA figures are taken one at a time, not by food.</strong> Every figure
                     records how it was arrived at. Taken: measured, calculated by definition
                     (carbohydrate by difference, protein from nitrogen), and the table's own "not
@@ -512,11 +528,14 @@
                 text("../foods-data.js"),
                 text("../nutrition-data.js"),
                 text("../nutrition-frida.js"),
+                text("../nutrition-ciqual.js"),
                 text("../nutrition-usda.js"),
                 text("../nutrition-manual.js"),
                 json("lmv-aliases.json"),
                 json("lmv-absent.json"),
                 json("frida-aliases.json"),
+                json("ciqual-aliases.json"),
+                json("ciqual-declined.json"),
                 json("usda-aliases.json"),
                 json("usda-declined.json")
             ]).then(function (p) {
@@ -531,12 +550,13 @@
 
                 const generated = {
                     frida: symbol(p[2], "NUTRITION_FRIDA"),
-                    usda: symbol(p[3], "NUTRITION_USDA"),
-                    manual: symbol(p[4], "NUTRITION_MANUAL")
+                    ciqual: symbol(p[3], "NUTRITION_CIQUAL"),
+                    usda: symbol(p[4], "NUTRITION_USDA"),
+                    manual: symbol(p[5], "NUTRITION_MANUAL")
                 };
-                const lmvAliases = p[5] || {};
-                const lmvAbsent = p[6] || {};
-                const aliases = { frida: p[7] || {}, usda: p[8] || {} };
+                const lmvAliases = p[6] || {};
+                const lmvAbsent = p[7] || {};
+                const aliases = { frida: p[8] || {}, ciqual: p[9] || {}, usda: p[11] || {} };
                 /* Two kinds of "not in the generated file", and only one is a
                    problem. A match can be right while its figures are too thin
                    to import — the tool refuses those itself and lists them in
@@ -544,10 +564,11 @@
                    which case it is recorded in usda-declined.json with the
                    reason. Neither is unfinished work, and calling either one
                    drift is how a tool cries wolf. */
-                const declined = { lmv: {}, frida: {}, usda: p[9] || {} };
+                const declined = { lmv: {}, frida: {}, ciqual: p[10] || {}, usda: p[12] || {} };
                 const refused = {
                     frida: symbol(p[2], "NUTRITION_FRIDA_REFUSED") || [],
-                    usda: symbol(p[3], "NUTRITION_USDA_REFUSED") || [],
+                    ciqual: symbol(p[3], "NUTRITION_CIQUAL_REFUSED") || [],
+                    usda: symbol(p[4], "NUTRITION_USDA_REFUSED") || [],
                     manual: []
                 };
 
@@ -567,7 +588,7 @@
                 const counts = document.getElementById("counts");
                 const rows = [[foods.length, "foods"], [withFigures.length, "with figures"],
                               [without.length, "without"]];
-                ["lmv", "frida", "usda", "manual"].forEach(function (s) {
+                ["lmv", "frida", "ciqual", "usda", "manual"].forEach(function (s) {
                     if (bySrc[s]) rows.push([bySrc[s], "from " + s]);
                 });
                 rows.forEach(function (pair) {
@@ -634,6 +655,9 @@
                     { key: "frida", label: "Danish", href: "frida-audit.html",
                       files: "frida-aliases.json and nutrition-frida.js",
                       names: unlandedFlat(picksFor("frida-audit-picks"), aliases.frida) },
+                    { key: "ciqual", label: "French", href: "ciqual-audit.html",
+                      files: "ciqual-aliases.json and nutrition-ciqual.js",
+                      names: unlandedFlat(picksFor("ciqual-audit-picks"), aliases.ciqual) },
                     { key: "usda", label: "American", href: "usda-audit.html",
                       files: "usda-aliases.json and nutrition-usda.js",
                       names: unlandedFlat(picksFor("usda-audit-picks"), aliases.usda) }
@@ -662,6 +686,7 @@
                 });
 
                 ladderStep("frida", "frida", "frida-audit.html", "the Danish audit", "nutrition-frida.js");
+                ladderStep("ciqual", "ciqual", "ciqual-audit.html", "the French audit", "nutrition-ciqual.js");
                 ladderStep("usda", "usda", "usda-audit.html", "the American audit", "nutrition-usda.js");
 
                 if (without.length) {
@@ -676,8 +701,8 @@
                         what: without.length + " foods still have no figures.",
                         why: unlanded.length
                             ? "Land the outstanding picks above first. " + shortList(without)
-                            : "Work down the ladder: Livsmedelsverket, then Denmark, then the United " +
-                              "States, rebuilding in between. Whether a source covers a given food is " +
+                            : "Work down the ladder: Livsmedelsverket, then Denmark, then France, " +
+                              "then the United States, rebuilding in between. Whether a source covers a given food is " +
                               "only knowable with that file open, so pick up where the ladder left " +
                               "off rather than skipping ahead. " + shortList(without),
                         href: "build-nutrition.html"
@@ -719,8 +744,10 @@
                 const ladder = document.getElementById("ladder");
                 [["Livsmedelsverket", "lmv", "the Swedish national table, matched food by food"],
                  ["Frida", "frida", "Denmark — same shelf, names in English"],
-                 ["USDA", "usda", "SR Legacy and Foundation, figure by figure"],
-                 ["By hand", "manual", "typed in one at a time, weakest of the four"]
+                 ["Ciqual", "ciqual", "France — a European table for a European diet, taken on the " +
+                     "table's standing because it carries no confidence code per figure"],
+                 ["USDA", "usda", "SR Legacy and Foundation, tested figure by figure"],
+                 ["By hand", "manual", "typed in one at a time, weakest of the five"]
                 ].forEach(function (row) {
                     const li = document.createElement("li");
                     li.innerHTML = "<strong>" + row[0] + "</strong> — " + row[2] +
@@ -735,7 +762,10 @@
                      "or the other. Figures come from the export itself, so there is no generated file."],
                  ["frida-audit.html", "Danish matches, for what Sweden has no entry for. Gives you " +
                      "<em>frida-aliases.json</em> and <em>nutrition-frida.js</em>."],
-                 ["usda-audit.html", "American matches, for what neither of those covers. Gives you " +
+                 ["ciqual-audit.html", "French matches, for what Sweden and Denmark have no entry for. " +
+                     "Gives you <em>ciqual-aliases.json</em> and <em>nutrition-ciqual.js</em>. Take the " +
+                     "<strong>English</strong> export, not the French one."],
+                 ["usda-audit.html", "American matches, for what none of those covers. Gives you " +
                      "<em>usda-aliases.json</em> and <em>nutrition-usda.js</em>. Reads SR Legacy and " +
                      "Foundation; FNDDS is refused."],
                  ["build-nutrition.html", "Turns the export into <em>nutrition-data.js</em>. The generated " +
