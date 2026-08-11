@@ -1174,7 +1174,7 @@ const CATEGORIES = [
       { name: "Green Lentils", form: "cooked", lmv: "Gröna linser torkade kokta m. salt", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Mung Beans", form: "cooked", lmv: "Mungbönor torkade kokta u. salt", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
       { name: "Adzuki Beans", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
-      { name: "Butter Beans", portion: 150, traits: ["fiber", "fodmaps", "galactans"] },
+      { name: "Butter Beans", portion: 150, traits: ["fodmaps", "galactans"] },
 
       /* Sprouted legumes. Every other legume above carries galactans; these
          carry none, which is the whole reason they are worth listing. The

@@ -79,9 +79,10 @@
                 <p>Every threshold above is grams of something, so every food needs a figure to be
                     measured against. Those come from <strong>Livsmedelsverket</strong>, the Swedish national
                     food database, matched food by food and confirmed by hand — 378 of the 493 foods here.
-                    A further 30 come from <strong>Frida</strong>, the Danish national table, and 36
-                    from the American <strong>SR Legacy</strong> set, all matched the same way, which
-                    brings it to 444 with figures.</p>
+                    A further 30 come from <strong>Frida</strong>, the Danish national table, 6 from
+                    the French <strong>Ciqual</strong> table and 36 from the American
+                    <strong>SR Legacy</strong> set, all matched the same way, which brings it to 450
+                    with figures.</p>
 
                 <p>A food has to arrive with fat, protein, carbohydrate and water to be taken at all,
                     even when the rest survives. That is not tidiness: a food with no figures is set
@@ -98,6 +99,15 @@
                     <strong>Ciqual</strong>, the French table, because it is a European table for a
                     European diet and carries the Mediterranean tail none of the others do; then the
                     American SR Legacy set. Each food records which one its figure came from.</p>
+
+                <p>One column is worth singling out. Ciqual publishes INFOODS tagnames for its
+                    columns, and the one against fibre is <code>FIB-</code>: in that system the suffix
+                    names the method — <code>FIBTG</code> for gravimetric AOAC, <code>FIBTS</code> for
+                    the sum of measured components — and a bare tag means it is unspecified. So whether
+                    resistant starch is counted in a French fibre figure cannot be known from the table.
+                    Given that the two methods differ by a third of the fiber dose and that the gap falls
+                    on starch, that is the one column where France is the weakest source of the four, and
+                    another reason it sits where it does.</p>
 
                 <p>France sits above America and below Denmark for a reason worth stating. It goes above
                     America because where the two overlap, the American set is describing a different
@@ -526,7 +536,7 @@
 
     <footer>
         <p>Food composition data from Livsmedelsverket, used under CC BY 4.0.</p>
-        <p>Pre-beta v1.54 — updated 10 August 2026</p>
+        <p>Pre-beta v1.55 — updated 10 August 2026</p>
     </footer>
 
     <script src="session.js"></script>

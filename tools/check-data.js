@@ -161,8 +161,15 @@ const DOSE_TRAITS = [
   /* Gated on allergen_milk, exactly as the audit gates it: the database
      reports total sugars, and the sugar in an apple is not lactose. */
   {
-    trait: "over_3g_lactose", dose: DOSE.sugars, soft: true, requires: "allergen_milk",
-    of: function (n) { return n.sugars; }
+    /* The real lactose column where the source has one, total sugars where it
+       does not. Livsmedelsverket reports only sugars, so a Swedish dairy food
+       is still checked against a figure that counts every sugar in it — which
+       is why the marker stays soft there and why lactose-free milk reads as
+       full of lactose. Frida, Ciqual and USDA all publish lactose on its own,
+       and where they do the answer is exact and says so. */
+    trait: "over_3g_lactose", dose: DOSE.sugars, requires: "allergen_milk",
+    soft: function (n) { return n.lactose == null; },
+    of: function (n) { return n.lactose != null ? n.lactose : n.sugars; }
   },
   {
     trait: "bile_stimulant", dose: DOSE.bile, fatBased: true,
@@ -197,7 +204,9 @@ foods.forEach(function (food) {
       rule.trait + " — " + inPortion + "g in a " + food.portion + "g portion, dose " + rule.dose;
 
     if (why) warnings.push(line + "\n    deliberate — " + why);
-    else if (rule.soft) warnings.push(line + "\n    soft — the figure is total sugars, not lactose");
+    else if (typeof rule.soft === "function" ? rule.soft(n) : rule.soft) {
+      warnings.push(line + "\n    soft — the figure is total sugars, not lactose");
+    }
     else faults.push(line);
   });
 });

@@ -1,16 +1,16 @@
 /*
     usda-core.js — reading USDA's FoodData Central JSON.
 
-    Fourth on the ladder, behind Livsmedelsverket, Frida and Ciqual — France
+    Fourth on the ladder, behind Livsmedelsverket, Frida and Ciqual. France
     went above America because it is a European table for a European diet, and
     where the two overlap the American one is answering about a different
-    shelf. One reader serves
-    both sets we accept, because they share a schema: Foundation Foods
+    shelf. One reader serves both sets we accept, because they share a schema:
+    Foundation Foods
     ("FoundationFoods") and SR Legacy ("SRLegacyFoods"). FNDDS is deliberately
     not read — it is survey data costed out of recipes rather than measured,
     which is the objection that keeps Branded Foods off the ladder entirely.
 
-    WHAT IS DIFFERENT FROM THE OTHER TWO READERS, and why this file exists.
+    WHAT IS DIFFERENT FROM THE OTHER READERS, and why this file exists.
 
     1. NOT EVERY FIGURE IN SR LEGACY IS MEASURED. The method page used to call
        SR Legacy "laboratory-analysed", and that is true of much of it and
@@ -418,7 +418,8 @@
        than emitted half-built: `incomplete` lists what is missing and why, so
        the choice to accept a partial food is made by a human looking at the
        reason, not by the builder defaulting a number to zero. */
-    const KEEP = ["fat", "protein", "carbs", "fiber", "sugars", "alcohol", "water"];
+    const KEEP = ["fat", "protein", "carbs", "fiber", "sugars", "alcohol", "water",
+        "lactose"];
 
     /* The backbone. A partial entry is not merely less useful than a full one
        — it can be worse than no entry at all, and the meal builder is where

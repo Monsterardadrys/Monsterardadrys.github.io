@@ -11,7 +11,7 @@
    rest come from nutrition-manual.js, which records a source per food;
    `src` on each line below says which.
 
-   444 of 493 foods have figures — 378 from Livsmedelsverket, 66 entered by
+   450 of 493 foods have figures — 378 from Livsmedelsverket, 72 entered by
    hand. The rest have none, and the meal builder will not let them into a
    meal.
 
@@ -71,6 +71,7 @@ const NUTRITION = {
   "Buckwheat": { src: "lmv", fat: 3.6, protein: 13.5, carbs: 65.1, fiber: 5.5, sugars: 1.2, alcohol: 0, water: 12.8 },
   "Bulgur": { src: "lmv", fat: 1.2, protein: 4.3, carbs: 23.1, fiber: 4, sugars: 0.3, alcohol: 0, water: 66.8 },
   "Butter": { src: "lmv", fat: 86.3, protein: 0.6, carbs: 0, fiber: 0, sugars: 0.2, alcohol: 0, water: 16.5 },
+  "Butter Beans": { src: "ciqual", fat: 0.3, protein: 2.19, carbs: 4.45, fiber: 2.7, sugars: 2.2, alcohol: 0, water: 89.6 },
   "Buttermilk": { src: "lmv", fat: 2.8, protein: 3.3, carbs: 4.6, fiber: 0, sugars: 3.8, alcohol: 0, water: 88.6 },
   "Cabbage": { src: "lmv", fat: 0, protein: 1.2, carbs: 5.7, fiber: 2, sugars: 4.5, alcohol: 0, water: 90.6 },
   "Camembert": { src: "lmv", fat: 21.9, protein: 19.3, carbs: 1.9, fiber: 0, sugars: 0.1, alcohol: 0, water: 54 },
@@ -114,6 +115,7 @@ const NUTRITION = {
   "Coffee": { src: "lmv", fat: 0, protein: 0, carbs: 0.5, fiber: 0, sugars: 0, alcohol: 0, water: 99.4 },
   "Cola": { src: "lmv", fat: 0, protein: 0, carbs: 10.5, fiber: 0, sugars: 10.5, alcohol: 0, water: 89.5 },
   "Common Peas": { src: "lmv", fat: 0.4, protein: 5.2, carbs: 8.9, fiber: 4.4, sugars: 5, alcohol: 0, water: 80 },
+  "Corn Tortilla": { src: "ciqual", fat: 5.57, protein: 6.08, carbs: 58, fiber: 3.57, sugars: 2.37, alcohol: 0, water: 26 },
   "Cornstarch": { src: "lmv", fat: 0.7, protein: 0, carbs: 87.5, fiber: 0, sugars: 0, alcohol: 0, water: 11.8 },
   "Cottage Cheese": { src: "lmv", fat: 4.3, protein: 13.4, carbs: 1.9, fiber: 0, sugars: 1.6, alcohol: 0, water: 79.3 },
   "Couscous": { src: "lmv", fat: 0.9, protein: 4.7, carbs: 27, fiber: 3.9, sugars: 1.1, alcohol: 0, water: 62.5 },
@@ -209,6 +211,7 @@ const NUTRITION = {
   "Halloumi": { src: "lmv", fat: 21.9, protein: 22.3, carbs: 1.9, fiber: 0, sugars: 0.9, alcohol: 0, water: 48.5 },
   "Hard Cheese (~15% fat)": { src: "lmv", fat: 17.7, protein: 30.4, carbs: 1.7, fiber: 0, sugars: 0, alcohol: 0, water: 46.3 },
   "Hard Cheese (~28-35% fat)": { src: "lmv", fat: 31.2, protein: 25.2, carbs: 3.3, fiber: 0, sugars: 0, alcohol: 0, water: 37 },
+  "Harissa": { src: "ciqual", fat: 2.9, protein: 2.72, carbs: 7.3, fiber: 5.1, sugars: 6.89, alcohol: 0, water: 77.9 },
   "Hazelnut": { src: "lmv", fat: 64.6, protein: 13.2, carbs: 0.5, fiber: 16.1, sugars: 3.6, alcohol: 0, water: 3.2 },
   "Hemp Seeds": { src: "lmv", fat: 53.6, protein: 28, carbs: 2.6, fiber: 5.4, sugars: 1.4, alcohol: 0, water: 5.5 },
   "Hoisin Sauce": { src: "usda", fat: 3.39, protein: 3.31, carbs: 44.1, fiber: 2.8, alcohol: 0, water: 44.2 },
@@ -230,6 +233,7 @@ const NUTRITION = {
   "King Oyster Mushrooms": { src: "lmv", fat: 0.4, protein: 2, carbs: 2.6, fiber: 2.4, sugars: 2.6, alcohol: 0, water: 92 },
   "Kiwi": { src: "lmv", fat: 0.7, protein: 0.9, carbs: 9, fiber: 3.3, sugars: 8.7, alcohol: 0, water: 85.4 },
   "Kohlrabi": { src: "lmv", fat: 0.1, protein: 1.7, carbs: 4.4, fiber: 1.8, sugars: 2.9, alcohol: 0, water: 91 },
+  "Kombucha": { src: "ciqual", fat: 0, protein: 0.25, carbs: 1.45, fiber: 0, sugars: 1.45, alcohol: 0, water: 97.6 },
   "Lactose-free Cheese": { src: "lmv", fat: 31.2, protein: 25.2, carbs: 3.3, fiber: 0, sugars: 0, alcohol: 0, water: 37 },
   "Lactose-free Cream": { src: "lmv", fat: 40, protein: 2.1, carbs: 3, fiber: 0, sugars: 2.7, alcohol: 0, water: 54.4 },
   "Lactose-free Milk": { src: "lmv", fat: 3, protein: 3.6, carbs: 4.6, fiber: 0, sugars: 4.6, alcohol: 0, water: 88.1 },
@@ -348,6 +352,7 @@ const NUTRITION = {
   "Quark (~10%)": { src: "lmv", fat: 10, protein: 12.7, carbs: 2.9, fiber: 0, sugars: 3, alcohol: 0, water: 73.7 },
   "Quinoa": { src: "lmv", fat: 2.4, protein: 4.4, carbs: 21.7, fiber: 6.7, sugars: 0.8, alcohol: 0, water: 63.5 },
   "Quorn": { src: "lmv", fat: 3.3, protein: 13.3, carbs: 8.3, fiber: 3.3, sugars: 0.4, alcohol: 0, water: 69.6 },
+  "Raclette": { src: "ciqual", fat: 27.5, protein: 23.4, carbs: 0, fiber: 0, sugars: 0, alcohol: 0, water: 44.7 },
   "Radish": { src: "lmv", fat: 0.4, protein: 0.7, carbs: 0.7, fiber: 1.1, sugars: 1.4, alcohol: 0, water: 96.5 },
   "Raisins": { src: "lmv", fat: 0.5, protein: 1.9, carbs: 64.4, fiber: 6.1, sugars: 60, alcohol: 0, water: 22.6 },
   "Ranch Dressing": { src: "lmv", fat: 25, protein: 0.5, carbs: 9.7, fiber: 0, sugars: 3.6, alcohol: 0, water: 63 },
@@ -428,6 +433,7 @@ const NUTRITION = {
   "Taro": { src: "usda", fat: 0.11, protein: 0.52, carbs: 34.6, fiber: 5.1, alcohol: 0, water: 63.8 },
   "Teff": { src: "lmv", fat: 2.3, protein: 10.3, carbs: 65.3, fiber: 8.2, sugars: 1.3, alcohol: 0, water: 11.7 },
   "Tempeh": { src: "lmv", fat: 10.8, protein: 18.6, carbs: 8.2, fiber: 1.3, sugars: 1.1, alcohol: 0, water: 59.6 },
+  "Teriyaki Sauce": { src: "ciqual", fat: 0.02, protein: 5.93, carbs: 16, fiber: 0.1, sugars: 14.1, alcohol: 0, water: 67.7 },
   "Thousand Island Dressing": { src: "lmv", fat: 25, protein: 0.5, carbs: 9.7, fiber: 0, sugars: 3.6, alcohol: 0, water: 63 },
   "Thyme (dried)": { src: "usda", fat: 7.43, protein: 9.11, carbs: 63.9, fiber: 37, alcohol: 0, water: 7.79 },
   "Thyme (fresh)": { src: "usda", fat: 1.68, protein: 5.56, carbs: 24.4, fiber: 14, water: 65.1 },
