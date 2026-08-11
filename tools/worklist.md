@@ -330,6 +330,25 @@ actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
 
+**A generated file can be complete and still be out of date.** Widening `KEEP`
+to carry lactose and polyols did not make any file wrong — all three still hold
+exactly the foods their alias files confirm, so nothing drifted and nothing
+complained. But two of the three were written before the column existed, and so
+carry none of it: `nutrition-frida.js` and `nutrition-usda.js` hold no lactose
+at all, though Frida publishes it as ParameterID 179 and USDA as nutrient 1013.
+Only the French file has it, because it happened to be regenerated afterwards.
+
+Rebuilding `nutrition-data.js` in that state gains almost nothing — six French
+foods' worth of zeros. The lactose that would actually matter, for the 51 Swedish
+dairy foods, needs the Danish and American audits re-run first so their generated
+files pick the column up.
+
+The workbench knows this now. It compares what a reader *can* fetch against what
+the file actually holds, and says which audit to re-run. It is a prompt rather
+than a fault, because a source with no dairy among its foods would honestly have
+no lactose and there is no way to tell those two cases apart from the file alone
+— so it will keep saying so until the re-run proves it either way.
+
 **Ciqual's polyols column is not what it looks like, and the number says so.**
 The idea was sound — borrow only the columns the sources above do not publish,
 and keep the rest from Sweden and Denmark — but it is worth for lactose and not
