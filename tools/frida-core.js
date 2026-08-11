@@ -209,7 +209,8 @@
        what tools/nutrition-core.js already merges in for the foods
        Livsmedelsverket does not cover. Frida therefore needs no change to the
        builder at all — it arrives in the slot the ladder always had for it. */
-    const KEEP = ["fat", "protein", "carbs", "fiber", "sugars", "alcohol", "water"];
+    const KEEP = ["fat", "protein", "carbs", "fiber", "sugars", "alcohol", "water",
+        "lactose"];
 
     function toManualEntries(confirmed) {
         const out = {};

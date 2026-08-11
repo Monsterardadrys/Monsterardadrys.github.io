@@ -1,3 +1,9 @@
 {
-  "_comment": "Confirmed French matches: our food name -> the Ciqual alim_nom_eng it is. Confirmed by hand, one at a time, the same way tools/lmv-aliases.json is. Third on the ladder: only foods with no Livsmedelsverket and no Frida entry are candidates. Fill this from tools/ciqual-audit.html or tools/ciqual-audit.js."
+  "_comment": "Confirmed French matches: our food name -> the Ciqual alim_nom_eng it is. Confirmed by hand, one at a time, the same way tools/lmv-aliases.json is. Third on the ladder: only foods with no Livsmedelsverket and no Frida entry are candidates.",
+  "Butter Beans": "Butter bean or yellow bean, boiled/cooked in water",
+  "Corn Tortilla": "Maize/corn tortilla wrap, to be filled",
+  "Harissa": "Harissa (hot spicy sauce), prepacked",
+  "Kombucha": "Kombucha, prepacked",
+  "Raclette": "Raclette cheese, from cow's milk",
+  "Teriyaki Sauce": "Teriyaki sauce, prepacked"
 }

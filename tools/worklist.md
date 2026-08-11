@@ -1,7 +1,7 @@
 # Worklist
 
 493 foods · 43 traits · 378 matched to Livsmedelsverket, 30 to Denmark's Frida,
-36 to USDA's SR Legacy. 444 carry nutrient figures; 49 do not.
+6 to France's Ciqual, 36 to USDA's SR Legacy. 450 carry nutrient figures; 43 do not.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
@@ -329,6 +329,46 @@ Cherries entry above it is *Sötkörsbär*, the sweet kind. It is also what is
 actually sold in a tin here, so the match stands with an `lmvNote` saying which
 it is. Worth looking at the traits again once its figures arrive: sour cherries
 carry less sugar and more acid than sweet.
+
+**The French round landed, and the answer to "rank it higher?" is no — but not
+for the reason it looked like.** Six foods: Butter Beans, Corn Tortilla,
+Harissa, Kombucha, Raclette and a complete Teriyaki Sauce, which is the one the
+American reader had refused for want of a fat figure. 450 with figures.
+
+**Lactose and polyols were not an argument about rank at all.** `KEEP` was the
+same seven in every reader — fat, protein, carbohydrate, fibre, sugars, alcohol,
+water — so the lactose and polyols columns were read out of Frida and Ciqual and
+then thrown away before they reached `nutrition-data.js`. No ordering of the
+ladder would have delivered them. What was wanted was to *keep* them, so they
+are kept now: lactose from Frida, Ciqual and USDA, polyols from Ciqual, which is
+the only source that publishes one at all and the only figure the 47 foods
+tagged `polyols` have ever had.
+
+That pays for itself immediately in `check-data.js`. The lactose line used to
+read total sugars and carry a soft marker saying so — which is why lactose-free
+milk still reads as full of lactose. It now takes the real column where the
+source has one and stays soft only where it does not, so the caveat applies to
+Swedish dairy and to nothing else.
+
+**And the fibre question answered itself out of the file.** Ciqual publishes
+INFOODS tagnames on a second sheet, and the one against Fibres is **`FIB-`**. In
+that system the suffix names the method — `FIBTG` is gravimetric AOAC, `FIBTS`
+is the sum of measured components — and a bare tag with a hyphen means the
+method is unspecified. So whether resistant starch is counted in a French fibre
+figure is not knowable from the table.
+
+That is the opposite of an argument for promotion. The two AOAC methods differ
+by a median of 1.8g per 100g, 30% of our fibre dose, and the gap falls on starch
+precisely because resistant starch is what the newer one catches. USDA labels
+the method per figure and we record which was used. Ciqual cannot be asked. It
+is the one column where France is the weakest of the four sources, and it
+belongs where it is.
+
+**Two faults, both from rules written the day before.** Butter Beans came in at
+2.7g of fibre — 4.05g in a 150g portion against a dose of 6.1 — and lost the
+`fiber` trait it had been carrying on a guess. And Teriyaki Sauce turned up with
+both a French and an American match, which the new ladder rule fails on: France
+is above America, so the American alias was dead weight and is gone.
 
 **Ciqual is on the ladder, third — below Frida, above USDA.** ANSES's French
 table, 3,484 foods, English names, every figure we keep in its own column plus

@@ -37,7 +37,24 @@
 
     4. Lactose and polyols come free. Both have their own column here, as
        lactose does in Frida. Polyols are carried through because we tag a
-       polyols trait and no other source has ever given us a figure for it.
+       polyols trait on 47 foods and no other source has ever given us a
+       figure for it.
+
+    5. THE FIBRE METHOD IS NOT STATED, and the file says so itself. Ciqual
+       publishes INFOODS tagnames for its columns on a second sheet, and the
+       one against Fibres is `FIB-`. The suffix is how INFOODS names the
+       method — `FIBTG` is gravimetric AOAC, `FIBTS` is the sum of measured
+       components — and a bare tag with a hyphen means the method is
+       unspecified. So whether resistant starch is counted is not knowable
+       from this table.
+
+       That matters more here than it would elsewhere. The two AOAC methods
+       differ by a median of 1.8g per 100g on the same food, 30% of our fibre
+       dose, and the gap falls on starch precisely because resistant starch is
+       what the newer one catches. USDA labels the method per figure and we
+       record which was used; Ciqual cannot be asked. It is the one column
+       where this source is the weakest of the four, and it is another reason
+       France sits below Denmark rather than above it.
 
     Matching is not confirmed here. This produces candidates; a human confirms
     them into ciqual-aliases.json, exactly as with the other three.
@@ -214,7 +231,8 @@
         return { confirmed: confirmed, missing: missing };
     }
 
-    const KEEP = ["fat", "protein", "carbs", "fiber", "sugars", "alcohol", "water"];
+    const KEEP = ["fat", "protein", "carbs", "fiber", "sugars", "alcohol", "water",
+        "lactose", "polyols"];
 
     /* The backbone, and the same four the American reader requires. A partial
        entry is not merely less useful than a full one: a food with no figures

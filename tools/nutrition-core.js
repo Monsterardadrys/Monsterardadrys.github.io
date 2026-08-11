@@ -18,8 +18,23 @@
 (function (root) {
     "use strict";
 
-    // What we keep. Anything else in the export is not used by any page.
-    const KEEP = ["fat", "protein", "carbs", "fiber", "sugars", "alcohol", "water"];
+    /* What we keep.
+
+       Lactose and polyols are the last two and they behave differently from
+       the rest: no source has them for every food, and Livsmedelsverket has
+       neither. They are kept anyway because each answers a question the seven
+       above cannot.
+
+       Lactose lets the lactose line stop guessing. Livsmedelsverket reports
+       total sugars only, which is why lactose-free milk still reads as full of
+       it and the check has to carry a soft marker saying the figure is not
+       really lactose. Where Frida, Ciqual or USDA give the real column, that
+       caveat does not apply and check-data.js says so.
+
+       Polyols we tag a trait for on 47 foods and have never had a figure for.
+       Ciqual is the only source that publishes one. */
+    const KEEP = ["fat", "protein", "carbs", "fiber", "sugars", "alcohol", "water",
+        "lactose", "polyols"];
 
     function round(n) { return Math.round(n * 100) / 100; }
 

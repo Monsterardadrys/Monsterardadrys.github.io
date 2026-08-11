@@ -168,13 +168,12 @@ const NUTRITION_USDA = {
   }
 };
 
-const NUTRITION_USDA_REFUSED = ["Currants (dried)", "Enoki Mushrooms", "Kimchi", "Teriyaki Sauce", "Worcestershire Sauce"];
+const NUTRITION_USDA_REFUSED = ["Currants (dried)", "Enoki Mushrooms", "Kimchi", "Worcestershire Sauce"];
 
 /* Confirmed, but not imported — too little to be worth a place in a meal:
      Currants (dried) — no fat
      Enoki Mushrooms — no water
      Kimchi — no fat, protein, water
-     Teriyaki Sauce — no fat
      Worcestershire Sauce — no water
    A food with no figures at all is cleaner than one that holds a place in
    every meal and answers nothing. See REQUIRED in tools/usda-core.js.
