@@ -36,9 +36,24 @@
        "Protein, crude, N x 6.25".
 
     4. Lactose and polyols come free. Both have their own column here, as
-       lactose does in Frida. Polyols are carried through because we tag a
-       polyols trait on 47 foods and no other source has ever given us a
-       figure for it.
+       lactose does in Frida.
+
+       Lactose earns its place: it has a dose, it is checked, and
+       Livsmedelsverket has no such column — which is why 51 Swedish dairy
+       foods are still checked against total sugars with a soft marker saying
+       so, and why lactose-free milk still reads as full of it.
+
+       Polyols is worth less than it looks, and the number says why. Of 3,484
+       records, 3,036 carry a polyols figure and only 182 are above zero — and
+       the top of that list is sugar-free confectionery: hard candy at 95.6g,
+       breath mints at 94.6, chewing gum at 65.7. That column is measuring
+       *added* sweeteners, which is what a French label has to declare. The
+       naturally occurring sorbitol and mannitol our trait is about barely
+       register: mushroom 0.45, peach 0.72, apple 0.59, and avocado,
+       blackberry and watermelon all flat zero, though Monash rates all three
+       as polyol foods. So it cannot audit the tagging. It is carried anyway
+       because it costs nothing and it is authoritative for the one food we
+       have where the polyols really are added — sugar-free chewing gum.
 
     5. THE FIBRE METHOD IS NOT STATED, and the file says so itself. Ciqual
        publishes INFOODS tagnames for its columns on a second sheet, and the
