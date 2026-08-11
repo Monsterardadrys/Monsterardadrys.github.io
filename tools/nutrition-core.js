@@ -114,10 +114,31 @@
                 const v = entry.values[key];
                 if (typeof v !== "number" || isNaN(v)) return;
                 if (row.values[key] != null) return;
-                row.values[key] = round(v * factor);
+
+                /* A borrowed figure is not this food's own, and where the two
+                   tables measured different samples it can come out above the
+                   food's own total sugars — which no lactose figure can be,
+                   since lactose is one of them. Butter reads 0.5 against
+                   Sweden's 0.2, plain yoghurt 3.21 against 2.9.
+
+                   Capping at the row's own sugars is not a fudge to make the
+                   arithmetic close: for plain dairy every gram of sugar IS
+                   lactose, so the cap is the right answer rather than a
+                   tolerable one. It also cannot inflate anything, which
+                   matters more here than being exact — the alternative was
+                   total sugars, which for flavoured yoghurt, ice cream and
+                   milk chocolate overstates lactose by three to five times. */
+                let value = round(v * factor);
+                let capped = false;
+                if (key === "lactose" && row.values.sugars != null && value > row.values.sugars) {
+                    value = row.values.sugars;
+                    capped = true;
+                }
+
+                row.values[key] = value;
                 row.borrowed = row.borrowed || {};
                 row.borrowed[key] = entry.src || "extras";
-                filled.push({ name: name, key: key, src: row.borrowed[key] });
+                filled.push({ name: name, key: key, src: row.borrowed[key], capped: capped });
             });
         });
 
@@ -212,6 +233,12 @@
                 Object.keys(borrowedBy).map(function (k) {
                     return borrowedBy[k] + " " + k;
                 }).join(", "));
+            const capped = borrowed.filter(function (b) { return b.capped; });
+            if (capped.length) {
+                lines.push("   " + capped.length + " held down to the food's own total sugars, " +
+                    "which no lactose figure can exceed: " +
+                    capped.map(function (b) { return b.name; }).join(", ") + ".");
+            }
             lines.push("");
         }
         lines.push("   Built from: " + sourceName);

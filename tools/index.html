@@ -149,6 +149,34 @@
 
         .note { font-size: 0.85rem; color: #5a615c; }
 
+        /* The five tools as a row of tiles, first thing on the page. The long
+           description of each still lives at the bottom; this is for the visit
+           where you already know which one you want. */
+        .toolRow { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.6rem 0 0.2rem; }
+
+        .toolRow a {
+            flex: 1 1 9rem;
+            display: block;
+            background: var(--linen);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.55rem 0.65rem;
+            text-decoration: none;
+            color: var(--ink);
+        }
+
+        .toolRow a:hover { background: #efe8d8; }
+        .toolRow a b { display: block; color: var(--primary); font-size: 0.95rem; }
+        .toolRow a span { font-size: 0.78rem; color: #5a615c; }
+
+        /* The builder is not one of the four audits and should not read as a
+           fifth one — it is where every round ends. */
+        .toolRow a.build {
+            flex-basis: 100%;
+            background: var(--paper);
+            border-color: var(--primary);
+        }
+
         /* One food and its three candidates. Tapping a candidate copies the
            JSON line for it, because the confirming is done by hand in
            usda-aliases.json and typing American names on a phone is misery. */
@@ -267,6 +295,13 @@
 
     <main>
         <section>
+            <h2>The tools</h2>
+            <p class="note">In ladder order, then the builder. The long version of each is at the
+                bottom of this page.</p>
+            <div class="toolRow" id="toolRow"></div>
+        </section>
+
+        <section>
             <h2>Where it stands</h2>
             <div class="counts" id="counts"></div>
             <div id="loadStatus" class="status"></div>
@@ -315,7 +350,7 @@
                 there, the picks are already confirmed, so the order does not matter and one build at the
                 end is enough.</p>
             <p class="note">The Swedish audit is finished, and will stay finished until foods are added:
-                378 matched and 115 confirmed absent covers all 493, and every food still without figures
+                377 matched and 115 confirmed absent covers all 492, and every food still without figures
                 is on the absent list, so no Swedish round can help them. Its <strong>export</strong> is
                 a different matter — 378 of the figures come from it, so step 2 of the builder needs it
                 every single time.</p>
@@ -475,7 +510,7 @@
         </section>
 
         <section>
-            <h2>Every tool</h2>
+            <h2>Every tool, in full</h2>
             <ul id="tools"></ul>
             <p class="note">Before a release, from the project root:<br>
                 <code>node tools/check-data.js &amp;&amp; node tools/check-site.js</code></p>
@@ -886,16 +921,45 @@
                     ladder.appendChild(li);
                 });
 
+                /* ---- the short list, at the top ----
+
+                   The same five tools as the long list at the bottom, with the
+                   one line that tells them apart and the number that says
+                   whether there is anything left for that one to do. Written
+                   for the visit where you already know what you came for. */
+                const toolRow = document.getElementById("toolRow");
+                [["lmv-audit.html", "Swedish", "lmv", "first on the ladder"],
+                 ["frida-audit.html", "Danish", "frida", "what Sweden has no entry for"],
+                 ["ciqual-audit.html", "French", "ciqual", "what neither of those has"],
+                 ["usda-audit.html", "American", "usda", "what none of those has"]
+                ].forEach(function (row) {
+                    const a = document.createElement("a");
+                    a.href = row[0];
+                    a.innerHTML = "<b>" + row[1] + "</b><span>" + row[3] + " · " +
+                        (bySrc[row[2]] || 0) + " foods" + "</span>";
+                    toolRow.appendChild(a);
+                });
+                const build = document.createElement("a");
+                build.href = "build-nutrition.html";
+                build.className = "build";
+                build.innerHTML = "<b>Build nutrition-data.js</b><span>where every round ends — " +
+                    "the Livsmedelsverket export every time, plus any generated file you have just " +
+                    "made</span>";
+                toolRow.appendChild(build);
+
                 /* ---- every tool ---- */
                 const tools = document.getElementById("tools");
                 [["lmv-audit.html", "Swedish matches, first on the ladder. Gives you " +
                      "<em>lmv-aliases.json</em> and <em>lmv-absent.json</em> — every food has to be in one " +
                      "or the other. Figures come from the export itself, so there is no generated file."],
                  ["frida-audit.html", "Danish matches, for what Sweden has no entry for. Gives you " +
-                     "<em>frida-aliases.json</em> and <em>nutrition-frida.js</em>."],
+                     "<em>frida-aliases.json</em> and <em>nutrition-frida.js</em>, and — if you answer " +
+                     "anything under the <em>lactose only</em> heading at the bottom of the list — " +
+                     "<em>frida-extras.json</em> as well."],
                  ["ciqual-audit.html", "French matches, for what Sweden and Denmark have no entry for. " +
-                     "Gives you <em>ciqual-aliases.json</em> and <em>nutrition-ciqual.js</em>. Take the " +
-                     "<strong>English</strong> export, not the French one."],
+                     "Gives you <em>ciqual-aliases.json</em> and <em>nutrition-ciqual.js</em>, plus " +
+                     "<em>ciqual-extras.json</em> for anything answered under the <em>lactose and " +
+                     "polyols</em> heading. Take the <strong>English</strong> export, not the French one."],
                  ["usda-audit.html", "American matches, for what none of those covers. Gives you " +
                      "<em>usda-aliases.json</em> and <em>nutrition-usda.js</em>. Reads SR Legacy and " +
                      "Foundation; FNDDS is refused."],

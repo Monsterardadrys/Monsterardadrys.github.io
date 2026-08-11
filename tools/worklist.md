@@ -1,7 +1,7 @@
 # Worklist
 
-493 foods · 43 traits · 378 matched to Livsmedelsverket, 30 to Denmark's Frida,
-6 to France's Ciqual, 36 to USDA's SR Legacy. 450 carry nutrient figures; 43 do not.
+492 foods · 43 traits · 377 matched to Livsmedelsverket, 30 to Denmark's Frida,
+9 to France's Ciqual, 36 to USDA's SR Legacy. 449 carry nutrient figures; 43 do not.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
@@ -13,7 +13,7 @@ a long gap; this file is the long version behind it.
 
 ## Done
 
-**Livsmedelsverket audit** — 378 of 493 foods checked against the Swedish Food
+**Livsmedelsverket audit** — 377 of 492 foods checked against the Swedish Food
 Agency database, 115 confirmed absent, none unmatched. Each verified food
 carries its entry name in `lmv`, and departures carry an `lmvNote`; both show on
 `sources.html`.
@@ -508,6 +508,49 @@ The drift rule is now `written + refused < confirmed`, and a pick the repo has
 declined stops being reported as outstanding. Checked with the real 43 picks in
 a browser against the repo as it stands: no alarms, and the only thing left to
 say is that 49 foods still have no figures.
+
+**The first extras round: 39 foods, and a rule the borrowing needed.** France
+lent lactose to 37 foods and polyols to two, which is most of the dairy shelf.
+Three of the numbers are the ones worth having: flavoured yoghurt was being
+checked against 10g of total sugars and has 3.19g of lactose, ice cream against
+16.5g and has 4.69g, milk chocolate against 56.2g and has 11.5g. Checking
+lactose against total sugars does not merely lack precision there — it is wrong
+by a factor of three to five, and always in the direction that says *avoid*.
+
+But eight came back **above** the food's own Swedish sugars figure: butter 0.5
+against 0.2, plain yoghurt 3.21 against 2.9, mozzarella 0.7 against 0.4. No
+single table can produce that — lactose is one of the sugars — but two tables
+measuring two samples can, and the borrowing is precisely that. A row saying it
+holds more lactose than sugar is wrong on its face.
+
+So a borrowed lactose figure is **capped at the food's own total sugars**. That
+is not arithmetic tidying: for plain dairy every gram of sugar *is* lactose, so
+the cap is the right answer rather than a tolerable one, and it cannot inflate
+anything — which matters more here, since the thing it replaces overstates.
+`check-data.js` fails any row with more lactose than sugar, so the cap is
+checked rather than trusted.
+
+**Two extras picks declined, both the same failure.** `White Cheese (~0% fat)`
+was offered a feta's lactose, 0.5g — but the food's own Swedish entry is *Kvarg
+naturell fett 0,2%* and its figures are a quark's, 5.2g carbohydrate and 3.2g
+sugar where a feta has about 1g. Lending a feta's lactose to a quark's backbone
+would report a sixth of what is there, and understating lactose is the one
+direction that matters. (Whether the *Swedish* match is the right one is a
+separate question, and still open.) `Cheese Puffs / Snacks` was offered a butter
+feuilleté's; the food is Ostbågar, an extruded corn snack. Both in
+`ciqual-declined.json` with the reasoning, and `check-data.js` now fails a name
+that is in both the extras file and the declined file — the same rule the alias
+file already had.
+
+**Sour Cream (~20% fat) was Creme Fraiche.** Same Livsmedelsverket entry —
+*Crème fraiche fett 34%* — same seven figures, and a name claiming 20% fat for a
+34% figure. Two rows, one product. Dropped; `Creme Fraiche` keeps the entry
+under its own name. `Sour Cream (~10% fat)` is *Gräddfil fett 12%*, a genuinely
+different product and the only one of the three under the fat dose, so it stays
+— renamed `Sour Cream`, since the pair it was distinguishing itself from is
+gone. Crème fraîche and soured cream are not the same thing in general: different
+cultures, different fat, and crème fraîche does not split when boiled. They were
+the same thing *here* because both pointed at the same row. 492 foods.
 
 **Lactose and polyols can be borrowed a column at a time, and nothing else
 can.** Everywhere else on the ladder a source answers for a food or it does

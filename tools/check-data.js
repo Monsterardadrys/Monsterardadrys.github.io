@@ -548,8 +548,10 @@ entries(ciqualDeclined).forEach(function (name) {
    full match and an extras match from the same table: the full match already
    brings every column that table has. */
 [
-  { name: "ciqual-extras.json", map: ciqualExtras, full: ciqualAliases, table: "French" },
-  { name: "frida-extras.json", map: fridaExtras, full: fridaAliases, table: "Danish" }
+  { name: "ciqual-extras.json", map: ciqualExtras, full: ciqualAliases,
+    declined: ciqualDeclined, table: "French" },
+  { name: "frida-extras.json", map: fridaExtras, full: fridaAliases,
+    declined: {}, table: "Danish" }
 ].forEach(function (r) {
   entries(r.map).forEach(function (name) {
     if (!byName[name]) {
@@ -562,6 +564,10 @@ entries(ciqualDeclined).forEach(function (name) {
       faults.push(name + " is in both " + r.name + " and " +
         r.name.replace("extras", "aliases") + " — a full match already brings every " +
         "column that table has, so the extras entry is dead weight");
+    } else if (r.declined[name]) {
+      faults.push(name + " is in both " + r.name + " and " +
+        r.name.replace("extras", "declined") + " — a match is either confirmed or " +
+        "declined, and lending one column does not make a wrong food right");
     }
   });
 });
@@ -603,6 +609,21 @@ Object.keys(NUTRITION).forEach(function (name) {
   if (!ciqualExtras[name] && !fridaExtras[name]) {
     faults.push(name + " carries borrowed figures but is in neither ciqual-extras.json " +
       "nor frida-extras.json — rebuild nutrition-data.js");
+  }
+});
+
+/* Lactose is one of the sugars, so no food can hold more of it than it holds
+   sugar. It is not a rule any single table can break — they measure one
+   sample — but a borrowed lactose figure comes from a different table
+   measuring a different sample, and eight of the first French extras came out
+   above the Swedish sugars figure for the same food. nutrition-core.js caps
+   them; this is the check that the cap is actually being applied. */
+Object.keys(NUTRITION).forEach(function (name) {
+  const row = NUTRITION[name];
+  if (row.lactose == null || row.sugars == null) return;
+  if (row.lactose > row.sugars + 0.005) {
+    faults.push(name + " holds " + row.lactose + "g of lactose and only " + row.sugars +
+      "g of sugar. Lactose is one of the sugars, so it cannot be the larger figure.");
   }
 });
 
