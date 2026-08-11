@@ -2,7 +2,6 @@
    nutrition-frida.js — per 100g figures from Denmark, GENERATED
 
        node tools/frida-audit.js <FCDB_dataset.xlsx> --write
-       tools/frida-audit.html   (works on a phone)
 
    The second source on the ladder, for the foods Livsmedelsverket has no
    entry for. Matched through tools/frida-aliases.json — confirmed by hand,
@@ -90,7 +89,7 @@ const NUTRITION_FRIDA = {
   },
   "Pine Nuts": {
     src: "frida", ref: "Pine nuts, dried (Frida 806)",
-    values: { fat: 61.9, protein: 13.99, carbs: 13.03, fiber: 6.35, sugars: 4.85, alcohol: 0, water: 2.19 }
+    values: { fat: 61.9, protein: 13.99, carbs: 13.03, fiber: 6.35, sugars: 4.85, alcohol: 0, water: 2.19, lactose: 0 }
   },
   "Rice Cakes": {
     src: "frida", ref: "Rice cake/cracker, puffed brown rice, plain (Frida 1748)",
@@ -98,7 +97,7 @@ const NUTRITION_FRIDA = {
   },
   "Roquefort": {
     src: "frida", ref: "Cheese, Roquefort, Danish, 50 % fidm. (Frida 136)",
-    values: { fat: 29.5, protein: 19.36, carbs: 0, fiber: 0, sugars: 0.12, alcohol: 0, water: 44.7 }
+    values: { fat: 29.5, protein: 19.36, carbs: 0, fiber: 0, sugars: 0.12, alcohol: 0, water: 44.7, lactose: 0.12 }
   },
   "Salty Liquorice": {
     src: "frida", ref: "Liquorice, salt (Frida 1114)",
@@ -106,7 +105,7 @@ const NUTRITION_FRIDA = {
   },
   "Seitan": {
     src: "frida", ref: "Seitan (Frida 1784)",
-    values: { fat: 7.16, protein: 26.46, carbs: 5.07, fiber: 2.15, sugars: 0.48, alcohol: 0, water: 57.2 }
+    values: { fat: 7.16, protein: 26.46, carbs: 5.07, fiber: 2.15, sugars: 0.48, alcohol: 0, water: 57.2, lactose: 0 }
   },
   "Skyr": {
     src: "frida", ref: "Skyr, 0.2 % fat (Frida 1693)",
@@ -122,7 +121,7 @@ const NUTRITION_FRIDA = {
   },
   "Vegan Mayonnaise": {
     src: "frida", ref: "Mayonnaise, vegan (Frida 1967)",
-    values: { fat: 63.5, protein: 0.38, carbs: 5.51, fiber: 0, sugars: 2.3, alcohol: 0, water: 29.18 }
+    values: { fat: 63.5, protein: 0.38, carbs: 5.51, fiber: 0, sugars: 2.3, alcohol: 0, water: 29.18, lactose: 0 }
   },
   "Vinegar": {
     src: "frida", ref: "Vinegar (Frida 226)",

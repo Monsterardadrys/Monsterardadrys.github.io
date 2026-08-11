@@ -509,6 +509,26 @@ declined stops being reported as outstanding. Checked with the real 43 picks in
 a browser against the repo as it stands: no alarms, and the only thing left to
 say is that 49 foods still have no figures.
 
+**A declined food came back, because the browser outlived the decision.** The
+next USDA export carried 38 foods instead of 36: Brown Gravy and Instant Ramen,
+declined in v1.53 and written up with reasons, were back — and `check-data.js`
+caught it as six faults the moment the files landed. Neither the audit nor the
+export was wrong. The picks were still sitting in `localStorage` on the phone
+that made them, and the audit page filled its picks from the alias file and the
+browser without ever reading `usda-declined.json`. Only the workbench read it.
+
+So a record the repo keeps was being enforced in one place and ignored in the
+one place that could act on it. Both audit pages now fetch their declined list
+alongside the alias file, drop any pick the repo has turned down, save the
+result, and say which ones they dropped and where the reason is written. A
+decision made in the repo now survives contact with a browser that disagrees.
+
+The same round found `check-data.js` reporting the five *refused* foods as
+"matched but have no figures yet — rebuild nutrition-data.js". No rebuild will
+ever fill them; that is the point of refusing. The rule now reads the
+`NUTRITION_*_REFUSED` lists out of the generated files and reports those
+separately, as the settled decision they are.
+
 **A partial entry can be worse than no entry, and the meal builder is where
 that shows.** The doubt was about mixing in foods with thin data, and it turned
 out to be sharper than it sounded. A food with *no* figures is set aside: it

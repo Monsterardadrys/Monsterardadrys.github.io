@@ -445,6 +445,11 @@
                 <li><strong>Foods sold dry and eaten made up.</strong> Soup powder, drink mix. The table
                     lists the powder, the portion is the bowl. A <code>madeUp</code> recipe on the food
                     scales it — do not type diluted figures in by hand.</li>
+                <li><strong>A declined food walking back in from the browser.</strong> The audit pages
+                    remember picks in <code>localStorage</code>, which outlives the repo's decision to
+                    turn a match down. Brown Gravy and Instant Ramen were declined in v1.53 and came
+                    back in a later export because the page never read the declined list. Both audit
+                    pages read it now and drop those picks, saying so when they do.</li>
                 <li><strong>A plausible explanation is not the cause.</strong> A caching story once
                     explained a wrong figure perfectly and was wrong; the real fault was a field being
                     dropped before either tool saw it. The checks named it three different ways without

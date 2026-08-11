@@ -83,6 +83,22 @@ if (fs.existsSync(usdaDeclinedPath)) {
   Object.keys(raw).forEach(function (k) { if (k[0] !== "_") usdaDeclined[k] = raw[k]; });
 }
 
+/* The foods a source matched and we then turned down because the figures
+   were too thin to be worth carrying. They are settled, not pending, so
+   they must not be reported as work left to do. Each generated file
+   declares its own list; collect them all. */
+const refused = {};
+fs.readdirSync(root).filter(function (f) {
+  return /^nutrition-.*\.js$/.test(f);
+}).forEach(function (f) {
+  const text = fs.readFileSync(path.join(root, f), "utf8");
+  const decl = /const NUTRITION_\w+_REFUSED = \[([\s\S]*?)\];/.exec(text);
+  if (!decl) return;
+  (decl[1].match(/"([^"]+)"/g) || []).forEach(function (q) {
+    refused[q.slice(1, -1)] = f;
+  });
+});
+
 const fridaAliasPath = path.join(__dirname, "frida-aliases.json");
 const fridaAliases = {};
 if (fs.existsSync(fridaAliasPath)) {
@@ -396,7 +412,11 @@ entries(aliases).forEach(function (name) {
 
 /* A confirmed match whose figures have not been built yet. Harmless in
    itself, but it is the state six foods sat in unnoticed once, matched on
-   paper and missing from every meal — so it gets said out loud. */
+   paper and missing from every meal — so it gets said out loud.
+
+   A refused food looks identical from here — matched, no figures — but no
+   rebuild will ever fill it, so it is separated out and reported as the
+   settled decision it is. */
 const pendingBuild = entries(aliases).filter(function (name) {
   return byName[name] && !NUTRITION[name];
 }).concat(entries(fridaAliases).filter(function (name) {
@@ -407,9 +427,17 @@ const pendingBuild = entries(aliases).filter(function (name) {
   return byName[name] && !NUTRITION[name];
 }));
 
-if (pendingBuild.length) {
-  warnings.push(pendingBuild.length + " food(s) are matched but have no figures yet — " +
-    "rebuild nutrition-data.js: " + pendingBuild.join(", "));
+const stillPending = pendingBuild.filter(function (name) { return !refused[name]; });
+const wasRefused = pendingBuild.filter(function (name) { return refused[name]; });
+
+if (stillPending.length) {
+  warnings.push(stillPending.length + " food(s) are matched but have no figures yet — " +
+    "rebuild nutrition-data.js: " + stillPending.join(", "));
+}
+
+if (wasRefused.length) {
+  warnings.push(wasRefused.length + " food(s) are matched but deliberately left without " +
+    "figures — the match was right, the figures too thin: " + wasRefused.join(", "));
 }
 
 entries(absentList).forEach(function (name) {
