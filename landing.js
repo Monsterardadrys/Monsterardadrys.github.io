@@ -1,9 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
   // Six common foods that all carry FODMAPs and/or histamine, so most
   // combinations turn up a meaningful shared trait.
-  const DEMO_FOODS = ["Wheat", "Garlic", "Onion", "Cows Milk", "Avocado", "Strawberry"];
+  const DEMO_FOODS = ["Wheat", "Garlic", "Onion", "Cows Milk (3% fat)", "Avocado", "Strawberry"];
   const DEFAULT_CHECKED = ["Wheat", "Garlic", "Onion"];
   const TOP_TRAITS_SHOWN = 3;
+
+  /* The demo is a teaser, not the database. A food's full name carries its fat
+     level so a shopper can tell two versions of it apart on the shelf; here
+     there is only ever one of each, so the parenthesis is noise. Stripped for
+     display only — the value behind the checkbox stays the real name. */
+  function demoLabel(name) { return name.replace(/\s*\([^)]*\)$/, ""); }
 
   const demoFoodsContainer = document.getElementById("demoFoods");
   const demoResultText = document.getElementById("demoResultText");
@@ -53,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
     checkbox.checked = DEFAULT_CHECKED.indexOf(name) !== -1;
     checkbox.addEventListener("change", recomputeDemo);
     label.appendChild(checkbox);
-    label.appendChild(document.createTextNode(name));
+    label.appendChild(document.createTextNode(demoLabel(name)));
     demoFoodsContainer.appendChild(label);
   });
 

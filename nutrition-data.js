@@ -11,7 +11,7 @@
    rest come from nutrition-manual.js, which records a source per food;
    `src` on each line below says which.
 
-   449 of 492 foods have figures — 377 from Livsmedelsverket, 72 entered by
+   447 of 490 foods have figures — 375 from Livsmedelsverket, 72 entered by
    hand. The rest have none, and the meal builder will not let them into a
    meal.
 
@@ -117,18 +117,18 @@ const NUTRITION = {
   "Common Peas": { src: "lmv", fat: 0.4, protein: 5.2, carbs: 8.9, fiber: 4.4, sugars: 5, alcohol: 0, water: 80 },
   "Corn Tortilla": { src: "ciqual", fat: 5.57, protein: 6.08, carbs: 58, fiber: 3.57, sugars: 2.37, alcohol: 0, water: 26, lactose: 0, polyols: 0 },
   "Cornstarch": { src: "lmv", fat: 0.7, protein: 0, carbs: 87.5, fiber: 0, sugars: 0, alcohol: 0, water: 11.8 },
-  "Cottage Cheese": { src: "lmv", fat: 4.3, protein: 13.4, carbs: 1.9, fiber: 0, sugars: 1.6, alcohol: 0, water: 79.3 },
+  "Cottage Cheese (4% fat)": { src: "lmv", fat: 4.3, protein: 13.4, carbs: 1.9, fiber: 0, sugars: 1.6, alcohol: 0, water: 79.3 },
   "Couscous": { src: "lmv", fat: 0.9, protein: 4.7, carbs: 27, fiber: 3.9, sugars: 1.1, alcohol: 0, water: 62.5 },
   "Cows Meat": { src: "lmv", fat: 4.2, protein: 22.2, carbs: 0, fiber: 0, sugars: 0, alcohol: 0, water: 72.3 },
-  "Cows Milk": { src: "lmv", fat: 3, protein: 3.6, carbs: 4.6, fiber: 0, sugars: 4.6, alcohol: 0, water: 88.1 },
+  "Cows Milk (3% fat)": { src: "lmv", fat: 3, protein: 3.6, carbs: 4.6, fiber: 0, sugars: 4.6, alcohol: 0, water: 88.1 },
   "Crab": { src: "lmv", fat: 1.1, protein: 18, carbs: 0, fiber: 0, sugars: 0, alcohol: 0, water: 79 },
   "Cranberry": { src: "lmv", fat: 0.2, protein: 0.4, carbs: 8.9, fiber: 3.3, sugars: 3.4, alcohol: 0, water: 87 },
   "Cranberry Sauce": { src: "usda", fat: 0.15, protein: 0.9, carbs: 40.4, fiber: 1.1, sugars: 31.8, alcohol: 0, water: 58.4, lactose: 0 },
   "Crayfish": { src: "lmv", fat: 0.8, protein: 15.6, carbs: 0.2, fiber: 0, sugars: 0.2, alcohol: 0, water: 80.9 },
-  "Cream": { src: "lmv", fat: 40, protein: 2.1, carbs: 3, fiber: 0, sugars: 2.7, alcohol: 0, water: 54.4 },
+  "Cream (40% fat)": { src: "lmv", fat: 40, protein: 2.1, carbs: 3, fiber: 0, sugars: 2.7, alcohol: 0, water: 54.4 },
   "Cream Cheese (<10% fat)": { src: "lmv", fat: 5.3, protein: 12.2, carbs: 4.7, fiber: 0, sugars: 3, alcohol: 0, water: 76.2 },
   "Cream Cheese (>10% fat)": { src: "lmv", fat: 33, protein: 10.2, carbs: 2.4, fiber: 0, sugars: 2.7, alcohol: 0, water: 53 },
-  "Creme Fraiche": { src: "lmv", fat: 34, protein: 2.3, carbs: 3.3, fiber: 0, sugars: 2.6, alcohol: 0, water: 59.9 },
+  "Creme Fraiche (34% fat)": { src: "lmv", fat: 34, protein: 2.3, carbs: 3.3, fiber: 0, sugars: 2.6, alcohol: 0, water: 59.9 },
   "Cremini Mushrooms": { src: "lmv", fat: 0.2, protein: 2.4, carbs: 2.7, fiber: 2.4, sugars: 0.1, alcohol: 0, water: 91.4 },
   "Crispbread (rye)": { src: "lmv", fat: 2.6, protein: 9.3, carbs: 65.7, fiber: 13.2, sugars: 2.7, alcohol: 0, water: 6.6 },
   "Cucumber": { src: "lmv", fat: 0, protein: 0.8, carbs: 2.3, fiber: 0, sugars: 1.7, alcohol: 0, water: 96.5 },
@@ -235,7 +235,7 @@ const NUTRITION = {
   "Kohlrabi": { src: "lmv", fat: 0.1, protein: 1.7, carbs: 4.4, fiber: 1.8, sugars: 2.9, alcohol: 0, water: 91 },
   "Kombucha": { src: "ciqual", fat: 0, protein: 0.25, carbs: 1.45, fiber: 0, sugars: 1.45, alcohol: 0, water: 97.6, lactose: 0, polyols: 0 },
   "Lactose-free Cheese": { src: "lmv", fat: 31.2, protein: 25.2, carbs: 3.3, fiber: 0, sugars: 0, alcohol: 0, water: 37 },
-  "Lactose-free Cream": { src: "lmv", fat: 40, protein: 2.1, carbs: 3, fiber: 0, sugars: 2.7, alcohol: 0, water: 54.4 },
+  "Lactose-free Cream (40% fat)": { src: "lmv", fat: 40, protein: 2.1, carbs: 3, fiber: 0, sugars: 2.7, alcohol: 0, water: 54.4 },
   "Lactose-free Milk": { src: "lmv", fat: 3, protein: 3.6, carbs: 4.6, fiber: 0, sugars: 4.6, alcohol: 0, water: 88.1 },
   "Lactose-free Yogurt": { src: "lmv", fat: 0.5, protein: 3.6, carbs: 5, fiber: 0, sugars: 2.1, alcohol: 0, water: 90.1 },
   "Lamb": { src: "lmv", fat: 9.4, protein: 19.9, carbs: 0, fiber: 0, sugars: 0, alcohol: 0, water: 69.2 },
@@ -399,7 +399,7 @@ const NUTRITION = {
   "Smoked Salmon": { src: "lmv", fat: 9.8, protein: 20, carbs: 1.3, fiber: 0, sugars: 0, alcohol: 0, water: 65.1 },
   "Soba Noodles": { src: "usda", fat: 0.1, protein: 5.06, carbs: 21.4, water: 73 },
   "Sorghum/Durra": { src: "lmv", fat: 2.6, protein: 9.5, carbs: 69.7, fiber: 4.4, sugars: 0.6, alcohol: 0, water: 12.5 },
-  "Sour Cream": { src: "lmv", fat: 11.5, protein: 2.5, carbs: 4, fiber: 0, sugars: 3.3, alcohol: 0, water: 81.4 },
+  "Sour Cream (12% fat)": { src: "lmv", fat: 11.5, protein: 2.5, carbs: 4, fiber: 0, sugars: 3.3, alcohol: 0, water: 81.4 },
   "Sourdough Bread (wheat)": { src: "usda", fat: 2.42, protein: 10.8, carbs: 51.9, fiber: 2.2, sugars: 4.62, water: 33, lactose: 0 },
   "Soy Milk": { src: "lmv", fat: 1.5, protein: 3.1, carbs: 1.9, fiber: 0, sugars: 0.5, alcohol: 0, water: 92.9 },
   "Soy Sauce": { src: "lmv", fat: 0, protein: 7.5, carbs: 6.6, fiber: 0, sugars: 1.6, alcohol: 0, water: 70 },
@@ -458,14 +458,12 @@ const NUTRITION = {
   "White Beans in Tomato Sauce": { src: "lmv", fat: 0.5, protein: 5.1, carbs: 15, fiber: 4.9, sugars: 4.8, alcohol: 0, water: 72.8 },
   "White Bread": { src: "lmv", fat: 6.4, protein: 8, carbs: 46, fiber: 4.3, sugars: 6, alcohol: 0, water: 34 },
   "White Button Mushrooms": { src: "lmv", fat: 0.2, protein: 2.4, carbs: 2.7, fiber: 2.4, sugars: 0.1, alcohol: 0, water: 91.4 },
-  "White Cheese (~0% fat)": { src: "lmv", fat: 0.2, protein: 10, carbs: 5.2, fiber: 0, sugars: 3.2, alcohol: 0.04, water: 83.9 },
   "White Sugar": { src: "lmv", fat: 0, protein: 0, carbs: 99.6, fiber: 0, sugars: 100, alcohol: 0, water: 0.4 },
   "White Wine": { src: "lmv", fat: 0, protein: 0, carbs: 1, fiber: 0, sugars: 0.9, alcohol: 9.53, water: 89.4 },
   "Whole Egg": { src: "lmv", fat: 9.8, protein: 12.1, carbs: 0, fiber: 0, sugars: 0.3, alcohol: 0, water: 77.8 },
   "Yam": { src: "lmv", fat: 0.2, protein: 1.6, carbs: 27.4, fiber: 2.3, sugars: 1.9, alcohol: 0, water: 67.9 },
   "Yeast Extract (Marmite type)": { src: "frida", fat: 0.6, protein: 27.8, carbs: 8.2, fiber: 3, sugars: 0, alcohol: 0, water: 37 },
-  "Yoghurt 0,5%": { src: "lmv", fat: 0.5, protein: 3.6, carbs: 5, fiber: 0, sugars: 3, alcohol: 0, water: 90.1 },
-  "Yoghurt 3%": { src: "lmv", fat: 2.7, protein: 3.4, carbs: 4.5, fiber: 0, sugars: 2.9, alcohol: 0, water: 88.7 },
-  "Yogurt": { src: "lmv", fat: 2.7, protein: 3.4, carbs: 4.5, fiber: 0, sugars: 2.9, alcohol: 0, water: 88.7 },
+  "Yogurt (0.5% fat)": { src: "lmv", fat: 0.5, protein: 3.6, carbs: 5, fiber: 0, sugars: 3, alcohol: 0, water: 90.1 },
+  "Yogurt (3% fat)": { src: "lmv", fat: 2.7, protein: 3.4, carbs: 4.5, fiber: 0, sugars: 2.9, alcohol: 0, water: 88.7 },
   "Zucchini": { src: "lmv", fat: 0.1, protein: 0, carbs: 2.5, fiber: 1.8, sugars: 3, alcohol: 0, water: 95 }
 };
