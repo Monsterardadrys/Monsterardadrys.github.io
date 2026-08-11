@@ -344,6 +344,9 @@
                 fetch("../nutrition-data.js", { cache: "no-store" }).then(function (r) { return r.text(); }),
                 fetch("ciqual-aliases.json", { cache: "no-store" })
                     .then(function (r) { return r.ok ? r.json() : {}; })
+                    .catch(function () { return {}; }),
+                fetch("ciqual-declined.json", { cache: "no-store" })
+                    .then(function (r) { return r.ok ? r.json() : {}; })
                     .catch(function () { return {}; })
             ]).then(function (parts) {
                 const CATEGORIES = new Function(parts[0] + "; return CATEGORIES;")();
@@ -365,7 +368,15 @@
                         if (!NUTRITION[f.name]) needing.push(f);
                     });
                 });
-                return { needing: needing, allFoods: allFoods, aliases: aliases };
+                /* Matches the repo has looked at and turned down. Without this a
+                   declined pick lives on in localStorage and walks straight back
+                   into the generated file on the next run — which is how two foods
+                   came back after being dropped. */
+                const declined = {};
+                Object.keys(parts[3] || {}).forEach(function (k) {
+                    if (k[0] !== "_") declined[k] = parts[3][k];
+                });
+                return { needing: needing, allFoods: allFoods, aliases: aliases, declined: declined };
             });
 
             let records = [];
@@ -696,7 +707,18 @@
                         Object.keys(ctx.aliases).forEach(function (k) {
                             if (!picked[k]) picked[k] = ctx.aliases[k];
                         });
+                        // A declined match is a decision, and it outranks a pick
+                        // this browser is still holding on to.
+                        const dropped = Object.keys(ctx.declined).filter(function (k) {
+                            return picked[k] !== undefined;
+                        });
+                        dropped.forEach(function (k) { delete picked[k]; });
                         remember();
+                        if (dropped.length) {
+                            show(document.getElementById("fileStatus"), "info",
+                                dropped.length + " pick(s) dropped — the repo has declined " +
+                                dropped.join(", ") + ". See ciqual-declined.json for why.");
+                        }
 
                         const result = Ciqual.proposeMatches(needing, records, ctx.aliases);
                         render(result, needing.length, read);

@@ -4,8 +4,8 @@
        node tools/usda-audit.js <FoodData_Central_*.json> --write
        tools/usda-audit.html   (works on a phone)
 
-   The third source on the ladder, for the foods neither Livsmedelsverket
-   nor Frida has an entry for. Matched through tools/usda-aliases.json —
+   The fourth source on the ladder, for the foods none of Livsmedelsverket,
+   Frida or Ciqual has an entry for. Matched through tools/usda-aliases.json —
    confirmed by hand, one food at a time, the same way the other two are.
    Each entry records the USDA food it came from in `ref`.
 
@@ -28,7 +28,7 @@ const NUTRITION_USDA = {
   },
   "Agave Syrup": {
     src: "usda", ref: "Sweetener, syrup, agave (FDC 170277, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 0.45, protein: 0.09, carbs: 76.4, fiber: 0.2, sugars: 68, alcohol: 0, water: 22.9 }
+    values: { fat: 0.45, protein: 0.09, carbs: 76.4, fiber: 0.2, sugars: 68, alcohol: 0, water: 22.9, lactose: 0 }
   },
   "Allspice": {
     src: "usda", ref: "Spices, allspice, ground (FDC 171315, SR Legacy, fibre AOAC 991.43)",
@@ -36,7 +36,7 @@ const NUTRITION_USDA = {
   },
   "Basil (dried)": {
     src: "usda", ref: "Spices, basil, dried (FDC 171317, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 4.07, protein: 23, carbs: 47.8, fiber: 37.7, sugars: 1.71, alcohol: 0, water: 10.4 }
+    values: { fat: 4.07, protein: 23, carbs: 47.8, fiber: 37.7, sugars: 1.71, alcohol: 0, water: 10.4, lactose: 0 }
   },
   "Capers": {
     src: "usda", ref: "Capers, canned (FDC 172238, SR Legacy, fibre AOAC 991.43)",
@@ -44,7 +44,7 @@ const NUTRITION_USDA = {
   },
   "Cranberry Sauce": {
     src: "usda", ref: "Cranberry sauce, canned, sweetened (FDC 173961, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 0.15, protein: 0.9, carbs: 40.4, fiber: 1.1, sugars: 31.8, alcohol: 0, water: 58.4 }
+    values: { fat: 0.15, protein: 0.9, carbs: 40.4, fiber: 1.1, sugars: 31.8, alcohol: 0, water: 58.4, lactose: 0 }
   },
   "Dill (dried)": {
     src: "usda", ref: "Spices, dill weed, dried (FDC 171322, SR Legacy, fibre AOAC 991.43)",
@@ -60,7 +60,7 @@ const NUTRITION_USDA = {
   },
   "Ginger (dried)": {
     src: "usda", ref: "Spices, ginger, ground (FDC 170926, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 4.24, protein: 8.98, carbs: 71.6, fiber: 14.1, sugars: 3.39, alcohol: 0, water: 9.94 }
+    values: { fat: 4.24, protein: 8.98, carbs: 71.6, fiber: 14.1, sugars: 3.39, alcohol: 0, water: 9.94, lactose: 0 }
   },
   "Hoisin Sauce": {
     src: "usda", ref: "Sauce, hoisin, ready-to-serve (FDC 172886, SR Legacy, fibre AOAC 991.43)",
@@ -68,7 +68,7 @@ const NUTRITION_USDA = {
   },
   "Horseradish Sauce": {
     src: "usda", ref: "Sauce, horseradish (FDC 171833, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 50.9, protein: 1.09, carbs: 10, fiber: 1, sugars: 8.98, water: 35.8 }
+    values: { fat: 50.9, protein: 1.09, carbs: 10, fiber: 1, sugars: 8.98, water: 35.8, lactose: 0 }
   },
   "Lotus Root": {
     src: "usda", ref: "Lotus root, raw (FDC 169250, SR Legacy, fibre AOAC 991.43)",
@@ -76,11 +76,11 @@ const NUTRITION_USDA = {
   },
   "Maitake Mushrooms": {
     src: "usda", ref: "Mushrooms, maitake, raw (FDC 169403, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 0.19, protein: 1.94, carbs: 6.97, fiber: 2.7, sugars: 2.07, alcohol: 0, water: 90.4 }
+    values: { fat: 0.19, protein: 1.94, carbs: 6.97, fiber: 2.7, sugars: 2.07, alcohol: 0, water: 90.4, lactose: 0.33 }
   },
   "Maple Syrup": {
     src: "usda", ref: "Syrup, maple, Canadian (FDC 170276, SR Legacy)",
-    values: { fat: 0, protein: 0, carbs: 67.4, water: 32.2 }
+    values: { fat: 0, protein: 0, carbs: 67.4, water: 32.2, lactose: 0 }
   },
   "Mint (dried)": {
     src: "usda", ref: "Spearmint, dried (FDC 172239, SR Legacy)",
@@ -92,11 +92,11 @@ const NUTRITION_USDA = {
   },
   "Morel Mushrooms": {
     src: "usda", ref: "Mushrooms, morel, raw (FDC 168423, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 0.57, protein: 3.12, carbs: 5.1, fiber: 2.8, sugars: 0.6, water: 89.6 }
+    values: { fat: 0.57, protein: 3.12, carbs: 5.1, fiber: 2.8, sugars: 0.6, water: 89.6, lactose: 0 }
   },
   "Naan Bread": {
     src: "usda", ref: "Bread, naan, plain, commercially prepared, refrigerated (FDC 171845, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 5.65, protein: 9.62, carbs: 50.4, fiber: 2.2, sugars: 3.55, water: 32.6 }
+    values: { fat: 5.65, protein: 9.62, carbs: 50.4, fiber: 2.2, sugars: 3.55, water: 32.6, lactose: 0.25 }
   },
   "Natto": {
     src: "usda", ref: "Natto (FDC 172443, SR Legacy, fibre AOAC 991.43)",
@@ -104,7 +104,7 @@ const NUTRITION_USDA = {
   },
   "Oregano (dried)": {
     src: "usda", ref: "Spices, oregano, dried (FDC 171328, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 4.28, protein: 9, carbs: 68.9, fiber: 42.5, sugars: 4.09, alcohol: 0, water: 9.93 }
+    values: { fat: 4.28, protein: 9, carbs: 68.9, fiber: 42.5, sugars: 4.09, alcohol: 0, water: 9.93, lactose: 0 }
   },
   "Oyster Sauce": {
     src: "usda", ref: "Sauce, oyster, ready-to-serve (FDC 174529, SR Legacy, fibre AOAC 991.43)",
@@ -112,7 +112,7 @@ const NUTRITION_USDA = {
   },
   "Paprika Powder": {
     src: "usda", ref: "Spices, paprika (FDC 171329, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 12.9, protein: 14.1, carbs: 54, fiber: 34.9, sugars: 10.3, alcohol: 0, water: 11.2 }
+    values: { fat: 12.9, protein: 14.1, carbs: 54, fiber: 34.9, sugars: 10.3, alcohol: 0, water: 11.2, lactose: 0 }
   },
   "Pickle Relish": {
     src: "usda", ref: "Pickle relish, sweet (FDC 168561, SR Legacy, fibre AOAC 991.43)",
@@ -120,7 +120,7 @@ const NUTRITION_USDA = {
   },
   "Pickled Ginger": {
     src: "usda", ref: "Ginger root, pickled, canned, with artificial sweetener (FDC 169765, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 0.1, protein: 0.33, carbs: 4.83, fiber: 2.6, sugars: 0, alcohol: 0, water: 92.3 }
+    values: { fat: 0.1, protein: 0.33, carbs: 4.83, fiber: 2.6, sugars: 0, alcohol: 0, water: 92.3, lactose: 0 }
   },
   "Rosemary (dried)": {
     src: "usda", ref: "Spices, rosemary, dried (FDC 171333, SR Legacy, fibre AOAC 991.43)",
@@ -140,11 +140,11 @@ const NUTRITION_USDA = {
   },
   "Sourdough Bread (wheat)": {
     src: "usda", ref: "Bread, french or vienna (includes sourdough) (FDC 172675, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 2.42, protein: 10.8, carbs: 51.9, fiber: 2.2, sugars: 4.62, water: 33 }
+    values: { fat: 2.42, protein: 10.8, carbs: 51.9, fiber: 2.2, sugars: 4.62, water: 33, lactose: 0 }
   },
   "Sunflower Seed Butter": {
     src: "usda", ref: "Seeds, sunflower seed butter, with salt added (Includes foods for USDA's Food Distribution Program) (FDC 168595, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 55.2, protein: 17.3, carbs: 23.3, fiber: 5.7, sugars: 10.5, water: 0.62 }
+    values: { fat: 55.2, protein: 17.3, carbs: 23.3, fiber: 5.7, sugars: 10.5, water: 0.62, lactose: 0 }
   },
   "Tapioca": {
     src: "usda", ref: "Tapioca, pearl, dry (FDC 169717, SR Legacy, fibre AOAC 991.43)",
@@ -168,43 +168,43 @@ const NUTRITION_USDA = {
   }
 };
 
-const NUTRITION_USDA_REFUSED = ["Currants (dried)", "Enoki Mushrooms", "Kimchi", "Worcestershire Sauce"];
+const NUTRITION_USDA_REFUSED = ["Currants (dried)", "Worcestershire Sauce", "Teriyaki Sauce", "Enoki Mushrooms", "Kimchi"];
 
 /* Confirmed, but not imported — too little to be worth a place in a meal:
-     Currants (dried) — no fat
-     Enoki Mushrooms — no water
-     Kimchi — no fat, protein, water
-     Worcestershire Sauce — no water
-   A food with no figures at all is cleaner than one that holds a place in
-   every meal and answers nothing. See REQUIRED in tools/usda-core.js.
+     Currants (dried) — no fat — a food with no figures at all is cleaner than one that holds a place in every meal and answers nothing
+     Worcestershire Sauce — no water — a food with no figures at all is cleaner than one that holds a place in every meal and answers nothing
+     Teriyaki Sauce — no fat — a food with no figures at all is cleaner than one that holds a place in every meal and answers nothing
+     Enoki Mushrooms — no water — a food with no figures at all is cleaner than one that holds a place in every meal and answers nothing
+     Kimchi — no fat, protein, water — a food with no figures at all is cleaner than one that holds a place in every meal and answers nothing
 */
 
 /* Short of a full set, and why:
-     Lotus Root — missing sugars (not in the file), alcohol (not in the file)
-     Taro — missing sugars (taken from another form of the food)
-     Durian — missing sugars (not in the file), alcohol (not in the file)
+     Lotus Root — missing sugars (not in the file), alcohol (not in the file), lactose (not in the file)
+     Taro — missing sugars (taken from another form of the food), lactose (not in the file)
+     Durian — missing sugars (not in the file), alcohol (not in the file), lactose (not in the file)
      Sunflower Seed Butter — missing alcohol (not in the file)
      Naan Bread — missing alcohol (not in the file)
-     Soba Noodles — missing fiber (not in the file), sugars (not in the file), alcohol (not in the file)
-     Tapioca — missing sugars (taken from another form of the food)
+     Soba Noodles — missing fiber (not in the file), sugars (not in the file), alcohol (not in the file), lactose (not in the file)
+     Tapioca — missing sugars (taken from another form of the food), lactose (not in the file)
      Sourdough Bread (wheat) — missing alcohol (estimated formulation based on ingredient list; linear program used to estimate ingredients; claim on label/serving)
-     Adzuki Beans — missing fiber (taken from another form of the food), sugars (not in the file), alcohol (not in the file)
-     Sheeps Milk — missing sugars (not in the file), alcohol (not in the file)
-     Fontina — missing sugars (copied from another nutrient)
-     Dill (dried) — missing sugars (not in the file), alcohol (not in the file)
-     Thyme (dried) — missing sugars (taken from another form of the food)
-     Thyme (fresh) — missing sugars (not in the file), alcohol (not in the file)
-     Rosemary (dried) — missing sugars (not in the file)
-     Rosemary (fresh) — missing sugars (not in the file), alcohol (not in the file)
-     Mint (fresh) — missing sugars (not in the file), alcohol (not in the file)
-     Mint (dried) — missing fiber (manufacturer supplied, incomplete documentation), sugars (not in the file), alcohol (not in the file)
-     Allspice — missing sugars (not in the file)
-     Maple Syrup — missing fiber (taken from another source--other tables of food composition), sugars (taken from another source--other tables of food composition), alcohol (not in the file)
+     Adzuki Beans — missing fiber (taken from another form of the food), sugars (not in the file), alcohol (not in the file), lactose (not in the file)
+     Tofu (silken) — missing lactose (not in the file)
+     Sheeps Milk — missing sugars (not in the file), alcohol (not in the file), lactose (not in the file)
+     Fontina — missing sugars (copied from another nutrient), lactose (not in the file)
+     Dill (dried) — missing sugars (not in the file), alcohol (not in the file), lactose (not in the file)
+     Thyme (dried) — missing sugars (taken from another form of the food), lactose (not in the file)
+     Thyme (fresh) — missing sugars (not in the file), alcohol (not in the file), lactose (not in the file)
+     Rosemary (dried) — missing sugars (not in the file), lactose (not in the file)
+     Rosemary (fresh) — missing sugars (not in the file), alcohol (not in the file), lactose (not in the file)
+     Mint (fresh) — missing sugars (not in the file), alcohol (not in the file), lactose (not in the file)
+     Mint (dried) — missing fiber (manufacturer supplied, incomplete documentation), sugars (not in the file), alcohol (not in the file), lactose (not in the file)
+     Allspice — missing sugars (not in the file), lactose (not in the file)
+     Maple Syrup — missing fiber (taken from another table of food composition, unnamed), sugars (taken from another table of food composition, unnamed), alcohol (not in the file)
      Horseradish Sauce — missing alcohol (estimated from the ingredient list)
-     Hoisin Sauce — missing sugars (estimated from the ingredient list)
-     Oyster Sauce — missing sugars (estimated from the ingredient list)
+     Hoisin Sauce — missing sugars (estimated from the ingredient list), lactose (not in the file)
+     Oyster Sauce — missing sugars (estimated from the ingredient list), lactose (not in the file)
      Morel Mushrooms — missing alcohol (not in the file)
-     Pickle Relish — missing sugars (taken from another form of the food)
-     Capers — missing sugars (taken from another form of the food)
-     Natto — missing sugars (taken from another form of the food)
+     Pickle Relish — missing sugars (taken from another form of the food), lactose (not in the file)
+     Capers — missing sugars (taken from another form of the food), lactose (not in the file)
+     Natto — missing sugars (taken from another form of the food), lactose (not in the file)
 */
