@@ -11,7 +11,7 @@
    rest come from nutrition-manual.js, which records a source per food;
    `src` on each line below says which.
 
-   450 of 493 foods have figures — 378 from Livsmedelsverket, 72 entered by
+   449 of 492 foods have figures — 377 from Livsmedelsverket, 72 entered by
    hand. The rest have none, and the meal builder will not let them into a
    meal.
 
@@ -399,8 +399,7 @@ const NUTRITION = {
   "Smoked Salmon": { src: "lmv", fat: 9.8, protein: 20, carbs: 1.3, fiber: 0, sugars: 0, alcohol: 0, water: 65.1 },
   "Soba Noodles": { src: "usda", fat: 0.1, protein: 5.06, carbs: 21.4, water: 73 },
   "Sorghum/Durra": { src: "lmv", fat: 2.6, protein: 9.5, carbs: 69.7, fiber: 4.4, sugars: 0.6, alcohol: 0, water: 12.5 },
-  "Sour Cream (~10% fat)": { src: "lmv", fat: 11.5, protein: 2.5, carbs: 4, fiber: 0, sugars: 3.3, alcohol: 0, water: 81.4 },
-  "Sour Cream (~20% fat)": { src: "lmv", fat: 34, protein: 2.3, carbs: 3.3, fiber: 0, sugars: 2.6, alcohol: 0, water: 59.9 },
+  "Sour Cream": { src: "lmv", fat: 11.5, protein: 2.5, carbs: 4, fiber: 0, sugars: 3.3, alcohol: 0, water: 81.4 },
   "Sourdough Bread (wheat)": { src: "usda", fat: 2.42, protein: 10.8, carbs: 51.9, fiber: 2.2, sugars: 4.62, water: 33, lactose: 0 },
   "Soy Milk": { src: "lmv", fat: 1.5, protein: 3.1, carbs: 1.9, fiber: 0, sugars: 0.5, alcohol: 0, water: 92.9 },
   "Soy Sauce": { src: "lmv", fat: 0, protein: 7.5, carbs: 6.6, fiber: 0, sugars: 1.6, alcohol: 0, water: 70 },
