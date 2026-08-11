@@ -258,6 +258,12 @@
        one rule written down twice is one rule that drifts. */
     const REQUIRED = ["fat", "protein", "carbs", "water"];
 
+    /* The columns worth borrowing on their own. Livsmedelsverket publishes
+       neither of them for any food, so an extras match is not competing with a
+       Swedish figure — it is filling a hole no Swedish round can fill. Kept in
+       step with BORROWABLE in nutrition-core.js by check-data.js. */
+    const EXTRA_KEYS = ["lactose", "polyols"];
+
     function toManualEntries(confirmed) {
         const out = {}, incomplete = [], refused = [];
 
@@ -301,9 +307,53 @@
         return { entries: out, incomplete: incomplete, refused: refused };
     }
 
+    /* Extras: the same confirmed-by-hand matches, but for foods
+       Livsmedelsverket already answers, and carrying only the two columns it
+       does not publish for anything.
+
+       The backbone rule does not apply here and must not. It exists to stop a
+       food entering a meal with a hole in the middle of it; an extras match
+       adds no food to any meal and no weight to any denominator. It adds one
+       number to a food that is already whole. A French record with a lactose
+       figure and no water is useless as a food and perfectly good as a
+       lactose figure. */
+    function toExtrasEntries(confirmed) {
+        const out = {}, empty = [];
+
+        confirmed.forEach(function (m) {
+            const values = {};
+            EXTRA_KEYS.forEach(function (k) {
+                const v = m.record.nutrients[k];
+                if (typeof v === "number" && !isNaN(v)) values[k] = Math.round(v * 100) / 100;
+            });
+            if (!Object.keys(values).length) {
+                empty.push({
+                    name: m.food.name,
+                    why: "the French record carries neither lactose nor polyols"
+                });
+                return;
+            }
+
+            const soft = Object.keys(m.record.notes || {})
+                .filter(function (k) { return EXTRA_KEYS.indexOf(k) !== -1; })
+                .map(function (k) { return k + " " + m.record.notes[k]; });
+
+            out[m.food.name] = {
+                src: "ciqual",
+                ref: m.record.name + " (Ciqual " + m.record.id + ")" +
+                    (soft.length ? " [" + soft.join(", ") + "]" : ""),
+                values: values
+            };
+        });
+
+        return { entries: out, empty: empty };
+    }
+
     const Ciqual = {
         COLUMNS: COLUMNS,
         REQUIRED: REQUIRED,
+        EXTRA_KEYS: EXTRA_KEYS,
+        toExtrasEntries: toExtrasEntries,
         readCell: readCell,
         recordsFromSheets: recordsFromSheets,
         fromXlsx: fromXlsx,

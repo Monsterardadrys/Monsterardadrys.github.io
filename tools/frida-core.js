@@ -231,13 +231,46 @@
         return out;
     }
 
+    /* Extras: matches made for foods Livsmedelsverket already answers, to take
+       the one column it does not publish for anything. Frida has lactose and
+       no polyols, so lactose is all it can lend.
+
+       Nothing else comes with it — not the fat, not the water. An extras match
+       adds one number to a food that is already whole, which is why it needs
+       no backbone and cannot dilute anything. */
+    const EXTRA_KEYS = ["lactose"];
+
+    function toExtrasEntries(confirmed) {
+        const out = {}, empty = [];
+        confirmed.forEach(function (m) {
+            const values = {};
+            EXTRA_KEYS.forEach(function (k) {
+                if (typeof m.record.nutrients[k] === "number") {
+                    values[k] = Math.round(m.record.nutrients[k] * 100) / 100;
+                }
+            });
+            if (!Object.keys(values).length) {
+                empty.push({ name: m.food.name, why: "the Danish record carries no lactose figure" });
+                return;
+            }
+            out[m.food.name] = {
+                src: "frida",
+                ref: m.record.name + " (Frida " + m.record.id + ")",
+                values: values
+            };
+        });
+        return { entries: out, empty: empty };
+    }
+
     const Frida = {
         PARAMETERS: PARAMETERS,
+        EXTRA_KEYS: EXTRA_KEYS,
         recordsFromSheets: recordsFromSheets,
         fromXlsx: fromXlsx,
         proposeMatches: proposeMatches,
         confirmedFrom: confirmedFrom,
-        toManualEntries: toManualEntries
+        toManualEntries: toManualEntries,
+        toExtrasEntries: toExtrasEntries
     };
 
     if (typeof module === "object" && module.exports) module.exports = Frida;

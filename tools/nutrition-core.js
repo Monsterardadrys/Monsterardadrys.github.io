@@ -36,6 +36,22 @@
     const KEEP = ["fat", "protein", "carbs", "fiber", "sugars", "alcohol", "water",
         "lactose", "polyols"];
 
+    /* The two columns that can be borrowed on their own, and only these two.
+
+       Everywhere else on the ladder a source answers for a food or it does
+       not, and Livsmedelsverket wins when both have a figure. These two are
+       different in kind: Livsmedelsverket does not publish them for any food,
+       so there is no Swedish figure to override and no round that could ever
+       produce one. Borrowing fills a hole rather than settling a
+       disagreement.
+
+       It only happens through a confirmed match in tools/*-extras.json —
+       hand-checked one food at a time, exactly like a full match — and it
+       can never bring anything else with it. The seven backbone figures stay
+       wholly Swedish, and each borrowed figure records where it came from in
+       `borrowed` so a reader can see it is not the row's own source. */
+    const BORROWABLE = ["lactose", "polyols"];
+
     function round(n) { return Math.round(n * 100) / 100; }
 
     /* Foods sold dry and eaten made up — soup powder, custard powder, a
@@ -76,7 +92,39 @@
         absent list never had a record to read, so they come out with nothing
         and every page reading the file has to cope with that.
     */
-    function build(result, ourCount, sourceName, manual) {
+    /* Fills the two borrowable columns on rows that have none, from the
+       confirmed extras matches. Fills only what is empty, so a source that
+       carries the column itself is never second-guessed, and a food sold dry
+       and eaten made up gets the same dilution its other figures got — a
+       borrowed figure describes the powder just as much as they do. */
+    function borrow(rows, extras, byName) {
+        const filled = [];
+        const byRow = {};
+        rows.forEach(function (r) { byRow[r.name] = r; });
+
+        Object.keys(extras || {}).forEach(function (name) {
+            const row = byRow[name];
+            const entry = extras[name];
+            if (!row || !entry || !entry.values) return;
+            const food = byName[name];
+            const factor = food && food.madeUp
+                ? food.madeUp.parts / (food.madeUp.parts + food.madeUp.water)
+                : 1;
+            BORROWABLE.forEach(function (key) {
+                const v = entry.values[key];
+                if (typeof v !== "number" || isNaN(v)) return;
+                if (row.values[key] != null) return;
+                row.values[key] = round(v * factor);
+                row.borrowed = row.borrowed || {};
+                row.borrowed[key] = entry.src || "extras";
+                filled.push({ name: name, key: key, src: row.borrowed[key] });
+            });
+        });
+
+        return filled;
+    }
+
+    function build(result, ourCount, sourceName, manual, extras) {
         const matched = result.clean.concat(result.disagreements);
 
         const rows = [];
@@ -124,7 +172,14 @@
             manualUsed += 1;
         });
 
+        const borrowed = borrow(rows, extras, byName);
+
         rows.sort(function (a, b) { return a.name.localeCompare(b.name); });
+
+        const borrowedBy = {};
+        borrowed.forEach(function (b) {
+            borrowedBy[b.key] = (borrowedBy[b.key] || 0) + 1;
+        });
 
         const lines = [];
         lines.push("/* =========================================================================");
@@ -145,6 +200,20 @@
         lines.push("   hand. The rest have none, and the meal builder will not let them into a");
         lines.push("   meal.");
         lines.push("");
+        if (borrowed.length) {
+            lines.push("   Lactose and polyols are the exception to \"one source per food\":");
+            lines.push("   Livsmedelsverket publishes neither, for any food, so no Swedish round");
+            lines.push("   can ever fill them. Where a food has a confirmed extras match those");
+            lines.push("   two columns alone are taken from Frida or Ciqual, and `borrowed` on");
+            lines.push("   the line says which. Nothing else is ever taken that way.");
+            lines.push("");
+            lines.push("   " + borrowed.length + " borrowed " +
+                (borrowed.length === 1 ? "figure" : "figures") + ": " +
+                Object.keys(borrowedBy).map(function (k) {
+                    return borrowedBy[k] + " " + k;
+                }).join(", "));
+            lines.push("");
+        }
         lines.push("   Built from: " + sourceName);
         lines.push("   ========================================================================= */");
         lines.push("");
@@ -152,6 +221,11 @@
         rows.forEach(function (row, i) {
             const parts = KEEP.filter(function (k) { return row.values[k] != null; })
                 .map(function (k) { return k + ": " + row.values[k]; });
+            if (row.borrowed) {
+                parts.push("borrowed: { " + Object.keys(row.borrowed).map(function (k) {
+                    return k + ': "' + row.borrowed[k] + '"';
+                }).join(", ") + " }");
+            }
             lines.push('  "' + row.name.replace(/"/g, '\\"') + '": { src: "' + row.src +
                 '", ' + parts.join(", ") + " }" + (i === rows.length - 1 ? "" : ","));
         });
@@ -163,12 +237,15 @@
             rows: rows,
             empty: empty,
             manualUsed: manualUsed,
+            borrowed: borrowed,
             skipped: result.skipped.length,
             unmatched: result.unmatched.map(function (f) { return f.name; })
         };
     }
 
-    const NutritionCore = { KEEP: KEEP, build: build, dilute: dilute };
+    const NutritionCore = {
+        KEEP: KEEP, BORROWABLE: BORROWABLE, build: build, dilute: dilute
+    };
 
     if (typeof module === "object" && module.exports) module.exports = NutritionCore;
     else root.NutritionCore = NutritionCore;

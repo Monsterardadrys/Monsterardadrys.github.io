@@ -6,7 +6,7 @@
     That is the only step needed when deploying: bump VERSION.
 */
 
-const VERSION = "v1.59";
+const VERSION = "v1.60";
 const CACHE = "food-intolerance-guide-" + VERSION;
 
 const ASSETS = [

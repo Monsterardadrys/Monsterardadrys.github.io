@@ -240,6 +240,7 @@
                rather than each racing the network on its own. */
             let ours = [];
             const repoFiles = {};
+            const repoExtras = {};
 
             function fetchText(url) {
                 return fetch(url, { cache: "no-store" })
@@ -262,6 +263,8 @@
                     if (!text) return;
                     const found = symbolFrom(text);
                     if (found) repoFiles[found.symbol] = found.value;
+                    const extra = extrasFrom(text);
+                    if (extra) repoExtras[extra.symbol] = extra.value;
                 });
             });
 
@@ -276,6 +279,7 @@
                symbol each file declares, so a file is identified by what it
                contains rather than by what it happens to be named. */
             const uploaded = {};
+            const uploadedExtras = {};
 
             const LADDER = [
                 { symbol: "NUTRITION_MANUAL", label: "by hand" },
@@ -284,7 +288,30 @@
                 { symbol: "NUTRITION_FRIDA", label: "Frida" }
             ];
 
+            /* The extras rungs. Lactose and polyols for foods Livsmedelsverket
+               already answers — the two columns it publishes for nothing, so
+               there is no Swedish figure to override and no Swedish round that
+               could ever fill them. They ride along in the same generated files
+               under their own symbol, so a borrowed column can never be taken
+               for a full match. Same order as loadExtras in build-nutrition.js. */
+            const EXTRAS_LADDER = [
+                { symbol: "NUTRITION_CIQUAL_EXTRAS", label: "Ciqual" },
+                { symbol: "NUTRITION_FRIDA_EXTRAS", label: "Frida" }
+            ];
+
             function baked(symbol) { return repoFiles[symbol] || null; }
+
+            function extrasFrom(text) {
+                for (let i = 0; i < EXTRAS_LADDER.length; i++) {
+                    const name = EXTRAS_LADDER[i].symbol;
+                    if (!new RegExp("(^|[\\s;])(const|let|var)\\s+" + name + "\\s*=").test(text)) continue;
+                    let value = null;
+                    try { value = new Function(text + "; return " + name + ";")(); }
+                    catch (e) { value = null; }
+                    if (value && typeof value === "object") return { symbol: name, value: value };
+                }
+                return null;
+            }
 
             /* Which of the three a file is, decided by what it declares.
 
@@ -350,7 +377,16 @@
                     usedFrom.push(rung.label + " " + n + (n === 1 ? " food" : " foods") +
                         " (" + (mine ? "the file you added" : n ? "the repo" : "nothing in the repo") + ")");
                 });
-                built = NutritionCore.build(result, ours.length, sourceName, manual);
+                /* Extras merge the same way and in the same order — later
+                   wins — but they only ever fill lactose and polyols, and only
+                   where the row has none. */
+                const extras = {};
+                EXTRAS_LADDER.forEach(function (rung) {
+                    const src = uploadedExtras[rung.symbol] || repoExtras[rung.symbol];
+                    if (src) Object.assign(extras, src);
+                });
+
+                built = NutritionCore.build(result, ours.length, sourceName, manual, extras);
 
                 const counts = document.getElementById("counts");
                 counts.innerHTML = "";
@@ -463,6 +499,8 @@
                         const theirs = Object.keys(baked(found.symbol) || {}).length;
 
                         uploaded[found.symbol] = found.value;
+                        const extra = extrasFrom(r.text);
+                        if (extra) uploadedExtras[extra.symbol] = extra.value;
                         took.push(r.name + " → " + rung.label + ", " + mine +
                             (mine === 1 ? " food" : " foods"));
 

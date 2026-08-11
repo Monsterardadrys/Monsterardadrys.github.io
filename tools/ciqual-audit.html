@@ -168,6 +168,16 @@
         .food:first-child { border-top: none; }
         .foodName { font-weight: 600; }
 
+        /* Where the list stops being work and starts being optional. */
+        .extrasHead {
+            border-top: 2px solid var(--ink);
+            margin-top: 1.4rem;
+            padding-top: 0.9rem;
+        }
+
+        .extrasHead h3 { margin: 0 0 0.3rem; font-size: 1rem; }
+        .extrasHead p { margin: 0 0 0.4rem; font-size: 0.9rem; opacity: 0.85; }
+
         .cand {
             display: block;
             width: 100%;
@@ -304,6 +314,15 @@
             <div class="status" id="copyStatus"></div>
             <textarea id="aliasText" readonly></textarea>
 
+            <div id="extrasWrap" style="display:none">
+                <h2 style="margin-top:1.2rem">And the extras</h2>
+                <p>The foods further down the page, the ones that already have Swedish figures. This is
+                    the whole of <strong>tools/ciqual-extras.json</strong>. It lends lactose and polyols
+                    and nothing else — every other figure on those foods stays Swedish.</p>
+                <button id="downloadExtras">Download ciqual-extras.json</button>
+                <textarea id="extrasText" readonly></textarea>
+            </div>
+
             <p class="note">Picks are kept in this browser as you go, so reloading the page or coming
                 back tomorrow does not lose them.</p>
             <button id="clearPicks" class="secondary">Clear picks</button>
@@ -347,6 +366,9 @@
                     .catch(function () { return {}; }),
                 fetch("ciqual-declined.json", { cache: "no-store" })
                     .then(function (r) { return r.ok ? r.json() : {}; })
+                    .catch(function () { return {}; }),
+                fetch("ciqual-extras.json", { cache: "no-store" })
+                    .then(function (r) { return r.ok ? r.json() : {}; })
                     .catch(function () { return {}; })
             ]).then(function (parts) {
                 const CATEGORIES = new Function(parts[0] + "; return CATEGORIES;")();
@@ -361,11 +383,30 @@
                    a match confirmed last time still belongs in it even though
                    the food now has figures. Building the file from `needing`
                    was a bug that shrank thirty confirmed matches to two. */
-                const needing = [], allFoods = [];
+                const needing = [], allFoods = [], extras = [];
                 CATEGORIES.forEach(function (c) {
                     c.foods.forEach(function (f) {
                         allFoods.push(f);
-                        if (!NUTRITION[f.name]) needing.push(f);
+                        if (!NUTRITION[f.name]) { needing.push(f); return; }
+
+                        /* A third list, and a different question. These foods
+                           have Swedish figures and are not short of anything a
+                           meal needs. They are offered for the two columns
+                           Livsmedelsverket publishes for nothing at all —
+                           lactose and polyols — where having one would change
+                           what the site says.
+
+                           Only where it would change something: a milk food
+                           with no lactose figure is checked against total
+                           sugars today, which is why lactose-free milk still
+                           reads as full of it. A food tagged polyols has never
+                           had a figure at all. Every other food would gain a
+                           number nobody reads. */
+                        const traits = f.traits || [];
+                        const n = NUTRITION[f.name];
+                        const wantsLactose = traits.indexOf("allergen_milk") !== -1 && n.lactose == null;
+                        const wantsPolyols = traits.indexOf("polyols") !== -1 && n.polyols == null;
+                        if (wantsLactose || wantsPolyols) extras.push(f);
                     });
                 });
                 /* Matches the repo has looked at and turned down. Without this a
@@ -376,14 +417,31 @@
                 Object.keys(parts[3] || {}).forEach(function (k) {
                     if (k[0] !== "_") declined[k] = parts[3][k];
                 });
-                return { needing: needing, allFoods: allFoods, aliases: aliases, declined: declined };
+                const extraAliases = {};
+                Object.keys(parts[4] || {}).forEach(function (k) {
+                    if (k[0] !== "_") extraAliases[k] = parts[4][k];
+                });
+
+                return {
+                    needing: needing, allFoods: allFoods, extras: extras,
+                    aliases: aliases, extraAliases: extraAliases, declined: declined
+                };
             });
 
             let records = [];
             let byName = {};
             let needing = [];
             let allFoods = [];
+            let extras = [];
+            let extraNames = {};
             let sourceName = "";
+
+            /* Which file a pick belongs in is not a property of the pick — it
+               is a property of the food. A food with no figures is a full
+               match; a food that already has them can only be an extras
+               match. One store, split here, so a pick can never end up in
+               both files or neither. */
+            function isExtra(name) { return Boolean(extraNames[name]); }
 
             function show(el, kind, msg) {
                 el.className = "status show " + kind;
@@ -398,9 +456,15 @@
                 });
             }
 
+            /* The four that catch a wrong form, then the two that are the whole
+               point of an extras match — shown only when the record has them,
+               so the line stays short for the foods where they are noise. */
             function figLine(n) {
-                return "fat " + fmt(n.fat) + " · water " + fmt(n.water) +
+                let line = "fat " + fmt(n.fat) + " · water " + fmt(n.water) +
                     " · sugars " + fmt(n.sugars) + " · fiber " + fmt(n.fiber);
+                if (typeof n.lactose === "number") line += " · lactose " + fmt(n.lactose);
+                if (typeof n.polyols === "number") line += " · polyols " + fmt(n.polyols);
+                return line;
             }
 
             /* What a candidate lost to the derivation test, said plainly. A
@@ -420,7 +484,9 @@
                 "Third on the ladder: only foods with no Livsmedelsverket and no Frida entry are candidates.";
 
             function aliasFileText() {
-                const names = Object.keys(picked).sort();
+                const names = Object.keys(picked).filter(function (n) {
+                    return !isExtra(n);
+                }).sort();
                 const lines = ["{", '  "_comment": "' + HEADER + '"' + (names.length ? "," : "")];
                 names.forEach(function (name, i) {
                     lines.push('  "' + name.replace(/"/g, '\\"') + '": "' +
@@ -430,8 +496,67 @@
                 return lines.join("\n") + "\n";
             }
 
+            const EXTRAS_HEADER = "Confirmed French extras: our food name -> the Ciqual alim_nom_eng " +
+                "it lends a column to. These foods already have Livsmedelsverket figures and keep " +
+                "every one of them. Only lactose and polyols are taken, because Livsmedelsverket " +
+                "publishes neither for any food, so no Swedish round can ever fill them.";
+
+            function extrasAliasFileText() {
+                const names = Object.keys(picked).filter(isExtra).sort();
+                const lines = ["{", '  "_comment": "' + EXTRAS_HEADER + '"' + (names.length ? "," : "")];
+                names.forEach(function (name, i) {
+                    lines.push('  "' + name.replace(/"/g, '\\"') + '": "' +
+                        picked[name].replace(/"/g, '\\"') + '"' + (i === names.length - 1 ? "" : ","));
+                });
+                lines.push("}");
+                return lines.join("\n") + "\n";
+            }
+
+            function extrasBlock() {
+                const confirmed = Object.keys(picked).filter(isExtra).map(function (name) {
+                    const food = allFoods.find(function (f) { return f.name === name; });
+                    const record = byName[picked[name]];
+                    return (food && record) ? { food: food, record: record } : null;
+                }).filter(Boolean);
+
+                const built = Ciqual.toExtrasEntries(confirmed);
+                const entries = built.entries;
+                const names = Object.keys(entries).sort();
+                const lines = [];
+
+                lines.push("/* The extras: lactose and polyols only, for foods Livsmedelsverket already");
+                lines.push("   answers. It publishes neither column for anything, so this is not a");
+                lines.push("   French figure beating a Swedish one — there is no Swedish one, and no");
+                lines.push("   Swedish round that could produce it. Every other figure on those foods");
+                lines.push("   stays Swedish, and nutrition-data.js marks each borrowed number in");
+                lines.push("   `borrowed`. Matched through tools/ciqual-extras.json. */");
+                lines.push("");
+                lines.push("const NUTRITION_CIQUAL_EXTRAS = {");
+                names.forEach(function (name, i) {
+                    const e = entries[name];
+                    const vals = Object.keys(e.values).map(function (k) { return k + ": " + e.values[k]; });
+                    lines.push('  "' + name.replace(/"/g, '\\"') + '": {');
+                    lines.push('    src: "' + e.src + '", ref: "' + e.ref.replace(/"/g, '\\"') + '",');
+                    lines.push("    values: { " + vals.join(", ") + " }");
+                    lines.push("  }" + (i === names.length - 1 ? "" : ","));
+                });
+                lines.push("};");
+
+                if (built.empty.length) {
+                    lines.push("");
+                    lines.push("/* Picked and carrying nothing to lend:");
+                    built.empty.forEach(function (row) {
+                        lines.push("     " + row.name + " — " + row.why);
+                    });
+                    lines.push("*/");
+                }
+                return lines.join("\n");
+            }
+
             function nutritionFileText() {
-                const confirmed = Object.keys(picked).map(function (name) {
+                const confirmed = Object.keys(picked).filter(function (n) {
+                    return !isExtra(n);
+                }).map(function (name) {
                     const food = allFoods.find(function (f) { return f.name === name; });
                     const record = byName[picked[name]];
                     return (food && record) ? { food: food, record: record } : null;
@@ -501,16 +626,26 @@
                     lines.push("*/");
                     lines.push("");
                 }
+
+                // Both objects live in one file, so one download carries the
+                // whole French round and the two cannot drift apart.
+                lines.push(extrasBlock());
+                lines.push("");
                 return lines.join("\n");
             }
 
             function refreshPicks() {
-                const n = Object.keys(picked).length;
+                const all = Object.keys(picked);
+                const n = all.filter(function (k) { return !isExtra(k); }).length;
+                const e = all.length - n;
                 document.getElementById("pickCount").textContent =
-                    n + " picked, " + (needing.length - n) + " to go";
+                    n + " picked, " + (needing.length - n) + " to go" +
+                    (e ? " · " + e + " extras" : "");
                 document.getElementById("aliasText").value = aliasFileText();
+                document.getElementById("extrasText").value = extrasAliasFileText();
+                document.getElementById("extrasWrap").style.display = e ? "block" : "none";
                 document.getElementById("preview").textContent = nutritionFileText().slice(0, 2500);
-                document.getElementById("picks").style.display = n ? "block" : "none";
+                document.getElementById("picks").style.display = all.length ? "block" : "none";
             }
 
             function pick(foodName, recordName, wrap) {
@@ -553,7 +688,7 @@
                 return b;
             }
 
-            function render(result, ourCount, read) {
+            function render(result, ourCount, read, extrasResult) {
                 const counts = document.getElementById("counts");
                 counts.innerHTML = "";
                 [
@@ -561,7 +696,8 @@
                     [ourCount, "of ours need figures"],
                     [result.confirmed.length, "already in the file"],
                     [result.toConfirm.length, "to pick"],
-                    [result.unmatched.length, "nothing close"]
+                    [result.unmatched.length, "nothing close"],
+                    [extrasResult ? extrasResult.toConfirm.length : 0, "extras to pick"]
                 ].forEach(function (pair) {
                     const d = document.createElement("div");
                     d.className = "count";
@@ -578,7 +714,34 @@
                     return { food: u.food, candidates: [] };
                 }));
 
+                /* The extras come after everything else and behind a heading,
+                   because they are a different question and answering them is
+                   optional. Nothing below the heading needs a match for the
+                   site to work — those foods already have their figures. */
+                if (extrasResult && (extrasResult.toConfirm.length || extrasResult.unmatched.length)) {
+                    blocks.push({ heading: true });
+                    extrasResult.toConfirm.forEach(function (t) {
+                        blocks.push({ food: t.food, candidates: t.candidates });
+                    });
+                    extrasResult.unmatched.forEach(function (u) {
+                        blocks.push({ food: u.food, candidates: [] });
+                    });
+                }
+
                 blocks.forEach(function (t) {
+                    if (t.heading) {
+                        const head = document.createElement("div");
+                        head.className = "extrasHead";
+                        head.innerHTML = "<h3>Lactose and polyols only</h3>" +
+                            "<p>These foods already have Swedish figures and keep every one of them. " +
+                            "Livsmedelsverket publishes no lactose column and no polyols column for " +
+                            "anything, so the lactose line is checked against total sugars — which is " +
+                            "why lactose-free milk still reads as full of it — and the polyols tag has " +
+                            "never had a figure behind it at all. A match here lends those two numbers " +
+                            "and nothing else. Skipping them changes nothing that works today.</p>";
+                        list.appendChild(head);
+                        return;
+                    }
                     const wrap = document.createElement("div");
                     wrap.className = "food";
 
@@ -700,12 +863,20 @@
                         records.forEach(function (r) { byName[r.name] = r; });
                         needing = ctx.needing;
                         allFoods = ctx.allFoods;
+                        extras = ctx.extras;
+                        extraNames = {};
+                        extras.forEach(function (f) { extraNames[f.name] = true; });
 
-                        /* Anything already in ciqual-aliases.json counts as
-                           picked, so a half-finished round carries on rather
-                           than starting again. */
+                        /* Anything already in ciqual-aliases.json or
+                           ciqual-extras.json counts as picked, so a
+                           half-finished round carries on rather than starting
+                           again. */
                         Object.keys(ctx.aliases).forEach(function (k) {
                             if (!picked[k]) picked[k] = ctx.aliases[k];
+                        });
+                        Object.keys(ctx.extraAliases).forEach(function (k) {
+                            if (!picked[k]) picked[k] = ctx.extraAliases[k];
+                            extraNames[k] = true;
                         });
                         // A declined match is a decision, and it outranks a pick
                         // this browser is still holding on to.
@@ -721,7 +892,8 @@
                         }
 
                         const result = Ciqual.proposeMatches(needing, records, ctx.aliases);
-                        render(result, needing.length, read);
+                        const extrasResult = Ciqual.proposeMatches(extras, records, ctx.extraAliases);
+                        render(result, needing.length, read, extrasResult);
                     });
                 }).catch(function (err) {
                     show(status, "bad", "Could not read that file: " + err.message);
@@ -740,6 +912,10 @@
                 } else {
                     show(status, "info", "Select the box and copy by hand.");
                 }
+            });
+
+            document.getElementById("downloadExtras").addEventListener("click", function () {
+                download(extrasAliasFileText(), "ciqual-extras.json");
             });
 
             document.getElementById("downloadAliases").addEventListener("click", function () {

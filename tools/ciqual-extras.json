@@ -1,0 +1,3 @@
+{
+  "_comment": "Confirmed French extras: our food name -> the Ciqual alim_nom_eng it lends a column to. These foods already have Livsmedelsverket figures and keep every one of them. Only lactose and polyols are taken, because Livsmedelsverket publishes neither for any food, so no Swedish round can ever fill them. Confirmed by hand, one at a time, from tools/ciqual-audit.html. Frida's extras win over these where both have the food."
+}
