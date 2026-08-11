@@ -179,6 +179,14 @@ read(file).then(function (out) {
   lines.push("};");
   lines.push("");
 
+  /* The refusals, for a reader rather than a person. Without this the
+     workbench sees a generated file shorter than its alias file and calls it
+     drift — which is exactly what a half-written file looks like. */
+  lines.push("const NUTRITION_USDA_REFUSED = [" +
+    built.refused.map(function (r) { return '"' + r.name.replace(/"/g, '\\"') + '"'; }).join(", ") +
+    "];");
+  lines.push("");
+
   if (built.refused.length) {
     lines.push("/* Confirmed, but not imported — too little to be worth a place in a meal:");
     built.refused.forEach(function (row) {

@@ -168,6 +168,8 @@ const NUTRITION_USDA = {
   }
 };
 
+const NUTRITION_USDA_REFUSED = ["Currants (dried)", "Enoki Mushrooms", "Kimchi", "Teriyaki Sauce", "Worcestershire Sauce"];
+
 /* Confirmed, but not imported — too little to be worth a place in a meal:
      Currants (dried) — no fat
      Enoki Mushrooms — no water
