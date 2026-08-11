@@ -183,7 +183,7 @@
             <h2><span class="stepNum">3</span>The audit files
                 <span class="note">(optional — step 2 is still required)</span></h2>
             <p>Everything below Livsmedelsverket on the ladder — <strong>nutrition-frida.js</strong>,
-                <strong>nutrition-usda.js</strong>, <strong>nutrition-manual.js</strong>. Leave this empty
+                <strong>nutrition-ciqual.js</strong>, <strong>nutrition-usda.js</strong>, <strong>nutrition-manual.js</strong>. Leave this empty
                 and the copies already in the repo are used, which is what you want when nothing has
                 changed since they were committed.</p>
             <p class="note">Add them here to build straight from a round you have just finished, without
@@ -251,6 +251,7 @@
                 fetchText("../foods-data.js"),
                 fetchText("../nutrition-manual.js"),
                 fetchText("../nutrition-usda.js"),
+                fetchText("../nutrition-ciqual.js"),
                 fetchText("../nutrition-frida.js")
             ]).then(function (parts) {
                 if (parts[0]) {
@@ -279,6 +280,7 @@
             const LADDER = [
                 { symbol: "NUTRITION_MANUAL", label: "by hand" },
                 { symbol: "NUTRITION_USDA", label: "USDA" },
+                { symbol: "NUTRITION_CIQUAL", label: "Ciqual" },
                 { symbol: "NUTRITION_FRIDA", label: "Frida" }
             ];
 
@@ -453,7 +455,7 @@
                         const found = symbolFrom(r.text);
                         if (!found) {
                             ignored.push(r.name + " — declares none of nutrition-frida.js, " +
-                                "nutrition-usda.js or nutrition-manual.js");
+                                "nutrition-ciqual.js, nutrition-usda.js or nutrition-manual.js");
                             return;
                         }
                         const rung = LADDER.filter(function (x) { return x.symbol === found.symbol; })[0];

@@ -55,6 +55,20 @@ const DOSE_EXCEPTIONS = require("./lmv-core.js").DELIBERATE;
 /* Denmark's confirmed matches, if a round has been run. Read here rather than
    where the rule sits, because the madeUp check needs it too — a recipe can
    now be applied to figures from either table. */
+const ciqualAliasPath = path.join(__dirname, "ciqual-aliases.json");
+const ciqualAliases = {};
+if (fs.existsSync(ciqualAliasPath)) {
+  const raw = JSON.parse(fs.readFileSync(ciqualAliasPath, "utf8"));
+  Object.keys(raw).forEach(function (k) { if (k[0] !== "_") ciqualAliases[k] = raw[k]; });
+}
+
+const ciqualDeclinedPath = path.join(__dirname, "ciqual-declined.json");
+const ciqualDeclined = {};
+if (fs.existsSync(ciqualDeclinedPath)) {
+  const raw = JSON.parse(fs.readFileSync(ciqualDeclinedPath, "utf8"));
+  Object.keys(raw).forEach(function (k) { if (k[0] !== "_") ciqualDeclined[k] = raw[k]; });
+}
+
 const usdaAliasPath = path.join(__dirname, "usda-aliases.json");
 const usdaAliases = {};
 if (fs.existsSync(usdaAliasPath)) {
@@ -378,6 +392,8 @@ const pendingBuild = entries(aliases).filter(function (name) {
   return byName[name] && !NUTRITION[name];
 }).concat(entries(fridaAliases).filter(function (name) {
   return byName[name] && !NUTRITION[name];
+})).concat(entries(ciqualAliases).filter(function (name) {
+  return byName[name] && !NUTRITION[name];
 })).concat(entries(usdaAliases).filter(function (name) {
   return byName[name] && !NUTRITION[name];
 }));
@@ -439,8 +455,49 @@ entries(usdaAliases).forEach(function (name) {
     faults.push(name + " has both a Danish and an American match — Denmark is above " +
       "America on the ladder, so the American one is dead weight. Drop it from " +
       "usda-aliases.json.");
+  } else if (ciqualAliases[name]) {
+    faults.push(name + " has both a French and an American match — France is above " +
+      "America on the ladder, so the American one is dead weight. Drop it from " +
+      "usda-aliases.json.");
   }
 });
+
+/* Ciqual is third, between Denmark and America, and the same rule applies one
+   rung up: it is only ever asked about foods neither table above it covers. */
+entries(ciqualAliases).forEach(function (name) {
+  const food = byName[name];
+  if (!food) {
+    faults.push("ciqual-aliases.json confirms \"" + name + "\", which is not a food");
+  } else if (food.lmv) {
+    faults.push(name + " has a French match but already carries Livsmedelsverket's \"" +
+      food.lmv + "\" — Ciqual is only for the foods no table above it has");
+  } else if (fridaAliases[name]) {
+    faults.push(name + " has both a Danish and a French match — Denmark is above France " +
+      "on the ladder, so the French one is dead weight. Drop it from ciqual-aliases.json.");
+  }
+});
+
+entries(ciqualDeclined).forEach(function (name) {
+  if (!byName[name]) {
+    faults.push("ciqual-declined.json names \"" + name + "\", which is not a food");
+  } else if (ciqualAliases[name]) {
+    faults.push(name + " is in both ciqual-aliases.json and ciqual-declined.json — " +
+      "a match is either confirmed or declined, not both");
+  }
+});
+
+/* The backbone rule is written down in two readers, so it is checked here
+   rather than trusted. Same shape as DOSE moving into lmv-core.js: when one
+   fact is written twice, write the check that makes them equal. */
+(function () {
+  const a = require("./usda-core.js").REQUIRED.slice().sort().join(",");
+  const b = require("./ciqual-core.js").REQUIRED.slice().sort().join(",");
+  if (a !== b) {
+    faults.push("REQUIRED disagrees between the readers — usda-core.js says [" + a +
+      "] and ciqual-core.js says [" + b + "]. A food kept by one and refused by the " +
+      "other is the ladder contradicting itself.");
+  }
+})();
 
 /* A declined American match is a decision written down so it is not made
    again — the counterpart of lmv-absent.json. It only means anything while it

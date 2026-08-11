@@ -1,7 +1,10 @@
 /*
     usda-core.js — reading USDA's FoodData Central JSON.
 
-    Third on the ladder, behind Livsmedelsverket and Frida. One reader serves
+    Fourth on the ladder, behind Livsmedelsverket, Frida and Ciqual — France
+    went above America because it is a European table for a European diet, and
+    where the two overlap the American one is answering about a different
+    shelf. One reader serves
     both sets we accept, because they share a schema: Foundation Foods
     ("FoundationFoods") and SR Legacy ("SRLegacyFoods"). FNDDS is deliberately
     not read — it is survey data costed out of recipes rather than measured,
@@ -37,7 +40,7 @@
        list is the order of preference.
 
     Matching is not confirmed here. This produces candidates; a human confirms
-    them into usda-aliases.json, exactly as with the other two.
+    them into usda-aliases.json, exactly as with the other three.
 */
 
 (function (root) {
@@ -506,6 +509,7 @@
         NUTRIENTS: NUTRIENTS,
         ACCEPTED: ACCEPTED,
         REJECTED: REJECTED,
+        REQUIRED: REQUIRED,
         makeReader: makeReader,
         fromBlob: fromBlob,
         recordsFromJson: recordsFromJson,
