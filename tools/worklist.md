@@ -509,6 +509,41 @@ declined stops being reported as outstanding. Checked with the real 43 picks in
 a browser against the repo as it stands: no alarms, and the only thing left to
 say is that 49 foods still have no figures.
 
+**A food must never be offered its own source's extras, and three lost their
+figures proving it.** Goats Milk, Skyr and Whey Protein take their figures from
+Frida — Livsmedelsverket has none of them. The extras list was built from "has
+figures, carries `allergen_milk`, has no lactose figure", which all three
+satisfy, so the Danish audit offered them back to Denmark. A pick belongs to
+exactly one file, and they were now extras picks, so all three vanished from
+`frida-aliases.json` and came back as extras lending *nothing* — Frida has no
+lactose for any of them. The builder caught it as three foods about to lose
+their figures, which is exactly the alarm it was built for.
+
+The rule was already written down one line up — a full match brings every column
+that table has — but only as a check on two files disagreeing, not as a
+constraint on what gets offered. Both audit pages now skip a food whose figures
+came from that same table, and `check-data.js` fails the state directly.
+
+**And a fourth kind of stale pick: the food renamed away.** `Cows Milk` came
+back in the alias file as a confirmed match for a name that no longer exists,
+because the browser had it from before the rename. All three audit pages now
+drop picks for names the repo does not have. That is the whole set of ways a
+pick can be settled or void: declined, refused, superseded, and gone.
+
+**Nothing was reading the generated files, and one of them stopped parsing.**
+The dairy rename swept the repo with a regex; one of its patterns matched the
+*key line* of the last entry in `nutrition-ciqual.js` and deleted it, leaving
+the body attached to the entry above. The file was broken JavaScript from that
+moment, and **both checks passed** — `check-data.js` reads `nutrition-data.js`
+and the alias files, `check-site.js` reads pages, and the refused-list scan uses
+a regex rather than a parse. It shipped in v1.61 and would have taken France's
+whole rung off the ladder silently.
+
+`check-data.js` now evaluates every generated file and holds it to the files it
+was built from: a written entry must be a food and be in the alias file, an
+alias must be written or refused, an extras entry must be confirmed. Verified by
+breaking `nutrition-ciqual.js` again on purpose.
+
 **An English dairy name does not name one product.** *Cream* is anything from
 18% to 48% depending on which country's shelf it came off; *sour cream* is 20%
 in America and 12% in Sweden; *crème fraîche* is 34% unless it is the *légère*

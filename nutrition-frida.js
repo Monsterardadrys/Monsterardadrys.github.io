@@ -136,3 +136,97 @@ const NUTRITION_FRIDA = {
     values: { fat: 0.6, protein: 27.8, carbs: 8.2, fiber: 3, sugars: 0, alcohol: 0, water: 37 }
   }
 };
+
+/* The extras: lactose only, for foods Livsmedelsverket already answers.
+   It publishes no lactose column for anything, so this is not a Danish
+   figure beating a Swedish one — there is no Swedish one, and no Swedish
+   round that could produce it. Every other figure on those foods stays
+   Swedish, and nutrition-data.js marks each borrowed number in
+   `borrowed`. Matched through tools/frida-extras.json. */
+
+const NUTRITION_FRIDA_EXTRAS = {
+  "Blue Cheese": {
+    src: "frida", ref: "Cheese, Danish Blue, 50 % fidm. (Frida 138)",
+    values: { lactose: 0 }
+  },
+  "Brie": {
+    src: "frida", ref: "Cheese, Brie, 60 % fidm. (Frida 139)",
+    values: { lactose: 0 }
+  },
+  "Butter": {
+    src: "frida", ref: "Butter, salt added (Frida 1052)",
+    values: { lactose: 0.57 }
+  },
+  "Buttermilk": {
+    src: "frida", ref: "Milk, buttermilk (Frida 32)",
+    values: { lactose: 3.67 }
+  },
+  "Camembert": {
+    src: "frida", ref: "Cheese, Camembert, 45 % fidm. (Frida 1235)",
+    values: { lactose: 0.1 }
+  },
+  "Cheddar": {
+    src: "frida", ref: "Cheese, hard, Cheddar, Danish (Frida 321)",
+    values: { lactose: 0 }
+  },
+  "Cottage Cheese (4% fat)": {
+    src: "frida", ref: "Cheese, cottage, 20 % fidm. (Frida 517)",
+    values: { lactose: 2.5 }
+  },
+  "Cows Milk (3% fat)": {
+    src: "frida", ref: "Milk, whole, konventional (not organic), 3.5 % fat (Frida 6)",
+    values: { lactose: 4.6 }
+  },
+  "Emmental": {
+    src: "frida", ref: "Cheese, hard, Emmentaler, 45 % fidm. (Frida 261)",
+    values: { lactose: 0 }
+  },
+  "Feta Cheese": {
+    src: "frida", ref: "Cheese, semihard, Feta, 40 % fidm (Frida 73)",
+    values: { lactose: 0.16 }
+  },
+  "Flavored Yogurt": {
+    src: "frida", ref: "Yogurt, with fruit, 1.5 % fat (Frida 1169)",
+    values: { lactose: 2.55 }
+  },
+  "Greek Yogurt (10% fat)": {
+    src: "frida", ref: "Cream yoghurt, plain, 10% fat (Greek and Turkish style) (Frida 1764)",
+    values: { lactose: 2.95 }
+  },
+  "Hard Cheese (~28-35% fat)": {
+    src: "frida", ref: "Cheese, hard, Cheddar, Danish (Frida 321)",
+    values: { lactose: 0 }
+  },
+  "Ice Cream": {
+    src: "frida", ref: "Chocolate ice cream (Frida 1921)",
+    values: { lactose: 3.35 }
+  },
+  "Kefir": {
+    src: "frida", ref: "Milk, 1.5 % fat, cultured, kefir (Frida 1153)",
+    values: { lactose: 3.78 }
+  },
+  "Milk chocolate": {
+    src: "frida", ref: "Chocolate, milk (Frida 675)",
+    values: { lactose: 7.4 }
+  },
+  "Mozzarella": {
+    src: "frida", ref: "Cheese, semihard, Mozzarella, 45 % fidm. (Frida 97)",
+    values: { lactose: 0 }
+  },
+  "Parmesan": {
+    src: "frida", ref: "Cheese, hard, Parmesan, 32 % fidm. (Frida 309)",
+    values: { lactose: 0 }
+  },
+  "Yogurt (0.5% fat)": {
+    src: "frida", ref: "Yogurt low fat, 0.1 % fat (Frida 1598)",
+    values: { lactose: 2.8 }
+  },
+  "Yogurt (3% fat)": {
+    src: "frida", ref: "Yogurt plain, whole milk (Frida 12)",
+    values: { lactose: 2.5 }
+  }
+};
+
+/* Picked and carrying nothing to lend:
+     Cinnamon Bun — the Danish record carries no lactose figure
+*/

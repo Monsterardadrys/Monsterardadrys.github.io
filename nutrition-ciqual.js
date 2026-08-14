@@ -225,8 +225,5 @@ const NUTRITION_CIQUAL_EXTRAS = {
   "Yogurt (3% fat)": {
     src: "ciqual", ref: "Yoghurt or fermented milk, plain (average) (Ciqual 19600)",
     values: { lactose: 3.21, polyols: 0 }
-  },
-    src: "ciqual", ref: "Yoghurt or fermented milk, plain (average) (Ciqual 19600)",
-    values: { lactose: 3.21, polyols: 0 }
   }
 };
