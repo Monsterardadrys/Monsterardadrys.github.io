@@ -11,7 +11,7 @@
    rest come from nutrition-manual.js, which records a source per food;
    `src` on each line below says which.
 
-   449 of 490 foods have figures — 375 from Livsmedelsverket, 74 entered by
+   449 of 488 foods have figures — 375 from Livsmedelsverket, 74 entered by
    hand. The rest have none, and the meal builder will not let them into a
    meal.
 

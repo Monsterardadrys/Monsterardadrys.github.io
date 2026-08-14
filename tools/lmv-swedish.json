@@ -402,10 +402,6 @@
   "Chamomile Tea": "Kamomillte",
   "Kombucha": "Kombucha",
   "Almond Milk": "Mandeldryck",
-  "Rice Milk": [
-    "Dryck ris",
-    "Risdryck"
-  ],
   "Coffee": "Kaffe",
   "Espresso": "Espresso",
   "Instant Ramen": [
@@ -608,10 +604,6 @@
   "Mint (dried)": [
     "Mynta torkad",
     "Pepparmynta"
-  ],
-  "Oregano (fresh)": [
-    "Oregano färsk",
-    "Oregano"
   ],
   "Thyme (fresh)": [
     "Timjan färsk",
