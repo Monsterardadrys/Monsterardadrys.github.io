@@ -105,23 +105,18 @@
   "Prunes": "Katrinplommon",
   "Dried Cranberry (Added Sugar)": "Tranbär torkade",
   "Dried Cranberry (No Sugar Added)": "Tranbär torkade",
-  "Dried Cherry (Added Sugar)": "Körsbär torkade",
-  "Dried Cherry (No Sugar Added)": "Körsbär torkade",
   "Dried Pineapple (Added Sugar)": "Ananas torkad",
   "Dried Pineapple (No Sugar Added)": "Ananas torkad",
   "Dried Apple": "Äpple torkat",
   "Dried Pear": "Päron torkade",
   "Dried Blueberries (Added Sugar)": "Blåbär torkade",
   "Dried Blueberries (No Sugar Added)": "Blåbär torkade",
-  "Dried Strawberries": "Jordgubbar torkade",
   "Dried Peach": "Persika torkad",
   "Dried Coconut": [
     "Kokos torkad",
     "Kokosflingor"
   ],
   "Dried Goji Berry": "Gojibär",
-  "Currants (dried)": "Korinter",
-  "Dried Lychee": "Litchi torkad",
   "Dried Banana": "Banan torkad",
   "Almond": "Mandel",
   "Brazil Nut": "Paranöt",
@@ -147,7 +142,6 @@
   "Pecan": "Pekannöt",
   "Chestnut": "Kastanj",
   "Macadamia": "Macadamianöt",
-  "Tiger Nut (roasted)": "Jordmandel",
   "Oats": [
     "Havregrynsgröt",
     "Havregryn fullkorn"
@@ -259,10 +253,6 @@
   ],
   "Fish Balls": "Fiskbullar",
   "Fish Fingers": "Fiskpinnar",
-  "Nori": [
-    "Sjögräs nori",
-    "Alger nori"
-  ],
   "Cows Milk (3% fat)": [
     "Mjölk",
     "Komjölk"
@@ -313,7 +303,6 @@
     "Salladsost fett 22%",
     "Salladsost"
   ],
-  "Labneh": "Labneh",
   "Buttermilk": [
     "Filmjölk",
     "Kärnmjölk"
@@ -345,10 +334,8 @@
   "Black Pepper": [
     "Svartpeppar"
   ],
-  "Za'atar": "Zaatar",
   "Sumac": "Sumak",
   "Cumin (dried)": "Spiskummin",
-  "Shawarma Spice Mix": "Shawarmakrydda",
   "Sichuan Peppercorn": "Sichuanpeppar",
   "Nutmeg": "Muskotnöt",
   "Oregano (dried)": [
@@ -404,10 +391,6 @@
   "Almond Milk": "Mandeldryck",
   "Coffee": "Kaffe",
   "Espresso": "Espresso",
-  "Instant Ramen": [
-    "Nudlar snabbnudlar",
-    "Snabbnudlar"
-  ],
   "Instant Soup / Bouillon Cubes": [
     "Buljongtärning",
     "Buljong"
@@ -477,7 +460,6 @@
     "Kastanjchampinjon",
     "Champinjon"
   ],
-  "Enoki Mushrooms": "Enokisvamp",
   "Chanterelle Mushrooms": "Kantarell",
   "Porcini Mushrooms": [
     "Stensopp",
@@ -578,10 +560,6 @@
     "Rågbröd"
   ],
   "Pearl Barley (cooked)": "Korngryn kokt",
-  "Brown Gravy": [
-    "Brunsås",
-    "Sås brun"
-  ],
   "Hot Sauce": [
     "Chilisås stark",
     "Sås chili"
@@ -620,16 +598,6 @@
   "Ginger (dried)": [
     "Ingefära torkad",
     "Ingefära malen"
-  ],
-  "Trumpet Chanterelle": [
-    "Trattkantarell"
-  ],
-  "Trumpet Chanterelle (dried)": [
-    "Trattkantarell torkad"
-  ],
-  "Porcini Mushrooms (dried)": [
-    "Karljohansvamp torkad",
-    "Stensopp torkad"
   ],
   "Sun-dried Tomato": [
     "Tomat torkad",

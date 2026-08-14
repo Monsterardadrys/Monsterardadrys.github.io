@@ -6,13 +6,10 @@
   "Basil (dried)": "Spices, basil, dried",
   "Capers": "Capers, canned",
   "Cranberry Sauce": "Cranberry sauce, canned, sweetened",
-  "Currants (dried)": "Currants, zante, dried",
   "Dill (dried)": "Spices, dill weed, dried",
   "Durian": "Durian, raw or frozen",
-  "Enoki Mushrooms": "Mushrooms, enoki, raw",
   "Fontina": "Cheese, fontina",
   "Ginger (dried)": "Spices, ginger, ground",
-  "Hoisin Sauce": "Sauce, hoisin, ready-to-serve",
   "Horseradish Sauce": "Sauce, horseradish",
   "Kimchi": "Cabbage, kimchi",
   "Lotus Root": "Lotus root, raw",
@@ -24,9 +21,7 @@
   "Naan Bread": "Bread, naan, plain, commercially prepared, refrigerated",
   "Natto": "Natto",
   "Oregano (dried)": "Spices, oregano, dried",
-  "Oyster Sauce": "Sauce, oyster, ready-to-serve",
   "Paprika Powder": "Spices, paprika",
-  "Pickle Relish": "Pickle relish, sweet",
   "Pickled Ginger": "Ginger root, pickled, canned, with artificial sweetener",
   "Rosemary (dried)": "Spices, rosemary, dried",
   "Rosemary (fresh)": "Rosemary, fresh",
@@ -38,6 +33,5 @@
   "Taro": "Taro, cooked, without salt",
   "Thyme (dried)": "Spices, thyme, dried",
   "Thyme (fresh)": "Thyme, fresh",
-  "Tofu (silken)": "Tofu, soft, prepared with calcium sulfate and magnesium chloride (nigari)",
-  "Worcestershire Sauce": "Sauce, worcestershire"
+  "Tofu (silken)": "Tofu, soft, prepared with calcium sulfate and magnesium chloride (nigari)"
 }

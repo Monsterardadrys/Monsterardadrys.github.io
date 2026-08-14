@@ -84,14 +84,36 @@
         return Object.keys(values).length ? values : null;
     }
 
-    /*
-        Takes what LMV.runAudit returned and produces the file.
+    /* A sugars figure worked out from the food's own carbohydrate.
 
-        Both `clean` and `disagreements` count as matched: a disagreement is a
-        tag that needs a second look, not a match that is wrong. Foods on the
-        absent list never had a record to read, so they come out with nothing
-        and every page reading the file has to cope with that.
-    */
+       Some foods are sugar and water and nothing else, and the table still has
+       no sugars figure for them — USDA's maple syrup gives 67.4g of
+       carbohydrate, 32.2g of water and no sugars, because the derivation code
+       on that one value was not one we accept. Leaving it missing puts the
+       whole 25g portion into the meal builder's unknown, over a food where the
+       answer is not in doubt.
+
+       So a food may declare `sugarsOfCarbs: 0.9` — read as "nine tenths of the
+       carbohydrate is mono- and disaccharide" — and the figure is worked out
+       here rather than typed in, so it follows a changed source figure. It
+       applies only where the source gave none, it is recorded on the line as
+       `derived`, and it is a claim about the food that has to be argued in
+       foods-data.js next to it. Not a way to fill gaps in general: a food whose
+       sugar fraction is genuinely uncertain does not get one. */
+    function deriveSugars(rows, byName) {
+        const done = [];
+        rows.forEach(function (row) {
+            const food = byName[row.name];
+            if (!food || !food.sugarsOfCarbs) return;
+            if (row.values.sugars != null || row.values.carbs == null) return;
+            row.values.sugars = round(row.values.carbs * food.sugarsOfCarbs);
+            row.derived = row.derived || {};
+            row.derived.sugars = food.sugarsOfCarbs + " of carbs";
+            done.push(row.name);
+        });
+        return done;
+    }
+
     /* Fills the two borrowable columns on rows that have none, from the
        confirmed extras matches. Fills only what is empty, so a source that
        carries the column itself is never second-guessed, and a food sold dry
@@ -145,6 +167,14 @@
         return filled;
     }
 
+    /*
+        Takes what LMV.runAudit returned and produces the file.
+
+        Both `clean` and `disagreements` count as matched: a disagreement is a
+        tag that needs a second look, not a match that is wrong. Foods on the
+        absent list never had a record to read, so they come out with nothing
+        and every page reading the file has to cope with that.
+    */
     function build(result, ourCount, sourceName, manual, extras) {
         const matched = result.clean.concat(result.disagreements);
 
@@ -193,6 +223,7 @@
             manualUsed += 1;
         });
 
+        const derived = deriveSugars(rows, byName);
         const borrowed = borrow(rows, extras, byName);
 
         rows.sort(function (a, b) { return a.name.localeCompare(b.name); });
@@ -241,6 +272,13 @@
             }
             lines.push("");
         }
+        if (derived.length) {
+            lines.push("   " + derived.length + " sugars " +
+                (derived.length === 1 ? "figure" : "figures") + " worked out from the food's own");
+            lines.push("   carbohydrate, where the source had none and the food says what fraction");
+            lines.push("   of its carbohydrate is sugar: " + derived.join(", ") + ".");
+            lines.push("");
+        }
         lines.push("   Built from: " + sourceName);
         lines.push("   ========================================================================= */");
         lines.push("");
@@ -251,6 +289,11 @@
             if (row.borrowed) {
                 parts.push("borrowed: { " + Object.keys(row.borrowed).map(function (k) {
                     return k + ': "' + row.borrowed[k] + '"';
+                }).join(", ") + " }");
+            }
+            if (row.derived) {
+                parts.push("derived: { " + Object.keys(row.derived).map(function (k) {
+                    return k + ': "' + row.derived[k] + '"';
                 }).join(", ") + " }");
             }
             lines.push('  "' + row.name.replace(/"/g, '\\"') + '": { src: "' + row.src +
@@ -265,6 +308,7 @@
             empty: empty,
             manualUsed: manualUsed,
             borrowed: borrowed,
+            derived: derived,
             skipped: result.skipped.length,
             unmatched: result.unmatched.map(function (f) { return f.name; })
         };
