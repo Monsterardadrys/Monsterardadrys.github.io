@@ -511,6 +511,43 @@ declined stops being reported as outstanding. Checked with the real 43 picks in
 a browser against the repo as it stands: no alarms, and the only thing left to
 say is that 49 foods still have no figures.
 
+**A harvested food does not need a Swedish round, and the check now says so.**
+The objection was practical and correct: if a food came in from Ciqual precisely
+because Ciqual answered for it completely, sending it round the Swedish audit
+afterwards is a lot of hand-confirming for a benefit nobody can name in advance.
+
+The rule that made it look compulsory was old and had one meaning: a food in
+neither `lmv-aliases.json` nor `lmv-absent.json` is a food nobody has looked at.
+Harvesting broke that. Such a food now has two possible states and they are not
+alike:
+
+- **No figures and no Swedish verdict** — real outstanding work, and a Swedish
+  round is exactly what would help. Listed in full.
+- **Figures from a lower rung and no Swedish verdict** — not outstanding. Said
+  once, quietly, as an option: a Swedish round would swap in the figure for the
+  product on a Swedish shelf, which is worth doing for a jam and hardly at all
+  for a cooked lamb kidney.
+
+So the harvest loop is three steps and one of them is not mine: open harvest,
+tick, send the file. No Swedish round, and the ladder is not being ignored — it
+was never a rule about which foods to list.
+
+**Offal is not pölsa, and the figures say so before any argument does.** The
+thought was reasonable: Swedish pölsa is largely offal. But Ciqual's *Offal,
+cooked (average)* is 27.4g protein, 2.2g carbohydrate and no fibre — organ meat
+and nothing else, carrying more protein than our raw beef liver because it is
+cooked and the water has gone. Pölsa is offal extended with korngryn and broth,
+which puts it where blood pudding sits: 11g protein, 20g carbohydrate, 2.3g
+fibre.
+
+Matching them would put two and a half times the protein on it and take away
+four fifths of the carbohydrate. The part that matters is neither: it would take
+the **grain** with it, so a dish made with barley would stop carrying
+`allergen_wheat` and read as safe to someone avoiding gluten. Recorded on the
+food itself, where the next person to have the same idea will find it. Pölsa is
+its own food and belongs to a Swedish round — which is what an LMV harvest is
+for.
+
 **Search stopped caring about word order.** Every search box here matched a
 substring, so finding a food meant guessing the word order somebody else chose.
 Ciqual writes *Jam, apricot* and *Apricot, pitted, dried*; Frida writes *Cheese,

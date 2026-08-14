@@ -463,23 +463,43 @@ entries(absentList).forEach(function (name) {
   }
 });
 
-/* A food in neither list is where every new food starts: it has not been
-   through an audit round yet. That is a normal state to add a food in, so it
-   is a warning — the faults above are for the three files contradicting each
-   other, which is never normal. */
-/* One line, not one per food. A harvest round adds seventy-five foods at once
-   and seventy-five identical warnings bury everything else in the report —
-   which is the failure mode a warning is supposed to avoid. */
+/* A food in neither Swedish list used to mean one thing: nobody had looked at
+   it yet. Harvesting broke that. A food that arrives from the French table
+   arrives *because* that table already answered for it completely — the
+   harvest requires all six columns before a record is even offered — so
+   "Sweden has not seen it" is not unfinished work, it is a state we chose.
+
+   Whether Sweden would answer better is a fair question and mostly an
+   unanswerable one. The ladder's two reasons are consistency, which a
+   single-source food already satisfies, and which country's shelf the record
+   describes, which matters for jam and hardly at all for a cooked lamb kidney.
+   Neither is worth a hand-confirming round over seventy-five foods that are
+   already answered.
+
+   So the two states are separated. A food with no figures and no Swedish
+   verdict is real outstanding work. A food with figures and no Swedish verdict
+   is an open option, said once and quietly, not a queue. */
 const unseen = foods.filter(function (food) {
   return !aliases[food.name] && !absentList[food.name];
-}).map(function (food) { return food.name; });
+});
+const unseenEmpty = unseen.filter(function (f) { return !NUTRITION[f.name]; })
+  .map(function (f) { return f.name; });
+const unseenAnswered = unseen.filter(function (f) { return NUTRITION[f.name]; })
+  .map(function (f) { return f.name; });
 
-if (unseen.length) {
-  warnings.push(unseen.length + " food(s) no Swedish audit has seen yet — neither confirmed " +
-    "nor listed absent: " + unseen.slice(0, 12).join(", ") +
-    (unseen.length > 12 ? " and " + (unseen.length - 12) + " more" : "") +
-    ". Livsmedelsverket is above every other source, so a Swedish round should " +
-    "look at them before their figures are taken as settled.");
+if (unseenEmpty.length) {
+  warnings.push(unseenEmpty.length + " food(s) have no figures and no Swedish verdict — " +
+    "neither confirmed nor listed absent, and nothing else answers for them either: " +
+    unseenEmpty.join(", ") + ". These are the ones a Swedish round would actually help.");
+}
+
+if (unseenAnswered.length) {
+  warnings.push(unseenAnswered.length + " food(s) are answered by a lower rung and have never " +
+    "been offered to a Swedish round: " + unseenAnswered.slice(0, 8).join(", ") +
+    (unseenAnswered.length > 8 ? " and " + (unseenAnswered.length - 8) + " more" : "") +
+    ". Not outstanding work — they have complete figures. A Swedish round would " +
+    "swap in a figure for the product on a Swedish shelf, which is worth it for a " +
+    "jam and not for a lamb kidney. Optional, and per food.");
 }
 
 /* Denmark's Frida is the second source on the ladder and is only ever asked

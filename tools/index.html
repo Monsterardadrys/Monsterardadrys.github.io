@@ -342,11 +342,19 @@
                 <li>Send Claude all three, and say which round they came from.</li>
             </ol>
 
-            <p class="dropped"><strong><a href="harvest.html">Harvest</a> is not part of that loop.</strong>
-                Use it when the question is not "does this food have figures" but "what should we be
-                listing at all". It reads the same exports, needs no build afterwards, and what comes
-                back is records rather than foods — send the file over and the foods get written in the
-                repo, where the name, category, portion and trait list belong.</p>
+            <p class="dropped"><strong><a href="harvest.html">Harvest</a> is a shorter loop, not part
+                of that one.</strong> Open it, feed it one export, tick what looks like food people buy,
+                send <code>harvest-picks.json</code> over. The foods get written in the repo — name,
+                category, portion and trait list — and then you build. Three steps, and one of them is
+                mine.</p>
+            <p class="note"><strong>A harvested food does not need a Swedish round.</strong> It arrived
+                because one table already answered for it completely — the harvest will not offer a
+                record that is missing any of the six columns. Running it past Livsmedelsverket
+                afterwards is an <em>upgrade</em>, not a requirement: it swaps in the figure for the
+                product on a Swedish shelf, which is worth doing for a jam and hardly at all for a
+                cooked lamb kidney. <code>check-data.js</code> counts those two states separately, so
+                the ones with no figures at all stay visible and the answered ones stop reading as a
+                queue.</p>
 
             <p class="dropped"><strong>Running an audit and running the builder are not the same
                 errand, and an audit is not the same as its export.</strong> There are two reasons to
