@@ -483,7 +483,11 @@
                 <li><strong>A generated file smaller than its alias file.</strong> A re-run once wrote
                     only the newly confirmed matches: 30 confirmed came out as a 2-food file, and
                     rebuilding would have stripped the other 28. Both this page and the build page warn
-                    on it now.</li>
+                    on it now, and the build page names the foods rather than counting them — because
+                    the same warning has two opposite answers. If the repo has everything your file has
+                    <em>and more</em>, your file is simply the older of the two: leave it out of step 3
+                    and the repo's copy is used. Only a file with something new <em>and</em> something
+                    missing needs the audit re-running.</li>
                 <li><strong>Running the audits out of order.</strong> Each one offers the foods with no
                     figures as of the repo's <code>nutrition-data.js</code>, so the first one run claims
                     them. <code>check-data.js</code> fails on a food holding two matches.</li>

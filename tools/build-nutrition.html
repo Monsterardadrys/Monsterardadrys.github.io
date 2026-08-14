@@ -496,22 +496,66 @@
                         }
                         const rung = LADDER.filter(function (x) { return x.symbol === found.symbol; })[0];
                         const mine = Object.keys(found.value).length;
-                        const theirs = Object.keys(baked(found.symbol) || {}).length;
+                        const repoCopy = baked(found.symbol) || {};
+                        const theirs = Object.keys(repoCopy).length;
 
                         uploaded[found.symbol] = found.value;
+
+                        /* The extras ride in the same file and are replaced the
+                           same way, so they need the same net: a file carrying
+                           fewer of them than the repo drops borrowed columns,
+                           and a dropped column is invisible — the food keeps
+                           every other figure it had. */
                         const extra = extrasFrom(r.text);
-                        if (extra) uploadedExtras[extra.symbol] = extra.value;
+                        if (extra) {
+                            const repoExtra = repoExtras[extra.symbol] || {};
+                            const lost = Object.keys(repoExtra).filter(function (k) {
+                                return !extra.value[k];
+                            });
+                            if (lost.length) {
+                                warn.push(r.name + " lends columns to " +
+                                    Object.keys(extra.value).length + " foods and the repo's copy " +
+                                    "lends to " + Object.keys(repoExtra).length + ". Building with " +
+                                    "it takes the borrowed lactose or polyols off " +
+                                    lost.slice(0, 6).join(", ") +
+                                    (lost.length > 6 ? " and " + (lost.length - 6) + " more" : "") + ".");
+                            }
+                            uploadedExtras[extra.symbol] = extra.value;
+                        }
                         took.push(r.name + " → " + rung.label + ", " + mine +
                             (mine === 1 ? " food" : " foods"));
 
                         /* The same net as the workbench, one step later. A
                            generated file smaller than the repo's copy is how
                            28 Danish foods nearly lost their figures: a re-run
-                           used to write only the newly confirmed matches. */
-                        if (theirs && mine < theirs) {
-                            warn.push(r.name + " holds " + mine + " foods but the repo's copy holds " +
-                                theirs + ". Building with it drops the other " + (theirs - mine) +
-                                ". Re-run that audit and download the file again unless you meant this.");
+                           used to write only the newly confirmed matches.
+
+                           Which foods, not how many — a count sends you back to
+                           re-run an audit, and the names usually say straight
+                           away that you do not need to. */
+                        const missing = Object.keys(repoCopy).filter(function (k) {
+                            return !found.value[k];
+                        });
+                        if (missing.length) {
+                            const names = missing.slice(0, 6).join(", ") +
+                                (missing.length > 6 ? " and " + (missing.length - 6) + " more" : "");
+                            /* Two different situations, and they need opposite
+                               advice. If the repo has everything this file has
+                               and more, the file is simply the older of the
+                               two: leave it out and the repo's copy is used, no
+                               audit needed. Only a file with something new AND
+                               something missing is a half-written one. */
+                            const stale = Object.keys(found.value).every(function (k) {
+                                return repoCopy[k];
+                            });
+                            warn.push(stale
+                                ? r.name + " is older than the repo's copy: the repo has all " + mine +
+                                  " of its foods and " + missing.length + " more (" + names + "). " +
+                                  "Leave this file out — step 3 is optional, and what you do not add " +
+                                  "comes from the repo. Nothing to re-run."
+                                : r.name + " holds " + mine + " foods and the repo's copy holds " +
+                                  theirs + ". Building with it drops " + names + ". Re-run that " +
+                                  "audit and download the file again unless you meant this.");
                         }
                     });
 
