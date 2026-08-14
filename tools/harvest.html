@@ -255,6 +255,13 @@
             <p class="dropped">It does not decide. It cannot tell a food from a prepared dish, and it
                 has no idea whether anyone buys the thing. Both of those are yours. What it does is
                 make three thousand rows into a list you can actually read.</p>
+            <p class="dropped"><strong>The ladder does not apply here.</strong> Livsmedelsverket,
+                Frida and Ciqual are all laboratory analyses, and the ladder does not claim otherwise —
+                it exists to settle which figure to take when two tables answer for the <em>same</em>
+                food, on grounds of consistency and of which country's shelf the record describes.
+                Neither applies to choosing what to list. So a record is dropped here only when some
+                source already answers for that food, whichever source it is, and what is left is
+                sorted on its figures rather than on where it came from.</p>
             <p class="note">A record has to carry <strong>fat, protein, carbohydrate, fibre, sugars and
                 water</strong> to get through at all — stricter than the backbone the audits require,
                 because there is no reason to spend attention on a record that arrives already short.
@@ -439,10 +446,16 @@
             function keyOf(c) { return sourceLabel + " · " + c.record.name; }
             let sourceLabel = "";
 
+            /* Every word, anywhere, in any order — the same rule the audit
+               pages and the site's own food filter use. A substring match
+               makes you guess the word order the table happened to choose,
+               and there is no pattern to learn. */
             function matches(c, q) {
                 if (activeAxis && !c.signals.some(function (s) { return s.key === activeAxis; })) return false;
                 if (!q) return true;
-                return c.record.name.toLowerCase().indexOf(q) !== -1;
+                const hay = c.record.name.toLowerCase();
+                return q.split(/\s+/).filter(function (w) { return w.length; })
+                    .every(function (w) { return hay.indexOf(w) !== -1; });
             }
 
             function paint(el, c) {
