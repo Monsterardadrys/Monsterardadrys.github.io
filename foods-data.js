@@ -1049,6 +1049,7 @@ const CATEGORIES = [
       { name: "Dried Goji Berry", lmv: "Gojibär torkade", portion: 30, traits: ["fodmaps", "fructans"] },
       { name: "Dried Kiwi (Added Sugar)", portion: 30, traits: ["cross_reactive", "cross_birch", "cross_grass", "cross_latex", "refined_carbs"] },
       { name: "Dried Kiwi (No Sugar Added)", portion: 30, traits: ["fiber", "cross_reactive", "cross_birch", "cross_grass", "cross_latex"] },
+      { name: "Dried Tropical Fruit Mix", portion: 30, traits: ["refined_carbs", "fodmaps", "fructose", "polyols", "allergen_sulphite"] }
     ]
   },
   {
@@ -1182,7 +1183,8 @@ const CATEGORIES = [
       { name: "Mung Bean Sprouts", lmv: "Mungbönsgroddar", form: "fresh", portion: 75, traits: [] },
       { name: "Adzuki Bean Sprouts", form: "fresh", portion: 75, traits: [] },
       { name: "Lentil Sprouts", lmv: "Linsgroddar", form: "fresh", portion: 75, traits: [] },
-      { name: "Alfalfa Sprouts", lmv: "Alfalfagroddar", form: "fresh", portion: 30, traits: [] }
+      { name: "Alfalfa Sprouts", lmv: "Alfalfagroddar", form: "fresh", portion: 30, traits: [] },
+      { name: "White Beans (cooked)", portion: 150, traits: ["fiber", "fodmaps", "galactans"] }
     ]
   },
   {
@@ -1217,7 +1219,23 @@ const CATEGORIES = [
       { name: "Liver Pate", lmv: "Leverpastej bredbar fett ca 24%", lmvNote: "the spreadable kind, 24 % fat", portion: 20, traits: ["alpha_gal"] },
       { name: "Blood Pudding", lmv: "Blodpudding blodkorv fett 14%", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "allergen_wheat", "alpha_gal"] },
       { name: "Reindeer", lmv: "Ren kött rå", portion: 125, traits: ["protein", "alpha_gal"] },
-      { name: "Dried Reindeer Meat", lmv: "Ren kött torkat", portion: 20, traits: ["histamine", "dao_competitor", "alpha_gal"] }
+      { name: "Dried Reindeer Meat", lmv: "Ren kött torkat", portion: 20, traits: ["histamine", "dao_competitor", "alpha_gal"] },
+      /* Offal and game from the French round — the part of the shelf
+         Livsmedelsverket barely covers. Alpha-gal on the mammals only: a duck
+         or a turkey liver carries no galactose-alpha-1,3-galactose. */
+      { name: "Foie Gras", portion: 20, traits: ["over_10g_fat", "bile_stimulant"] },
+      { name: "Liver Sausage", portion: 20, traits: ["over_10g_fat", "alpha_gal"] },
+      { name: "Chicken Liver", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein"] },
+      { name: "Turkey Liver", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein"] },
+      { name: "Turkey Heart", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein"] },
+      { name: "Beef Kidney", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein", "alpha_gal"] },
+      { name: "Lamb Kidney", portion: 125, traits: ["bile_stimulant", "protein", "alpha_gal"] },
+      { name: "Veal Kidney", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein", "alpha_gal"] },
+      { name: "Offal (mixed, cooked)", portion: 125, traits: ["bile_stimulant", "protein", "alpha_gal"] },
+      { name: "Goat Meat", portion: 125, traits: ["bile_stimulant", "protein", "alpha_gal"] },
+      { name: "Ostrich", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein"] },
+      { name: "Quail", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein"] },
+      { name: "Rabbit", portion: 125, traits: ["bile_stimulant", "protein", "alpha_gal"] }
     ]
   },
   {
@@ -1240,7 +1258,9 @@ const CATEGORIES = [
       { name: "Mackerel", lmv: "Makrill rå", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "dao_competitor", "allergen_fish"] },
       { name: "Sardines (canned)", lmv: "Sardiner i olja konserv.", portion: 20, traits: ["histamine", "dao_competitor", "allergen_fish"] },
       { name: "Pickled Herring", lmv: "Sill inlagd u. lag", portion: 20, traits: ["refined_carbs", "histamine", "dao_competitor", "irritant", "aceticAcid", "allergen_fish"] },
-      { name: "Surimi / Crab Sticks", lmv: "Surimi fisk", portion: 20, traits: ["refined_carbs", "allergen_fish", "allergen_wheat"] }
+      { name: "Surimi / Crab Sticks", lmv: "Surimi fisk", portion: 20, traits: ["refined_carbs", "allergen_fish", "allergen_wheat"] },
+      { name: "Squid", portion: 80, traits: ["protein", "allergen_mollusc"] },
+      { name: "Cod Liver (canned)", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_fish"] }
     ]
   },
   {
@@ -1309,7 +1329,22 @@ const CATEGORIES = [
       { name: "Brie", lmv: "Vitmögelost brie fett ca 38%", lmvNote: "the 38% fat grade — brie is sold from about 30% to 60%", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_milk"] },
       { name: "Emmental", lmv: "Ost hårdost fett 31%", lmvNote: "generic hard cheese entry", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_milk"] },
       { name: "Lactose-free Cheese", lmv: "Ost hårdost fett 31%", lmvNote: "ordinary hard cheese — the lactose-free version is not listed", portion: 20, traits: ["over_10g_fat", "allergen_milk"] },
-      { name: "Lactose-free Cream (40% fat)", lmv: "Vispgrädde fett 40%", lmvNote: "ordinary cream — the lactose-free version is not listed", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_milk"] }
+      { name: "Lactose-free Cream (40% fat)", lmv: "Vispgrädde fett 40%", lmvNote: "ordinary cream — the lactose-free version is not listed", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_milk"] },
+      /* Named cheeses from the French round. Same shape as Roquefort and
+         Fontina: a shopper reads the name off the packet, so the name is the
+         food. All aged, so histamine and DAO, and the fat tag follows the
+         figures rather than the reputation. */
+      { name: "Beaufort", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_milk"] },
+      { name: "Maasdam", portion: 20, traits: ["histamine", "dao_competitor", "allergen_milk"] },
+      { name: "Fourme d'Ambert", portion: 20, traits: ["histamine", "dao_competitor", "allergen_milk"] },
+      { name: "Gorgonzola", portion: 20, traits: ["histamine", "dao_competitor", "allergen_milk"] },
+      { name: "Gruyere", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_milk"] },
+      { name: "Pecorino", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_milk"] },
+      { name: "Provolone", portion: 20, traits: ["histamine", "dao_competitor", "allergen_milk"] },
+      { name: "Pelardon (goat cheese)", portion: 20, traits: ["histamine", "dao_competitor", "allergen_milk"] },
+      { name: "Reblochon", portion: 20, traits: ["histamine", "dao_competitor", "allergen_milk"] },
+      { name: "Salers", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_milk"] },
+      { name: "Tomme", portion: 20, traits: ["histamine", "dao_competitor", "allergen_milk"] }
     ]
   },
   {
@@ -1347,7 +1382,8 @@ const CATEGORIES = [
       { name: "Cinnamon", form: "dried", lmv: "Kanel", portion: 2, traits: [] },
       { name: "Paprika Powder", form: "dried", portion: 2, traits: ["cross_reactive", "cross_mugwort"] },
       { name: "Cardamom (dried)", form: "dried", lmv: "Kardemumma torkad", portion: 2, traits: [] },
-      { name: "Allspice", form: "dried", portion: 2, traits: [] }
+      { name: "Allspice", form: "dried", portion: 2, traits: [] },
+      { name: "Onion Powder", portion: 2, traits: ["fodmaps", "fructans", "irritant", "allyl_compounds", "allergen_onion"] }
     ]
   },
   {
@@ -1398,7 +1434,18 @@ const CATEGORIES = [
       { name: "Peppermint Tea", portion: 200, traits: ["irritant"] },
       { name: "Alcohol-free Beer", lmv: "Öl alkoholfri", portion: 330, traits: ["irritant", "carbonation", "allergen_wheat"] },
       { name: "Squash / Cordial", lmv: "Saft drickf.", portion: 200, traits: ["refined_carbs"] },
-      { name: "Hot Chocolate", lmv: "Varm choklad m. mjölk fett 3%", portion: 200, traits: ["irritant", "over_10g_fat", "refined_carbs", "over_3g_lactose", "fodmaps", "caffeine", "allergen_milk"] }
+      { name: "Hot Chocolate", lmv: "Varm choklad m. mjölk fett 3%", portion: 200, traits: ["irritant", "over_10g_fat", "refined_carbs", "over_3g_lactose", "fodmaps", "caffeine", "allergen_milk"] },
+      /* Drinks from the French round. Gin, rum, vodka, whisky and brandy were
+         left out — they are water and ethanol, and Spirits (Liquor) already
+         answers for them. Liqueur is here because its 17g of sugar makes it a
+         different food. */
+      { name: "Low-alcohol Beer", portion: 330, traits: ["alcohol", "irritant", "carbonation", "histamine", "allergen_wheat"] },
+      { name: "Shandy", portion: 330, traits: ["alcohol", "irritant", "carbonation", "refined_carbs", "allergen_wheat"] },
+      { name: "Rose Wine", portion: 150, traits: ["alcohol", "histamine", "irritant", "allergen_sulphite"] },
+      { name: "Sweet Wine", portion: 150, traits: ["alcohol", "histamine", "irritant", "refined_carbs", "allergen_sulphite"] },
+      { name: "Sangria", portion: 150, traits: ["alcohol", "histamine", "irritant", "refined_carbs", "allergen_sulphite"] },
+      { name: "Sake", portion: 150, traits: ["alcohol", "histamine", "irritant"] },
+      { name: "Liqueur", portion: 40, traits: ["alcohol", "irritant", "histamine", "refined_carbs"] }
     ]
   },
   {
@@ -1482,7 +1529,24 @@ const CATEGORIES = [
       { name: "Garlic-infused Oil", portion: 10, traits: ["over_10g_fat", "bile_stimulant"] },
       { name: "Peanut Butter", lmv: "Jordnötssmör", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen_peanut", "cross_reactive", "cross_grass"] },
       { name: "Agave Syrup", portion: 25, traits: ["fodmaps", "fructose", "refined_carbs"] },
-      { name: "Nutritional Yeast", lmv: "Näringsjäst", portion: 5, traits: [] }
+      { name: "Nutritional Yeast", lmv: "Näringsjäst", portion: 5, traits: [] },
+      /* Jam, one per fruit. The sugar is the same 55-60g in all of them, so
+         what separates them is the pollen cross-reactivity the fruit brings —
+         which is why they are eleven rows and not one. */
+      { name: "Cod Liver Oil", portion: 10, traits: ["over_10g_fat", "bile_stimulant", "allergen_fish"] },
+      { name: "Chocolate Spread (hazelnut)", portion: 20, traits: ["over_10g_fat", "refined_carbs", "allergen_milk", "allergen_treenut"] },
+      { name: "Dulce de Leche", portion: 20, traits: ["refined_carbs", "allergen_milk"] },
+      { name: "Apricot Jam", portion: 20, traits: ["refined_carbs", "cross_reactive", "cross_birch"] },
+      { name: "Blueberry Jam", portion: 20, traits: ["refined_carbs"] },
+      { name: "Cherry Jam", portion: 20, traits: ["refined_carbs", "polyols", "fodmaps", "cross_reactive", "cross_birch"] },
+      { name: "Fig Jam", portion: 20, traits: ["refined_carbs", "fodmaps", "fructose"] },
+      { name: "Plum Jam", portion: 20, traits: ["refined_carbs", "polyols", "fodmaps", "cross_reactive", "cross_birch"] },
+      { name: "Raspberry Jam", portion: 20, traits: ["refined_carbs"] },
+      { name: "Strawberry Jam", portion: 20, traits: ["refined_carbs", "cross_reactive", "cross_birch"] },
+      { name: "Strawberry Jam (reduced sugar)", portion: 20, traits: ["refined_carbs", "cross_reactive", "cross_birch"] },
+      { name: "Blackberry Jelly", portion: 20, traits: ["refined_carbs"] },
+      { name: "Redcurrant Jelly", portion: 20, traits: ["refined_carbs"] },
+      { name: "Orange Marmalade", portion: 20, traits: ["refined_carbs", "cross_reactive", "cross_grass"] }
     ]
   },
   {
@@ -1563,7 +1627,35 @@ const CATEGORIES = [
       { name: "Cinnamon Bun", lmv: "Sött vetebröd kanelbulle gräddad kylvara frysvara el. butiksbakad", lmvNote: "the 18.5 g of sugar is nearly all sucrose — the milk in the dough leaves well under a gram of lactose", portion: 60, traits: ["over_10g_fat", "refined_carbs", "fodmaps", "fructans", "allergen_milk", "allergen_wheat"] },
       { name: "Marzipan", lmv: "Mandelmassa", portion: 30, traits: ["over_10g_fat", "refined_carbs", "fodmaps", "galactans", "allergen_treenut"] },
       { name: "Liquorice", lmv: "Lakritsgodis", portion: 30, traits: ["refined_carbs"] },
-      { name: "Salty Liquorice", portion: 25, traits: ["refined_carbs"] }
+      { name: "Salty Liquorice", portion: 25, traits: ["refined_carbs"] },
+      /* Confectionery and biscuits from the French round. Every dose tag here
+         was checked against the figures rather than judged by eye, which took
+         nine of them off again. */
+      { name: "Candied Chestnut", portion: 30, traits: ["refined_carbs", "cross_reactive", "cross_latex"] },
+      { name: "Candied Fruit", portion: 30, traits: ["refined_carbs"] },
+      { name: "Candied Orange Peel", portion: 30, traits: ["refined_carbs", "irritant", "peel_skin", "cross_reactive", "cross_grass"] },
+      { name: "Chewy Caramel", portion: 30, traits: ["refined_carbs", "allergen_milk"] },
+      { name: "Hard Candy", portion: 30, traits: ["refined_carbs"] },
+      { name: "Caramel Hard Candy", portion: 30, traits: ["refined_carbs"] },
+      { name: "Marshmallow", portion: 30, traits: ["refined_carbs"] },
+      { name: "Meringue", portion: 30, traits: ["refined_carbs", "allergen_egg"] },
+      { name: "Sugared Almond", portion: 30, traits: ["refined_carbs", "fodmaps", "galactans", "allergen_treenut", "cross_reactive", "cross_birch"] },
+      { name: "Nougat Chocolate Bar", portion: 50, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "caffeine", "irritant", "allergen_milk"] },
+      { name: "Coconut Chocolate Bar", portion: 50, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "caffeine", "irritant", "allergen_milk"] },
+      { name: "Chocolate Bar with Dried Fruit", portion: 50, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "caffeine", "irritant", "allergen_milk"] },
+      { name: "Dark Chocolate with Nuts", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "caffeine", "irritant", "fodmaps", "galactans", "allergen_treenut"] },
+      { name: "Dark Chocolate with Praline", portion: 25, traits: ["over_10g_fat", "refined_carbs", "caffeine", "irritant", "allergen_treenut", "allergen_milk"] },
+      { name: "Mint Chocolate", portion: 25, traits: ["refined_carbs", "caffeine", "irritant"] },
+      { name: "Milk Chocolate with Praline", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "caffeine", "irritant", "allergen_treenut", "allergen_milk"] },
+      { name: "White Chocolate with Nuts", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "fodmaps", "galactans", "allergen_treenut", "allergen_milk"] },
+      { name: "Sponge Fingers", portion: 30, traits: ["refined_carbs", "allergen_wheat", "allergen_egg"] },
+      { name: "Almond Thins", portion: 30, traits: ["refined_carbs", "fodmaps", "galactans", "allergen_wheat", "allergen_treenut"] },
+      { name: "Biscuit (reduced fat)", portion: 30, traits: ["refined_carbs", "allergen_wheat"] },
+      { name: "Chocolate Chip Biscuit", portion: 30, traits: ["over_10g_fat", "refined_carbs", "irritant", "caffeine", "allergen_wheat", "allergen_milk"] },
+      { name: "Wafer Biscuit", portion: 30, traits: ["refined_carbs", "allergen_wheat"] },
+      { name: "Filled Wafer Biscuit", portion: 30, traits: ["over_10g_fat", "refined_carbs", "allergen_wheat", "allergen_milk"] },
+      { name: "Ice Cream Cone", portion: 100, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "irritant", "alcohol", "allergen_milk", "allergen_wheat"] },
+      { name: "Panna Cotta", portion: 100, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "irritant", "alcohol", "allergen_milk"] }
     ]
   },
   {

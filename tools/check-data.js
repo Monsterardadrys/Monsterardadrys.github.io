@@ -467,11 +467,20 @@ entries(absentList).forEach(function (name) {
    through an audit round yet. That is a normal state to add a food in, so it
    is a warning — the faults above are for the three files contradicting each
    other, which is never normal. */
-foods.forEach(function (food) {
-  if (!aliases[food.name] && !absentList[food.name]) {
-    warnings.push(food.name + " is neither confirmed nor listed absent — no audit has seen it yet");
-  }
-});
+/* One line, not one per food. A harvest round adds seventy-five foods at once
+   and seventy-five identical warnings bury everything else in the report —
+   which is the failure mode a warning is supposed to avoid. */
+const unseen = foods.filter(function (food) {
+  return !aliases[food.name] && !absentList[food.name];
+}).map(function (food) { return food.name; });
+
+if (unseen.length) {
+  warnings.push(unseen.length + " food(s) no Swedish audit has seen yet — neither confirmed " +
+    "nor listed absent: " + unseen.slice(0, 12).join(", ") +
+    (unseen.length > 12 ? " and " + (unseen.length - 12) + " more" : "") +
+    ". Livsmedelsverket is above every other source, so a Swedish round should " +
+    "look at them before their figures are taken as settled.");
+}
 
 /* Denmark's Frida is the second source on the ladder and is only ever asked
    about foods Livsmedelsverket has no entry for. A confirmed Danish match for

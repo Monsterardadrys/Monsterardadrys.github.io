@@ -464,9 +464,14 @@
                 shown.slice(0, 300).forEach(function (c) {
                     const b = document.createElement("button");
                     b.className = "cand";
-                    const near = c.nearest && c.nearest.score >= 0.5
+                    /* Shown from 0.2, not 0.5. The score is a share of shared
+                       words now, so a real duplicate can sit at 0.4 and a
+                       weak-but-worth-checking hit at 0.2 — and the number is
+                       printed so it can be judged rather than trusted. */
+                    const near = c.nearest && c.nearest.score >= 0.2
                         ? '<span class="near">closest food we have: ' +
-                          escapeHtml(c.nearest.name) + " (" + c.nearest.score.toFixed(2) + ")</span>"
+                          escapeHtml(c.nearest.name) + " (" + c.nearest.score.toFixed(2) +
+                          (c.nearest.byWords ? "" : ", by spelling") + ")</span>"
                         : "";
                     b.innerHTML = '<span class="nm">' + escapeHtml(c.record.name) + "</span>" +
                         '<span class="sig">' + c.signals.map(function (s) {
@@ -483,7 +488,7 @@
                             id: c.record.id || null,
                             values: c.record.nutrients,
                             why: c.signals.map(function (s) { return s.axis + " " + s.value; }).join(", "),
-                            nearest: c.nearest && c.nearest.score >= 0.5 ? c.nearest.name : null
+                            nearest: c.nearest && c.nearest.score >= 0.2 ? c.nearest.name : null
                         };
                         remember();
                         paint(b, c);

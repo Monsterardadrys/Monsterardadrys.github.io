@@ -102,6 +102,37 @@
             : 1 - countAtOrBelow(sorted, v) / sorted.length;
     }
 
+    /* Words, lowercased and stripped of accents, with only the connectives
+       and the packaging boilerplate removed.
+
+       What is NOT removed is the form — dried, raw, cooked, canned. Every bad
+       match this project has had was fresh-for-dried or raw-for-cooked, so the
+       one word that must count is the one it would be tempting to call noise.
+       Keeping it is what puts "Apricot, pitted, dried" next to our "Dried
+       Apricot" rather than next to our "Apricot".
+
+       Accents come off because "Pork liver pâté" and our "Liver Pate" are the
+       same three words and one of them is spelt two ways. */
+    const NOISE = /^(from|with|without|and|or|the|in|of|a|an|type|prepacked|average|normal|size|refrigerated|s)$/;
+
+    function tokens(name) {
+        const out = {};
+        String(name).toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+            .split(/[^a-z0-9]+/)
+            .forEach(function (w) {
+                if (w.length > 1 && !NOISE.test(w)) out[w] = true;
+            });
+        return Object.keys(out);
+    }
+
+    function jaccard(a, b) {
+        if (!a.length || !b.length) return 0;
+        let shared = 0;
+        a.forEach(function (w) { if (b.indexOf(w) !== -1) shared += 1; });
+        return shared / (a.length + b.length - shared);
+    }
+
     function missingFrom(record) {
         return COMPLETE.filter(function (k) {
             const v = record.nutrients[k];
@@ -171,12 +202,46 @@
             });
             signals.sort(function (x, y) { return y.at - x.at; });
 
+            /* Two ways of being close, and the first round needed both.
+
+               The bigram scorer the audits use compares whole strings, so word
+               order matters to it. Ciqual writes "Apple, dried" where we write
+               "Dried Apple" and it scored those near zero — six straight
+               duplicates came through the first harvest untouched, including
+               "Pork liver pâté" against our "Liver Pate". The overlap of the
+               words themselves does not care about order, and catches exactly
+               that. Take whichever reads higher. */
+            /* Words first, letters second, and not the larger of the two.
+
+               The bigram scorer the audits use compares whole strings, so word
+               order matters to it and a short name scores well against a long
+               one that contains it — which is why the first harvest offered
+               our fresh "Apricot" for Ciqual's "Apricot, pitted, dried" and
+               let six straight duplicates through, "Pork liver pâté" against
+               our "Liver Pate" among them.
+
+               Shared words do not care about order and do care about the form
+               word, which is the one that distinguishes those pairs. Taking
+               the larger of the two scores was tried and is wrong: the bigram
+               number is on a different scale and wins for the wrong reason.
+               Words decide; letters only break a tie of nothing at all. */
             let nearest = null;
-            if (score && ours.length) {
+            if (ours.length) {
+                const mine = tokens(r.name);
+                let best = null;
                 ours.forEach(function (name) {
-                    const s = score(r.name, name);
-                    if (!nearest || s > nearest.score) nearest = { name: name, score: s };
+                    const overlap = jaccard(mine, tokens(name));
+                    if (!best || overlap > best.score) best = { name: name, score: overlap, byWords: true };
                 });
+                if (best && best.score > 0) nearest = best;
+                else if (score) {
+                    ours.forEach(function (name) {
+                        const s = score(r.name, name);
+                        if (!nearest || s > nearest.score) {
+                            nearest = { name: name, score: s, byWords: false };
+                        }
+                    });
+                }
             }
 
             return {
