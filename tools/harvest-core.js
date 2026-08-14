@@ -1,0 +1,237 @@
+/*
+    harvest-core.js — reading a national table the other way round.
+
+    Every other tool here starts from a food we decided to list and goes
+    looking for figures. This one starts from the figures. It takes a whole
+    export, throws away everything we could not use or already have, and ranks
+    what is left by how likely it is to be worth listing — so the question
+    stops being "does this food have data" and becomes "which of this data is
+    worth a food".
+
+    Three filters, in order, because each is cheaper than the next:
+
+      1. COMPLETE — a record missing fibre or sugars cannot answer the
+         questions this site is for, whatever else it has. Stricter than
+         REQUIRED in the two readers: that one decides whether a figure may be
+         kept at all, this one decides whether a record is worth a hand
+         looking at it, and there is no reason to spend attention on a record
+         that arrives already short.
+
+      2. KNOWN — the record is already matched to one of our foods. Read out
+         of the alias and extras files, so it needs no list of its own.
+
+      3. NOTABLE — how far out on any axis the record sits, as a percentile
+         within its own table. This is the whole idea: a table is mostly
+         unremarkable food, and a record that is unremarkable on every axis we
+         tag is not worth adding however complete it is. Percentiles rather
+         than fixed thresholds, because the three tables are not on the same
+         scale and a threshold tuned to one would silently mis-sort another.
+
+    What it deliberately does NOT do is decide. It cannot tell a food from a
+    prepared dish, and it does not know whether anyone buys the thing. The
+    output is a shortlist for a person, with the nearest food we already have
+    printed next to each one so a near-duplicate is visible rather than
+    discovered later.
+*/
+
+(function (root) {
+    "use strict";
+
+    /* Alcohol is not here on purpose: most tables leave the column out
+       entirely for anything that is not a drink, and its absence means zero
+       rather than unknown. Demanding it would throw away every solid food. */
+    const COMPLETE = ["fat", "protein", "carbs", "fiber", "sugars", "water"];
+
+    /* Below this many usable records the ranking is switched off and
+       everything comes back. See rank(). */
+    const MIN_POPULATION = 40;
+
+    /* The axes worth being extreme on, and which end is interesting. Water is
+       the one where low is the signal — a dry food concentrates everything
+       else, and it is how the dried-fruit and spice end of the list was found
+       the first time round. */
+    const AXES = [
+        { key: "fat", label: "fat", high: true },
+        { key: "fiber", label: "fibre", high: true },
+        { key: "sugars", label: "sugar", high: true },
+        { key: "protein", label: "protein", high: true },
+        { key: "alcohol", label: "alcohol", high: true },
+        { key: "water", label: "dryness", high: false }
+    ];
+
+    function values(records, key) {
+        const out = [];
+        records.forEach(function (r) {
+            const v = r.nutrients[key];
+            if (typeof v === "number" && !isNaN(v)) out.push(v);
+        });
+        return out.sort(function (a, b) { return a - b; });
+    }
+
+    /* How far out a value sits, 0 to 1, and ties always take the bottom of
+       their own run — which needs counting from a different end depending on
+       which direction is the interesting one.
+
+       Getting this wrong is not subtle in its effect and is very subtle to
+       read: a first version counted only strictly-lower values and inverted
+       that for the low-is-interesting axis, so fifty identical records at 80g
+       of water all came back at the 96th percentile for dryness and buried
+       the one food that was actually dry. */
+    function countBelow(sorted, v) {
+        let lo = 0, hi = sorted.length;
+        while (lo < hi) {
+            const mid = (lo + hi) >> 1;
+            if (sorted[mid] < v) lo = mid + 1; else hi = mid;
+        }
+        return lo;
+    }
+
+    function countAtOrBelow(sorted, v) {
+        let lo = 0, hi = sorted.length;
+        while (lo < hi) {
+            const mid = (lo + hi) >> 1;
+            if (sorted[mid] <= v) lo = mid + 1; else hi = mid;
+        }
+        return lo;
+    }
+
+    function percentile(sorted, v, high) {
+        if (!sorted.length) return 0;
+        return high
+            ? countBelow(sorted, v) / sorted.length
+            : 1 - countAtOrBelow(sorted, v) / sorted.length;
+    }
+
+    function missingFrom(record) {
+        return COMPLETE.filter(function (k) {
+            const v = record.nutrients[k];
+            return typeof v !== "number" || isNaN(v);
+        });
+    }
+
+    /* A row whose macros cannot fit in 100g is not a food, it is a parsing
+       fault or a per-portion row that slipped in. Ten grams of slack, because
+       fibre is counted inside carbohydrate in some tables and beside it in
+       others, and rounding does the rest. */
+    function impossible(record) {
+        const n = record.nutrients;
+        const sum = (n.fat || 0) + (n.protein || 0) + (n.carbs || 0) +
+            (n.water || 0) + (n.alcohol || 0);
+        return sum > 110;
+    }
+
+    /*
+        records — from any of the three readers; all three give {name, nutrients}
+        opts.claimed — record name -> our food name, for everything already matched
+        opts.ours    — our food names, for the near-duplicate check
+        opts.score   — LMV.score, the bigram scorer the audits use
+        opts.cutoff  — how far out a record has to sit on its best axis (0.9)
+    */
+    function rank(records, opts) {
+        opts = opts || {};
+        const claimed = opts.claimed || {};
+        const ours = opts.ours || [];
+        const score = opts.score;
+        const cutoff = opts.cutoff == null ? 0.9 : opts.cutoff;
+
+        const usable = [], incomplete = [], known = [], junk = [];
+
+        records.forEach(function (r) {
+            if (claimed[r.name]) { known.push({ record: r, food: claimed[r.name] }); return; }
+            if (impossible(r)) { junk.push(r); return; }
+            const missing = missingFrom(r);
+            if (missing.length) { incomplete.push({ record: r, missing: missing }); return; }
+            usable.push(r);
+        });
+
+        /* Percentiles are taken over the usable set, not the whole table: the
+           question is how this record compares with the others we could still
+           take, and the ones we have already taken are not in the running.
+
+           A percentile needs a population, though. Once the filters have done
+           their work the remainder can be small — a Swedish re-run leaves
+           almost nothing, since we have most of that table already — and
+           "top 10% of four records" is not a fact about anything. Below
+           MIN_POPULATION the notability filter is skipped entirely and
+           everything usable comes back, which is the right answer for a list
+           short enough to read whole. */
+        const ranked = usable.length >= MIN_POPULATION;
+        const sorted = {};
+        AXES.forEach(function (a) { sorted[a.key] = values(usable, a.key); });
+
+        const candidates = usable.map(function (r) {
+            const signals = [];
+            AXES.forEach(function (a) {
+                const v = r.nutrients[a.key];
+                if (typeof v !== "number" || isNaN(v)) return;
+                const rankAt = percentile(sorted[a.key], v, a.high);
+                if (!ranked || rankAt >= cutoff) {
+                    signals.push({ axis: a.label, key: a.key, value: v, at: rankAt });
+                }
+            });
+            signals.sort(function (x, y) { return y.at - x.at; });
+
+            let nearest = null;
+            if (score && ours.length) {
+                ours.forEach(function (name) {
+                    const s = score(r.name, name);
+                    if (!nearest || s > nearest.score) nearest = { name: name, score: s };
+                });
+            }
+
+            return {
+                record: r,
+                signals: signals,
+                best: signals.length ? signals[0].at : 0,
+                nearest: nearest
+            };
+        }).filter(function (c) { return !ranked || c.signals.length; });
+
+        candidates.sort(function (a, b) {
+            if (b.best !== a.best) return b.best - a.best;
+            return b.signals.length - a.signals.length;
+        });
+
+        return {
+            candidates: candidates,
+            ranked: ranked,
+            counts: {
+                read: records.length,
+                known: known.length,
+                incomplete: incomplete.length,
+                junk: junk.length,
+                usable: usable.length,
+                notable: candidates.length
+            },
+            known: known,
+            incomplete: incomplete
+        };
+    }
+
+    /* Everything the repo has already spoken for, as record name -> our food.
+       Takes the alias and extras maps as they are on disk; the caller decides
+       which ones apply to the table in hand. */
+    function claimedFrom(maps) {
+        const out = {};
+        (maps || []).forEach(function (m) {
+            Object.keys(m || {}).forEach(function (food) {
+                if (food[0] === "_") return;
+                const record = m[food];
+                if (typeof record === "string") out[record] = food;
+            });
+        });
+        return out;
+    }
+
+    const Harvest = {
+        COMPLETE: COMPLETE,
+        MIN_POPULATION: MIN_POPULATION,
+        AXES: AXES,
+        percentile: percentile,
+        rank: rank,
+        claimedFrom: claimedFrom
+    };
+
+    if (typeof module === "object" && module.exports) module.exports = Harvest;
+    else root.Harvest = Harvest;
+})(typeof self !== "undefined" ? self : this);

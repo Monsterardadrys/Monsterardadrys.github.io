@@ -510,6 +510,48 @@ declined stops being reported as outstanding. Checked with the real 43 picks in
 a browser against the repo as it stands: no alarms, and the only thing left to
 say is that 49 foods still have no figures.
 
+**Reading a table the other way round.** Every tool here starts from a food we
+decided to list and goes looking for figures for it. That is why the list has
+foods with no figures after four national tables, and why the last two rounds
+were spent deciding which of them to give up on. The inverse question is
+better posed: not *does this food have data* but *which of this data is worth a
+food*.
+
+`tools/harvest.html` asks it. It takes any of the three exports — it works out
+which from the first four bytes and the columns, not the file name — and puts
+every record through three filters, each cheaper than the next:
+
+- **Complete.** Fat, protein, carbohydrate, fibre, sugars and water, all six.
+  Stricter than the `REQUIRED` backbone the audits use, and deliberately: that
+  rule decides whether a figure may be kept, this one decides whether a record
+  is worth a person's attention, and there is no reason to spend attention on
+  one that arrives already short. Alcohol is not required — most tables omit
+  the column for anything that is not a drink, and its absence means zero.
+- **New.** Every alias and extras file, all four sources, read as one map of
+  record name to our food. A Swedish re-run recognised 376 of 380 rows as
+  already ours in testing, which is the number that makes the rest readable.
+- **Notable.** How far out the record sits on fat, fibre, sugar, protein,
+  alcohol or dryness, as a percentile *within what is left after the first two
+  filters* — the comparison that matters is against the records we could still
+  take, not against the ones we already have. Top tenth on any axis to appear
+  at all.
+
+Percentiles rather than fixed thresholds because the three tables are not on
+one scale, and a threshold tuned to Ciqual would silently mis-sort Frida. Two
+things that took a test to see: ties have to take the bottom of their own run
+from **both** ends, or fifty identical records at 80g of water all read as the
+96th percentile for dryness and bury the one food that is actually dry; and a
+percentile needs a population, so below forty usable records the ranking is
+switched off and everything comes back, which is the right answer for a list
+short enough to read whole.
+
+What it does not do is decide. It cannot tell a food from a prepared dish and
+it does not know whether anyone buys the thing. It gives back
+`harvest-picks.json` — records and figures, with the nearest food we already
+have printed beside each so a near-duplicate is visible rather than discovered
+later. The name, the category, the portion and the trait list are decisions,
+and they are made in the repo.
+
 **Twenty-four foods removed, and a sugars figure derived rather than typed.**
 A pass over everything still without figures, deciding what the list is actually
 for. Three groups came off.

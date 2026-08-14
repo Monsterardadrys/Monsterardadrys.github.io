@@ -342,6 +342,12 @@
                 <li>Send Claude all three, and say which round they came from.</li>
             </ol>
 
+            <p class="dropped"><strong><a href="harvest.html">Harvest</a> is not part of that loop.</strong>
+                Use it when the question is not "does this food have figures" but "what should we be
+                listing at all". It reads the same exports, needs no build afterwards, and what comes
+                back is records rather than foods — send the file over and the foods get written in the
+                repo, where the name, category, portion and trait list belong.</p>
+
             <p class="dropped"><strong>Running an audit and running the builder are not the same
                 errand, and an audit is not the same as its export.</strong> There are two reasons to
                 open an audit page. To <em>find new matches</em> — that needs ladder order, with a
@@ -953,6 +959,14 @@
                         (bySrc[row[2]] || 0) + " foods" + "</span>";
                     toolRow.appendChild(a);
                 });
+                const harvest = document.createElement("a");
+                harvest.href = "harvest.html";
+                harvest.className = "build";
+                harvest.innerHTML = "<b>Harvest</b><span>the other direction — starts from a table " +
+                    "and asks which of its figures is worth a food, instead of starting from a food " +
+                    "and hunting for figures</span>";
+                toolRow.appendChild(harvest);
+
                 const build = document.createElement("a");
                 build.href = "build-nutrition.html";
                 build.className = "build";
@@ -977,6 +991,14 @@
                  ["usda-audit.html", "American matches, for what none of those covers. Gives you " +
                      "<em>usda-aliases.json</em> and <em>nutrition-usda.js</em>. Reads SR Legacy and " +
                      "Foundation; FNDDS is refused."],
+                 ["harvest.html", "The other direction. Takes any of the three exports and, instead " +
+                     "of asking whether a food we chose has figures, asks which of the figures is " +
+                     "worth a food. Drops what is incomplete, what is already ours and what is " +
+                     "unremarkable, then ranks the rest by how far out it sits — a record has to be " +
+                     "in the top tenth on fat, fibre, sugar, protein, alcohol or dryness to appear " +
+                     "at all. Gives you <em>harvest-picks.json</em>: records and figures, not foods. " +
+                     "A name, a category, a portion and a trait list are decisions, and it does not " +
+                     "make them."],
                  ["build-nutrition.html", "Turns the export into <em>nutrition-data.js</em>. The generated " +
                      "files come from the repo unless you add them in step 3 — add them to build straight " +
                      "from a round you have just finished."]
