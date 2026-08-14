@@ -1231,6 +1231,16 @@ const CATEGORIES = [
       { name: "Beef Kidney", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein", "alpha_gal"] },
       { name: "Lamb Kidney", portion: 125, traits: ["bile_stimulant", "protein", "alpha_gal"] },
       { name: "Veal Kidney", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein", "alpha_gal"] },
+      /* Not pölsa, and the figures are what say so. This is organ meat and
+         nothing else: 27.4g protein, 2.2g carbohydrate, no fibre — more protein
+         than our raw beef liver, because it is cooked and the water has gone.
+         Pölsa is offal extended with korngryn and broth, so it lands where
+         blood pudding lands: 11g protein, 20g carbohydrate, 2.3g fibre.
+         Matching them would put two and a half times the protein on it and take
+         away four fifths of the carbohydrate — and, worse, take the grain with
+         it, so a dish made with barley would stop carrying allergen_wheat and
+         read as safe to someone avoiding gluten. Pölsa is its own food and
+         belongs to a Swedish round. */
       { name: "Offal (mixed, cooked)", portion: 125, traits: ["bile_stimulant", "protein", "alpha_gal"] },
       { name: "Goat Meat", portion: 125, traits: ["bile_stimulant", "protein", "alpha_gal"] },
       { name: "Ostrich", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein"] },
