@@ -1,7 +1,8 @@
 # Worklist
 
-464 foods · 43 traits · 375 matched to Livsmedelsverket, 30 to Denmark's Frida,
-9 to France's Ciqual, 33 to USDA's SR Legacy. 446 carry nutrient figures; 18 do not.
+539 foods · 43 traits · 375 matched to Livsmedelsverket, 30 to Denmark's Frida,
+84 to France's Ciqual, 33 to USDA's SR Legacy. 446 carry nutrient figures until the
+next build, which brings 75 more; 18 have none from any source.
 64 carry a real lactose figure and 29 a polyols figure, 41 of them borrowed.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
@@ -14,7 +15,7 @@ a long gap; this file is the long version behind it.
 
 ## Done
 
-**Livsmedelsverket audit** — 375 of 464 foods checked against the Swedish Food
+**Livsmedelsverket audit** — 375 of 539 foods checked against the Swedish Food
 Agency database, 115 confirmed absent, none unmatched. Each verified food
 carries its entry name in `lmv`, and departures carry an `lmvNote`; both show on
 `sources.html`.
@@ -509,6 +510,55 @@ The drift rule is now `written + refused < confirmed`, and a pick the repo has
 declined stops being reported as outstanding. Checked with the real 43 picks in
 a browser against the repo as it stands: no alarms, and the only thing left to
 say is that 49 foods still have no figures.
+
+**The first harvest: 90 records in, 75 foods out, and six duplicates the tool
+should have caught.** France's table gave 90 records worth a look. What came out
+of them:
+
+- **Six were foods we already had**, under a name the near-duplicate check could
+  not see. Ciqual writes *Apple, dried* where we write *Dried Apple*, *Apricot,
+  pitted, dried* for *Dried Apricot*, *Pork liver pâté* for *Liver Pate*. The
+  check used the audits' bigram scorer, which compares whole strings — so word
+  order matters to it, and every one of those scored near zero. It offered
+  *Milk chocolate* as the closest thing to *Beaufort cheese*.
+- **Five spirits left out.** Gin, rum, vodka, whisky and brandy are water and
+  ethanol; `Spirits (Liquor)` already answers for them. Liqueur is in, because
+  its 17g of sugar makes it a different food.
+- **Four records collapsed into two foods.** Gruyère and Tomme each came twice,
+  and Ciqual gives flageolet and haricot beans byte-identical figures, which
+  means one analysis serving two names — the Sour Cream duplicate again, seen
+  before it landed this time.
+- **Eleven jams stay eleven.** The sugar is the same 55-60g in all of them, but
+  the pollen cross-reactivity the fruit brings is not, and that is a real
+  difference in what the tool says.
+- **Thirteen named cheeses stay thirteen.** The precedent was already set by
+  Roquefort, Fontina and Raclette: a shopper reads the name off the packet, so
+  the name is the food.
+
+**Nine trait tags were wrong and the arithmetic said so.** Every dose-based tag
+on the 75 was checked against the figures before anything was written, the same
+way `check-data.js` checks the existing ones. Sugared almond does not reach the
+fat dose in 30g; a nougat bar's 5.84g of lactose is 2.92g in a 50g portion, not
+5; a reduced-fat biscuit's 13g of fibre is 3.9g in 30g. Four more needed the
+`irritant` umbrella that `caffeine`, `peel_skin` and `alcohol` imply. Writing
+seventy-five trait lists by eye and checking none of them would have put nine
+wrong claims on the site.
+
+**The fix: words before letters.** The near-duplicate check now compares the
+*set of words* in the two names, accents stripped, keeping the form word —
+dried, raw, cooked — because every bad match this project has had was
+fresh-for-dried or raw-for-cooked, so the one word it would be tempting to
+discard as noise is the one that must count. Taking the larger of the two
+scores was tried first and is wrong: the bigram number is on a different scale
+and wins for the wrong reason, still offering fresh *Apricot* for the dried
+one. Words decide; letters only break a tie of nothing at all. All six
+duplicates are caught by it.
+
+**And a warning that buried the report.** Adding 75 foods at once produced 75
+identical lines saying no Swedish audit had seen them — which is true, and is
+the next thing to do, but as 75 lines it hid everything else. One line now,
+with the names and the reason: Livsmedelsverket sits above France, so a Swedish
+round should look at them before their figures are taken as settled.
 
 **Reading a table the other way round.** Every tool here starts from a food we
 decided to list and goes looking for figures for it. That is why the list has
