@@ -144,14 +144,28 @@ const FoodPicker = (function () {
     /* Opens every category and hides the foods that do not match. A search
        that matches nothing puts everything back rather than leaving a blank
        page — a typo should not look like an empty database. */
+    /* Every word, anywhere, in any order.
+
+       A substring match makes you guess the word order someone else chose:
+       "cheese cream" finds nothing when the food is called "Cream Cheese", and
+       "dried mango" finds nothing when it is "Dried Mango (No Sugar Added)"
+       only because of where the brackets fall. Splitting the query and asking
+       for each word separately removes the guessing, and costs nothing — a
+       single word behaves exactly as it did. */
+    function matchesWords(name, words) {
+      const hay = name.toUpperCase();
+      return words.every(function (w) { return hay.indexOf(w) > -1; });
+    }
+
     function search(term) {
-      const filter = String(term || "").toUpperCase();
+      const words = String(term || "").toUpperCase().split(/\s+/)
+        .filter(function (w) { return w.length; });
       let found = false;
       showAll();
 
       const all = entries();
       all.forEach(function (entry) {
-        const matches = nameOf(entry).toUpperCase().indexOf(filter) > -1;
+        const matches = !words.length || matchesWords(nameOf(entry), words);
         if (matches) found = true;
         entry.style.display = matches ? "" : "none";
       });

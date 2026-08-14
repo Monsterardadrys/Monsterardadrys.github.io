@@ -511,6 +511,43 @@ declined stops being reported as outstanding. Checked with the real 43 picks in
 a browser against the repo as it stands: no alarms, and the only thing left to
 say is that 49 foods still have no figures.
 
+**Search stopped caring about word order.** Every search box here matched a
+substring, so finding a food meant guessing the word order somebody else chose.
+Ciqual writes *Jam, apricot* and *Apricot, pitted, dried*; Frida writes *Cheese,
+hard, Cheddar, Danish*. There is no pattern to learn, and where a food has only
+one or two near neighbours there is nothing to learn it from. Every box now
+splits the query and asks for each word separately, anywhere, in any order — the
+four audit pages, the harvest page, and the site's own food filter, which had
+the same problem with our own names: *cheese cream* found nothing for **Cream
+Cheese**. A single-word query behaves exactly as it did.
+
+**Is the ladder a claim about laboratories? No, and it should never have been
+allowed to read as one.** The question came from the harvest: if all three
+tables are laboratory analyses, what makes Sweden's figure better than France's?
+Nothing, and the ladder does not say it is. It answers one question — when two
+tables both have a figure for the *same food*, which do we take — and its two
+reasons are neither about measurement quality:
+
+- **Consistency.** A food's figures should come from one analysis of one
+  product. Taking its fat from one country and its fibre from another makes the
+  food incoherent whatever the labs did.
+- **Which product.** A Swedish entry describes what is on a Swedish shelf.
+  Gräddfil at 12% is not crème fraîche at 34%, however well either was analysed
+  — and that was a real duplicate here, not a hypothetical.
+
+Where between-country genuinely does beat between-batch we have measured it, and
+it is the fibre method: AOAC 2011.25 reads a median 1.8g/100g above 991.43 on
+the 17 foods carrying both, which is 30% of the dose. That is a real reason to
+prefer tables that agree on method, and it is the only such reason we have
+evidence for. Everything else in the ordering is product and consistency.
+
+**So the harvest does not use the ladder, and should not.** It is choosing which
+foods to list, not which figure to believe, and neither reason above applies to
+that. It drops a record only when *some* source already answers for that food,
+whichever source that is, and sorts what is left on the figures rather than on
+where they came from. That was already how it worked; it is now said out loud on
+the page, because the question was a fair one to have to ask.
+
 **The first harvest: 90 records in, 75 foods out, and six duplicates the tool
 should have caught.** France's table gave 90 records worth a look. What came out
 of them:

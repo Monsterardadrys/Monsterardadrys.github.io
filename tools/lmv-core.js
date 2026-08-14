@@ -597,6 +597,18 @@
            all for ice cream — so their threshold for lactose is lower than the
            5g here. A direct measurement of the food beats our arithmetic on a
            column borrowed from another country's comparable one. */
+        /* White chocolate is cocoa butter, sugar and milk solids, so it does
+           carry lactose — around 9g per 100g, which is 2.7g in a 30g bar and
+           under the dose. Ciqual gives that record no lactose column, so the
+           check falls back to total sugars and reads 13.5g, nearly all of it
+           sucrose. The tag is rightly absent; what is wrong is the number the
+           check is testing, and there is no lactose figure to replace it with.
+
+           Not a general rule that a missing column means zero: a missing
+           column means not measured, and for a food that plainly contains
+           milk the safe reading is not "none". This is one food where the
+           arithmetic on the wrong column is the only thing raising it. */
+        "White Chocolate with Nuts|over_3g_lactose": "the figure is total sugars and nearly all of it is sucrose; the lactose in a 30g bar is about 2.7g",
         "Milk chocolate|over_3g_lactose": "Monash gives a 20g low-FODMAP serving, under the 30g portion",
         "Ice Cream|over_3g_lactose": "Monash gives this food no low-FODMAP serving at all"
     };

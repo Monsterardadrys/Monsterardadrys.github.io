@@ -747,8 +747,9 @@
                         const q = input.value.trim().toLowerCase();
                         hits.innerHTML = "";
                         if (q.length < 2) return;
+                        const words = wordsOf(q);
                         records.filter(function (r) {
-                            return String(r.name).toLowerCase().indexOf(q) !== -1;
+                            return matchesWords(r.name, words);
                         }).slice(0, 8).forEach(function (r) {
                             const b = document.createElement("button");
                             b.className = "cand";
@@ -803,6 +804,24 @@
                 });
                 refreshPicks();
             });
+
+            /* Every word, anywhere, in any order.
+
+               A substring match makes you guess the word order the table
+               happened to choose. Ciqual writes "Jam, apricot" and "Apricot,
+               pitted, dried"; Frida writes "Cheese, hard, Cheddar, Danish".
+               There is no pattern to learn, and for a food with only one or
+               two near neighbours there is nothing to learn it from. Asking
+               for each word separately removes the guessing, and a
+               single-word query behaves exactly as it did. */
+            function wordsOf(q) {
+                return q.split(/\s+/).filter(function (w) { return w.length; });
+            }
+
+            function matchesWords(name, words) {
+                const hay = String(name).toLowerCase();
+                return words.every(function (w) { return hay.indexOf(w) !== -1; });
+            }
 
             function render(result, lmvCount) {
                 const counts = document.getElementById("counts");
