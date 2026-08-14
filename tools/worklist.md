@@ -509,6 +509,21 @@ declined stops being reported as outstanding. Checked with the real 43 picks in
 a browser against the repo as it stands: no alarms, and the only thing left to
 say is that 49 foods still have no figures.
 
+**The same warning had two opposite answers, and it only gave one.** Once the
+three foods above were restored in the repo, feeding the builder the *same*
+download warned about the *same* three — correctly, because that file really is
+missing them. But the advice was "re-run that audit", and re-running was the one
+thing that would not help: the repo's copy was already right, and step 3 is
+optional, so the fix was to leave the file out.
+
+A count cannot tell those apart; the names can. The builder now lists which
+foods would go, and separates the two cases by asking whether the repo's copy is
+a superset of the uploaded one. If it is, the file is simply older — *leave it
+out, nothing to re-run*. Only a file with something new **and** something missing
+is the half-written one the warning was built for. The extras object gets the
+same net, since a dropped borrowed column is invisible: the food keeps every
+other figure it had.
+
 **A food must never be offered its own source's extras, and three lost their
 figures proving it.** Goats Milk, Skyr and Whey Protein take their figures from
 Frida — Livsmedelsverket has none of them. The extras list was built from "has
