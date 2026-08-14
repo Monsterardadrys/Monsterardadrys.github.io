@@ -1349,7 +1349,6 @@ const CATEGORIES = [
       { name: "Basil (fresh)", bothWays: true, form: "fresh", lmv: "Basilika färsk", portion: 2, traits: [] },
       { name: "Basil (dried)", bothWays: true, form: "dried", portion: 1, traits: [] },
       { name: "Oregano (dried)", bothWays: true, form: "dried", portion: 2, traits: [] },
-      { name: "Oregano (fresh)", bothWays: true, form: "fresh", portion: 2, traits: [] },
       { name: "Thyme (dried)", bothWays: true, form: "dried", portion: 2, traits: [] },
       { name: "Thyme (fresh)", bothWays: true, form: "fresh", portion: 2, traits: [] },
       { name: "Rosemary (dried)", bothWays: true, form: "dried", portion: 2, traits: [] },
@@ -1396,7 +1395,6 @@ const CATEGORIES = [
       { name: "Chamomile Tea", portion: 200, traits: ["salicylate", "cross_reactive", "cross_mugwort"] },
       { name: "Kombucha", portion: 200, traits: ["irritant", "histamine", "carbonation"] },
       { name: "Almond Milk", lmv: "Mandeldryck berikad", portion: 200, traits: ["allergen_treenut"] },
-      { name: "Rice Milk", portion: 200, traits: [] },
       { name: "Orange Juice", lmv: "Apelsinjuice drickf.", portion: 200, traits: ["cross_reactive", "cross_grass", "dao_competitor"] },
       { name: "Apple Juice", lmv: "Äppeljuice drickf.", portion: 200, traits: ["fodmaps", "fructose", "polyols", "cross_reactive", "cross_birch"] },
       // The figures are the powder made up 1:8 as directed — see nutrition-manual.js.

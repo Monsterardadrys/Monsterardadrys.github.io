@@ -1,7 +1,7 @@
 # Worklist
 
-490 foods · 43 traits · 375 matched to Livsmedelsverket, 30 to Denmark's Frida,
-9 to France's Ciqual, 36 to USDA's SR Legacy. 449 carry nutrient figures; 41 do not.
+488 foods · 43 traits · 375 matched to Livsmedelsverket, 30 to Denmark's Frida,
+9 to France's Ciqual, 36 to USDA's SR Legacy. 449 carry nutrient figures; 39 do not.
 64 carry a real lactose figure and 29 a polyols figure, 41 of them borrowed.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
@@ -14,7 +14,7 @@ a long gap; this file is the long version behind it.
 
 ## Done
 
-**Livsmedelsverket audit** — 375 of 490 foods checked against the Swedish Food
+**Livsmedelsverket audit** — 375 of 488 foods checked against the Swedish Food
 Agency database, 115 confirmed absent, none unmatched. Each verified food
 carries its entry name in `lmv`, and departures carry an `lmvNote`; both show on
 `sources.html`.
@@ -509,6 +509,18 @@ The drift rule is now `written + refused < confirmed`, and a pick the repo has
 declined stops being reported as outstanding. Checked with the real 43 picks in
 a browser against the repo as it stands: no alarms, and the only thing left to
 say is that 49 foods still have no figures.
+
+**Two rows that did nothing.** `Oregano (fresh)` and `Rice Milk` carried no
+figures and no traits — nothing to put in a meal, nothing to filter on, nothing
+to say on a food page. An entry that answers no question the tool asks is worse
+than an absent one, because it reads as covered. Both removed. 488 foods.
+
+Oregano (fresh) was one of the twelve added to complete a fresh/dried pair;
+eleven of those found figures and it never did. `Oregano (dried)` keeps
+`bothWays` and its suffix, since the choice a shopper faces is real whether or
+not we list the other half. Rice Milk was among Ciqual's nine finds and was
+never picked; if it comes back it comes back as a new food with figures
+attached.
 
 **The borrowing landed, and immediately disproved four tags.** 61 figures on 41
 foods — 40 lactose, 21 polyols, 7 held down to the food's own sugars. 64 foods
@@ -1452,6 +1464,10 @@ on the list, which is fine at 5g and not at 20g. Twelve added: Basil (dried),
 Dill (dried), Mint (dried), Oregano (fresh), Thyme (fresh), Rosemary (fresh),
 Ginger (dried), Chili (dried), Garlic Powder, Sun-dried Tomato, and dried
 porcini and trumpet chanterelle.
+
+*Oregano (fresh) has since been removed — see "two rows that did nothing"
+below. Eleven of the twelve found figures; that one never did, and never
+carried a trait either.*
 
 Which pairs matter is not the same question as which pairs exist. For the herbs
 it is only weight and water — basil carries no trait either way. It is the four
