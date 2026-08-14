@@ -1231,16 +1231,21 @@ const CATEGORIES = [
       { name: "Beef Kidney", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein", "alpha_gal"] },
       { name: "Lamb Kidney", portion: 125, traits: ["bile_stimulant", "protein", "alpha_gal"] },
       { name: "Veal Kidney", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein", "alpha_gal"] },
-      /* Not pölsa, and the figures are what say so. This is organ meat and
-         nothing else: 27.4g protein, 2.2g carbohydrate, no fibre — more protein
-         than our raw beef liver, because it is cooked and the water has gone.
-         Pölsa is offal extended with korngryn and broth, so it lands where
-         blood pudding lands: 11g protein, 20g carbohydrate, 2.3g fibre.
-         Matching them would put two and a half times the protein on it and take
-         away four fifths of the carbohydrate — and, worse, take the grain with
-         it, so a dish made with barley would stop carrying allergen_wheat and
-         read as safe to someone avoiding gluten. Pölsa is its own food and
-         belongs to a Swedish round. */
+      /* Not pölsa. This record is organ meat and nothing else: 27.4g protein,
+         2.2g carbohydrate, no fibre — more protein than our raw beef liver,
+         because it is cooked and the water has gone.
+
+         Pölsa is offal boiled with korngryn and broth, and the barley is
+         between a sixth and a quarter of it. A dish carrying that much grain
+         cannot hold 2.2g of carbohydrate per 100g, which settles it without
+         needing a figure for pölsa at all. What matters is not the arithmetic
+         but what the grain brings: matched here, a dish made with barley would
+         carry no allergen_wheat and read as safe to someone avoiding gluten.
+
+         Three foods, not one. This is the raw material. Pölsa is offal plus
+         grain. Blood pudding is neither — it is blood, flour and syrup, and
+         has its own row already. Pölsa has no row yet and should get one from
+         a Swedish round, where it will arrive with its own figures. */
       { name: "Offal (mixed, cooked)", portion: 125, traits: ["bile_stimulant", "protein", "alpha_gal"] },
       { name: "Goat Meat", portion: 125, traits: ["bile_stimulant", "protein", "alpha_gal"] },
       { name: "Ostrich", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein"] },
