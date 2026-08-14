@@ -62,10 +62,6 @@ const NUTRITION_USDA = {
     src: "usda", ref: "Spices, ginger, ground (FDC 170926, SR Legacy, fibre AOAC 991.43)",
     values: { fat: 4.24, protein: 8.98, carbs: 71.6, fiber: 14.1, sugars: 3.39, alcohol: 0, water: 9.94, lactose: 0 }
   },
-  "Hoisin Sauce": {
-    src: "usda", ref: "Sauce, hoisin, ready-to-serve (FDC 172886, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 3.39, protein: 3.31, carbs: 44.1, fiber: 2.8, alcohol: 0, water: 44.2 }
-  },
   "Horseradish Sauce": {
     src: "usda", ref: "Sauce, horseradish (FDC 171833, SR Legacy, fibre AOAC 991.43)",
     values: { fat: 50.9, protein: 1.09, carbs: 10, fiber: 1, sugars: 8.98, water: 35.8, lactose: 0 }
@@ -106,17 +102,9 @@ const NUTRITION_USDA = {
     src: "usda", ref: "Spices, oregano, dried (FDC 171328, SR Legacy, fibre AOAC 991.43)",
     values: { fat: 4.28, protein: 9, carbs: 68.9, fiber: 42.5, sugars: 4.09, alcohol: 0, water: 9.93, lactose: 0 }
   },
-  "Oyster Sauce": {
-    src: "usda", ref: "Sauce, oyster, ready-to-serve (FDC 174529, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 0.25, protein: 1.35, carbs: 10.9, fiber: 0.3, alcohol: 0, water: 80 }
-  },
   "Paprika Powder": {
     src: "usda", ref: "Spices, paprika (FDC 171329, SR Legacy, fibre AOAC 991.43)",
     values: { fat: 12.9, protein: 14.1, carbs: 54, fiber: 34.9, sugars: 10.3, alcohol: 0, water: 11.2, lactose: 0 }
-  },
-  "Pickle Relish": {
-    src: "usda", ref: "Pickle relish, sweet (FDC 168561, SR Legacy, fibre AOAC 991.43)",
-    values: { fat: 0.47, protein: 0.37, carbs: 35.1, fiber: 1.1, alcohol: 0, water: 62.1 }
   },
   "Pickled Ginger": {
     src: "usda", ref: "Ginger root, pickled, canned, with artificial sweetener (FDC 169765, SR Legacy, fibre AOAC 991.43)",
@@ -168,13 +156,10 @@ const NUTRITION_USDA = {
   }
 };
 
-const NUTRITION_USDA_REFUSED = ["Currants (dried)", "Worcestershire Sauce", "Teriyaki Sauce", "Enoki Mushrooms", "Kimchi"];
+const NUTRITION_USDA_REFUSED = ["Teriyaki Sauce", "Kimchi"];
 
 /* Confirmed, but not imported — too little to be worth a place in a meal:
-     Currants (dried) — no fat — a food with no figures at all is cleaner than one that holds a place in every meal and answers nothing
-     Worcestershire Sauce — no water — a food with no figures at all is cleaner than one that holds a place in every meal and answers nothing
      Teriyaki Sauce — no fat — a food with no figures at all is cleaner than one that holds a place in every meal and answers nothing
-     Enoki Mushrooms — no water — a food with no figures at all is cleaner than one that holds a place in every meal and answers nothing
      Kimchi — no fat, protein, water — a food with no figures at all is cleaner than one that holds a place in every meal and answers nothing
 */
 
@@ -201,10 +186,7 @@ const NUTRITION_USDA_REFUSED = ["Currants (dried)", "Worcestershire Sauce", "Ter
      Allspice — missing sugars (not in the file), lactose (not in the file)
      Maple Syrup — missing fiber (taken from another table of food composition, unnamed), sugars (taken from another table of food composition, unnamed), alcohol (not in the file)
      Horseradish Sauce — missing alcohol (estimated from the ingredient list)
-     Hoisin Sauce — missing sugars (estimated from the ingredient list), lactose (not in the file)
-     Oyster Sauce — missing sugars (estimated from the ingredient list), lactose (not in the file)
      Morel Mushrooms — missing alcohol (not in the file)
-     Pickle Relish — missing sugars (taken from another form of the food), lactose (not in the file)
      Capers — missing sugars (taken from another form of the food), lactose (not in the file)
      Natto — missing sugars (taken from another form of the food), lactose (not in the file)
 */

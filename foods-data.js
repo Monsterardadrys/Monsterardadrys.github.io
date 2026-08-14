@@ -1033,8 +1033,6 @@ const CATEGORIES = [
       { name: "Prunes", lmv: "Katrinplommon torkade", portion: 30, traits: ["cross_reactive", "cross_birch", "fodmaps", "polyols"] },
       { name: "Dried Cranberry (Added Sugar)", lmv: "Tranbär torkade", portion: 30, traits: ["fodmaps", "fructans", "refined_carbs"] },
       { name: "Dried Cranberry (No Sugar Added)", lmv: "Tranbär torkade", portion: 30, traits: ["fodmaps", "fructans"] },
-      { name: "Dried Cherry (Added Sugar)", portion: 30, traits: ["fodmaps", "polyols", "fructose", "cross_reactive", "cross_birch", "refined_carbs"] },
-      { name: "Dried Cherry (No Sugar Added)", portion: 30, traits: ["fiber", "fodmaps", "polyols", "fructose", "cross_reactive", "cross_birch"] },
       { name: "Dried Mango (Added Sugar)", lmv: "Mango torkad", lmvNote: "the database lists one dried mango and does not say whether sugar was added, so the sweetened kind is likely understated here", portion: 30, traits: ["fodmaps", "fructose", "refined_carbs", "allergen_sulphite", "cross_reactive", "cross_mugwort"] },
       { name: "Dried Mango (No Sugar Added)", lmv: "Mango torkad", portion: 30, traits: ["fodmaps", "fructose", "allergen_sulphite", "cross_reactive", "cross_mugwort"] },
       { name: "Dried Pineapple (Added Sugar)", portion: 30, traits: ["fiber", "fodmaps", "fructose", "refined_carbs", "allergen_sulphite"] },
@@ -1046,14 +1044,11 @@ const CATEGORIES = [
       { name: "Dried Pear", lmv: "Päron torkade", portion: 30, traits: ["fodmaps", "fructose", "polyols", "irritant", "peel_skin", "cross_reactive", "cross_birch", "allergen_sulphite"] },
       { name: "Dried Blueberries (Added Sugar)", lmv: "Blåbär torkade", portion: 30, traits: ["refined_carbs"] },
       { name: "Dried Blueberries (No Sugar Added)", lmv: "Blåbär torkade", portion: 30, traits: [] },
-      { name: "Dried Strawberries", portion: 30, traits: ["fiber"] },
       { name: "Dried Peach", lmv: "Persika torkad", portion: 30, traits: ["fodmaps", "polyols", "cross_reactive", "cross_birch", "allergen_sulphite"] },
       { name: "Dried Coconut", lmv: "Kokosflingor", portion: 15, traits: ["over_10g_fat", "bile_stimulant", "allergen_sulphite"] },
       { name: "Dried Goji Berry", lmv: "Gojibär torkade", portion: 30, traits: ["fodmaps", "fructans"] },
       { name: "Dried Kiwi (Added Sugar)", portion: 30, traits: ["cross_reactive", "cross_birch", "cross_grass", "cross_latex", "refined_carbs"] },
       { name: "Dried Kiwi (No Sugar Added)", portion: 30, traits: ["fiber", "cross_reactive", "cross_birch", "cross_grass", "cross_latex"] },
-      { name: "Currants (dried)", portion: 30, traits: ["fodmaps", "fructans"] },
-      { name: "Dried Lychee", portion: 30, traits: ["fructose", "fodmaps", "polyols", "cross_reactive", "cross_mugwort"] }
     ]
   },
   {
@@ -1089,7 +1084,6 @@ const CATEGORIES = [
       // From the SIGHI review (cleared there — SIGHI gave no mechanism).
       // Sources vary a lot (fiber 10-33g, fat 18-25g per 100g) but every one
       // of them clears both thresholds. Protein is only ~5g, so no protein tag.
-      { name: "Tiger Nut (roasted)", portion: 25, traits: ["fiber", "over_10g_fat", "bile_stimulant"] },
       { name: "Pistachio", lmv: "Pistaschnötter u. salt", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "galactans", "allergen_treenut"] },
       { name: "Pine Nuts", portion: 15, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "allergen_treenut"] },
       { name: "Hemp Seeds", lmv: "Hampafrö u. skal", portion: 15, traits: ["over_10g_fat"] },
@@ -1243,7 +1237,6 @@ const CATEGORIES = [
       { name: "Mussels", lmv: "Mussla konserv. m. lag", portion: 80, traits: ["allergen_mollusc", "histamine"] },
       { name: "Fish Balls", lmv: "Fiskbullar konserv. u. buljong", portion: 125, traits: ["allergen_fish", "histamine"] },
       { name: "Fish Fingers", lmv: "Fiskpinnar stekta", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "histamine", "allergen_wheat", "allergen_fish"] },
-      { name: "Nori", portion: 5, traits: ["fiber"] },
       { name: "Mackerel", lmv: "Makrill rå", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "dao_competitor", "allergen_fish"] },
       { name: "Sardines (canned)", lmv: "Sardiner i olja konserv.", portion: 20, traits: ["histamine", "dao_competitor", "allergen_fish"] },
       { name: "Pickled Herring", lmv: "Sill inlagd u. lag", portion: 20, traits: ["refined_carbs", "histamine", "dao_competitor", "irritant", "aceticAcid", "allergen_fish"] },
@@ -1302,7 +1295,6 @@ const CATEGORIES = [
       // 21.3g fat/100g, so it clears the 17.5g bile threshold like the other
       // full-fat cheeses. Protein is only ~14g, so no protein tag.
       { name: "Feta Cheese", lmv: "Salladsost fett 22%", portion: 30, traits: ["over_10g_fat", "histamine", "allergen_milk"] },
-      { name: "Labneh", portion: 30, traits: ["over_3g_lactose", "fodmaps", "allergen_milk"] },
       { name: "Paneer", lmv: "Paneer", portion: 60, traits: ["fodmaps", "over_10g_fat", "bile_stimulant", "over_3g_lactose", "allergen_milk"] },
       { name: "Skyr", portion: 200, traits: ["protein", "fodmaps", "over_3g_lactose", "allergen_milk"] },
       { name: "Buttermilk", lmv: "Filmjölk fett 3% berikad", portion: 200, traits: ["fodmaps", "over_3g_lactose", "allergen_milk"] },
@@ -1325,7 +1317,6 @@ const CATEGORIES = [
     label: "Spices",
     foods: [
       { name: "Chili (fresh)", bothWays: true, form: "fresh", lmv: "Chilipeppar färsk", portion: 5, traits: ["irritant", "capsaicin"] },
-      { name: "Chili (dried)", bothWays: true, form: "dried", portion: 1, traits: ["irritant", "capsaicin"] },
       { name: "Garlic", form: "fresh", lmv: "Vitlök", portion: 5, traits: ["fodmaps", "fructans", "irritant", "allyl_compounds", "allergen_onion"] },
       { name: "Garlic Powder", form: "dried", portion: 2, traits: ["fodmaps", "fructans", "irritant", "allyl_compounds", "allergen_onion"] },
       { name: "Ginger (fresh)", bothWays: true, form: "fresh", lmv: "Ingefära färsk", portion: 5, traits: ["cross_reactive", "cross_mugwort"] },
@@ -1335,10 +1326,8 @@ const CATEGORIES = [
       { name: "Turmeric (dried)", bothWays: true, form: "dried", lmv: "Gurkmeja torkad", portion: 2, traits: ["bile_stimulant"] },
       { name: "Mustard", lmv: "Senap svensk", portion: 5, traits: ["irritant", "allyl_compounds", "allergen_mustard", "cross_reactive", "cross_mugwort"] },
       { name: "Black Pepper", form: "dried", portion: 2, traits: ["irritant", "cross_reactive", "cross_mugwort"] },
-      { name: "Za'atar", form: "dried", portion: 2, traits: ["irritant"] },
       { name: "Sumac", form: "dried", portion: 2, traits: ["irritant", "aceticAcid"] },
       { name: "Cumin (dried)", form: "dried", lmv: "Spiskummin frö torkad", portion: 2, traits: ["salicylate", "cross_reactive", "cross_mugwort"] },
-      { name: "Shawarma Spice Mix", form: "dried", portion: 2, traits: ["irritant"] },
       { name: "Wasabi", lmv: "Wasabirot", portion: 5, traits: ["irritant", "allyl_compounds"] },
       { name: "Curry Powder", form: "dried", portion: 2, traits: ["irritant", "capsaicin"] },
       { name: "Sichuan Peppercorn", form: "dried", portion: 2, traits: ["irritant"] },
@@ -1419,7 +1408,6 @@ const CATEGORIES = [
       { name: "Frozen pizza", lmv: "Pizza orientalisk", portion: 175, traits: ["over_10g_fat", "bile_stimulant", "protein", "refined_carbs"] },
       { name: "French Fries (deep-fried)", lmv: "Pommes frites friterad potatis fett ca 11% frysvara", portion: 150, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs"] },
       { name: "French Fries (oven-baked)", lmv: "Pommes frites friterad potatis värmd i ugn fett ca 7% frysvara", portion: 150, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs"] },
-      { name: "Instant Ramen", portion: 175, traits: ["allergen_wheat", "fodmaps", "fructans"] },
       { name: "Margarine", lmv: "Flytande margarin fett 70%", portion: 10, traits: ["over_10g_fat"] },
       // "ätf." is the made-up broth, not the cube, so the portion is a mug of
       // it. At 5g it was a teaspoon of stock and counted as nothing.
@@ -1436,7 +1424,6 @@ const CATEGORIES = [
     label: "Plant-Based Substitutes",
     foods: [
       { name: "Soy Yogurt", lmv: "Soygurt naturell eko. berikad", portion: 200, traits: ["allergen_soy"] },
-      { name: "Coconut Yogurt", portion: 200, traits: ["fodmaps", "polyols"] },
       { name: "Oat Yogurt", lmv: "Havregurt naturell fett 2,2% berikad", portion: 200, traits: ["fodmaps", "fructans", "allergen_wheat"] },
       { name: "Oat Fraiche", lmv: "Fraiche m. havre veg. fett 15% berikad", portion: 25, traits: ["fodmaps", "fructans", "allergen_wheat"] },
       { name: "Vegan Cheese (Coconut Oil)", lmv: "Kokosbaserad bit fett ca 20% som alternativ till ost", portion: 20, traits: ["refined_carbs"] },
@@ -1483,7 +1470,14 @@ const CATEGORIES = [
       // main driver, with fructans secondary. Not a "safe" pantry staple.
       { name: "Honey", lmv: "Honung", portion: 25, traits: ["fodmaps", "fructose", "fructans"] },
       { name: "White Sugar", lmv: "Socker", portion: 5, traits: ["refined_carbs"] },
-      { name: "Maple Syrup", portion: 25, traits: ["refined_carbs"] },
+      /* USDA gives 67.4g of carbohydrate, 32.2g of water and no sugars figure —
+         the derivation code on that one value was not one we accept. But maple
+         syrup is sucrose, glucose and fructose in water and very little else;
+         the residue is oligosaccharides and organic acids. `sugarsOfCarbs`
+         works the figure out from the carbohydrate rather than having it typed
+         in, so it follows the source if the source changes, and the line in
+         nutrition-data.js says the sugars figure is derived. */
+      { name: "Maple Syrup", portion: 25, sugarsOfCarbs: 0.9, traits: ["refined_carbs"] },
       { name: "Salt", lmv: "Salt m. jod", portion: 5, traits: [] },
       { name: "Garlic-infused Oil", portion: 10, traits: ["over_10g_fat", "bile_stimulant"] },
       { name: "Peanut Butter", lmv: "Jordnötssmör", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen_peanut", "cross_reactive", "cross_grass"] },
@@ -1499,7 +1493,6 @@ const CATEGORIES = [
       { name: "Mayonnaise", lmv: "Majonnäs fett 80%", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_egg"] },
       { name: "Barbecue Sauce", portion: 25, traits: ["aceticAcid", "irritant", "refined_carbs"] },
       { name: "Hot Sauce", portion: 5, traits: ["histamine", "irritant", "capsaicin"] },
-      { name: "Worcestershire Sauce", portion: 5, traits: ["histamine", "allergen_fish"] },
       { name: "Horseradish Sauce", portion: 25, traits: ["irritant", "over_10g_fat", "bile_stimulant"] },
       { name: "Tartar Sauce", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_egg"] },
       { name: "Salsa", lmv: "Tomatsalsa kall", portion: 25, traits: ["irritant"] },
@@ -1507,9 +1500,6 @@ const CATEGORIES = [
       { name: "Thousand Island Dressing", lmv: "Dressing konserv. fett ca 25%", portion: 25, traits: ["over_10g_fat", "allergen_egg"] },
       { name: "Teriyaki Sauce", portion: 25, traits: ["histamine", "allergen_soy", "allergen_wheat", "refined_carbs"] },
       { name: "Fish Sauce", lmv: "Fisksås", portion: 5, traits: ["histamine", "allergen_fish"] },
-      { name: "Oyster Sauce", portion: 5, traits: ["histamine", "allergen_mollusc"] },
-      { name: "Hoisin Sauce", portion: 25, traits: ["histamine", "allergen_soy", "allergen_wheat", "refined_carbs"] },
-      { name: "Brown Gravy", portion: 60, traits: ["over_10g_fat", "bile_stimulant", "allergen_wheat"] },
       { name: "Béarnaise Sauce", lmv: "Bearnaisesås hemlagad", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_egg", "allergen_milk"] },
       { name: "Hollandaise Sauce", lmv: "Hollandaisesås hemlagad", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_egg", "allergen_milk"] },
       { name: "Remoulade", lmv: "Remouladsås", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_egg", "irritant", "allergen_mustard"] },
@@ -1528,17 +1518,12 @@ const CATEGORIES = [
       { name: "White Button Mushrooms", form: "fresh", lmv: "Champinjon", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor", "allergen_mushroom"] },
       { name: "Portobello Mushrooms", form: "fresh", lmv: "Champinjon", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor", "allergen_mushroom"] },
       { name: "Cremini Mushrooms", form: "fresh", lmv: "Champinjon", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor", "allergen_mushroom"] },
-      { name: "Enoki Mushrooms", form: "fresh", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor", "allergen_mushroom"] },
       { name: "Chanterelle Mushrooms", form: "fresh", lmv: "Kantarell gul rå", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor", "allergen_mushroom"] },
       { name: "Porcini Mushrooms", form: "fresh", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor", "allergen_mushroom"] },
-      { name: "Porcini Mushrooms (dried)", bothWays: true, form: "dried", portion: 10, traits: ["fodmaps", "polyols", "dao_competitor", "allergen_mushroom"] },
       { name: "Morel Mushrooms", form: "fresh", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor", "allergen_mushroom"] },
       { name: "King Oyster Mushrooms", form: "fresh", lmv: "Ostronskivling", portion: 80, traits: ["dao_competitor", "allergen_mushroom"] },
       { name: "Truffle", portion: 5, traits: ["fodmaps", "polyols", "dao_competitor", "allergen_mushroom"] },
       { name: "Maitake Mushrooms", form: "fresh", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor", "allergen_mushroom"] },
-      { name: "Lion's Mane Mushrooms", form: "fresh", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor", "allergen_mushroom"] },
-      { name: "Trumpet Chanterelle", form: "fresh", portion: 80, traits: ["fodmaps", "polyols", "dao_competitor", "allergen_mushroom"] },
-      { name: "Trumpet Chanterelle (dried)", bothWays: true, form: "dried", portion: 10, traits: ["fodmaps", "polyols", "dao_competitor", "allergen_mushroom"] }
     ]
   },
   {
@@ -1588,7 +1573,6 @@ const CATEGORIES = [
       { name: "Kimchi", portion: 50, traits: ["histamine", "fodmaps", "fructans", "irritant"] },
       { name: "Sauerkraut", lmv: "Surkål konserv. m. lag", portion: 50, traits: ["histamine", "dao_competitor"] },
       { name: "Pickled Cucumber", lmv: "Gurka inlagd", portion: 25, traits: ["histamine", "aceticAcid", "irritant"] },
-      { name: "Pickle Relish", portion: 20, traits: ["histamine", "aceticAcid", "irritant"] },
       { name: "Olives", lmv: "Oliver gröna m. paprikafyllning avrunna", portion: 25, traits: ["histamine"] },
       { name: "Miso Paste", lmv: "Miso sojabönspasta fermenterad", portion: 5, traits: ["histamine", "dao_competitor", "allergen_soy"] },
       { name: "Pickled Beetroot", lmv: "Rödbeta inlagd u. lag", portion: 40, traits: ["fodmaps", "fructans", "irritant", "aceticAcid", "refined_carbs", "salicylate"] },
@@ -1598,7 +1582,6 @@ const CATEGORIES = [
       { name: "Salt-brined Pickles", lmv: "Saltgurka u. lag", portion: 30, traits: ["histamine", "dao_competitor"] },
       { name: "Capers", portion: 5, traits: ["histamine", "irritant", "aceticAcid"] },
       { name: "Natto", portion: 40, traits: ["histamine", "dao_competitor", "fodmaps", "galactans", "allergen_soy"] },
-      { name: "Kvass", portion: 330, traits: ["histamine", "carbonation", "irritant", "refined_carbs"] }
     ]
   }
 ];

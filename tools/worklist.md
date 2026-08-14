@@ -1,7 +1,7 @@
 # Worklist
 
-488 foods · 43 traits · 375 matched to Livsmedelsverket, 30 to Denmark's Frida,
-9 to France's Ciqual, 36 to USDA's SR Legacy. 449 carry nutrient figures; 39 do not.
+464 foods · 43 traits · 375 matched to Livsmedelsverket, 30 to Denmark's Frida,
+9 to France's Ciqual, 33 to USDA's SR Legacy. 446 carry nutrient figures; 18 do not.
 64 carry a real lactose figure and 29 a polyols figure, 41 of them borrowed.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
@@ -14,7 +14,7 @@ a long gap; this file is the long version behind it.
 
 ## Done
 
-**Livsmedelsverket audit** — 375 of 488 foods checked against the Swedish Food
+**Livsmedelsverket audit** — 375 of 464 foods checked against the Swedish Food
 Agency database, 115 confirmed absent, none unmatched. Each verified food
 carries its entry name in `lmv`, and departures carry an `lmvNote`; both show on
 `sources.html`.
@@ -509,6 +509,47 @@ The drift rule is now `written + refused < confirmed`, and a pick the repo has
 declined stops being reported as outstanding. Checked with the real 43 picks in
 a browser against the repo as it stands: no alarms, and the only thing left to
 say is that 49 foods still have no figures.
+
+**Twenty-four foods removed, and a sugars figure derived rather than typed.**
+A pass over everything still without figures, deciding what the list is actually
+for. Three groups came off.
+
+*Foods nobody eats in the state we list them.* Every dried mushroom — porcini,
+trumpet chanterelle — plus dried chilli. They are rehydrated and cooked, so a
+per-100g figure for the dry thing describes a state that never reaches a plate,
+and the 10g portion pretends otherwise. Their fresh counterparts stay.
+`Chili (fresh)` keeps `bothWays` and its suffix for the same reason
+`Oregano (dried)` does: the choice in the shop is real whether or not we list
+the other half.
+
+*Foods with nothing to say.* Dried strawberries carried one trait, fiber. Dried
+cherries, dried lychee, currants, enoki, lion's mane, trumpet chanterelle,
+za'atar, shawarma mix, tiger nut, nori, labneh, coconut yoghurt, kvass — a
+trait list that is either empty of anything actionable or duplicates a food
+already here, and no figures after four national tables.
+
+*Matches already turned down.* Worcestershire Sauce and the two in
+`usda-declined.json`, Brown Gravy and Instant Ramen. Kept as records they were
+proof against re-deciding; as foods they were rows that could never be filled.
+Hoisin, oyster sauce and pickle relish went with them — all three were in the
+19 whose USDA sugars figure failed the derivation gate, and none is worth a
+round of its own.
+
+**464 foods, 446 with figures. 18 without, down from 39.**
+
+**Maple syrup: a figure worked out rather than left missing.** USDA gives 67.4g
+of carbohydrate, 32.2g of water and no sugars, because the derivation code on
+that one value is not one we accept. But maple syrup is sucrose, glucose and
+fructose in water and very little else. Leaving it missing put a 25g portion of
+almost pure sugar into the meal builder's unknown.
+
+So a food may now declare `sugarsOfCarbs: 0.9` and the builder works the figure
+out from the food's own carbohydrate — 60.66g, 15.2g in a portion. Worked out
+rather than typed in, so it follows the source if the source changes, and the
+line records it as `derived`. `check-data.js` holds the fraction to a fraction,
+allows it on `sugars` only, and fails a derived figure whose food does not
+declare one. This is deliberately narrow: it is for a food whose sugar fraction
+is not in doubt, not a way to fill gaps in general.
 
 **Two rows that did nothing.** `Oregano (fresh)` and `Rice Milk` carried no
 figures and no traits — nothing to put in a meal, nothing to filter on, nothing

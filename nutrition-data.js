@@ -11,7 +11,7 @@
    rest come from nutrition-manual.js, which records a source per food;
    `src` on each line below says which.
 
-   449 of 488 foods have figures — 375 from Livsmedelsverket, 74 entered by
+   446 of 464 foods have figures — 375 from Livsmedelsverket, 74 entered by
    hand. The rest have none, and the meal builder will not let them into a
    meal.
 
@@ -223,7 +223,6 @@ const NUTRITION = {
   "Harissa": { src: "ciqual", fat: 2.9, protein: 2.72, carbs: 7.3, fiber: 5.1, sugars: 6.89, alcohol: 0, water: 77.9, lactose: 0, polyols: 0 },
   "Hazelnut": { src: "lmv", fat: 64.6, protein: 13.2, carbs: 0.5, fiber: 16.1, sugars: 3.6, alcohol: 0, water: 3.2 },
   "Hemp Seeds": { src: "lmv", fat: 53.6, protein: 28, carbs: 2.6, fiber: 5.4, sugars: 1.4, alcohol: 0, water: 5.5 },
-  "Hoisin Sauce": { src: "usda", fat: 3.39, protein: 3.31, carbs: 44.1, fiber: 2.8, alcohol: 0, water: 44.2 },
   "Hollandaise Sauce": { src: "lmv", fat: 56.7, protein: 3, carbs: 0.6, fiber: 0, sugars: 0.3, alcohol: 0, water: 40, lactose: 0.3, polyols: 0, borrowed: { lactose: "ciqual", polyols: "ciqual" } },
   "Honey": { src: "lmv", fat: 0, protein: 0.3, carbs: 81.5, fiber: 0, sugars: 74.7, alcohol: 0, water: 18 },
   "Horseradish": { src: "lmv", fat: 0.3, protein: 3.1, carbs: 9.5, fiber: 8.2, sugars: 7.3, alcohol: 0, water: 77.3 },
@@ -264,7 +263,7 @@ const NUTRITION = {
   "Maitake Mushrooms": { src: "usda", fat: 0.19, protein: 1.94, carbs: 6.97, fiber: 2.7, sugars: 2.07, alcohol: 0, water: 90.4, lactose: 0.33 },
   "Mango Chutney": { src: "lmv", fat: 0.1, protein: 0.6, carbs: 25.7, fiber: 1.6, sugars: 23.8, alcohol: 0, water: 71.5 },
   "Mangos": { src: "lmv", fat: 0, protein: 0.7, carbs: 11.2, fiber: 2, sugars: 10.6, alcohol: 0, water: 85.8 },
-  "Maple Syrup": { src: "usda", fat: 0, protein: 0, carbs: 67.4, water: 32.2, lactose: 0 },
+  "Maple Syrup": { src: "usda", fat: 0, protein: 0, carbs: 67.4, sugars: 60.66, water: 32.2, lactose: 0, derived: { sugars: "0.9 of carbs" } },
   "Margarine": { src: "lmv", fat: 77.5, protein: 0, carbs: 0.6, fiber: 0, sugars: 0, alcohol: 0, water: 20.9 },
   "Marzipan": { src: "lmv", fat: 25, protein: 9.7, carbs: 38.9, fiber: 8.8, sugars: 38, alcohol: 0, water: 16.1 },
   "Mascarpone": { src: "lmv", fat: 33, protein: 10.2, carbs: 2.4, fiber: 0, sugars: 2.7, alcohol: 0, water: 53, lactose: 2.7, polyols: 0, borrowed: { lactose: "ciqual", polyols: "ciqual" } },
@@ -308,7 +307,6 @@ const NUTRITION = {
   "Oranges": { src: "lmv", fat: 0.2, protein: 0.8, carbs: 10.4, fiber: 1.2, sugars: 8.2, alcohol: 0, water: 87 },
   "Oregano (dried)": { src: "usda", fat: 4.28, protein: 9, carbs: 68.9, fiber: 42.5, sugars: 4.09, alcohol: 0, water: 9.93, lactose: 0 },
   "Oyster Mushrooms": { src: "lmv", fat: 0.4, protein: 2, carbs: 2.6, fiber: 2.4, sugars: 2.6, alcohol: 0, water: 92 },
-  "Oyster Sauce": { src: "usda", fat: 0.25, protein: 1.35, carbs: 10.9, fiber: 0.3, alcohol: 0, water: 80 },
   "Oysters": { src: "lmv", fat: 2.4, protein: 9.3, carbs: 0, fiber: 0, sugars: 0, alcohol: 0, water: 80 },
   "Paneer": { src: "lmv", fat: 14.8, protein: 18.9, carbs: 12.4, fiber: 0, sugars: 11.6, alcohol: 0, water: 52 },
   "Papaya": { src: "lmv", fat: 0.6, protein: 0.8, carbs: 8.9, fiber: 1.8, sugars: 9.5, alcohol: 0, water: 87.6 },
@@ -328,7 +326,6 @@ const NUTRITION = {
   "Persimmon": { src: "lmv", fat: 0.2, protein: 0.4, carbs: 14.3, fiber: 1.6, sugars: 18.6, alcohol: 0, water: 83.1 },
   "Pesto": { src: "lmv", fat: 55, protein: 10.6, carbs: 1.9, fiber: 4.1, sugars: 0.9, alcohol: 0, water: 25.2, lactose: 0.9, polyols: 0, borrowed: { lactose: "ciqual", polyols: "ciqual" } },
   "Physalis": { src: "lmv", fat: 0.6, protein: 1.8, carbs: 8.9, fiber: 4.2, sugars: 11.7, alcohol: 0, water: 80.3 },
-  "Pickle Relish": { src: "usda", fat: 0.47, protein: 0.37, carbs: 35.1, fiber: 1.1, alcohol: 0, water: 62.1 },
   "Pickled Beetroot": { src: "lmv", fat: 0.1, protein: 1.3, carbs: 12, fiber: 1.7, sugars: 12.4, alcohol: 0, water: 84.1 },
   "Pickled Cucumber": { src: "lmv", fat: 0.7, protein: 0.7, carbs: 11.4, fiber: 1.8, sugars: 6.1, alcohol: 0, water: 82.8 },
   "Pickled Ginger": { src: "usda", fat: 0.1, protein: 0.33, carbs: 4.83, fiber: 2.6, sugars: 0, alcohol: 0, water: 92.3, lactose: 0 },

@@ -684,6 +684,30 @@ Object.keys(NUTRITION).forEach(function (name) {
   });
 });
 
+/* A derived figure is a claim the food makes about itself, so it has to be one
+   the food actually makes, and the fraction has to be a fraction. */
+foods.forEach(function (food) {
+  const share = food.sugarsOfCarbs;
+  if (share == null) return;
+  if (typeof share !== "number" || !(share > 0) || share > 1) {
+    faults.push(food.name + " declares sugarsOfCarbs " + share +
+      ", which is not a fraction of its carbohydrate");
+  }
+});
+
+Object.keys(NUTRITION).forEach(function (name) {
+  const row = NUTRITION[name];
+  if (!row.derived) return;
+  Object.keys(row.derived).forEach(function (key) {
+    if (key !== "sugars") {
+      faults.push(name + " marks " + key + " as derived, but only sugars can be");
+    } else if (!byName[name] || !byName[name].sugarsOfCarbs) {
+      faults.push(name + " carries a derived sugars figure but declares no " +
+        "sugarsOfCarbs — rebuild nutrition-data.js");
+    }
+  });
+});
+
 /* Lactose is one of the sugars, so no food can hold more of it than it holds
    sugar. It is not a rule any single table can break — they measure one
    sample — but a borrowed lactose figure comes from a different table
