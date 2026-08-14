@@ -589,7 +589,16 @@
        list out of here, so there is one place to add or remove one. */
     const DELIBERATE = {
         "Turmeric (dried)|bile_stimulant": "carries it on its own evidence, not on its fat content",
-        "Cinnamon Bun|over_3g_lactose": "the sugar is sucrose, not lactose"
+        "Cinnamon Bun|over_3g_lactose": "the sugar is sucrose, not lactose",
+
+        /* Two foods where a real lactose figure came in under our dose and the
+           tag stays anyway. Monash measured both and gives a low-FODMAP
+           serving smaller than our portion — 20g for milk chocolate, none at
+           all for ice cream — so their threshold for lactose is lower than the
+           5g here. A direct measurement of the food beats our arithmetic on a
+           column borrowed from another country's comparable one. */
+        "Milk chocolate|over_3g_lactose": "Monash gives a 20g low-FODMAP serving, under the 30g portion",
+        "Ice Cream|over_3g_lactose": "Monash gives this food no low-FODMAP serving at all"
     };
 
     function auditFood(food, record) {

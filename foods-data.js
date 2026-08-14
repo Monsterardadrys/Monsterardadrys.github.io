@@ -1269,7 +1269,10 @@ const CATEGORIES = [
       { name: "Greek Yogurt (10% fat)", lmv: "Yoghurt naturell fett 10%", lmvNote: "entry measures 8.3 g fat, below the 10 g threshold", portion: 200, traits: ["over_10g_fat", "bile_stimulant", "over_3g_lactose", "fodmaps", "allergen_milk"] },
       { name: "Butter", lmv: "Smör fett 80%", portion: 10, traits: ["over_10g_fat", "allergen_milk"] },
       { name: "Cream (40% fat)", lmv: "Vispgrädde fett 40%", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_milk"] },
-      { name: "Quark (~1%)", lmv: "Kvarg färskost fett 1%", portion: 200, traits: ["fodmaps", "protein", "over_3g_lactose", "allergen_milk"] },
+      /* 4.82g of lactose in a 200g tub against a 5g dose — the closest call
+         the borrowed column produced, and it goes the same way every other
+         food's arithmetic goes. Quark (~10%) is 6.00g and keeps both tags. */
+      { name: "Quark (~1%)", lmv: "Kvarg färskost fett 1%", portion: 200, traits: ["protein", "allergen_milk"] },
       { name: "Quark (~10%)", lmv: "Kvarg färskost fett 10%", portion: 200, traits: ["fodmaps", "over_10g_fat", "bile_stimulant", "protein", "over_3g_lactose", "allergen_milk"] },
       { name: "Cottage Cheese (4% fat)", lmv: "Färskost cottage cheese naturell fett 4%", portion: 100, traits: ["allergen_milk"] },
       { name: "Sour Cream (12% fat)", lmv: "Gräddfil fett 12%", portion: 25, traits: ["allergen_milk"] },
@@ -1439,7 +1442,7 @@ const CATEGORIES = [
       { name: "Oat Yogurt", lmv: "Havregurt naturell fett 2,2% berikad", portion: 200, traits: ["fodmaps", "fructans", "allergen_wheat"] },
       { name: "Oat Fraiche", lmv: "Fraiche m. havre veg. fett 15% berikad", portion: 25, traits: ["fodmaps", "fructans", "allergen_wheat"] },
       { name: "Vegan Cheese (Coconut Oil)", lmv: "Kokosbaserad bit fett ca 20% som alternativ till ost", portion: 20, traits: ["refined_carbs"] },
-      { name: "Vegan Cheese (Cashew)", portion: 20, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "fructans", "allergen_treenut"] },
+      { name: "Vegan Cheese (Cashew)", portion: 20, traits: ["over_10g_fat", "fodmaps", "galactans", "fructans", "allergen_treenut"] },
       { name: "Plant-based Mince", lmv: "Sojaprotein färs stekt", portion: 125, traits: ["fiber", "over_10g_fat", "bile_stimulant", "protein", "fodmaps", "galactans", "allergen_soy"] },
       { name: "Quorn", lmv: "Mykoprotein bullar frysvara", lmvNote: "mycoprotein balls — plain pieces are not listed", portion: 125, traits: ["protein", "allergen_egg", "allergen_mushroom"] },
       { name: "Veggie Burger (vegetable-based)", lmv: "Grönsaksburgare stekt veg.", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "fodmaps", "galactans"] },
@@ -1548,6 +1551,12 @@ const CATEGORIES = [
       // No generic entry exists. The database has 13 chocolate-coated bars
       // described by their filling; this is the nougat/caramel/peanut one.
       { name: "Candy bars", lmv: "Mjuk nougat m. kolasås jordnötter mjölkchokladöverdrag", lmvNote: "one representative bar, not a generic entry", portion: 50, traits: ["fodmaps", "over_10g_fat", "bile_stimulant", "refined_carbs", "over_3g_lactose", "allergen_milk"] },
+      /* 7.4g of lactose per 100g is 2.22g in a 30g piece, under our 5g dose —
+         the tag had been resting on 56.2g of total sugars, nearly all of it
+         sucrose. It stays anyway, because Monash measured this food and gives
+         a low-FODMAP serving of 20g, below the 30g portion here. Their
+         threshold for lactose is lower than ours, and a direct measurement of
+         the food beats our arithmetic on a borrowed column. */
       { name: "Milk chocolate", lmv: "Mjölkchoklad", portion: 30, traits: ["irritant", "over_10g_fat", "bile_stimulant", "refined_carbs", "over_3g_lactose", "fodmaps", "caffeine", "allergen_milk"] },
       // Livsmedelsverket lists 0g fiber, which is a gap rather than a real zero:
       // 70% chocolate runs around 11g/100g. That correction used to carry the
@@ -1561,6 +1570,9 @@ const CATEGORIES = [
       { name: "Sugary Breakfast Cereal", lmv: "Frukostflingor majs m. socker", portion: 40, traits: ["refined_carbs", "allergen_wheat"] },
       { name: "Sugary soft drinks", lmv: "Läsk", portion: 330, traits: ["refined_carbs", "carbonation", "irritant"] },
       { name: "Cola", lmv: "Läsk cola", portion: 330, traits: ["caffeine", "refined_carbs", "carbonation", "irritant"] },
+      /* 3.35g of lactose in a 100g serving against our 5g dose, where the tag
+         had been resting on 16.5g of total sugars. It stays: Monash gives this
+         food no low-FODMAP serving at all. Same reasoning as milk chocolate. */
       { name: "Ice Cream", lmv: "Glass fett ca 10%", portion: 100, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "over_3g_lactose", "fodmaps", "allergen_milk"] },
       { name: "Halva", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "allergen_sesame", "refined_carbs"] },
       { name: "Baklava", lmv: "Baklava ", portion: 40, traits: ["over_10g_fat", "refined_carbs", "allergen_wheat", "allergen_treenut"] },

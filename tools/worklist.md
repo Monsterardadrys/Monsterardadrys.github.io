@@ -1,7 +1,8 @@
 # Worklist
 
 490 foods · 43 traits · 375 matched to Livsmedelsverket, 30 to Denmark's Frida,
-9 to France's Ciqual, 36 to USDA's SR Legacy. 447 carry nutrient figures; 43 do not.
+9 to France's Ciqual, 36 to USDA's SR Legacy. 449 carry nutrient figures; 41 do not.
+64 carry a real lactose figure and 29 a polyols figure, 41 of them borrowed.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
@@ -508,6 +509,38 @@ The drift rule is now `written + refused < confirmed`, and a pick the repo has
 declined stops being reported as outstanding. Checked with the real 43 picks in
 a browser against the repo as it stands: no alarms, and the only thing left to
 say is that 49 foods still have no figures.
+
+**The borrowing landed, and immediately disproved four tags.** 61 figures on 41
+foods — 40 lactose, 21 polyols, 7 held down to the food's own sugars. 64 foods
+now carry a real lactose figure where none did two rounds ago, and 29 a polyols
+figure where none did ever. Three of the four tags it broke were `over_3g_lactose`
+resting on total sugars, which is exactly what the column was borrowed to stop:
+
+- **Milk chocolate** — tagged on 56.2g of sugars, nearly all sucrose. Real
+  lactose 7.4g/100g, so 2.22g in a 30g piece against a 5g dose.
+- **Ice Cream** — tagged on 16.5g of sugars. Real lactose 3.35g in a 100g
+  serving.
+- **Quark (~1%)** — 4.82g in a 200g tub against the 5g dose. The closest call
+  the borrowing produced, 0.18g under. Tag dropped, and `fodmaps` with it, since
+  the lactose was the FODMAP. `Quark (~10%)` is 6.00g and keeps both.
+
+**Two of those three stay tagged anyway, and the reason matters.** Monash
+measured milk chocolate and ice cream directly and gives a low-FODMAP serving
+under our portion — 20g for the chocolate, none at all for the ice cream. Their
+lactose threshold is lower than our 5g. A direct measurement of the food beats
+our arithmetic on a column borrowed from another country's comparable food, so
+both keep the tag, recorded in `DELIBERATE` next to the cinnamon bun and the
+turmeric. Quark has no Monash entry either way, so nothing outranks the
+arithmetic there and the tag goes.
+
+That is the shape of the whole thing: the borrowed column is better than total
+sugars and worse than a measurement of the food itself, and it should win
+against exactly one of them.
+
+The fourth was **Vegan Cheese (Cashew)**, whose figures arrived with the French
+round: `bile_stimulant` had been assigned by hand and comes to 7.64 fat
+equivalents in a 20g portion against a dose of 9.5. Dropped. Figures arriving is
+how a hand-made tag gets tested, again.
 
 **The same warning had two opposite answers, and it only gave one.** Once the
 three foods above were restored in the repo, feeding the builder the *same*
