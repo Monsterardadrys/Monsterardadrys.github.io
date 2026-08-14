@@ -528,25 +528,36 @@ alike:
   product on a Swedish shelf, which is worth doing for a jam and hardly at all
   for a cooked lamb kidney.
 
-So the harvest loop is three steps and one of them is not mine: open harvest,
-tick, send the file. No Swedish round, and the ladder is not being ignored — it
-was never a rule about which foods to list.
+So the harvest loop is four steps, not three: open harvest, tick, send the file
+— and then **build**. The fourth is the one worth writing down, because the
+first three feel like the work and the fourth is what puts the figures where the
+site reads them. It was left out of a hand-off once and the foods sat in the
+list answering nothing. No Swedish round, though: the ladder was never a rule
+about which foods to list.
 
-**Offal is not pölsa, and the figures say so before any argument does.** The
+**Offal is not pölsa, and the record's own carbohydrate figure settles it.** The
 thought was reasonable: Swedish pölsa is largely offal. But Ciqual's *Offal,
-cooked (average)* is 27.4g protein, 2.2g carbohydrate and no fibre — organ meat
-and nothing else, carrying more protein than our raw beef liver because it is
-cooked and the water has gone. Pölsa is offal extended with korngryn and broth,
-which puts it where blood pudding sits: 11g protein, 20g carbohydrate, 2.3g
-fibre.
+cooked (average)* is 27.4g protein, **2.2g carbohydrate** and no fibre — organ
+meat and nothing else, carrying more protein than our raw beef liver because it
+is cooked and the water has gone. Pölsa is offal boiled with korngryn, and the
+barley is between a sixth and a quarter of the dish. Nothing with that much
+grain in it holds 2.2g of carbohydrate per 100g.
 
-Matching them would put two and a half times the protein on it and take away
-four fifths of the carbohydrate. The part that matters is neither: it would take
-the **grain** with it, so a dish made with barley would stop carrying
-`allergen_wheat` and read as safe to someone avoiding gluten. Recorded on the
-food itself, where the next person to have the same idea will find it. Pölsa is
-its own food and belongs to a Swedish round — which is what an LMV harvest is
-for.
+That is the whole argument and it needs no figure for pölsa. What matters is not
+the arithmetic anyway: matching them would take the **grain** with it, so a dish
+made with barley would carry no `allergen_wheat` and read as safe to someone
+avoiding gluten.
+
+**Three foods, not one, and the first draft of this note conflated two of
+them.** It reached for blood pudding as the comparison — "pölsa lands where
+blood pudding sits" — which is wrong twice over. Blood pudding is blood, flour
+and syrup; there is no offal in it. It was being used as a stand-in for *any*
+dish where grain dilutes the animal part, and saying so that way implied the
+two are the same kind of thing. They are not: this record is the raw material,
+pölsa is offal plus grain, blood pudding is blood plus flour. Three rows.
+Blood pudding has one, this record has one, and pölsa has none yet — it should
+get one from a Swedish round, where it arrives with its own figures rather than
+as an empty row.
 
 **Search stopped caring about word order.** Every search box here matched a
 substring, so finding a food meant guessing the word order somebody else chose.

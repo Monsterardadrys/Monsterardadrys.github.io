@@ -343,10 +343,20 @@
             </ol>
 
             <p class="dropped"><strong><a href="harvest.html">Harvest</a> is a shorter loop, not part
-                of that one.</strong> Open it, feed it one export, tick what looks like food people buy,
-                send <code>harvest-picks.json</code> over. The foods get written in the repo — name,
-                category, portion and trait list — and then you build. Three steps, and one of them is
-                mine.</p>
+                of that one.</strong> Four steps, and the last one is easy to forget because the first
+                three feel finished:</p>
+            <ol>
+                <li>Open <a href="harvest.html">harvest.html</a>, feed it one export, tick what looks
+                    like food people buy. Download <code>harvest-picks.json</code>.</li>
+                <li>Send it over. The foods get written into the repo — name, category, portion and
+                    trait list — along with the alias entries that tie each one to its record.</li>
+                <li>Wait for that to land.</li>
+                <li><strong>Build.</strong> <a href="build-nutrition.html">build-nutrition.html</a>,
+                    the Livsmedelsverket export in step 2, nothing in step 3. Without this the new
+                    foods sit in the list with no figures and cannot go in a meal.
+                    <code>check-data.js</code> says so — "matched but have no figures yet" — but that
+                    is a report you only see if you ask for it.</li>
+            </ol>
             <p class="note"><strong>A harvested food does not need a Swedish round.</strong> It arrived
                 because one table already answered for it completely — the harvest will not offer a
                 record that is missing any of the six columns. Running it past Livsmedelsverket
