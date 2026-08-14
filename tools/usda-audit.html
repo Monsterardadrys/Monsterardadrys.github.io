@@ -761,6 +761,18 @@
                             return picked[k] !== undefined;
                         });
                         dropped.forEach(function (k) { delete picked[k]; });
+
+                        /* A pick for a food that no longer exists. Renaming
+                           Cows Milk to Cows Milk (3% fat) left the old name
+                           sitting in this browser, and it came back in the next
+                           alias file as a confirmed match for nothing. The repo
+                           is what says which foods there are. */
+                        const known = {};
+                        allFoods.forEach(function (f) { known[f.name] = true; });
+                        const gone = Object.keys(picked).filter(function (k) {
+                            return !known[k];
+                        });
+                        gone.forEach(function (k) { delete picked[k]; });
                         remember();
                         if (dropped.length) {
                             show(document.getElementById("fileStatus"), "info",

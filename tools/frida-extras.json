@@ -1,3 +1,24 @@
 {
-  "_comment": "Confirmed Danish extras: our food name -> the Frida FoodName it lends a column to. These foods already have Livsmedelsverket figures and keep every one of them. Only lactose is taken — Frida has no polyols column — because Livsmedelsverket publishes no lactose column for any food, so no Swedish round can ever fill it. Confirmed by hand, one at a time, from tools/frida-audit.html. These win over ciqual-extras.json where both have the food."
+  "_comment": "Confirmed Danish extras: our food name -> the Frida FoodName it lends a column to. These foods already have Livsmedelsverket figures and keep every one of them. Only lactose is taken — Frida has no polyols column — because Livsmedelsverket publishes no lactose column for any food, so no Swedish round can ever fill it. Confirmed by hand, one at a time, from tools/frida-audit.html. These win over ciqual-extras.json where both have the food.",
+  "Blue Cheese": "Cheese, Danish Blue, 50 % fidm.",
+  "Brie": "Cheese, Brie, 60 % fidm.",
+  "Butter": "Butter, salt added",
+  "Buttermilk": "Milk, buttermilk",
+  "Camembert": "Cheese, Camembert, 45 % fidm.",
+  "Cheddar": "Cheese, hard, Cheddar, Danish",
+  "Cinnamon Bun": "Danish pastry, cinnamon roll",
+  "Cottage Cheese (4% fat)": "Cheese, cottage, 20 % fidm.",
+  "Cows Milk (3% fat)": "Milk, whole, konventional (not organic), 3.5 % fat",
+  "Emmental": "Cheese, hard, Emmentaler, 45 % fidm.",
+  "Feta Cheese": "Cheese, semihard, Feta, 40 % fidm",
+  "Flavored Yogurt": "Yogurt, with fruit, 1.5 % fat",
+  "Greek Yogurt (10% fat)": "Cream yoghurt, plain, 10% fat (Greek and Turkish style)",
+  "Hard Cheese (~28-35% fat)": "Cheese, hard, Cheddar, Danish",
+  "Ice Cream": "Chocolate ice cream",
+  "Kefir": "Milk, 1.5 % fat, cultured, kefir",
+  "Milk chocolate": "Chocolate, milk",
+  "Mozzarella": "Cheese, semihard, Mozzarella, 45 % fidm.",
+  "Parmesan": "Cheese, hard, Parmesan, 32 % fidm.",
+  "Yogurt (0.5% fat)": "Yogurt low fat, 0.1 % fat",
+  "Yogurt (3% fat)": "Yogurt plain, whole milk"
 }

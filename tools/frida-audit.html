@@ -377,6 +377,18 @@
                            reads as full of it. Foods with no milk in them
                            would gain a number nobody reads. */
                         const n = NUTRITION[f.name];
+
+                        /* Never a food this table already answers whole. Its
+                           full match brings every column Frida has, lactose
+                           included, so offering it again as an extras pick can
+                           only split one confirmed match into two files — and
+                           since a pick belongs to exactly one of them, the full
+                           match is what gets dropped. Goats Milk, Skyr and Whey
+                           Protein went that way once: they lost their figures
+                           entirely and came back as extras that lend nothing,
+                           because Frida has no lactose for any of the three. */
+                        if (n.src === "frida") return;
+
                         if ((f.traits || []).indexOf("allergen_milk") !== -1 && n.lactose == null) {
                             extras.push(f);
                         }
@@ -783,6 +795,18 @@
                             if (!picked[k]) picked[k] = ctx.extraAliases[k];
                             extraNames[k] = true;
                         });
+
+                        /* A pick for a food that no longer exists. Renaming
+                           Cows Milk to Cows Milk (3% fat) left the old name
+                           sitting in this browser, and it came back in the next
+                           alias file as a confirmed match for nothing. The repo
+                           is what says which foods there are. */
+                        const known = {};
+                        allFoods.forEach(function (f) { known[f.name] = true; });
+                        const gone = Object.keys(picked).filter(function (k) {
+                            return !known[k];
+                        });
+                        gone.forEach(function (k) { delete picked[k]; });
                         remember();
 
                         const result = Frida.proposeMatches(needing, records, ctx.aliases);

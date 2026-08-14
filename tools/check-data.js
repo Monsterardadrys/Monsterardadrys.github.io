@@ -549,9 +549,9 @@ entries(ciqualDeclined).forEach(function (name) {
    brings every column that table has. */
 [
   { name: "ciqual-extras.json", map: ciqualExtras, full: ciqualAliases,
-    declined: ciqualDeclined, table: "French" },
+    declined: ciqualDeclined, table: "French", src: "ciqual" },
   { name: "frida-extras.json", map: fridaExtras, full: fridaAliases,
-    declined: {}, table: "Danish" }
+    declined: {}, table: "Danish", src: "frida" }
 ].forEach(function (r) {
   entries(r.map).forEach(function (name) {
     if (!byName[name]) {
@@ -568,6 +568,17 @@ entries(ciqualDeclined).forEach(function (name) {
       faults.push(name + " is in both " + r.name + " and " +
         r.name.replace("extras", "declined") + " — a match is either confirmed or " +
         "declined, and lending one column does not make a wrong food right");
+    } else if (NUTRITION[name].src === r.src) {
+      /* The same rule as the line above, in the form it actually arrived in:
+         the alias was not merely redundant, it was gone. Goats Milk, Skyr and
+         Whey Protein take their figures from Frida, were offered as Danish
+         extras anyway, and a pick belongs to one file — so all three lost
+         their full match and came back as extras lending nothing, since Frida
+         has no lactose for any of them. */
+      faults.push(name + " takes its figures from " + r.src + " and has a " + r.table +
+        " extras match as well. The full match already brings every column that " +
+        "table has, and a pick can only be in one file — so this is the full match " +
+        "gone missing, not a column gained.");
     }
   });
 });
@@ -610,6 +621,67 @@ Object.keys(NUTRITION).forEach(function (name) {
     faults.push(name + " carries borrowed figures but is in neither ciqual-extras.json " +
       "nor frida-extras.json — rebuild nutrition-data.js");
   }
+});
+
+/* The generated files at the root, read the way the browser will read them.
+
+   Nothing checked them before, and it showed: a rename swept the repo with a
+   regex, deleted the key line of the last entry in nutrition-ciqual.js and
+   left its body behind, and the whole file stopped parsing. Both checks passed
+   anyway, because neither one ever evaluated it — check-data reads
+   nutrition-data.js and the alias files, check-site reads pages. A generated
+   file that does not parse takes its whole rung off the ladder silently.
+
+   So: evaluate each one, and hold its contents to the files it was built from.
+   A written entry must be a food and must be in the alias file; an alias must
+   be written or refused; extras may lend nothing, but may not appear from
+   nowhere. */
+[
+  { file: "nutrition-frida.js", sym: "NUTRITION_FRIDA",
+    aliases: fridaAliases, extras: fridaExtras, name: "frida-aliases.json" },
+  { file: "nutrition-ciqual.js", sym: "NUTRITION_CIQUAL",
+    aliases: ciqualAliases, extras: ciqualExtras, name: "ciqual-aliases.json" },
+  { file: "nutrition-usda.js", sym: "NUTRITION_USDA",
+    aliases: usdaAliases, extras: {}, name: "usda-aliases.json" }
+].forEach(function (r) {
+  const p = path.join(root, r.file);
+  if (!fs.existsSync(p)) return;
+  const text = fs.readFileSync(p, "utf8");
+
+  let written, extrasWritten, turnedAway;
+  try {
+    written = new Function(text + "; return " + r.sym + ";")() || {};
+    turnedAway = new Function(text + "; return typeof " + r.sym +
+      "_REFUSED === \"undefined\" ? [] : " + r.sym + "_REFUSED;")() || [];
+    extrasWritten = new Function(text + "; return typeof " + r.sym +
+      "_EXTRAS === \"undefined\" ? {} : " + r.sym + "_EXTRAS;")() || {};
+  } catch (e) {
+    faults.push(r.file + " does not parse: " + e.message +
+      ". Every page that reads it loses that whole rung of the ladder.");
+    return;
+  }
+
+  Object.keys(written).forEach(function (name) {
+    if (!byName[name]) {
+      faults.push(r.file + " holds \"" + name + "\", which is not a food");
+    } else if (!r.aliases[name]) {
+      faults.push(r.file + " holds " + name + ", which is not confirmed in " + r.name);
+    }
+  });
+
+  entries(r.aliases).forEach(function (name) {
+    if (!written[name] && turnedAway.indexOf(name) === -1) {
+      faults.push(name + " is confirmed in " + r.name + " but is neither written to " +
+        r.file + " nor on its refused list — re-run that audit's write");
+    }
+  });
+
+  Object.keys(extrasWritten).forEach(function (name) {
+    if (!r.extras[name]) {
+      faults.push(r.file + " lends a column to " + name + ", which is not confirmed in " +
+        r.name.replace("aliases", "extras"));
+    }
+  });
 });
 
 /* Lactose is one of the sugars, so no food can hold more of it than it holds

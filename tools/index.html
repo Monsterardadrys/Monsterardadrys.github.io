@@ -502,6 +502,16 @@
                     turn a match down. Brown Gravy and Instant Ramen were declined in v1.53 and came
                     back in a later export because the page never read the declined list. Both audit
                     pages read it now and drop those picks, saying so when they do.</li>
+                <li><strong>A generated file nothing ever read.</strong> A regex rename deleted the
+                    key line of an entry in <code>nutrition-ciqual.js</code> and the file stopped
+                    parsing — and both checks passed, because neither one evaluated it. It would have
+                    taken France's whole rung off the ladder in silence.
+                    <code>check-data.js</code> now evaluates every generated file and holds it to its
+                    alias file.</li>
+                <li><strong>A food offered its own source's extras.</strong> Goats Milk, Skyr and Whey
+                    Protein take their figures from Frida, satisfied the extras test, and were offered
+                    back to Denmark — where a pick belongs to one file, so all three lost their full
+                    match. Both audit pages skip a food whose figures came from that same table.</li>
                 <li><strong>A plausible explanation is not the cause.</strong> A caching story once
                     explained a wrong figure perfectly and was wrong; the real fault was a field being
                     dropped before either tool saw it. The checks named it three different ways without

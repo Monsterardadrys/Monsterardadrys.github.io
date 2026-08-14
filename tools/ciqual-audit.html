@@ -402,8 +402,17 @@
                            reads as full of it. A food tagged polyols has never
                            had a figure at all. Every other food would gain a
                            number nobody reads. */
-                        const traits = f.traits || [];
                         const n = NUTRITION[f.name];
+
+                        /* Never a food this table already answers whole. Its
+                           full match brings every column Ciqual has, so
+                           offering it again as an extras pick can only split
+                           one confirmed match into two files — and since a pick
+                           belongs to exactly one of them, the full match is
+                           what gets dropped. */
+                        if (n.src === "ciqual") return;
+
+                        const traits = f.traits || [];
                         const wantsLactose = traits.indexOf("allergen_milk") !== -1 && n.lactose == null;
                         const wantsPolyols = traits.indexOf("polyols") !== -1 && n.polyols == null;
                         if (wantsLactose || wantsPolyols) extras.push(f);
@@ -884,6 +893,18 @@
                             return picked[k] !== undefined;
                         });
                         dropped.forEach(function (k) { delete picked[k]; });
+
+                        /* A pick for a food that no longer exists. Renaming
+                           Cows Milk to Cows Milk (3% fat) left the old name
+                           sitting in this browser, and it came back in the next
+                           alias file as a confirmed match for nothing. The repo
+                           is what says which foods there are. */
+                        const known = {};
+                        allFoods.forEach(function (f) { known[f.name] = true; });
+                        const gone = Object.keys(picked).filter(function (k) {
+                            return !known[k];
+                        });
+                        gone.forEach(function (k) { delete picked[k]; });
                         remember();
                         if (dropped.length) {
                             show(document.getElementById("fileStatus"), "info",
