@@ -1,9 +1,9 @@
 # Worklist
 
 539 foods · 43 traits · 375 matched to Livsmedelsverket, 30 to Denmark's Frida,
-84 to France's Ciqual, 33 to USDA's SR Legacy. 446 carry nutrient figures until the
-next build, which brings 75 more; 18 have none from any source.
-64 carry a real lactose figure and 29 a polyols figure, 41 of them borrowed.
+84 to France's Ciqual, 33 to USDA's SR Legacy. 521 carry nutrient figures; 18 have
+none from any source. 110 carry a real lactose figure and 94 a polyols figure,
+41 of them borrowed from a table that has the column for a food that does not.
 
 Before a release: `node tools/check-data.js && node tools/check-site.js`.
 
