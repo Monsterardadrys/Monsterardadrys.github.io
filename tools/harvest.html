@@ -353,8 +353,12 @@
             ]).then(function (p) {
                 const CATEGORIES = new Function(p[0] + "; return CATEGORIES;")();
                 const ours = [];
+                const svNames = {};
                 CATEGORIES.forEach(function (c) {
-                    c.foods.forEach(function (f) { ours.push(f.name); });
+                    c.foods.forEach(function (f) {
+                        ours.push(f.name);
+                        if (f.sv) svNames[f.name] = f.sv;
+                    });
                 });
                 /* Every map, not just the one for this table. A record already
                    taken by a different source is still a record we have an
@@ -363,11 +367,31 @@
                 /* What each of our foods is called in Swedish, for reading a
                    Swedish table. Without it every record is compared against an
                    English list and the column is noise — "Torsk filé kokt m.
-                   salt" came back closest to "Salt". */
+                   salt" came back closest to "Salt".
+
+                   Two sources, and the order matters. foods-data.js now carries
+                   a Swedish name for every one of our foods, so it is the base
+                   and the coverage is complete. lmv-swedish.json goes on top
+                   because it holds the phrasing this particular table uses,
+                   which is sometimes not the everyday word.
+
+                   It used to be lmv-swedish.json alone, which reached 312 of
+                   539 foods. The 227 it missed had nothing Swedish to compare
+                   against at all, so they fell through to the letters fallback
+                   and came back as nonsense: "Maräng" was offered Dried Mango
+                   while our own Meringue, whose Swedish name is Maräng, sat
+                   unconsidered. */
                 const aka = {};
+                function alsoKnownAs(food, name) {
+                    if (!name) return;
+                    if (!aka[food]) aka[food] = [];
+                    if (aka[food].indexOf(name) === -1) aka[food].push(name);
+                }
+                Object.keys(svNames).forEach(function (k) { alsoKnownAs(k, svNames[k]); });
                 Object.keys(p[7] || {}).forEach(function (k) {
                     if (k[0] === "_") return;
-                    aka[k] = Array.isArray(p[7][k]) ? p[7][k][0] : p[7][k];
+                    const v = p[7][k];
+                    (Array.isArray(v) ? v : [v]).forEach(function (n) { alsoKnownAs(k, n); });
                 });
 
                 return {
@@ -644,7 +668,9 @@
                         claimed: ctx.claimed,
                         ours: ctx.ours,
                         aka: ctx.aka,
-                        score: LMV.score
+                        score: LMV.score,
+                        sameWord: LMV.sameWord,
+                        isWeakWord: LMV.isWeakWord
                     });
 
                     /* Picks that have since landed. The store outlives the

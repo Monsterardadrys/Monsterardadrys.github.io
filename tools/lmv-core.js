@@ -799,6 +799,13 @@
         sheetsFromXlsx: sheetsFromXlsx,
         DELIBERATE: DELIBERATE,
         score: score,
+        /* Exported for the harvest, which compares Swedish record names
+           against our Swedish food names and needs the same idea of when
+           two words are the same word — jordgubbe and jordgubbar are. */
+        sameWord: sameWord,
+        /* Also for the harvest: which words describe how a food was prepared
+           or recorded rather than what it is. See WEAK_TOKENS. */
+        isWeakWord: function (w) { return WEAK_TOKENS.indexOf(String(w).toLowerCase()) !== -1; },
         auditFood: auditFood,
         runAudit: runAudit,
         flattenCategories: flattenCategories
