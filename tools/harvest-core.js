@@ -46,6 +46,13 @@
        everything comes back. See rank(). */
     const MIN_POPULATION = 40;
 
+    /* How alike two names have to look, by letters alone, before the nearest
+       column will offer one with no word in common. Dice on bigrams runs high
+       for short names that share a few letters — Matolja and Tomato reach
+       0.60 — so this sits above where the wrong answers were and below the
+       real near-misses. See the fallback in rank(). */
+    const LETTERS_FLOOR = 0.75;
+
     /* The axes worth being extreme on, and which end is interesting. Water is
        the one where low is the signal — a dry food concentrates everything
        else, and it is how the dried-fruit and spice end of the list was found
@@ -126,11 +133,69 @@
         return Object.keys(out);
     }
 
-    function jaccard(a, b) {
+    /* `same` decides when two words count as one. Exact match is the default
+       and is right for English. Reading a Swedish table it is not: LMV writes
+       plurals and definite forms where our names are singular indefinite, so
+       "Jordgubbar frysta" shares no exact word with "Jordgubbe" and the record
+       falls through to the letters fallback. lmv-core knows the endings; the
+       caller passes its sameWord in rather than this file growing a second,
+       drifting copy of Swedish morphology.
+
+       `weak` marks the preparation words — färsk, kokt, torkad, konserv. They
+       are weighted down rather than dropped, and the difference matters both
+       ways round:
+
+         - Dropping them loses the distinction this file exists to keep. Every
+           bad match this project has had was fresh-for-dried or raw-for-
+           cooked, so "Apricot, pitted, dried" has to stay nearer our Dried
+           Apricot than our Apricot.
+
+         - Counting them in full lets them decide on their own. "Bondbönor
+           färska kokta" came back as Fresh Pasta, because our pasta is
+           recorded as "Pasta färsk kokt" and two shared preparation words
+           outvoted the one word that names the food.
+
+       So a shared preparation word breaks a tie between foods that already
+       share a real word; it cannot make a match by itself. That is two rules,
+       and both are needed:
+
+         - WEIGHT. A shared preparation word counts for a quarter, so it can
+           separate two foods that are otherwise equal.
+
+         - THE GATE. If every shared word is a preparation word, the score is
+           zero. Weighting alone was not enough: "Blandfärs stekt m. salt"
+           still came back as our Salt, because a quarter of a point beats the
+           nothing every other food scored. A record and a food that have only
+           "salt" in common have nothing in common.
+
+       A bare number is treated as a preparation word for the same reason. It
+       is usually a fat or alcohol percentage, and "Whisky vol. % 40" found
+       Cream (40% fat) on the strength of the 40 alone. */
+    const WEAK_WEIGHT = 0.25;
+
+    function isWeak(word, weak) {
+        if (/^\d+$/.test(word)) return true;
+        return Boolean(weak && weak(word));
+    }
+
+    function jaccard(a, b, same, weak) {
         if (!a.length || !b.length) return 0;
+        const eq = same || function (x, y) { return x === y; };
+        const w = function (x) { return isWeak(x, weak) ? WEAK_WEIGHT : 1; };
+
         let shared = 0;
-        a.forEach(function (w) { if (b.indexOf(w) !== -1) shared += 1; });
-        return shared / (a.length + b.length - shared);
+        let content = 0;
+        a.forEach(function (x) {
+            if (!b.some(function (y) { return eq(x, y); })) return;
+            shared += w(x);
+            if (!isWeak(x, weak)) content += 1;
+        });
+        if (!content) return 0;
+
+        let total = 0;
+        a.forEach(function (x) { total += w(x); });
+        b.forEach(function (y) { total += w(y); });
+        return total ? shared / (total - shared) : 0;
     }
 
     function missingFrom(record) {
@@ -155,6 +220,10 @@
         records — from any of the three readers; all three give {name, nutrients}
         opts.claimed — record name -> our food name, for everything already matched
         opts.ours    — our food names, for the near-duplicate check
+        opts.sameWord — optional (a, b) => boolean, when two words are the
+                       same word. See jaccard.
+        opts.isWeakWord — optional (w) => boolean, a preparation word rather
+                       than the name of a food. See jaccard.
         opts.aka     — our food name -> what it is called in the table's own
                        language, so a Swedish record can be compared with a
                        Swedish name instead of an English one
@@ -166,6 +235,8 @@
         const claimed = opts.claimed || {};
         const ours = opts.ours || [];
         const aka = opts.aka || {};
+        const sameWord = opts.sameWord || null;
+        const isWeakWord = opts.isWeakWord || null;
         const score = opts.score;
         const cutoff = opts.cutoff == null ? 0.9 : opts.cutoff;
 
@@ -245,19 +316,49 @@
                        came back closest to "Salt" and the whole column was
                        noise. tools/lmv-swedish.json has held the bridge for
                        312 foods all along. */
-                    let overlap = jaccard(mine, tokens(name));
+                    /* Every name this food goes by — its English one and any
+                       Swedish ones — and the best of them wins. Unlike the
+                       words-versus-letters pair below, these are the same
+                       measurement of the same thing, so taking the larger is
+                       right rather than a scale confusion.
+
+                       There are two Swedish names because there are two
+                       sources: the everyday name the site shows, and the
+                       phrasing this particular table uses. Mussels is
+                       "Musslor" on the site and "Blåmusslor" in the alias
+                       file; the record says "Mussla", which only one of them
+                       reaches. Keeping one and discarding the other loses a
+                       match for no reason. */
+                    let overlap = jaccard(mine, tokens(name), sameWord, isWeakWord);
                     const alt = aka[name];
-                    if (alt) overlap = Math.max(overlap, jaccard(mine, tokens(alt)));
+                    (Array.isArray(alt) ? alt : [alt]).forEach(function (other) {
+                        if (!other) return;
+                        overlap = Math.max(overlap,
+                            jaccard(mine, tokens(other), sameWord, isWeakWord));
+                    });
                     if (!best || overlap > best.score) best = { name: name, score: overlap, byWords: true };
                 });
-                if (best && best.score > 0) nearest = best;
-                else if (score) {
+                if (best && best.score > 0) {
+                    nearest = best;
+                } else if (score) {
+                    /* No word in common with anything we list. Letters are all
+                       that is left, and letters alone are weak evidence: they
+                       matched "Matolja" to Tomato and "Maräng" to Dried Mango,
+                       which is worse than useless — a wrong neighbour reads as
+                       a checked one and hides that nothing was found.
+
+                       So the fallback has to clear a floor before it is
+                       allowed to speak. Below it the column stays empty, which
+                       is the honest answer: this record looks like nothing we
+                       have. */
+                    let letters = null;
                     ours.forEach(function (name) {
                         const s = score(r.name, name);
-                        if (!nearest || s > nearest.score) {
-                            nearest = { name: name, score: s, byWords: false };
+                        if (!letters || s > letters.score) {
+                            letters = { name: name, score: s, byWords: false };
                         }
                     });
+                    if (letters && letters.score >= LETTERS_FLOOR) nearest = letters;
                 }
             }
 
@@ -308,10 +409,16 @@
     const Harvest = {
         COMPLETE: COMPLETE,
         MIN_POPULATION: MIN_POPULATION,
+        LETTERS_FLOOR: LETTERS_FLOOR,
         AXES: AXES,
         percentile: percentile,
         rank: rank,
-        claimedFrom: claimedFrom
+        claimedFrom: claimedFrom,
+        // Exported so the matching can be tested against a list of names
+        // without building a whole export around it. That is how the
+        // Matolja/Tomato class of bad neighbour was found.
+        tokens: tokens,
+        jaccard: jaccard
     };
 
     if (typeof module === "object" && module.exports) module.exports = Harvest;
