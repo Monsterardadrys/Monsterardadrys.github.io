@@ -32,12 +32,15 @@ const root = path.join(__dirname, "..");
 
 // Pages whose own copy has been translated. Add a page here when its round
 // is done — that is what makes the rule bite for it.
-const TRANSLATED = ["index.html", "app.html", "meal.html"];
+const TRANSLATED = [
+  "index.html", "app.html", "meal.html", "without.html", "articles.html",
+  "about.html", "sources.html", "method.html", "contact.html"
+];
 
 // Scripts that build sentences, and so must only use keys that exist.
 const SCRIPTS = [
   "script.js", "meal.js", "landing.js", "without.js", "food-picker.js",
-  "trait-foods.js", "nav.js", "save-load.js", "session.js", "print.js"
+  "trait-foods.js", "nav.js", "save-load.js", "session.js", "print.js", "articles.js"
 ];
 
 /* Text that is the same in both languages and needs no translating: an email
@@ -115,6 +118,94 @@ TRANSLATED.forEach(function (page) {
   faults.push(page + " has " + missing.length + " string(s) with no Swedish: " +
     missing.slice(0, 6).map(function (t) { return '"' + t + '"'; }).join(", ") +
     (missing.length > 6 ? " and " + (missing.length - 6) + " more" : ""));
+});
+
+/* ---- 1b. The markup inside a translated string ---------------------------
+
+   data-sv is set as HTML when it contains markup, which means a Swedish
+   string can quietly lose or change what the English one had. Three ways
+   that goes wrong, all of them caught this way rather than by reading:
+
+     - a paragraph whose English wraps a link and whose Swedish does not,
+       so the Swedish page loses the link entirely
+     - an <em> translated as a <strong>, or a styled <span class="badge">
+       translated as a plain <strong>, so the emphasis or the colour goes
+     - a link whose Swedish points somewhere else, usually because the
+       translator typed the anchor from memory
+
+   The rule is simple: the same tags, in the same order, and the same hrefs.
+   The words change; the markup does not. Every one of these three has been
+   caught here at least once. */
+const MARKUP = /<(a|strong|em|br|code|span)\b/gi;
+
+function entities(text) {
+  return text
+    .replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+    .replace(/&amp;/g, "&");
+}
+
+function markupFaults(page, html) {
+  const found = [];
+  const pattern = /<(\w+)((?:\s[^>]*?)?\sdata-sv="([^"]*)"(?:[^>]*?)?)>((?:(?!<\/\1>)[\s\S])*?)<\/\1>/g;
+  let m;
+  while ((m = pattern.exec(html))) {
+    const body = m[4];
+    const sv = entities(m[3]);
+    const label = body.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim().slice(0, 45);
+
+    const tagsOf = function (t) {
+      return (t.match(MARKUP) || []).map(function (x) { return x.slice(1).toLowerCase(); }).join(",");
+    };
+    if (tagsOf(body) !== tagsOf(sv)) {
+      found.push(page + ' — "' + label + '" has markup [' + (tagsOf(body) || "none") +
+        "] in English and [" + (tagsOf(sv) || "none") + "] in Swedish");
+    }
+
+    const hrefsOf = function (t) { return (t.match(/href="([^"]*)"/g) || []).join(" "); };
+    if (hrefsOf(body) !== hrefsOf(sv)) {
+      found.push(page + ' — "' + label + '" links to ' + (hrefsOf(body) || "nothing") +
+        " in English and " + (hrefsOf(sv) || "nothing") + " in Swedish");
+    }
+  }
+  return found;
+}
+
+TRANSLATED.forEach(function (page) {
+  const file = path.join(root, page);
+  if (!fs.existsSync(file)) return;
+  markupFaults(page, fs.readFileSync(file, "utf8")).forEach(function (f) { faults.push(f); });
+});
+
+/* ---- 1c. The articles ----------------------------------------------------
+
+   The longest prose on the site, and the easiest to let drift: a paragraph
+   rewritten in English while the Swedish one keeps arguing the old point.
+   Same rule as everywhere — every title, heading and block needs a Swedish
+   string beside it, and a list needs the same number of items in both, or
+   the Swedish page silently drops a bullet. */
+const articlesSrc = fs.readFileSync(path.join(root, "articles-data.js"), "utf8");
+const { ARTICLES } = new Function(articlesSrc + "; return { ARTICLES };")();
+
+Object.keys(ARTICLES).forEach(function (id) {
+  const a = ARTICLES[id];
+  const gap = function (what) { faults.push("article " + id + " has no Swedish " + what); };
+
+  if (!a.sv) gap("title");
+  (a.sections || []).forEach(function (s, si) {
+    if (s.heading && !s.sv) gap("heading in section " + si);
+    (s.blocks || []).forEach(function (b, bi) {
+      const where = "block " + si + "." + bi;
+      if (b.text && !b.sv) gap("text for " + where);
+      if (b.items) {
+        if (!b.sv) gap("list for " + where);
+        else if (b.sv.length !== b.items.length) {
+          faults.push("article " + id + " " + where + " has " + b.items.length +
+            " English item(s) and " + b.sv.length + " Swedish");
+        }
+      }
+    });
+  });
 });
 
 // ---- 2. The sentences ----------------------------------------------------

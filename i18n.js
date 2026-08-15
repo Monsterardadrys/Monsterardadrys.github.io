@@ -95,11 +95,14 @@
         return obj[field] || "";
     }
 
-    /* The same, for a list: a trait's analysis paragraphs. */
+    /* The same, for a list: a trait's analysis paragraphs, an article's list
+       items. `sv` is either a block of fields or, where the object carries
+       exactly one translatable thing, the list itself. */
     function pickList(obj, field) {
         if (!obj) return [];
-        if (current === "sv" && obj.sv && obj.sv[field] && obj.sv[field].length) {
-            return obj.sv[field];
+        if (current === "sv" && obj.sv) {
+            const v = Array.isArray(obj.sv) ? obj.sv : obj.sv[field];
+            if (v && v.length) return v;
         }
         return obj[field] || [];
     }

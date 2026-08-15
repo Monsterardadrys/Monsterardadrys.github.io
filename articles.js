@@ -32,15 +32,15 @@
     blocks.forEach(function (block) {
       if (block.type === "p") {
         const p = document.createElement("p");
-        appendRichText(p, block.text);
+        appendRichText(p, I18N.pick(block, "text"));
         container.appendChild(p);
       } else if (block.type === "subheading") {
         const h3 = document.createElement("h3");
-        h3.textContent = block.text;
+        h3.textContent = I18N.pick(block, "text");
         container.appendChild(h3);
       } else if (block.type === "list") {
         const ul = document.createElement("ul");
-        block.items.forEach(function (item) {
+        I18N.pickList(block, "items").forEach(function (item) {
           const li = document.createElement("li");
           appendRichText(li, item);
           ul.appendChild(li);
@@ -50,7 +50,7 @@
         const p = document.createElement("p");
         p.className = "articleNote";
         const em = document.createElement("em");
-        appendRichText(em, block.text);
+        appendRichText(em, I18N.pick(block, "text"));
         p.appendChild(em);
         container.appendChild(p);
       }
@@ -63,7 +63,7 @@
       const li = document.createElement("li");
       const a = document.createElement("a");
       a.href = "#" + id;
-      a.textContent = ARTICLES[id].title;
+      a.textContent = I18N.pick(ARTICLES[id], "title");
       li.appendChild(a);
       indexList.appendChild(li);
     });
@@ -78,10 +78,10 @@
   function renderLanding() {
     content.innerHTML = "";
     const h1 = document.createElement("h1");
-    h1.textContent = "Articles";
+    h1.textContent = I18N.t("articles.title");
     content.appendChild(h1);
     const p = document.createElement("p");
-    p.textContent = "Pick a topic from the list to read a deep dive on how it can relate to food intolerance.";
+    p.textContent = I18N.t("articles.landing");
     content.appendChild(p);
     highlightActive(null);
   }
@@ -89,10 +89,10 @@
   function renderNotFound(id) {
     content.innerHTML = "";
     const h1 = document.createElement("h1");
-    h1.textContent = "Topic not found";
+    h1.textContent = I18N.t("articles.notFound");
     content.appendChild(h1);
     const p = document.createElement("p");
-    p.textContent = "There's no article called \"" + id + "\". Pick a topic from the list instead.";
+    p.textContent = I18N.t("articles.noSuchTopic", { id: id });
     content.appendChild(p);
     highlightActive(null);
   }
@@ -107,13 +107,13 @@
 
     content.innerHTML = "";
     const h1 = document.createElement("h1");
-    h1.textContent = article.title;
+    h1.textContent = I18N.pick(article, "title");
     content.appendChild(h1);
 
     article.sections.forEach(function (section) {
       if (section.heading) {
         const h2 = document.createElement("h2");
-        h2.textContent = section.heading;
+        h2.textContent = I18N.pick(section, "heading");
         content.appendChild(h2);
       }
       renderBlocks(content, section.blocks);

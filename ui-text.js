@@ -628,6 +628,79 @@ const UI = {
   "print.footer": {
     en: "Food Intolerance Guide — {page} — a triage aid, not a diagnosis. {host}",
     sv: "Guide till matintolerans — {page} — ett triagestöd, inte en diagnos. {host}"
+  },
+
+  /* ---- Foods without ---------------------------------------------------- */
+
+  "without.pickOne": {
+    en: "Pick at least one trait above. This database holds {total} foods.",
+    sv: "Välj minst en egenskap ovan. Databasen rymmer {total} livsmedel."
+  },
+  /* English can say "carry no Lactose" for any trait name. Swedish would
+     need ingen/inget/inga to agree with a noun whose gender the sentence
+     cannot know, so it says "saknar" — lacks — which agrees with nothing. */
+  "without.heading": {
+    en: "{count} of {total} foods carry no {traits}",
+    sv: "{count} av {total} livsmedel saknar {traits}"
+  },
+  "without.everyFood": {
+    en: "Every food in this database carries at least one of those.",
+    sv: "Varje livsmedel i databasen bär minst en av dem."
+  },
+  "without.note": {
+    en: "These are the foods in this database not tagged with {traits}. That is all " +
+      "it means. It is not a list of foods that are safe for you, and it is not a " +
+      "diet — an untagged food can still cause symptoms, and a list built by " +
+      "removing things can leave out something you need.",
+    sv: "Det här är de livsmedel i databasen som inte är märkta med {traits}. Mer än " +
+      "så betyder det inte. Det är ingen lista över livsmedel som är säkra för dig, " +
+      "och det är ingen diet — ett omärkt livsmedel kan ändå ge symtom, och en lista " +
+      "byggd genom att ta bort saker kan utelämna något du behöver."
+  },
+  "without.or": { en: " or ", sv: " eller " },
+
+  /* ---- The food lists under an article ---------------------------------- */
+
+  "traitFoods.heading": { en: "Which foods carry this?", sv: "Vilka livsmedel bär den här?" },
+  "traitFoods.introOne": {
+    en: "Every food in this database tagged with this trait.",
+    sv: "Varje livsmedel i databasen som är märkt med den här egenskapen."
+  },
+  "traitFoods.introMany": {
+    en: "Every food in this database tagged with each of these traits.",
+    sv: "Varje livsmedel i databasen som är märkt med var och en av dessa egenskaper."
+  },
+  "traitFoods.note": {
+    en: "These lists are the foods in this database carrying the tag, measured at " +
+      "one standard serving each. They are not a list of foods to avoid.",
+    sv: "Listorna är de livsmedel i databasen som bär taggen, mätta vid en " +
+      "standardportion var. De är ingen lista över livsmedel att undvika."
+  },
+  "traitFoods.tagged": {
+    en: "Foods tagged {trait} ({count})",
+    sv: "Livsmedel märkta {trait} ({count})"
+  },
+  "traitFoods.summary": { en: "{trait} — {count}", sv: "{trait} — {count}" },
+  "count.foods": {
+    en: function (v) { return v.n === 1 ? "1 food" : v.n + " foods"; },
+    sv: function (v) { return v.n + " livsmedel"; }
+  },
+  "category.other": { en: "Other", sv: "Övrigt" },
+  "nav.menu": { en: "Menu", sv: "Meny" },
+
+  /* ---- Articles ---------------------------------------------------------- */
+
+  "articles.title": { en: "Articles", sv: "Artiklar" },
+  "articles.landing": {
+    en: "Pick a topic from the list to read a deep dive on how it can relate to " +
+      "food intolerance.",
+    sv: "Välj ett ämne ur listan för att läsa en fördjupning i hur det kan hänga " +
+      "ihop med matintolerans."
+  },
+  "articles.notFound": { en: "Topic not found", sv: "Ämnet finns inte" },
+  "articles.noSuchTopic": {
+    en: "There's no article called \"{id}\". Pick a topic from the list instead.",
+    sv: "Det finns ingen artikel som heter \"{id}\". Välj ett ämne ur listan i stället."
   }
 
 

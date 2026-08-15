@@ -30,14 +30,14 @@
 <body>
     <header>
         <div class="headerBar">
-            <h1>Data sources</h1>
-            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+            <h1 data-sv="Datakällor">Data sources</h1>
+            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" data-sv-aria-label="Öppna menyn" aria-expanded="false" aria-controls="navDrawer">
                 <span></span><span></span><span></span>
             </button>
         </div>
         <nav class="navDrawer" id="navDrawer" aria-hidden="true">
-            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu">&times;</button>
-            <a class="backToMain" href="index.html">Home</a>
+            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu" data-sv-aria-label="Stäng menyn">&times;</button>
+            <a class="backToMain" href="index.html" data-sv="Hem">Home</a>
             <!-- Built by nav.js from NAV_LINKS, so no page can carry a
                  different menu from its neighbours. -->
             <ul></ul>
@@ -48,32 +48,32 @@
     <div class="articleLayout">
         <div class="articleContent">
             <section>
-                <h2>Where the numbers come from</h2>
-                <p><strong>Livsmedelsverket's food database</strong> — the Swedish Food Agency's national food
+                <h2 data-sv="Var siffrorna kommer ifrån">Where the numbers come from</h2>
+                <p data-sv="&lt;strong&gt;Livsmedelsverkets livsmedelsdatabas&lt;/strong&gt; — den nationella livsmedelsdatabasen, ungefär 2 600 livsmedel med över 50 näringsämnen vardera — är huvudreferens för halten av fett, protein, fiber, socker och alkohol i verktyget. Varje livsmedel nedan som är märkt som kontrollerat har fått sina tröskelbaserade egenskaper jämförda mot den databasen post för post."><strong>Livsmedelsverket's food database</strong> — the Swedish Food Agency's national food
                     composition database, roughly 2 600 foods with over 50 nutrients each — is the main
                     reference for fat, protein, fiber, sugar and alcohol content in this tool. Every food below
                     that is marked as checked has had its threshold-based traits compared against that database
                     entry by entry.</p>
 
-                <p>Not every food is in it. Cheeses like Roquefort and Fontina, spice blends like za'atar,
+                <p data-sv="Alla livsmedel finns inte i den. Ostar som Roquefort och Fontina, kryddblandningar som za'atar, och de flesta asiatiska såser har ingen svensk post, så deras siffror kommer från publicerad näringsdata och klinisk litteratur i stället. De livsmedlen listas också här, märkta som sådana — poängen med den här sidan är att du kan se vilket som är vilket.">Not every food is in it. Cheeses like Roquefort and Fontina, spice blends like za'atar,
                     and most Asian sauces have no Swedish entry, so their figures come from published nutrition
                     data and clinical literature instead. Those foods are listed here too, marked as such —
                     the point of this page is that you can tell which is which.</p>
 
-                <p>Each food also shows the <strong>typical portion</strong> it is assessed on. A figure per
+                <p data-sv="Varje livsmedel visar också den &lt;strong&gt;typiska portion&lt;/strong&gt; det bedöms på. En siffra per 100 g säger lite på egen hand — 17,5 g fett per 100 g är ungefär 4 g i en ostskiva och ungefär 22 g i en portion köttfärs — så portionen avgör vilken tröskel som gäller. Livsmedel med en portion på 6 g eller mindre, som kryddor, lämnas helt utanför trösklarna för fett, protein och fiber. Se &lt;a href=&quot;about.html#methodology&quot;&gt;Hur analysen fungerar&lt;/a&gt; för de fyra portionsintervallen.">Each food also shows the <strong>typical portion</strong> it is assessed on. A figure per
                     100g means little on its own — 17.5g of fat per 100g is about 4g in a slice of cheese and
                     about 22g in a portion of mince — so the portion decides which threshold applies. Foods
                     with a portion of 6g or less, like spices, are left out of the fat, protein and fiber
                     thresholds altogether. See <a href="about.html#methodology">How the analysis works</a> for
                     the four portion bands.</p>
 
-                <p>FODMAP subtypes come from the Monash University database rather than Livsmedelsverket, and
+                <p data-sv="FODMAP-undertyper kommer från Monash Universitys databas snarare än från Livsmedelsverket, och allergener, korsreaktivitet och GI-irriterande mekanismer kommer från klinisk litteratur. Det är inte vad den här sidan följer. Se &lt;a href=&quot;about.html#sources&quot;&gt;Hur analysen fungerar&lt;/a&gt; för hela bilden, och &lt;a href=&quot;articles.html#uncertainty&quot;&gt;Hur säkert är egentligen något av det här?&lt;/a&gt; för var osäkerheten sitter.">FODMAP subtypes come from the Monash University database rather than Livsmedelsverket, and
                     allergens, cross-reactivity and GI irritant mechanisms come from clinical literature. Those
                     are not what this page tracks. See <a href="about.html#sources">How the analysis works</a>
                     for the full picture, and <a href="articles.html#uncertainty">How Certain Is Any of
                     This?</a> for where the uncertainty sits.</p>
 
-                <p>The meal builder also uses <strong>low-FODMAP serving sizes</strong> from the Monash
+                <p data-sv="Måltidsbyggaren använder också &lt;strong&gt;låg-FODMAP-portioner&lt;/strong&gt; från Monash Universitys FODMAP Diet-app — den största portion av ett livsmedel som fortfarande bedöms som låg. Den använder dem som en tröskel snarare än en mängd: ett livsmedel vägt inom sin portion räknas inte som belastning på måltiden. Monash bedömer portioner och publicerar ingen samlad export, så de siffrorna matas in för hand, ett livsmedel i taget, och bara några av FODMAP-livsmedlen här har en än. Betrakta dem som preliminära tills de kontrollerats mot den aktuella appen: portionsstorlekar revideras när livsmedel testas om. En måltid namnger alltid de livsmedel tröskeln inte kunde tillämpas på.">The meal builder also uses <strong>low-FODMAP serving sizes</strong> from the Monash
                     University FODMAP Diet app — the largest serving of a food that still rates low. It uses
                     them as a threshold rather than a quantity: a food weighed out within its serving is not
                     counted as loading the meal. Monash rates servings and publishes no bulk export, so
@@ -84,7 +84,7 @@
 
                 <div class="sourceCounts" id="sourceCounts"></div>
 
-                <h3>Portion bands</h3>
+                <h3 data-sv="Portionsintervall">Portion bands</h3>
                 <div class="sourceCounts" id="portionBands"></div>
             </section>
 
@@ -95,11 +95,11 @@
     </div>
 
     <footer>
-        <p>Food composition data from Livsmedelsverket, used under CC BY 4.0.</p>
-        <p class="citation">Marija Langwagen, Jette Jakobsen and Anders Poulsen: The Danish Food
+        <p data-sv="Livsmedelsdata från Livsmedelsverket, använd under CC BY 4.0.">Food composition data from Livsmedelsverket, used under CC BY 4.0.</p>
+        <p class="citation" data-sv="Marija Langwagen, Jette Jakobsen och Anders Poulsen: The Danish Food Composition Database, version 6.1, maj 2026, National Food Institute, Danmarks Tekniska Universitet. &lt;a href=&quot;https://doi.org/10.11583/DTU.32312844&quot;&gt;doi.org/10.11583/DTU.32312844&lt;/a&gt;">Marija Langwagen, Jette Jakobsen and Anders Poulsen: The Danish Food
             Composition Database, version 6.1, May 2026, National Food Institute, Technical University
             of Denmark. <a href="https://doi.org/10.11583/DTU.32312844">doi.org/10.11583/DTU.32312844</a></p>
-        <p>Pre-beta v1.76 — updated 15 August 2026</p>
+        <p data-sv="Pre-beta v1.77 — uppdaterad 15 augusti 2026">Pre-beta v1.77 — updated 15 August 2026</p>
     </footer>
 
     <script src="i18n.js"></script>

@@ -122,9 +122,7 @@ const FoodPicker = (function () {
       // Any category not named in CATEGORY_GROUPS still shows, under "Other",
       // so adding one to foods-data.js is never a silent disappearance.
       const leftover = CATEGORIES.filter(function (c) { return !placed.has(c.id); });
-      if (leftover.length) {
-        renderGroupSection(I18N.lang() === "sv" ? "Övrigt" : "Other", leftover);
-      }
+      if (leftover.length) renderGroupSection(I18N.t("category.other"), leftover);
     }
 
     function entries() {

@@ -36,7 +36,7 @@
 <body>
     <header>
         <div class="headerBar">
-            <h1>Foods without</h1>
+            <h1 data-sv="Livsmedel utan">Foods without</h1>
             <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" data-sv-aria-label="Öppna menyn" aria-expanded="false" aria-controls="navDrawer">
                 <span></span><span></span><span></span>
             </button>
@@ -100,36 +100,36 @@
         </div>
 
         <div class="instructionsBox">
-            <h2>Which foods are not tagged with these?</h2>
-            <p class="withoutLead">Pick one or more traits below. You get every food in this database that
+            <h2 data-sv="Vilka livsmedel är inte märkta med dessa?">Which foods are not tagged with these?</h2>
+            <p class="withoutLead" data-sv="Välj en eller flera egenskaper nedan. Du får varje livsmedel i databasen som saknar dem alla.">Pick one or more traits below. You get every food in this database that
                 carries none of them.</p>
-            <p class="withoutWarn"><strong>This is a database lookup, not a diet.</strong> A food appears here
+            <p class="withoutWarn" data-sv="&lt;strong&gt;Det här är en databasuppslagning, inte en diet.&lt;/strong&gt; Ett livsmedel dyker upp här för att ingen har märkt det med det du valde — inte för att det är säkert för dig. Det kan ändå ge dig symtom av ett skäl verktyget inte följer, och en lista byggd genom att ta bort saker kan lätt utelämna något du behöver. Ta den till en dietist innan du ändrar vad du äter."><strong>This is a database lookup, not a diet.</strong> A food appears here
                 because nobody has tagged it with what you picked — not because it is safe for you. It may
                 still cause you symptoms for a reason this tool does not track, and a list built by removing
                 things can easily leave out something you need. Take it to a dietitian before you change
                 what you eat.</p>
-            <p class="noSaveWarning"><strong>Kept in this browser, on this device.</strong> The traits you
+            <p class="noSaveWarning" data-sv="&lt;strong&gt;Sparas i den här webbläsaren, på den här enheten.&lt;/strong&gt; Egenskaperna du väljer ligger kvar mellan besöken. Inget skickas någonstans. &lt;em&gt;Rensa lokal data&lt;/em&gt; i menyn tar bort det."><strong>Kept in this browser, on this device.</strong> The traits you
                 pick stay here between visits. Nothing is sent anywhere. <em>Clear local data</em> in the
                 menu removes it.</p>
         </div>
     </div>
 
     <!-- Trait checkboxes are generated from FILTER_SECTIONS in foods-data.js -->
-    <h2 class="withoutHeading noPrint">Choose traits to exclude</h2>
+    <h2 class="withoutHeading noPrint" data-sv="Välj egenskaper att utesluta">Choose traits to exclude</h2>
     <div class="filterContainer noPrint" id="traitPicker"></div>
 
     <div class="withoutActions noPrint" id="withoutActions">
-        <button class="button2" id="clearTraitsButton" type="button">Clear</button>
-        <button class="button2" id="saveSessionButton" type="button">Save to file</button>
-        <button class="button2" id="loadSessionButton" type="button">Load from file</button>
-        <button class="button2" id="printWithoutButton" type="button">Print list</button>
+        <button class="button2" id="clearTraitsButton" type="button" data-sv="Rensa">Clear</button>
+        <button class="button2" id="saveSessionButton" type="button" data-sv="Spara till fil">Save to file</button>
+        <button class="button2" id="loadSessionButton" type="button" data-sv="Läs in från fil">Load from file</button>
+        <button class="button2" id="printWithoutButton" type="button" data-sv="Skriv ut listan">Print list</button>
     </div>
 
     <div id="printHeader" class="printOnly">
-        <h1>Food Intolerance Guide — Foods without</h1>
-        <p>Generated from foodintoleranceguide (Uppsala, Sweden). A list of foods in this database that are
+        <h1 data-sv="Guide till matintolerans — Livsmedel utan">Food Intolerance Guide — Foods without</h1>
+        <p data-sv="Genererad från foodintoleranceguide (Uppsala, Sverige). En lista över livsmedel i databasen som inte är märkta med de valda egenskaperna.">Generated from foodintoleranceguide (Uppsala, Sweden). A list of foods in this database that are
             not tagged with the selected traits.</p>
-        <p><em>This is a database lookup, not a diet, and not a list of foods that are safe for anyone. It is
+        <p><em data-sv="Det här är en databasuppslagning, inte en diet, och inte en lista över livsmedel som är säkra för någon. Det är INTE ett diagnostiskt verktyg och ersätter inte en vårdpersons diagnos och råd. Upphovspersonen kan inte hållas ansvarig för hälsoproblem som uppstår av användningen av denna information.">This is a database lookup, not a diet, and not a list of foods that are safe for anyone. It is
             NOT a diagnostic tool and does not replace the diagnostics and advice of a health care
             professional. The author cannot be held responsible for any health issues arising from use of
             this information.</em></p>
@@ -149,11 +149,11 @@
 </body>
 
 <footer>
-    <p>Did you find this webpage useful?</p>
-    <p>Did you find any errors or have ideas for improvement?</p>
-    <p>Email: Monsterardadrys@duck.com</p>
-    <p>Uppsala, Sweden, 2026</p>
-    <p data-sv="Pre-beta v1.76 — uppdaterad 15 augusti 2026">Pre-beta v1.76 — updated 15 August 2026</p>
+    <p data-sv="Tyckte du att sidan var användbar?">Did you find this webpage useful?</p>
+    <p data-sv="Hittade du fel eller har du idéer på förbättringar?">Did you find any errors or have ideas for improvement?</p>
+    <p data-sv="E-post: Monsterardadrys@duck.com">Email: Monsterardadrys@duck.com</p>
+    <p data-sv="Uppsala, Sverige, 2026">Uppsala, Sweden, 2026</p>
+    <p data-sv="Pre-beta v1.77 — uppdaterad 15 augusti 2026">Pre-beta v1.77 — updated 15 August 2026</p>
 </footer>
 
 <script src="i18n.js"></script>

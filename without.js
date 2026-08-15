@@ -26,7 +26,7 @@
   function joinLabels(traitIds) {
     const labels = traitIds.map(function (id) { return I18N.traitLabel(TRAITS[id]); });
     if (labels.length === 1) return labels[0];
-    const or = I18N.lang() === "sv" ? " eller " : " or ";
+    const or = I18N.t("without.or");
     return labels.slice(0, -1).join(", ") + or + labels[labels.length - 1];
   }
 
@@ -38,7 +38,7 @@
     if (!traitIds.length) {
       const p = document.createElement("p");
       p.className = "withoutEmpty";
-      p.textContent = "Pick at least one trait above. This database holds " + TOTAL + " foods.";
+      p.textContent = I18N.t("without.pickOne", { total: TOTAL });
       results.appendChild(p);
       return;
     }
@@ -47,13 +47,15 @@
     const count = groups.reduce(function (sum, g) { return sum + g.names.length; }, 0);
 
     const heading = document.createElement("h2");
-    heading.textContent = count + " of " + TOTAL + " foods carry no " + joinLabels(traitIds);
+    heading.textContent = I18N.t("without.heading", {
+      count: count, total: TOTAL, traits: joinLabels(traitIds)
+    });
     results.appendChild(heading);
 
     if (!count) {
       const p = document.createElement("p");
       p.className = "withoutEmpty";
-      p.textContent = "Every food in this database carries at least one of those.";
+      p.textContent = I18N.t("without.everyFood");
       results.appendChild(p);
       return;
     }
@@ -78,11 +80,7 @@
     // and carried out of the room.
     const note = document.createElement("p");
     note.className = "traitFoodsNote";
-    note.textContent = "These are the foods in this database not tagged with " +
-      joinLabels(traitIds) + ". That is all it means. It is not a list of foods " +
-      "that are safe for you, and it is not a diet — an untagged food can still " +
-      "cause symptoms, and a list built by removing things can leave out something " +
-      "you need.";
+    note.textContent = I18N.t("without.note", { traits: joinLabels(traitIds) });
     results.appendChild(note);
   }
 
