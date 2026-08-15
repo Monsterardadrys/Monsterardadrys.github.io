@@ -511,6 +511,27 @@ declined stops being reported as outstanding. Checked with the real 43 picks in
 a browser against the repo as it stands: no alarms, and the only thing left to
 say is that 49 foods still have no figures.
 
+**A Swedish table was unreadable, and the bridge had been sitting there for
+months.** The first LMV harvest worked and its shortlist was useless in one
+specific way: every record was compared against our *English* food names, so
+"Torsk filé kokt m. salt" came back closest to **Salt**, "Kalkon filé rå" to
+**Almond Milk**, "Ren kött ugnsstekt" to **Green Tea**. The whole
+near-duplicate column was noise, which is the one column that tells you whether
+to bother.
+
+`tools/lmv-swedish.json` has held the answer since the first Swedish round: 312
+of our foods with the Swedish word for them. The harvest now compares a record
+against *both* names a food goes by and takes whichever matches better — and
+here taking the larger is right, unlike the words-versus-letters pair below,
+because these are the same measurement of the same thing in two languages.
+Torsk finds Cod, Kalkon finds Turkey, Vildsvin finds Pork.
+
+**And a pick that has landed is still a pick.** The store outlives the round, so
+the file from a second sitting carried all ninety records from the French round
+as well as the new Swedish ones — every one already written into the repo, and
+all of them to be sorted out by hand at the other end. The harvest now drops a
+pick the repo has claimed, the same way the audit pages drop a declined one.
+
 **A harvested food does not need a Swedish round, and the check now says so.**
 The objection was practical and correct: if a food came in from Ciqual precisely
 because Ciqual answered for it completely, sending it round the Swedish audit

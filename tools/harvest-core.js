@@ -155,6 +155,9 @@
         records — from any of the three readers; all three give {name, nutrients}
         opts.claimed — record name -> our food name, for everything already matched
         opts.ours    — our food names, for the near-duplicate check
+        opts.aka     — our food name -> what it is called in the table's own
+                       language, so a Swedish record can be compared with a
+                       Swedish name instead of an English one
         opts.score   — LMV.score, the bigram scorer the audits use
         opts.cutoff  — how far out a record has to sit on its best axis (0.9)
     */
@@ -162,6 +165,7 @@
         opts = opts || {};
         const claimed = opts.claimed || {};
         const ours = opts.ours || [];
+        const aka = opts.aka || {};
         const score = opts.score;
         const cutoff = opts.cutoff == null ? 0.9 : opts.cutoff;
 
@@ -230,7 +234,20 @@
                 const mine = tokens(r.name);
                 let best = null;
                 ours.forEach(function (name) {
-                    const overlap = jaccard(mine, tokens(name));
+                    /* Against both names this food goes by, and the better one
+                       wins. Unlike the words-versus-letters pair below, these
+                       two are the same measurement of the same thing — an
+                       English name and a Swedish one for one food — so taking
+                       the larger is right rather than a scale confusion.
+
+                       Without it a Swedish table is unreadable: every record is
+                       compared with an English list, so "Ren kött kokt m. salt"
+                       came back closest to "Salt" and the whole column was
+                       noise. tools/lmv-swedish.json has held the bridge for
+                       312 foods all along. */
+                    let overlap = jaccard(mine, tokens(name));
+                    const alt = aka[name];
+                    if (alt) overlap = Math.max(overlap, jaccard(mine, tokens(alt)));
                     if (!best || overlap > best.score) best = { name: name, score: overlap, byWords: true };
                 });
                 if (best && best.score > 0) nearest = best;

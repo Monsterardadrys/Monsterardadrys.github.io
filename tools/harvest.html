@@ -348,7 +348,8 @@
                 json("frida-extras.json"),
                 json("ciqual-aliases.json"),
                 json("ciqual-extras.json"),
-                json("usda-aliases.json")
+                json("usda-aliases.json"),
+                json("lmv-swedish.json")
             ]).then(function (p) {
                 const CATEGORIES = new Function(p[0] + "; return CATEGORIES;")();
                 const ours = [];
@@ -359,8 +360,19 @@
                    taken by a different source is still a record we have an
                    answer for, and offering it again is how a food ends up on
                    two rungs of the ladder. */
+                /* What each of our foods is called in Swedish, for reading a
+                   Swedish table. Without it every record is compared against an
+                   English list and the column is noise — "Torsk filé kokt m.
+                   salt" came back closest to "Salt". */
+                const aka = {};
+                Object.keys(p[7] || {}).forEach(function (k) {
+                    if (k[0] === "_") return;
+                    aka[k] = Array.isArray(p[7][k]) ? p[7][k][0] : p[7][k];
+                });
+
                 return {
                     ours: ours,
+                    aka: aka,
                     claimed: Harvest.claimedFrom([p[1], p[2], p[3], p[4], p[5], p[6]])
                 };
             });
@@ -631,8 +643,29 @@
                     ranked = Harvest.rank(hit.records, {
                         claimed: ctx.claimed,
                         ours: ctx.ours,
+                        aka: ctx.aka,
                         score: LMV.score
                     });
+
+                    /* Picks that have since landed. The store outlives the
+                       round, so a file downloaded after a second sitting
+                       carries every record ever ticked — including the ninety
+                       already written into the repo, which then have to be
+                       sorted out by hand at the other end. If the repo now
+                       claims it, the pick is finished. */
+                    const landed = Object.keys(picked).filter(function (k) {
+                        return picked[k] && ctx.claimed[picked[k].record];
+                    }).map(function (k) {
+                        const name = picked[k].record;
+                        delete picked[k];
+                        return name;
+                    });
+                    if (landed.length) {
+                        remember();
+                        show(status, "info", landed.length + " pick(s) dropped — the repo has " +
+                            "them now: " + landed.slice(0, 6).join(", ") +
+                            (landed.length > 6 ? " and " + (landed.length - 6) + " more" : "") + ".");
+                    }
 
                     bar.firstChild.style.width = "100%";
                     setTimeout(function () { bar.className = "bar"; }, 400);
