@@ -37,13 +37,13 @@
     <header>
         <div class="headerBar">
             <h1>Foods without</h1>
-            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" data-sv-aria-label="Öppna menyn" aria-expanded="false" aria-controls="navDrawer">
                 <span></span><span></span><span></span>
             </button>
         </div>
         <nav class="navDrawer" id="navDrawer" aria-hidden="true">
-            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu">&times;</button>
-            <a class="backToMain" href="index.html">Home</a>
+            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu" data-sv-aria-label="Stäng menyn">&times;</button>
+            <a class="backToMain" href="index.html"  data-sv="Hem">Home</a>
             <!-- Built by nav.js from NAV_LINKS, so no page can carry a
                  different menu from its neighbours. -->
             <ul></ul>
@@ -54,9 +54,9 @@
     <div class="disclaimerBar" data-lock="traitPicker withoutActions withoutResults">
         <label class="disclaimerCheck">
             <input type="checkbox" id="disclaimerCheckbox">
-            I have read and understood the disclaimer
+            <span data-sv="Jag har läst och förstått ansvarsfriskrivningen">I have read and understood the disclaimer</span>
         </label>
-        <a href="#disclaimerPopup" class="disclaimerBtn">Read disclaimer</a>
+        <a href="#disclaimerPopup" class="disclaimerBtn" data-sv="Läs ansvarsfriskrivningen">Read disclaimer</a>
     </div>
 
     <div class="neck" id="neck">
@@ -64,38 +64,38 @@
         <!-- Same text as app.html. Change both together. -->
         <div class="disclaimerPopup" id="disclaimerPopup">
             <div class="disclaimerText">
-                <h2>Disclaimer</h2>
+                <h2 data-sv="Ansvarsfriskrivning">Disclaimer</h2>
 
-                <h3>What this tool does</h3>
+                <h3 data-sv="Vad verktyget gör">What this tool does</h3>
                 <ul>
-                    <li>It shows what a set of foods have in common.</li>
-                    <li>It lists which foods in its database carry a given trait.</li>
+                    <li data-sv="Det visar vad en uppsättning livsmedel har gemensamt.">It shows what a set of foods have in common.</li>
+                    <li data-sv="Det listar vilka livsmedel i databasen som bär en viss egenskap.">It lists which foods in its database carry a given trait.</li>
                 </ul>
 
-                <h3>What it does not do</h3>
+                <h3 data-sv="Vad det inte gör">What it does not do</h3>
                 <ul>
-                    <li>It does not diagnose anything.</li>
-                    <li>It does not tell you what to eat or what to avoid. <em>No list here is a diet.</em></li>
-                    <li>A food carrying a trait does not mean you react to it. Most people react to none of them.</li>
-                    <li>A food <em>not</em> carrying a trait does not mean it is safe for you.</li>
+                    <li data-sv="Det ställer inga diagnoser.">It does not diagnose anything.</li>
+                    <li data-sv="Det talar inte om vad du ska äta eller undvika. &lt;em&gt;Ingen lista här är en diet.&lt;/em&gt;">It does not tell you what to eat or what to avoid. <em>No list here is a diet.</em></li>
+                    <li data-sv="Att ett livsmedel bär en egenskap betyder inte att du reagerar på det. De flesta reagerar på ingen av dem.">A food carrying a trait does not mean you react to it. Most people react to none of them.</li>
+                    <li data-sv="Att ett livsmedel &lt;em&gt;inte&lt;/em&gt; bär en egenskap betyder inte att det är säkert för dig.">A food <em>not</em> carrying a trait does not mean it is safe for you.</li>
                 </ul>
 
-                <h3>Before you change what you eat</h3>
+                <h3 data-sv="Innan du ändrar vad du äter">Before you change what you eat</h3>
                 <ul>
-                    <li>Talk to a doctor or dietitian first. Cutting foods out on your own can hide a real
+                    <li data-sv="Tala med en läkare eller dietist först. Att utesluta livsmedel på egen hand kan dölja en verklig diagnos, och långvarigt undvikande kan göra kosten fattig på sådant du behöver.">Talk to a doctor or dietitian first. Cutting foods out on your own can hide a real
                         diagnosis, and long avoidance can leave your diet short of things you need.</li>
-                    <li>This is a tool for health care professionals, and it is <em>NOT</em> meant to
+                    <li data-sv="Det här är ett verktyg för vårdpersonal, och det är &lt;em&gt;INTE&lt;/em&gt; menat att ersätta deras diagnos och råd.">This is a tool for health care professionals, and it is <em>NOT</em> meant to
                         replace their diagnosis and advice.</li>
                 </ul>
 
-                <h3>Still being built</h3>
+                <h3 data-sv="Fortfarande under uppbyggnad">Still being built</h3>
                 <ul>
-                    <li>This website is under construction — information may be inaccurate.</li>
-                    <li>By continuing you agree that the author cannot be held responsible for any health
+                    <li data-sv="Webbplatsen är under uppbyggnad — informationen kan vara felaktig.">This website is under construction — information may be inaccurate.</li>
+                    <li data-sv="Genom att fortsätta godtar du att upphovspersonen inte kan hållas ansvarig för hälsoproblem som uppstår av användningen av denna information.">By continuing you agree that the author cannot be held responsible for any health
                         issues arising from use of this information.</li>
                 </ul>
 
-                <p><em>Click anywhere to close.</em></p>
+                <p data-sv="&lt;em&gt;Klicka var som helst för att stänga.&lt;/em&gt;"><em>Click anywhere to close.</em></p>
             </div>
         </div>
 
@@ -153,10 +153,11 @@
     <p>Did you find any errors or have ideas for improvement?</p>
     <p>Email: Monsterardadrys@duck.com</p>
     <p>Uppsala, Sweden, 2026</p>
-    <p>Pre-beta v1.75 — updated 15 August 2026</p>
+    <p data-sv="Pre-beta v1.76 — uppdaterad 15 augusti 2026">Pre-beta v1.76 — updated 15 August 2026</p>
 </footer>
 
 <script src="i18n.js"></script>
+<script src="ui-text.js"></script>
 <script src="foods-data.js"></script>
 <script src="trait-foods.js"></script>
 <script src="save-load.js"></script>

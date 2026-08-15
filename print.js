@@ -20,16 +20,20 @@
     const el = document.getElementById("printStamp");
     if (!el) return;
     // Day, month name and year: unambiguous on paper in any country.
-    el.textContent = "Printed " + new Date().toLocaleDateString("en-GB", {
-      day: "numeric", month: "long", year: "numeric"
+    el.textContent = I18N.t("print.stamp", {
+      date: new Date().toLocaleDateString(I18N.lang() === "sv" ? "sv-SE" : "en-GB", {
+        day: "numeric", month: "long", year: "numeric"
+      })
     });
   }
 
   function runningFooter() {
     const el = document.getElementById("printRunningFooter");
     if (!el) return;
-    el.textContent = "Food Intolerance Guide — " + document.title.split("—")[0].trim() +
-      " — a triage aid, not a diagnosis. " + window.location.host;
+    el.textContent = I18N.t("print.footer", {
+      page: document.title.split("—")[0].trim(),
+      host: window.location.host
+    });
   }
 
   function openDetails() {

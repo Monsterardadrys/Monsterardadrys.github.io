@@ -45,14 +45,14 @@
 <body>
     <header>
         <div class="headerBar">
-            <h1>Shared traits</h1>
-            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+            <h1 data-sv="Gemensamma egenskaper">Shared traits</h1>
+            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" data-sv-aria-label="Öppna menyn" aria-expanded="false" aria-controls="navDrawer">
                 <span></span><span></span><span></span>
             </button>
         </div>
         <nav class="navDrawer" id="navDrawer" aria-hidden="true">
-            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu">&times;</button>
-            <a class="backToMain" href="index.html">Home</a>
+            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu" data-sv-aria-label="Stäng menyn">&times;</button>
+            <a class="backToMain" href="index.html"  data-sv="Hem">Home</a>
             <!-- Built by nav.js from NAV_LINKS, so no page can carry a
                  different menu from its neighbours. -->
             <ul></ul>
@@ -63,9 +63,9 @@
     <div class="disclaimerBar" data-lock="topSection searchContainer bottomSection">
         <label class="disclaimerCheck">
             <input type="checkbox" id="disclaimerCheckbox">
-            I have read and understood the disclaimer
+            <span data-sv="Jag har läst och förstått ansvarsfriskrivningen">I have read and understood the disclaimer</span>
         </label>
-        <a href="#disclaimerPopup" class="disclaimerBtn">Read disclaimer</a>
+        <a href="#disclaimerPopup" class="disclaimerBtn" data-sv="Läs ansvarsfriskrivningen">Read disclaimer</a>
     </div>
 
     <div class="neck" id="neck">
@@ -74,70 +74,70 @@
              feature can be mistaken for a diet plan, it belongs here. -->
         <div class="disclaimerPopup" id="disclaimerPopup">
         <div class="disclaimerText">
-                <h2>Disclaimer</h2>
+                <h2 data-sv="Ansvarsfriskrivning">Disclaimer</h2>
 
-                <h3>What this tool does</h3>
+                <h3 data-sv="Vad verktyget gör">What this tool does</h3>
                 <ul>
-                    <li>It shows what a set of foods have in common.</li>
-                    <li>It lists which foods in its database carry a given trait.</li>
+                    <li data-sv="Det visar vad en uppsättning livsmedel har gemensamt.">It shows what a set of foods have in common.</li>
+                    <li data-sv="Det listar vilka livsmedel i databasen som bär en viss egenskap.">It lists which foods in its database carry a given trait.</li>
                 </ul>
 
-                <h3>What it does not do</h3>
+                <h3 data-sv="Vad det inte gör">What it does not do</h3>
                 <ul>
-                    <li>It does not diagnose anything.</li>
-                    <li>It does not tell you what to eat or what to avoid. <em>No list here is a diet.</em></li>
-                    <li>A food carrying a trait does not mean you react to it. Most people react to none of them.</li>
-                    <li>A food <em>not</em> carrying a trait does not mean it is safe for you.</li>
+                    <li data-sv="Det ställer inga diagnoser.">It does not diagnose anything.</li>
+                    <li data-sv="Det talar inte om vad du ska äta eller undvika. &lt;em&gt;Ingen lista här är en diet.&lt;/em&gt;">It does not tell you what to eat or what to avoid. <em>No list here is a diet.</em></li>
+                    <li data-sv="Att ett livsmedel bär en egenskap betyder inte att du reagerar på det. De flesta reagerar på ingen av dem.">A food carrying a trait does not mean you react to it. Most people react to none of them.</li>
+                    <li data-sv="Att ett livsmedel &lt;em&gt;inte&lt;/em&gt; bär en egenskap betyder inte att det är säkert för dig.">A food <em>not</em> carrying a trait does not mean it is safe for you.</li>
                 </ul>
 
-                <h3>Before you change what you eat</h3>
+                <h3 data-sv="Innan du ändrar vad du äter">Before you change what you eat</h3>
                 <ul>
-                    <li>Talk to a doctor or dietitian first. Cutting foods out on your own can hide a real
+                    <li data-sv="Tala med en läkare eller dietist först. Att utesluta livsmedel på egen hand kan dölja en verklig diagnos, och långvarigt undvikande kan göra kosten fattig på sådant du behöver.">Talk to a doctor or dietitian first. Cutting foods out on your own can hide a real
                         diagnosis, and long avoidance can leave your diet short of things you need.</li>
-                    <li>This is a tool for health care professionals, and it is <em>NOT</em> meant to
+                    <li data-sv="Det här är ett verktyg för vårdpersonal, och det är &lt;em&gt;INTE&lt;/em&gt; menat att ersätta deras diagnos och råd.">This is a tool for health care professionals, and it is <em>NOT</em> meant to
                         replace their diagnosis and advice.</li>
                 </ul>
 
-                <h3>Still being built</h3>
+                <h3 data-sv="Fortfarande under uppbyggnad">Still being built</h3>
                 <ul>
-                    <li>This website is under construction — information may be inaccurate.</li>
-                    <li>By continuing you agree that the author cannot be held responsible for any health
+                    <li data-sv="Webbplatsen är under uppbyggnad — informationen kan vara felaktig.">This website is under construction — information may be inaccurate.</li>
+                    <li data-sv="Genom att fortsätta godtar du att upphovspersonen inte kan hållas ansvarig för hälsoproblem som uppstår av användningen av denna information.">By continuing you agree that the author cannot be held responsible for any health
                         issues arising from use of this information.</li>
                 </ul>
 
-                <p><em>Click anywhere to close.</em></p>
+                <p data-sv="&lt;em&gt;Klicka var som helst för att stänga.&lt;/em&gt;"><em>Click anywhere to close.</em></p>
             </div>
         </div>
 
         <div class="instructionsBox">
-            <h2>A faster way to navigate food intolerances.</h2>
+            <h2 data-sv="En snabbare väg genom matintoleranser.">A faster way to navigate food intolerances.</h2>
             <ol class="stepsList">
                 <li>
-                    <span class="stepTitle">Pick the foods that bother you.</span>
-                    <span class="stepDetail">Choose any you suspect cause a reaction — change your mind anytime.</span>
+                    <span class="stepTitle" data-sv="Välj de livsmedel som besvärar dig.">Pick the foods that bother you.</span>
+                    <span class="stepDetail" data-sv="Välj vilka du misstänker ger en reaktion — du kan ändra dig när som helst.">Choose any you suspect cause a reaction — change your mind anytime.</span>
                 </li>
                 <li>
-                    <span class="stepTitle">Check what they share.</span>
-                    <span class="stepDetail">A live summary below highlights shared FODMAPs, allergens, and more.</span>
+                    <span class="stepTitle" data-sv="Se vad de har gemensamt.">Check what they share.</span>
+                    <span class="stepDetail" data-sv="En löpande sammanfattning nedan lyfter fram gemensamma FODMAP, allergener och mer.">A live summary below highlights shared FODMAPs, allergens, and more.</span>
                 </li>
                 <li>
-                    <span class="stepTitle">Read the full analysis.</span>
-                    <span class="stepDetail">Open the popup for a deeper breakdown of likely culprits.</span>
+                    <span class="stepTitle" data-sv="Läs hela analysen.">Read the full analysis.</span>
+                    <span class="stepDetail" data-sv="Öppna rutan för en djupare genomgång av troliga bovar.">Open the popup for a deeper breakdown of likely culprits.</span>
                 </li>
             </ol>
-            <p class="noSaveWarning"><strong>Kept in this browser, on this device.</strong> Your work
+            <p class="noSaveWarning" data-sv="&lt;strong&gt;Sparas i den här webbläsaren, på den här enheten.&lt;/strong&gt; Ditt arbete ligger kvar mellan besöken så att du kan röra dig mellan de tre verktygen utan att förlora det. Inget skickas någonstans. &lt;em&gt;Rensa lokal data&lt;/em&gt; i menyn tar bort det; &lt;em&gt;Spara till fil&lt;/em&gt; behåller en kopia där du själv väljer."><strong>Kept in this browser, on this device.</strong> Your work
                 stays here between visits so you can move between the three tools without losing it.
                 Nothing is sent anywhere. <em>Clear local data</em> in the menu removes it; <em>Save to
                 file</em> keeps a copy you choose where to put.</p>
         </div>
         <div id="chosenFoods">
-            <h2>Chosen foods:</h2>
-            <div id="chosenText">Click on a category to show lists of foods</div>
+            <h2 data-sv="Valda livsmedel:">Chosen foods:</h2>
+            <div id="chosenText" data-sv="Klicka på en kategori för att visa listor med livsmedel">Click on a category to show lists of foods</div>
         </div>
         <div class="searchContainer" id="searchContainer">
-            <input type="text" id="search" placeholder="Filter food list...">
-            <button class="searchButton" id="searchButton">Search</button>
-            <button class="showAllButton" id="showAllButton">Show All</button>
+            <input type="text" id="search" placeholder="Filter food list..." data-sv-placeholder="Filtrera livsmedelslistan...">
+            <button class="searchButton" id="searchButton" data-sv="Sök">Search</button>
+            <button class="showAllButton" id="showAllButton" data-sv="Visa alla">Show All</button>
         </div>
     </div>
 
@@ -146,68 +146,68 @@
 
     <div class="bottomSection" id="bottomSection">
         <div class="summary noPrint" id="summary">
-            <h2>Summary:</h2>
-            <p id="summaryText">Select foods to see a summary.</p>
+            <h2 data-sv="Sammanfattning:">Summary:</h2>
+            <p id="summaryText" data-sv="Välj livsmedel för att se en sammanfattning.">Select foods to see a summary.</p>
             <ul id="summaryTraitList" class="summaryTraitList"></ul>
-            <button id="summaryToggle" class="summaryToggle" style="display:none;" type="button">Show more ▾</button>
+            <button id="summaryToggle" class="summaryToggle" style="display:none;" type="button" data-sv="Visa mer ▾">Show more ▾</button>
             <p id="untrackedNote" class="untrackedNote" hidden></p>
-            <p>Find more info in the menu at the top.</p>
+            <p data-sv="Mer information finns i menyn längst upp.">Find more info in the menu at the top.</p>
         </div>
 
         <div id="printHeader" class="printOnly">
-            <h1>Food Intolerance Guide — Shared traits</h1>
-            <p>Generated from foodintoleranceguide (Uppsala, Sweden) — a triage aid for exploring possible GI reactions to foods, intended for use by health care professionals.</p>
-            <p><em>This is NOT a diagnostic tool and does not replace the diagnostics and advice of a health care professional. The author cannot be held responsible for any health issues arising from use of this information.</em></p>
+            <h1 data-sv="Guide till matintolerans — Gemensamma egenskaper">Food Intolerance Guide — Shared traits</h1>
+            <p data-sv="Genererad från foodintoleranceguide (Uppsala, Sverige) — ett triagestöd för att utforska möjliga magreaktioner på livsmedel, avsett att användas av vårdpersonal.">Generated from foodintoleranceguide (Uppsala, Sweden) — a triage aid for exploring possible GI reactions to foods, intended for use by health care professionals.</p>
+            <p data-sv="&lt;em&gt;Det här är INTE ett diagnostiskt verktyg och ersätter inte en vårdpersons diagnos och råd. Upphovspersonen kan inte hållas ansvarig för hälsoproblem som uppstår av användningen av denna information.&lt;/em&gt;"><em>This is NOT a diagnostic tool and does not replace the diagnostics and advice of a health care professional. The author cannot be held responsible for any health issues arising from use of this information.</em></p>
         </div>
 
         <div class="analysisPopup">
             <div class="popupContainer" id="popupContainer">
-                <button class="popupClose noPrint" id="popupCloseBtn" aria-label="Close analysis">&times;</button>
+                <button class="popupClose noPrint" id="popupCloseBtn" aria-label="Close analysis" data-sv-aria-label="Stäng analysen">&times;</button>
                 <div id="popupTextContainer">
                     <!-- analysis paragraphs are added by script.js -->
                 </div>
                 <!-- Six traits used to mean six full articles on the paper,
                      which is fifteen pages nobody asked for. -->
                 <label class="printDepth noPrint" for="articleDepth">
-                    Articles in the printout
+                    <span data-sv="Artiklar i utskriften">Articles in the printout</span>
                     <select id="articleDepth">
-                        <option value="short" selected>First section of each</option>
-                        <option value="none">None — analysis only</option>
-                        <option value="full">Everything</option>
+                        <option value="short" selected data-sv="Första avsnittet av varje">First section of each</option>
+                        <option value="none" data-sv="Inga — bara analysen">None — analysis only</option>
+                        <option value="full" data-sv="Allt">Everything</option>
                     </select>
                 </label>
-                <button class="button2 noPrint" id="printAnalysisButton">Print analysis</button>
-                <button class="button2 noPrint" id="popupCloseBottomBtn">Close</button>
+                <button class="button2 noPrint" id="printAnalysisButton" data-sv="Skriv ut analysen">Print analysis</button>
+                <button class="button2 noPrint" id="popupCloseBottomBtn" data-sv="Stäng">Close</button>
             </div>
         </div>
 
         <div id="printFoodsList" class="printOnly"></div>
         <div id="printArticlesList" class="printOnly"></div>
 
-        <button class="button2 noPrint" id="showAnalysisButton" name="Show Analysis Popup">Show Analysis</button>
+        <button class="button2 noPrint" id="showAnalysisButton" name="Show Analysis Popup" data-sv="Visa analys">Show Analysis</button>
 
         <div class="clearSelectionBox noPrint" id="clearSelectionBox">
-            <h2>Clear selection</h2>
+            <h2 data-sv="Rensa val">Clear selection</h2>
             <div class="clearButtonRow">
-                <button class="button2" id="clearFoodsButton" type="button">Foods</button>
-                <button class="button2" id="clearFiltersButton" type="button">Filter</button>
-                <button class="button2" id="restartButton" type="button">All</button>
+                <button class="button2" id="clearFoodsButton" type="button" data-sv="Livsmedel">Foods</button>
+                <button class="button2" id="clearFiltersButton" type="button" data-sv="Filter">Filter</button>
+                <button class="button2" id="restartButton" type="button" data-sv="Allt">All</button>
             </div>
         </div>
 
         <!-- Nothing is stored anywhere, so a file is the only way a selection
              survives closing the tab. See save-load.js. -->
         <div class="clearSelectionBox noPrint" id="saveSelectionBox">
-            <h2>Keep this selection</h2>
+            <h2 data-sv="Behåll det här urvalet">Keep this selection</h2>
             <div class="clearButtonRow">
-                <button class="button2" id="saveSelectionButton" type="button">Save to file</button>
-                <button class="button2" id="loadSelectionButton" type="button">Load from file</button>
+                <button class="button2" id="saveSelectionButton" type="button" data-sv="Spara till fil">Save to file</button>
+                <button class="button2" id="loadSelectionButton" type="button" data-sv="Läs in från fil">Load from file</button>
             </div>
             <p class="mealError" id="saveError" hidden></p>
         </div>
 
-        <h2 class="noPrint">Filter Analysis</h2>
-        <p class="noPrint">Select one or more factors to exclude from the analysis. Filters update the analysis immediately, even
+        <h2 class="noPrint" data-sv="Filtrera analysen">Filter Analysis</h2>
+        <p class="noPrint" data-sv="Välj en eller flera faktorer att utesluta ur analysen. Filtren uppdaterar analysen direkt, även efter att livsmedel redan valts.">Select one or more factors to exclude from the analysis. Filters update the analysis immediately, even
             after foods are already selected.</p>
 
         <!-- Filter checkboxes are generated from TRAITS in foods-data.js -->
@@ -222,14 +222,15 @@
 </body>
 
 <footer>
-    <p>Did you find this webpage useful?</p>
-    <p>Did you find any errors or have ideas for improvement?</p>
-    <p>Email: Monsterardadrys@duck.com</p>
-    <p>Uppsala, Sweden, 2026</p>
-    <p>Pre-beta v1.75 — updated 15 August 2026</p>
+    <p data-sv="Tyckte du att sidan var användbar?">Did you find this webpage useful?</p>
+    <p data-sv="Hittade du fel eller har du idéer på förbättringar?">Did you find any errors or have ideas for improvement?</p>
+    <p data-sv="E-post: Monsterardadrys@duck.com">Email: Monsterardadrys@duck.com</p>
+    <p data-sv="Uppsala, Sverige, 2026">Uppsala, Sweden, 2026</p>
+    <p data-sv="Pre-beta v1.76 — uppdaterad 15 augusti 2026">Pre-beta v1.76 — updated 15 August 2026</p>
 </footer>
 
 <script src="i18n.js"></script>
+<script src="ui-text.js"></script>
 <script src="foods-data.js"></script>
 <script src="articles-data.js"></script>
 <script src="trait-foods.js"></script>

@@ -73,25 +73,26 @@ const SaveLoad = (function () {
         try {
           data = JSON.parse(reader.result);
         } catch (e) {
-          fail("That file is not readable — it is not the kind of file this tool saves.");
+          fail(I18N.t("file.unreadable"));
           return;
         }
         if (!data || data.app !== APP) {
-          fail("That file was not saved by this tool.");
+          fail(I18N.t("file.notOurs"));
           return;
         }
         if (data.tool !== tool) {
-          fail("That file was saved by a different part of this tool" +
-            (data.tool ? " (" + data.tool + ")" : "") + ".");
+          fail(I18N.t("file.wrongTool", {
+            which: data.tool ? " (" + data.tool + ")" : ""
+          }));
           return;
         }
         if (!data.data || typeof data.data !== "object") {
-          fail("That file carries no saved work.");
+          fail(I18N.t("file.empty"));
           return;
         }
         done(data.data);
       };
-      reader.onerror = function () { cleanUp(); fail("The file could not be read."); };
+      reader.onerror = function () { cleanUp(); fail(I18N.t("file.readError")); };
       reader.readAsText(file);
     });
 

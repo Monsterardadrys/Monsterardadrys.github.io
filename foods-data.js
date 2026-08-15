@@ -1316,6 +1316,13 @@ const FILTER_SECTIONS = [
     title: "GI Irritants",
     sv: "GI-irriterande",
     noun: "irritant",
+    /* The Swedish family noun, its plural-with-"types", and which article it
+       takes. Swedish nouns are en- or ett-words and the words around them
+       agree, so a sentence naming a family reads the gender off the family
+       rather than guessing — see the family sentences in ui-text.js. */
+    svNoun: "irriterande ämne",
+    svNounTypes: "irritanttyper",
+    svGender: "ett",
     broad: "irritant",
     group: "GI Irritants"
   },
@@ -1323,6 +1330,9 @@ const FILTER_SECTIONS = [
     title: "FODMAPs",
     sv: "FODMAP",
     noun: "FODMAP",
+    svNoun: "FODMAP",
+    svNounTypes: "FODMAP-typer",
+    svGender: "en",
     broad: "fodmaps",
     group: "FODMAPs"
   },
@@ -1335,6 +1345,9 @@ const FILTER_SECTIONS = [
     title: "Allergens",
     sv: "Allergener",
     noun: "allergen",
+    svNoun: "allergen",
+    svNounTypes: "allergentyper",
+    svGender: "ett",
     group: "Allergens",
     wide: true
   },
@@ -1342,6 +1355,9 @@ const FILTER_SECTIONS = [
     title: "Cross-Reactivity & Delayed Allergy",
     sv: "Korsreaktivitet & fördröjd allergi",
     noun: "cross-reaction",
+    svNoun: "korsreaktion",
+    svNounTypes: "korsreaktionstyper",
+    svGender: "en",
     broad: "cross_reactive",
     group: "Cross-reactivity",
     items: ["alpha_gal"],

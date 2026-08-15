@@ -162,6 +162,77 @@
         return nameOf(a).localeCompare(nameOf(b), current === "sv" ? "sv" : "en");
     }
 
+    /* ---- Sentences the scripts build --------------------------------------
+
+       A page's fixed copy lives in its HTML (see applyDom below). This is for
+       the other half: the lines a script assembles at run time — "3 of 12
+       foods carry no Lactose", "two ingredients carry it".
+
+       Those cannot be translated by swapping words. English builds "one of
+       the five FODMAP types" out of fragments in an order Swedish does not
+       use, so each language owns the whole sentence and fills the slots
+       itself. A value is either a string with {slots} or a function of the
+       same values — a function wherever the sentence has to branch on a
+       count or a gender.
+
+           t("meal.carriedBy", { n: 2 })
+
+       UI lives in ui-text.js as { key: { en, sv } }, side by side for the
+       same reason foods carry both names on one line. */
+    function t(key, vars) {
+        const entry = (typeof UI !== "undefined" ? UI : root.UI || {})[key];
+        if (!entry) return key;
+        const value = (current === "sv" && entry.sv) || entry.en;
+        if (typeof value === "function") return value(vars || {});
+        return String(value).replace(/\{(\w+)\}/g, function (whole, name) {
+            return vars && vars[name] !== undefined ? vars[name] : whole;
+        });
+    }
+
+    /* ---- A page's own copy -------------------------------------------------
+
+       Written in the HTML, in both languages, on the element that carries it:
+
+           <h2 data-sv="Väg en måltid">Weigh up a meal</h2>
+           <input data-sv-placeholder="Filtrera listan...">
+
+       Same rule as everywhere else — both languages in the same place, so
+       nobody edits the English heading without the Swedish one in front of
+       them, and check-i18n.js fails the build on a line that has only one.
+
+       An element whose English contains markup keeps it: data-sv is written
+       as the same markup and set as HTML. These strings come out of the
+       repo's own files, never from a reader, so there is nothing to escape.
+       `data-sv-<attr>` sets an attribute instead — placeholder, aria-label,
+       title, and the rest. */
+    function applyDom(scope) {
+        if (current !== "sv" || typeof document === "undefined") return;
+        const where = scope || document;
+
+        where.querySelectorAll("[data-sv]").forEach(function (el) {
+            const text = el.getAttribute("data-sv");
+            if (!text) return;
+            if (/[<&]/.test(text)) el.innerHTML = text;
+            else el.textContent = text;
+        });
+
+        where.querySelectorAll("*").forEach(function (el) {
+            for (let i = 0; i < el.attributes.length; i++) {
+                const attr = el.attributes[i];
+                if (attr.name.indexOf("data-sv-") !== 0) continue;
+                el.setAttribute(attr.name.slice(8), attr.value);
+            }
+        });
+    }
+
+    if (typeof document !== "undefined") {
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", function () { applyDom(); });
+        } else {
+            applyDom();
+        }
+    }
+
     const I18N = {
         LANGUAGES: LANGUAGES,
         lang: lang,
@@ -172,7 +243,9 @@
         traitLabel: traitLabel,
         nameOf: nameOf,
         bothNames: bothNames,
-        compareNames: compareNames
+        compareNames: compareNames,
+        t: t,
+        applyDom: applyDom
     };
 
     if (typeof module === "object" && module.exports) module.exports = I18N;

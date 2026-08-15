@@ -114,14 +114,10 @@ const Session = (function () {
      What stays here is the behaviour, because the data lives here. */
   function clearFromMenu() {
     if (isEmpty()) {
-      window.alert("There is nothing stored on this device.");
+      window.alert(I18N.t("session.nothingStored"));
       return;
     }
-    if (!window.confirm(
-      "Clear everything this browser has kept — the app's selection, every " +
-      "meal, and the traits picked in Foods without?\n\nThis cannot be undone, " +
-      "and it does not touch any file you have saved."
-    )) return;
+    if (!window.confirm(I18N.t("session.confirmClear"))) return;
     clear();
     window.location.reload();
   }
