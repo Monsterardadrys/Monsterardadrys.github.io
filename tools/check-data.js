@@ -26,8 +26,8 @@ const path = require("path");
 
 const root = path.join(__dirname, "..");
 const source = fs.readFileSync(path.join(root, "foods-data.js"), "utf8");
-const { TRAITS, CATEGORIES, FILTER_SECTIONS } =
-  new Function(source + "; return { TRAITS, CATEGORIES, FILTER_SECTIONS };")();
+const { TRAITS, CATEGORIES, FILTER_SECTIONS, CATEGORY_GROUPS } =
+  new Function(source + "; return { TRAITS, CATEGORIES, FILTER_SECTIONS, CATEGORY_GROUPS };")();
 
 const { NUTRITION } = new Function(
   fs.readFileSync(path.join(root, "nutrition-data.js"), "utf8") + "; return { NUTRITION };")();
@@ -461,6 +461,56 @@ entries(absentList).forEach(function (name) {
   } else if (food.lmv) {
     faults.push(name + " is listed absent but carries lmv \"" + food.lmv + "\"");
   }
+});
+
+/* Both languages, or neither. i18n.js explains why they live side by side;
+   this is the half that makes it hold. A food added in English alone stops the
+   build, exactly like a food with no portion — because the alternative is a
+   Swedish reader meeting an English name and no one finding out.
+
+   English is the source of truth, so a Swedish string with no English one is
+   the anomaly and is reported the other way round. */
+const missingSv = { food: [], category: [], trait: [] };
+
+CATEGORIES.forEach(function (c) {
+  if (!c.sv) missingSv.category.push(c.label);
+});
+
+foods.forEach(function (food) {
+  if (!food.sv) missingSv.food.push(food.name);
+});
+
+Object.keys(TRAITS).forEach(function (id) {
+  const t = TRAITS[id];
+  if (!t.sv || !t.sv.label) { missingSv.trait.push(id); return; }
+  const en = (t.analysis || []).length;
+  const sv = (t.sv.analysis || []).length;
+  if (en !== sv) {
+    faults.push("trait " + id + " has " + en + " English paragraph(s) and " + sv +
+      " Swedish — the two say different amounts, which is how a translation " +
+      "stops arguing the same point");
+  }
+  if (t.evidence && !(t.sv.evidence && t.sv.evidence.detail)) {
+    faults.push("trait " + id + " has an evidence note in English and none in Swedish");
+  }
+});
+
+/* The two heading tables. Small enough to forget about, visible enough that a
+   reader would notice: a Swedish page whose section headings are in English
+   is worse than one that never offered Swedish. */
+CATEGORY_GROUPS.forEach(function (g) {
+  if (!g.sv) faults.push('category group "' + g.title + '" has no Swedish title');
+});
+
+FILTER_SECTIONS.forEach(function (s) {
+  if (!s.sv) faults.push('filter section "' + s.title + '" has no Swedish title');
+});
+
+[["food", "foods"], ["category", "categories"], ["trait", "traits"]].forEach(function (pair) {
+  const list = missingSv[pair[0]];
+  if (!list.length) return;
+  faults.push(list.length + " " + pair[1] + " have no Swedish name: " +
+    list.slice(0, 10).join(", ") + (list.length > 10 ? " and " + (list.length - 10) + " more" : ""));
 });
 
 /* A food in neither Swedish list used to mean one thing: nobody had looked at

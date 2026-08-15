@@ -270,6 +270,48 @@ header.header--hidden {
     padding: 0 14px;
 }
 
+/* The language switch, at the top of the drawer. Flag plus the language's
+   own name — a flag alone is a guess, and "Svenska" written in English
+   would be the wrong word for the person who needs it. */
+.langSwitch {
+    display: flex;
+    gap: 8px;
+    padding: 0 14px;
+    margin: 0 0 16px;
+}
+
+.langBtn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    padding: 7px 10px;
+    border: 1px solid rgba(246, 241, 230, 0.25);
+    border-radius: 6px;
+    background: transparent;
+    color: rgba(246, 241, 230, 0.7);
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.langBtn:hover {
+    border-color: rgba(246, 241, 230, 0.5);
+    color: #f6f1e6;
+}
+
+.langBtn--on {
+    border-color: rgba(246, 241, 230, 0.7);
+    background: rgba(246, 241, 230, 0.12);
+    color: #f6f1e6;
+    font-weight: 600;
+}
+
+.langFlag {
+    font-size: 17px;
+    line-height: 1;
+}
+
 .navDrawer .backToMain {
     margin: 0 0 10px;
 }

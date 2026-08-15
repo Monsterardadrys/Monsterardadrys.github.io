@@ -24,9 +24,10 @@
   }
 
   function joinLabels(traitIds) {
-    const labels = traitIds.map(function (id) { return TRAITS[id].label; });
+    const labels = traitIds.map(function (id) { return I18N.traitLabel(TRAITS[id]); });
     if (labels.length === 1) return labels[0];
-    return labels.slice(0, -1).join(", ") + " or " + labels[labels.length - 1];
+    const or = I18N.lang() === "sv" ? " eller " : " or ";
+    return labels.slice(0, -1).join(", ") + or + labels[labels.length - 1];
   }
 
   function render() {
@@ -67,7 +68,7 @@
       ul.className = "traitFoodsList";
       group.names.forEach(function (name) {
         const li = document.createElement("li");
-        li.textContent = name;
+        li.textContent = I18N.nameOf(name);
         ul.appendChild(li);
       });
       results.appendChild(ul);

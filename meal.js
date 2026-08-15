@@ -43,7 +43,7 @@
   const FOODS = {};
   CATEGORIES.forEach(function (category) {
     category.foods.forEach(function (food) {
-      FOODS[food.name] = { name: food.name, portion: food.portion, traits: food.traits, category: category.label };
+      FOODS[food.name] = { name: food.name, sv: food.sv, portion: food.portion, traits: food.traits, category: I18N.pick(category, "label") };
     });
   });
 
@@ -104,7 +104,7 @@
     const withArticle = members.filter(function (id) { return TRAITS[id].articleId; })[0];
 
     FAMILIES.push({
-      title: section.title,
+      title: I18N.pick(section, "title"),
       noun: section.noun || section.title.toLowerCase(),
       broad: section.broad || null,
       types: types,
@@ -512,7 +512,7 @@
       .filter(function (id) { return TRAITS[id].dose && !IN_GRAMS[id]; })
       .map(function (id) {
         return {
-          label: TRAITS[id].label,
+          label: I18N.traitLabel(TRAITS[id]),
           text: (found[id].count === 1
             ? "one ingredient carries it, " + helpingPhrase(found[id].servings)
             : countWord(found[id].count) + " ingredients carry it, " +
@@ -569,12 +569,12 @@
     const present = family.types
       .filter(function (id) { return countFor(id) > 0; })
       .map(function (id) {
-        return { label: TRAITS[id].label, count: countFor(id) };
+        return { label: I18N.traitLabel(TRAITS[id]), count: countFor(id) };
       })
       .sort(function (a, b) { return b.count - a.count || a.label.localeCompare(b.label); });
 
     const absent = family.types.filter(function (id) { return countFor(id) === 0; })
-      .map(function (id) { return TRAITS[id].label; });
+      .map(function (id) { return I18N.traitLabel(TRAITS[id]); });
 
     // The umbrella can sit on a food whose mechanism has no subtype of its
     // own — an irritant that is neither capsaicin nor caffeine, say.
@@ -641,7 +641,7 @@
     else if (count === totalItems) where = "in all " + totalItems + " ingredients.";
     else where = "in " + count + " of the " + totalItems + " ingredients.";
     return {
-      title: TRAITS[traitId].label,
+      title: I18N.traitLabel(TRAITS[traitId]),
       text: where,
       articleId: TRAITS[traitId].articleId || null
     };
@@ -735,7 +735,7 @@
 
           const name = document.createElement("span");
           name.className = "mealItemName";
-          name.textContent = item.food;
+          name.textContent = I18N.nameOf(item.food);
           li.appendChild(name);
 
           const grams = document.createElement("input");
@@ -835,7 +835,7 @@
     const ingredientLine = document.createElement("p");
     ingredientLine.className = "mealIngredients printOnly";
     ingredientLine.textContent = items.map(function (item) {
-      return item.food + " " + item.grams + "g";
+      return I18N.nameOf(item.food) + " " + item.grams + "g";
     }).join(" · ");
     section.appendChild(ingredientLine);
 
@@ -902,7 +902,7 @@
         coverage.className = "mealCoverage";
         coverage.textContent = n.uncovered.length
           ? "From " + n.covered.length + " of the " + items.length + " foods. " +
-            joinList(n.uncovered) + (n.uncovered.length === 1 ? " has" : " have") +
+            joinList(n.uncovered.map(I18N.nameOf)) + (n.uncovered.length === 1 ? " has" : " have") +
             " no figures on file, so nothing above counts " +
             (n.uncovered.length === 1 ? "it" : "them") + " — the real totals are higher."
           : "From all " + items.length + " foods.";
@@ -1174,7 +1174,7 @@
         const note = document.createElement("p");
         note.className = "mealCoverage";
         note.textContent = "Some foods have no figures on file, so those columns are short: " +
-          joinList(short.reduce(function (all, t) { return all.concat(t.uncovered); }, [])) + ".";
+          joinList(short.reduce(function (all, t) { return all.concat(t.uncovered.map(I18N.nameOf)); }, [])) + ".";
         section.appendChild(note);
       }
     } else {
@@ -1193,7 +1193,7 @@
       section.appendChild(h3);
       section.appendChild(comparisonTable(headings, helpingIds.map(function (id) {
         return {
-          label: TRAITS[id].label,
+          label: I18N.traitLabel(TRAITS[id]),
           cells: tallies.map(function (t) { return t[id] ? fmt(t[id].servings) : "—"; })
         };
       })));
@@ -1232,7 +1232,7 @@
       section.appendChild(h3);
       section.appendChild(comparisonTable(headings, presentIds.map(function (id) {
         return {
-          label: TRAITS[id].label,
+          label: I18N.traitLabel(TRAITS[id]),
           cells: filled.map(function (_, i) {
             const n = modifierIsIdle(id, tallies[i]) ? 0 : countIn(i, id);
             return n ? "in " + ingredients(n) : "—";
