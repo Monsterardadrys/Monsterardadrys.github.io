@@ -87,20 +87,20 @@ document.addEventListener("DOMContentLoaded", function () {
     demoHint.hidden = true;
 
     if (checked.length < 2) {
-      demoResultText.textContent = "Select at least two foods to see what they share.";
+      demoResultText.textContent = I18N.t("demo.pickTwo");
       return;
     }
 
     const topTraits = getRankedTraits(checked);
 
     if (topTraits.length === 0) {
-      demoResultText.textContent = "These foods don't share a tracked trait — try a different combination.";
+      demoResultText.textContent = I18N.t("demo.nothingShared");
       return;
     }
 
     demoHint.hidden = false;
 
-    demoResultText.textContent = "Top shared traits among these " + checked.length + " foods:";
+    demoResultText.textContent = I18N.t("demo.topShared", { n: checked.length });
     topTraits.forEach(function (t) {
       const li = document.createElement("li");
       const label = TRAITS[t.traitId] ? I18N.traitLabel(TRAITS[t.traitId]) : t.traitId;

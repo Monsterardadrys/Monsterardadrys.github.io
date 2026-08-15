@@ -69,7 +69,7 @@
     chosenText.innerHTML = "";
 
     if (checkboxes.length === 0) {
-      chosenText.textContent = "Click on a category to show lists of foods";
+      chosenText.textContent = I18N.t("app.pickACategory");
       return;
     }
 
@@ -81,7 +81,7 @@
       const removeBtn = document.createElement("button");
       removeBtn.type = "button";
       removeBtn.className = "chosenFoodRemove";
-      removeBtn.setAttribute("aria-label", "Remove " + I18N.nameOf(checkbox.value));
+      removeBtn.setAttribute("aria-label", I18N.t("app.remove", { food: I18N.nameOf(checkbox.value) }));
       removeBtn.textContent = "×";
       removeBtn.addEventListener("click", function () {
         checkbox.checked = false;
@@ -138,7 +138,7 @@
   }
 
   function foodCount(n) {
-    return n + (n === 1 ? " food" : " foods");
+    return I18N.t("app.foodCountN", { n: n });
   }
 
   // `showingPercentages` is false when every trait has been filtered out, so
@@ -147,14 +147,14 @@
     if (untracked === 0) return "";
     if (untracked === total) {
       return total === 1
-        ? "This food has no tracked traits yet, so there's nothing to compare."
-        : "None of these " + total + " foods have tracked traits yet, so there's nothing to compare.";
+        ? I18N.t("app.untrackedOneFood")
+        : I18N.t("app.untrackedAllFoods", { total: total });
     }
-    const base = untracked + " of these " + foodCount(total) + " have no tracked traits yet.";
-    return showingPercentages ? base + " They still count in the percentages above." : base;
+    const base = I18N.t("app.untrackedSome", { n: untracked, count: foodCount(total) });
+    return showingPercentages ? base + I18N.t("app.untrackedCounted") : base;
   }
 
-  const UNTRACKED_LABEL = "No tracked traits";
+  const UNTRACKED_LABEL = I18N.t("app.noTrackedTraits");
 
   // Weaves an untracked-foods row into the ranked traits so every percentage
   // in a list adds up against the same denominator. It's a display row only —
@@ -219,7 +219,7 @@
     }
 
     if (total === 0) {
-      summaryText.textContent = "Select foods to see a summary.";
+      summaryText.textContent = I18N.t("app.selectForSummary");
       summaryTraitList.innerHTML = "";
       summaryToggle.style.display = "none";
       setNote("");
@@ -227,8 +227,8 @@
     }
     if (allTraits.length === 0) {
       summaryText.textContent = untracked === total
-        ? "You have chosen " + foodCount(total) + " from the list."
-        : "You have chosen " + foodCount(total) + " from the list, but they don't share a tracked trait right now (or every relevant filter is excluded).";
+        ? I18N.t("app.chosenPlain", { count: foodCount(total) })
+        : I18N.t("app.chosenNoShared", { count: foodCount(total) });
       summaryTraitList.innerHTML = "";
       summaryToggle.style.display = "none";
       setNote(untrackedNoteText(untracked, total, false));
@@ -237,11 +237,9 @@
 
     // The count now lives in the list as its own row, so the note only has to
     // explain what it means rather than repeat the number.
-    setNote(untracked > 0
-      ? "Foods with no tracked traits still count toward every percentage."
-      : "");
+    setNote(untracked > 0 ? I18N.t("app.untrackedStillCount") : "");
 
-    summaryText.textContent = "You have chosen " + foodCount(total) + " from the list. Shared traits:";
+    summaryText.textContent = I18N.t("app.chosenShared", { count: foodCount(total) });
     summaryTraitList.innerHTML = "";
     summaryTraitList.classList.remove("expanded");
     const rows = withUntrackedRow(allTraits, untracked, total);
@@ -258,7 +256,7 @@
     const extraCount = rows.length - visibleCount;
     if (extraCount > 0) {
       summaryToggle.style.display = "inline-block";
-      summaryToggle.textContent = "Show " + extraCount + " more ▾";
+      summaryToggle.textContent = I18N.t("app.showNMore", { n: extraCount });
       summaryToggle.dataset.expanded = "false";
     } else {
       summaryToggle.style.display = "none";
@@ -273,9 +271,9 @@
     btn.dataset.expanded = String(!expanded);
     if (expanded) {
       const extraCount = summaryTraitList.querySelectorAll(".extraTrait").length;
-      btn.textContent = "Show " + extraCount + " more ▾";
+      btn.textContent = I18N.t("app.showNMore", { n: extraCount });
     } else {
-      btn.textContent = "Show less ▴";
+      btn.textContent = I18N.t("app.showLess");
     }
   });
 
@@ -298,7 +296,7 @@
       popupActiveTraits = [];
       const p = document.createElement("p");
       p.className = "popupText";
-      p.textContent = "Select foods to see a deeper summary and analysis of the foods.";
+      p.textContent = I18N.t("app.selectForAnalysis");
       popupTextContainer.appendChild(p);
       return;
     }
@@ -321,7 +319,7 @@
 
     const foodsIntro = document.createElement("p");
     foodsIntro.className = "popupFoodsIntro noPrint";
-    foodsIntro.textContent = "Foods in this analysis — click one to leave it out, click again to bring it back:";
+    foodsIntro.textContent = I18N.t("app.foodsInAnalysis");
     popupTextContainer.appendChild(foodsIntro);
 
     const chipRow = document.createElement("div");
@@ -350,7 +348,7 @@
     if (activeFoods.length === 0) {
       const p = document.createElement("p");
       p.className = "popupText";
-      p.textContent = "Every food above is left out of the analysis right now — click one to bring it back.";
+      p.textContent = I18N.t("app.allExcluded");
       popupTextContainer.appendChild(p);
       return;
     }
@@ -393,8 +391,9 @@
 
         const p = document.createElement("p");
         p.className = "popupText";
-        p.textContent = untracked + " of these " + foodCount(activeFoods.length) +
-          " carry no trait this tool tracks. They still count toward every percentage above.";
+        p.textContent = I18N.t("app.untrackedNote", {
+          n: untracked, total: foodCount(activeFoods.length)
+        });
         popupTextContainer.appendChild(p);
         return;
       }
@@ -412,8 +411,8 @@
       const removeBtn = document.createElement("button");
       removeBtn.type = "button";
       removeBtn.className = "popupTraitRemove noPrint";
-      removeBtn.textContent = "Exclude";
-      removeBtn.setAttribute("aria-label", "Exclude " + I18N.traitLabel(trait) + " from the analysis");
+      removeBtn.textContent = I18N.t("app.exclude");
+      removeBtn.setAttribute("aria-label", I18N.t("app.excludeAria", { trait: I18N.traitLabel(trait) }));
       removeBtn.addEventListener("click", function (e) {
         e.stopPropagation();
         const filterCheckbox = filterContainer.querySelector('input[value="' + item.traitId + '"]');
@@ -430,7 +429,7 @@
       const analysis = I18N.pickList(trait, "analysis");
       const paragraphs = analysis.length
         ? analysis
-        : ["The most common shared trait among these foods is " + I18N.traitLabel(trait) + "."];
+        : [I18N.t("app.fallbackAnalysis", { trait: I18N.traitLabel(trait) })];
       paragraphs.forEach(function (text, i) {
         const p = document.createElement("p");
         if (i === 0) p.className = "popupText";
@@ -445,7 +444,7 @@
       if (evidence) {
         const evHeading = document.createElement("p");
         evHeading.className = "evidenceHeading";
-        evHeading.textContent = "How well supported is this?";
+        evHeading.textContent = I18N.t("app.evidenceHeading");
         popupTextContainer.appendChild(evHeading);
 
         const ev = document.createElement("p");
@@ -467,7 +466,7 @@
         link.href = "articles.html#" + trait.articleId;
         link.target = "_blank";
         link.rel = "noopener";
-        link.textContent = "Read the full article →";
+        link.textContent = I18N.t("app.readArticle");
         link.addEventListener("click", function (e) { e.stopPropagation(); });
         p.appendChild(link);
         popupTextContainer.appendChild(p);
@@ -476,7 +475,7 @@
         printNote.className = "printOnly";
         const articleTitle = (typeof ARTICLES !== "undefined" && ARTICLES[trait.articleId])
           ? ARTICLES[trait.articleId].title : I18N.traitLabel(trait);
-        printNote.textContent = "See \"" + articleTitle + "\" below.";
+        printNote.textContent = I18N.t("app.seeBelow", { title: articleTitle });
         popupTextContainer.appendChild(printNote);
       }
     });
@@ -488,10 +487,9 @@
       const note = document.createElement("p");
       note.className = "popupMacroNote";
       const joined = macroNotes.length > 1
-        ? macroNotes.slice(0, -1).join(", ") + " and " + macroNotes[macroNotes.length - 1]
+        ? macroNotes.slice(0, -1).join(", ") + I18N.t("count.and") + macroNotes[macroNotes.length - 1]
         : macroNotes[0];
-      note.textContent = "Note: this selection is also high in " + joined +
-        " (over 90% of foods) — these rarely cause symptoms directly but can worsen other GI issues.";
+      note.textContent = I18N.t("app.macroNote", { list: joined });
       popupTextContainer.appendChild(note);
     }
 
@@ -500,18 +498,14 @@
     // where the distinction between a pattern and a cause matters most.
     const caveat = document.createElement("p");
     caveat.className = "popupCaveat";
-    caveat.textContent = "This tool shows what the chosen foods have in common — not what is " +
-      "causing the symptoms. A pattern is a hypothesis to test through structured elimination " +
-      "and reintroduction, not a finding.";
+    caveat.textContent = I18N.t("app.caveat");
     popupTextContainer.appendChild(caveat);
 
     // The amount-based traits are measured at one typical serving, so a larger
     // helping is invisible here. Says so where it is read, not only on About.
     const portionCaveat = document.createElement("p");
     portionCaveat.className = "popupCaveat";
-    portionCaveat.textContent = "Amounts are measured at one typical serving of each food. " +
-      "If you eat noticeably more than that, a trait that does not appear here may still " +
-      "apply to you.";
+    portionCaveat.textContent = I18N.t("app.portionCaveat");
     popupTextContainer.appendChild(portionCaveat);
   }
 
@@ -542,7 +536,10 @@
     const foods = popupActiveFoods.map(function (f) { return I18N.nameOf(f.name); })
       .sort(function (a, b) { return a.localeCompare(b, I18N.lang()); });
     const foodsList = document.getElementById("printFoodsList");
-    foodsList.innerHTML = "<h2>Foods in this analysis (" + foods.length + ")</h2>";
+    foodsList.innerHTML = "";
+    const foodsHeading = document.createElement("h2");
+    foodsHeading.textContent = I18N.t("app.printFoodsHeading", { n: foods.length });
+    foodsList.appendChild(foodsHeading);
     const ul = document.createElement("ul");
     ul.className = "printFoodsUl";
     foods.forEach(function (name) {

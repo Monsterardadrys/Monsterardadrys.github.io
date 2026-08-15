@@ -43,14 +43,14 @@
 <body>
     <header>
         <div class="headerBar">
-            <h1>Meal builder</h1>
-            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+            <h1 data-sv="Måltidsbyggare">Meal builder</h1>
+            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" data-sv-aria-label="Öppna menyn" aria-expanded="false" aria-controls="navDrawer">
                 <span></span><span></span><span></span>
             </button>
         </div>
         <nav class="navDrawer" id="navDrawer" aria-hidden="true">
-            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu">&times;</button>
-            <a class="backToMain" href="index.html">Home</a>
+            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu" data-sv-aria-label="Stäng menyn">&times;</button>
+            <a class="backToMain" href="index.html"  data-sv="Hem">Home</a>
             <!-- Built by nav.js from NAV_LINKS, so no page can carry a
                  different menu from its neighbours. -->
             <ul></ul>
@@ -61,9 +61,9 @@
     <div class="disclaimerBar" data-lock="mealBuilder mealPickerBox mealActions mealResults">
         <label class="disclaimerCheck">
             <input type="checkbox" id="disclaimerCheckbox">
-            I have read and understood the disclaimer
+            <span data-sv="Jag har läst och förstått ansvarsfriskrivningen">I have read and understood the disclaimer</span>
         </label>
-        <a href="#disclaimerPopup" class="disclaimerBtn">Read disclaimer</a>
+        <a href="#disclaimerPopup" class="disclaimerBtn" data-sv="Läs ansvarsfriskrivningen">Read disclaimer</a>
     </div>
 
     <div class="neck" id="neck">
@@ -71,62 +71,62 @@
         <!-- Same text as app.html and without.html. Change all three together. -->
         <div class="disclaimerPopup" id="disclaimerPopup">
             <div class="disclaimerText">
-                <h2>Disclaimer</h2>
+                <h2 data-sv="Ansvarsfriskrivning">Disclaimer</h2>
 
-                <h3>What this tool does</h3>
+                <h3 data-sv="Vad verktyget gör">What this tool does</h3>
                 <ul>
-                    <li>It shows what a set of foods have in common.</li>
-                    <li>It lists which foods in its database carry a given trait.</li>
+                    <li data-sv="Det visar vad en uppsättning livsmedel har gemensamt.">It shows what a set of foods have in common.</li>
+                    <li data-sv="Det listar vilka livsmedel i databasen som bär en viss egenskap.">It lists which foods in its database carry a given trait.</li>
                 </ul>
 
-                <h3>What it does not do</h3>
+                <h3 data-sv="Vad det inte gör">What it does not do</h3>
                 <ul>
-                    <li>It does not diagnose anything.</li>
-                    <li>It does not tell you what to eat or what to avoid. <em>No list here is a diet.</em></li>
-                    <li>A food carrying a trait does not mean you react to it. Most people react to none of them.</li>
-                    <li>A food <em>not</em> carrying a trait does not mean it is safe for you.</li>
+                    <li data-sv="Det ställer inga diagnoser.">It does not diagnose anything.</li>
+                    <li data-sv="Det talar inte om vad du ska äta eller undvika. &lt;em&gt;Ingen lista här är en diet.&lt;/em&gt;">It does not tell you what to eat or what to avoid. <em>No list here is a diet.</em></li>
+                    <li data-sv="Att ett livsmedel bär en egenskap betyder inte att du reagerar på det. De flesta reagerar på ingen av dem.">A food carrying a trait does not mean you react to it. Most people react to none of them.</li>
+                    <li data-sv="Att ett livsmedel &lt;em&gt;inte&lt;/em&gt; bär en egenskap betyder inte att det är säkert för dig.">A food <em>not</em> carrying a trait does not mean it is safe for you.</li>
                 </ul>
 
-                <h3>Before you change what you eat</h3>
+                <h3 data-sv="Innan du ändrar vad du äter">Before you change what you eat</h3>
                 <ul>
-                    <li>Talk to a doctor or dietitian first. Cutting foods out on your own can hide a real
+                    <li data-sv="Tala med en läkare eller dietist först. Att utesluta livsmedel på egen hand kan dölja en verklig diagnos, och långvarigt undvikande kan göra kosten fattig på sådant du behöver.">Talk to a doctor or dietitian first. Cutting foods out on your own can hide a real
                         diagnosis, and long avoidance can leave your diet short of things you need.</li>
-                    <li>This is a tool for health care professionals, and it is <em>NOT</em> meant to
+                    <li data-sv="Det här är ett verktyg för vårdpersonal, och det är &lt;em&gt;INTE&lt;/em&gt; menat att ersätta deras diagnos och råd.">This is a tool for health care professionals, and it is <em>NOT</em> meant to
                         replace their diagnosis and advice.</li>
                 </ul>
 
-                <h3>Still being built</h3>
+                <h3 data-sv="Fortfarande under uppbyggnad">Still being built</h3>
                 <ul>
-                    <li>This website is under construction — information may be inaccurate.</li>
-                    <li>By continuing you agree that the author cannot be held responsible for any health
+                    <li data-sv="Webbplatsen är under uppbyggnad — informationen kan vara felaktig.">This website is under construction — information may be inaccurate.</li>
+                    <li data-sv="Genom att fortsätta godtar du att upphovspersonen inte kan hållas ansvarig för hälsoproblem som uppstår av användningen av denna information.">By continuing you agree that the author cannot be held responsible for any health
                         issues arising from use of this information.</li>
                 </ul>
 
-                <p><em>Click anywhere to close.</em></p>
+                <p data-sv="&lt;em&gt;Klicka var som helst för att stänga.&lt;/em&gt;"><em>Click anywhere to close.</em></p>
             </div>
         </div>
 
         <div class="instructionsBox">
-            <h2>Build a meal and see what it is loaded with.</h2>
+            <h2 data-sv="Bygg en måltid och se vad den är tungt lastad med.">Build a meal and see what it is loaded with.</h2>
             <ol class="stepsList">
                 <li>
-                    <span class="stepTitle">Tap foods to add them.</span>
-                    <span class="stepDetail">Each one arrives with its standard serving, which you can
+                    <span class="stepTitle" data-sv="Tryck på livsmedel för att lägga till dem.">Tap foods to add them.</span>
+                    <span class="stepDetail" data-sv="Varje livsmedel kommer med sin standardportion, som du kan ändra. Bara livsmedel med näringssiffror på fil erbjuds — en måltid redovisas i gram, och ett livsmedel utan siffror skulle se ut som om det räknades.">Each one arrives with its standard serving, which you can
                         change. Only foods with nutrient figures on file are offered — a meal is reported
                         in grams, and a food with no numbers would look like it counted.</span>
                 </li>
                 <li>
-                    <span class="stepTitle">Add more meals if you want to compare.</span>
-                    <span class="stepDetail">A day, a week, or the two meals that behaved differently.</span>
+                    <span class="stepTitle" data-sv="Lägg till fler måltider om du vill jämföra.">Add more meals if you want to compare.</span>
+                    <span class="stepDetail" data-sv="En dag, en vecka, eller de två måltider som betedde sig olika.">A day, a week, or the two meals that behaved differently.</span>
                 </li>
                 <li>
-                    <span class="stepTitle">Read what the meal carries.</span>
-                    <span class="stepDetail">Nutrients come out in grams, with a note when
+                    <span class="stepTitle" data-sv="Läs vad måltiden bär.">Read what the meal carries.</span>
+                    <span class="stepDetail" data-sv="Näringsämnen redovisas i gram, med en notering när något kommer i en mängd magen brukar märka. Egenskaper listas som närvarande — och för FODMAP avgör vikten om en ingrediens räknas.">Nutrients come out in grams, with a note when
                         something arrives in an amount the gut tends to notice. Traits are listed as
                         present — and for FODMAPs, the weight decides whether an ingredient counts.</span>
                 </li>
             </ol>
-            <p class="noSaveWarning"><strong>Kept in this browser, on this device.</strong> Your work
+            <p class="noSaveWarning" data-sv="&lt;strong&gt;Sparas i den här webbläsaren, på den här enheten.&lt;/strong&gt; Ditt arbete ligger kvar mellan besöken så att du kan röra dig mellan de tre verktygen utan att förlora det. Inget skickas någonstans. &lt;em&gt;Rensa lokal data&lt;/em&gt; i menyn tar bort det; &lt;em&gt;Spara till fil&lt;/em&gt; behåller en kopia där du själv väljer."><strong>Kept in this browser, on this device.</strong> Your work
                 stays here between visits so you can move between the three tools without losing it.
                 Nothing is sent anywhere. <em>Clear local data</em> in the menu removes it; <em>Save to
                 file</em> keeps a copy you choose where to put.</p>
@@ -134,10 +134,10 @@
     </div>
 
     <div id="printHeader" class="printOnly">
-        <h1>Food Intolerance Guide — Meal analysis</h1>
-        <p>Generated from foodintoleranceguide (Uppsala, Sweden) — a triage aid for exploring possible GI
+        <h1 data-sv="Guide till matintolerans — Måltidsanalys">Food Intolerance Guide — Meal analysis</h1>
+        <p data-sv="Genererad från foodintoleranceguide (Uppsala, Sverige) — ett triagestöd för att utforska möjliga magreaktioner på livsmedel, avsett att användas av vårdpersonal.">Generated from foodintoleranceguide (Uppsala, Sweden) — a triage aid for exploring possible GI
             reactions to foods, intended for use by health care professionals.</p>
-        <p><em>This is NOT a diagnostic tool and does not replace the diagnostics and advice of a health care
+        <p data-sv="&lt;em&gt;Det här är INTE ett diagnostiskt verktyg och ersätter inte en vårdpersons diagnos och råd. Upphovspersonen kan inte hållas ansvarig för hälsoproblem som uppstår av användningen av denna information.&lt;/em&gt;"><em>This is NOT a diagnostic tool and does not replace the diagnostics and advice of a health care
             professional. The author cannot be held responsible for any health issues arising from use of
             this information.</em></p>
         <p class="printStamp" id="printStamp"></p>
@@ -148,22 +148,22 @@
     <!-- The same category boxes and search the app uses — see food-picker.js.
          Adds to whichever meal is chosen above. -->
     <div class="mealPickerBox noPrint" id="mealPickerBox">
-        <h2>Add a food</h2>
+        <h2 data-sv="Lägg till ett livsmedel">Add a food</h2>
         <div class="searchContainer" id="searchContainer">
-            <input type="text" id="search" placeholder="Filter food list...">
-            <button class="showAllButton" id="showAllButton" type="button">Show all</button>
+            <input type="text" id="search" placeholder="Filter food list..." data-sv-placeholder="Filtrera livsmedelslistan...">
+            <button class="showAllButton" id="showAllButton" type="button" data-sv="Visa alla">Show all</button>
         </div>
-        <p class="mealPickerHint">Tap a food to add it to <strong id="mealPickerTarget">Meal 1</strong>
-            with its standard serving. Change the weight afterwards if you like.</p>
+        <p class="mealPickerHint"><span data-sv="Tryck på ett livsmedel för att lägga till det i">Tap a food to add it to</span> <strong id="mealPickerTarget" data-sv="Måltid 1">Meal 1</strong>
+            <span data-sv="med sin standardportion. Ändra vikten efteråt om du vill.">with its standard serving. Change the weight afterwards if you like.</span></p>
         <div class="topSection" id="foodPicker"></div>
     </div>
 
     <div class="mealActions noPrint" id="mealActions">
-        <button class="button2" id="addMealButton" type="button">Add meal</button>
-        <button class="button2" id="saveMealsButton" type="button">Save to file</button>
-        <button class="button2" id="loadMealsButton" type="button">Load from file</button>
-        <button class="button2" id="printMealsButton" type="button">Print analysis</button>
-        <button class="button2" id="clearMealsButton" type="button">Clear all</button>
+        <button class="button2" id="addMealButton" type="button" data-sv="Lägg till måltid">Add meal</button>
+        <button class="button2" id="saveMealsButton" type="button" data-sv="Spara till fil">Save to file</button>
+        <button class="button2" id="loadMealsButton" type="button" data-sv="Läs in från fil">Load from file</button>
+        <button class="button2" id="printMealsButton" type="button" data-sv="Skriv ut analysen">Print analysis</button>
+        <button class="button2" id="clearMealsButton" type="button" data-sv="Rensa allt">Clear all</button>
     </div>
 
     <p class="mealError" id="mealError" hidden></p>
@@ -180,14 +180,15 @@
 </body>
 
 <footer>
-    <p>Did you find this webpage useful?</p>
-    <p>Did you find any errors or have ideas for improvement?</p>
-    <p>Email: Monsterardadrys@duck.com</p>
-    <p>Uppsala, Sweden, 2026</p>
-    <p>Pre-beta v1.75 — updated 15 August 2026</p>
+    <p data-sv="Tyckte du att sidan var användbar?">Did you find this webpage useful?</p>
+    <p data-sv="Hittade du fel eller har du idéer på förbättringar?">Did you find any errors or have ideas for improvement?</p>
+    <p data-sv="E-post: Monsterardadrys@duck.com">Email: Monsterardadrys@duck.com</p>
+    <p data-sv="Uppsala, Sverige, 2026">Uppsala, Sweden, 2026</p>
+    <p data-sv="Pre-beta v1.77 — uppdaterad 15 augusti 2026">Pre-beta v1.77 — updated 15 August 2026</p>
 </footer>
 
 <script src="i18n.js"></script>
+<script src="ui-text.js"></script>
 <script src="foods-data.js"></script>
 <script src="nutrition-data.js"></script>
 <script src="nutrition-manual.js"></script>

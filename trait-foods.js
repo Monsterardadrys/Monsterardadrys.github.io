@@ -58,10 +58,7 @@ const TraitFoods = (function () {
     return ids;
   }
 
-  function plural(n) {
-    if (I18N.lang() === "sv") return n === 1 ? "1 livsmedel" : n + " livsmedel";
-    return n === 1 ? "1 food" : n + " foods";
-  }
+  function plural(n) { return I18N.t("count.foods", { n: n }); }
 
   // One trait's lists, as a <details> so a long article stays scannable.
   function buildTraitBlock(traitId, openByDefault) {
@@ -73,7 +70,9 @@ const TraitFoods = (function () {
     if (openByDefault) details.open = true;
 
     const summary = document.createElement("summary");
-    summary.textContent = I18N.traitLabel(TRAITS[traitId]) + " — " + plural(countFor(traitId));
+    summary.textContent = I18N.t("traitFoods.summary", {
+      trait: I18N.traitLabel(TRAITS[traitId]), count: plural(countFor(traitId))
+    });
     details.appendChild(summary);
 
     groups.forEach(function (group) {
@@ -109,13 +108,12 @@ const TraitFoods = (function () {
     wrap.className = "traitFoodsSection";
 
     const h2 = document.createElement("h2");
-    h2.textContent = "Which foods carry this?";
+    h2.textContent = I18N.t("traitFoods.heading");
     wrap.appendChild(h2);
 
     const intro = document.createElement("p");
-    intro.textContent = traitIds.length === 1
-      ? "Every food in this database tagged with this trait."
-      : "Every food in this database tagged with each of these traits.";
+    intro.textContent = I18N.t(traitIds.length === 1
+      ? "traitFoods.introOne" : "traitFoods.introMany");
     wrap.appendChild(intro);
 
     // A single trait is worth showing straight away; fifteen are not.
@@ -150,8 +148,9 @@ const TraitFoods = (function () {
     traitIds.forEach(function (traitId) {
       const h3 = document.createElement("h3");
       // The label verbatim — lowercasing it would wreck DAO, GOS and FODMAPs.
-      h3.textContent = "Foods tagged " + I18N.traitLabel(TRAITS[traitId]) +
-        " (" + plural(countFor(traitId)) + ")";
+      h3.textContent = I18N.t("traitFoods.tagged", {
+        trait: I18N.traitLabel(TRAITS[traitId]), count: plural(countFor(traitId))
+      });
       container.appendChild(h3);
 
       const ul = document.createElement("ul");
@@ -168,8 +167,7 @@ const TraitFoods = (function () {
 
     const note = document.createElement("p");
     note.className = "traitFoodsNote";
-    note.textContent = "These lists are the foods in this database carrying the tag, measured " +
-      "at one standard serving each. They are not a list of foods to avoid.";
+    note.textContent = I18N.t("traitFoods.note");
     container.appendChild(note);
     return true;
   }

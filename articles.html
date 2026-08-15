@@ -36,14 +36,14 @@
 <body>
     <header>
         <div class="headerBar">
-            <h1>Articles</h1>
-            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+            <h1 data-sv="Artiklar">Articles</h1>
+            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" data-sv-aria-label="Öppna menyn" aria-expanded="false" aria-controls="navDrawer">
                 <span></span><span></span><span></span>
             </button>
         </div>
         <nav class="navDrawer" id="navDrawer" aria-hidden="true">
-            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu">&times;</button>
-            <a class="backToMain" href="index.html">Home</a>
+            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu" data-sv-aria-label="Stäng menyn">&times;</button>
+            <a class="backToMain" href="index.html" data-sv="Hem">Home</a>
             <!-- Built by nav.js from NAV_LINKS, so no page can carry a
                  different menu from its neighbours. -->
             <ul></ul>
@@ -52,13 +52,13 @@
     </header>
 
     <div class="neck">
-        <p>Deep dives into the traits tracked on the main checklist — what they are, why they can cause symptoms,
+        <p data-sv="Fördjupningar i egenskaperna som följs på huvudlistan — vad de är, varför de kan ge symtom, och vilka som tenderar att vara känsligare för dem.">Deep dives into the traits tracked on the main checklist — what they are, why they can cause symptoms,
             and who tends to be more sensitive to them.</p>
     </div>
 
     <div class="articleLayout">
         <nav class="articleIndex" id="articleIndex">
-            <h2>Topics</h2>
+            <h2 data-sv="Ämnen">Topics</h2>
             <ul id="articleIndexList">
                 <!-- populated by articles.js -->
             </ul>
@@ -71,14 +71,15 @@
 </body>
 
 <footer>
-    <p>Did you find this webpage useful?</p>
-    <p>Did you find any errors or have ideas for improvement?</p>
-    <p>Email: Monsterardadrys@duck.com</p>
-    <p>Uppsala, Sweden, 2026</p>
-    <p>Pre-beta v1.75 — updated 15 August 2026</p>
+    <p data-sv="Tyckte du att sidan var användbar?">Did you find this webpage useful?</p>
+    <p data-sv="Hittade du fel eller har du idéer på förbättringar?">Did you find any errors or have ideas for improvement?</p>
+    <p data-sv="E-post: Monsterardadrys@duck.com">Email: Monsterardadrys@duck.com</p>
+    <p data-sv="Uppsala, Sverige, 2026">Uppsala, Sweden, 2026</p>
+    <p data-sv="Pre-beta v1.77 — uppdaterad 15 augusti 2026">Pre-beta v1.77 — updated 15 August 2026</p>
 </footer>
 
 <script src="i18n.js"></script>
+<script src="ui-text.js"></script>
 <script src="articles-data.js"></script>
 <!-- foods-data.js feeds the "which foods carry this?" lists at the foot of
      each article; trait-foods.js builds them. -->

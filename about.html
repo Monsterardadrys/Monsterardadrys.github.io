@@ -33,14 +33,14 @@
 <body>
     <header>
         <div class="headerBar">
-            <h1>About</h1>
-            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+            <h1 data-sv="Om">About</h1>
+            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" data-sv-aria-label="Öppna menyn" aria-expanded="false" aria-controls="navDrawer">
                 <span></span><span></span><span></span>
             </button>
         </div>
         <nav class="navDrawer" id="navDrawer" aria-hidden="true">
-            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu">&times;</button>
-            <a class="backToMain" href="index.html">Home</a>
+            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu" data-sv-aria-label="Stäng menyn">&times;</button>
+            <a class="backToMain" href="index.html" data-sv="Hem">Home</a>
             <!-- Built by nav.js from NAV_LINKS, so no page can carry a
                  different menu from its neighbours. -->
             <ul></ul>
@@ -50,32 +50,32 @@
 
     <div class="articleLayout">
         <div class="articleIndex">
-            <h2>On this page</h2>
+            <h2 data-sv="På den här sidan">On this page</h2>
             <ul>
-                <li><a href="#background">Background</a></li>
-                <li><a href="#why">Why this tool exists</a></li>
-                <li><a href="#methodology">How the analysis works</a></li>
-                <li><a href="method.html">Method in detail</a></li>
-                <li><a href="#sources">Data sources</a></li>
-                <li><a href="#limitations">Limitations</a></li>
+                <li><a href="#background" data-sv="Bakgrund">Background</a></li>
+                <li><a href="#why" data-sv="Varför verktyget finns">Why this tool exists</a></li>
+                <li><a href="#methodology" data-sv="Hur analysen fungerar">How the analysis works</a></li>
+                <li><a href="method.html" data-sv="Metoden i detalj">Method in detail</a></li>
+                <li><a href="#sources" data-sv="Datakällor">Data sources</a></li>
+                <li><a href="#limitations" data-sv="Begränsningar">Limitations</a></li>
             </ul>
         </div>
 
         <div class="articleContent">
             <section id="background">
-                <h2>Background</h2>
-                <p>This tool is built by Andreas Rydström, a registered dietitian based in Uppsala, Sweden. It grew
+                <h2 data-sv="Bakgrund">Background</h2>
+                <p data-sv="Verktyget är byggt av Andreas Rydström, legitimerad dietist i Uppsala. Det växte fram ur ett återkommande mönster i klinisk praktik: en patient reagerar på en handfull till synes orelaterade livsmedel, och den gemensamma tråden — en FODMAP-undertyp, en histaminbelastning, ett korsreaktivt allergen — blir synlig först när någon lägger varje livsmedels egenskaper bredvid varandra.">This tool is built by Andreas Rydström, a registered dietitian based in Uppsala, Sweden. It grew
                     out of a recurring pattern seen in clinical practice: a patient reacts to a handful of
                     seemingly unrelated foods, and the shared thread — a FODMAP subtype, a histamine load, a
                     cross-reactive allergen — only becomes visible once someone lays every food's traits side by
                     side.</p>
-                <p>Once you have opened the site it works offline, and it can be added to a phone or tablet
+                <p data-sv="När du väl öppnat sidan fungerar den offline, och den kan läggas till på hemskärmen på mobil eller surfplatta som en app — praktiskt i ett rum utan pålitlig uppkoppling.">Once you have opened the site it works offline, and it can be added to a phone or tablet
                     home screen like an app — useful in a room with no reliable connection.</p>
             </section>
 
             <section id="why">
-                <h2>Why this tool exists</h2>
-                <p>Food intolerance work is full of diagnoses missed simply because nobody thought to check —
+                <h2 data-sv="Varför verktyget finns">Why this tool exists</h2>
+                <p data-sv="Arbetet med matintoleranser är fullt av diagnoser som missas helt enkelt för att ingen kom att tänka på att kolla — alfa-gal-syndrom, oralt allergisyndrom, sekundär laktosintolerans vid odiagnostiserad celiaki. Att hitta den gemensamma tråden för hand, måltid för måltid, är långsamt och lätt att göra fel; verktyget automatiserar den jämförelsen på sekunder och lyfter fram förbisedda möjligheter utan att ersätta en ordentlig klinisk utredning.">Food intolerance work is full of diagnoses missed simply because nobody thought to check —
                     alpha-gal syndrome, oral allergy syndrome, secondary lactose intolerance from undiagnosed
                     coeliac disease. Spotting the shared thread by hand, meal by meal, is slow and easy to get
                     wrong; this tool automates that comparison in seconds, surfacing overlooked possibilities
@@ -83,43 +83,43 @@
             </section>
 
             <section id="methodology">
-                <h2>How the analysis works</h2>
-                <p>Every food in the tool is tagged with the traits it carries — FODMAP subtypes, histamine
+                <h2 data-sv="Hur analysen fungerar">How the analysis works</h2>
+                <p data-sv="Varje livsmedel i verktyget är märkt med de egenskaper det bär — FODMAP-undertyper, histaminhalt, allergener, GI-irriterande mekanismer och mer. När du väljer en grupp livsmedel räknar verktyget hur många av dem som delar varje egenskap, och rangordnar egenskaperna efter hur vanliga de är i ditt urval. Det som kommer ut är en kortlista över vad dina livsmedel har gemensamt.">Every food in the tool is tagged with the traits it carries — FODMAP subtypes, histamine
                     content, allergens, GI irritant mechanisms, and more. When you select a group of foods, the
                     tool counts how many of them share each trait, and ranks the traits by how common they are
                     across your selection. What comes out is a shortlist of what your foods have in common.</p>
 
-                <h3>Traits are measured per portion</h3>
+                <h3 data-sv="Egenskaper mäts per portion">Traits are measured per portion</h3>
 
-                <p>Some traits depend on how much of something a food contains. Those are measured as an
+                <p data-sv="Vissa egenskaper beror på hur mycket av något ett livsmedel innehåller. De mäts som en mängd i en normal portion, inte som en siffra per 100 gram — för en siffra per 100 gram säger ingenting förrän man vet hur mycket som hamnar på tallriken. Samma 17,5 g fett per 100 g är ungefär 4 g i en ostskiva och ungefär 22 g i en portion köttfärs.">Some traits depend on how much of something a food contains. Those are measured as an
                     amount in one normal portion, not as a figure per 100 grams — because a figure per 100
                     grams says nothing until you know how much goes on a plate. The same 17.5g of fat per 100g
                     is about 4g in a slice of cheese and about 22g in a portion of mince.</p>
                 <ul>
-                    <li><strong>Fat:</strong> 6.1g in a portion</li>
-                    <li><strong>Protein:</strong> 15g in a portion</li>
-                    <li><strong>Fiber:</strong> 6.1g in a portion</li>
-                    <li><strong>Lactose:</strong> 5g in a portion</li>
-                    <li><strong>Bile stimulant:</strong> 9.5g of fat in a portion, counting protein at a fifth
+                    <li data-sv="&lt;strong&gt;Fett:&lt;/strong&gt; 6,1 g i en portion"><strong>Fat:</strong> 6.1g in a portion</li>
+                    <li data-sv="&lt;strong&gt;Protein:&lt;/strong&gt; 15 g i en portion"><strong>Protein:</strong> 15g in a portion</li>
+                    <li data-sv="&lt;strong&gt;Fiber:&lt;/strong&gt; 6,1 g i en portion"><strong>Fiber:</strong> 6.1g in a portion</li>
+                    <li data-sv="&lt;strong&gt;Laktos:&lt;/strong&gt; 5 g i en portion"><strong>Lactose:</strong> 5g in a portion</li>
+                    <li data-sv="&lt;strong&gt;Gallstimulerande:&lt;/strong&gt; 9,5 g fett i en portion, med protein räknat till en femtedel av sin vikt, eftersom protein utlöser samma hormon långt svagare"><strong>Bile stimulant:</strong> 9.5g of fat in a portion, counting protein at a fifth
                         of its weight, since protein triggers the same hormone far more weakly</li>
-                    <li><strong>Salicylates:</strong> 1mg in a portion</li>
-                    <li><strong>Alcohol:</strong> above 0.5% by volume — a concentration, because that is the
+                    <li data-sv="&lt;strong&gt;Salicylater:&lt;/strong&gt; 1 mg i en portion"><strong>Salicylates:</strong> 1mg in a portion</li>
+                    <li data-sv="&lt;strong&gt;Alkohol:&lt;/strong&gt; över 0,5 volymprocent — en koncentration, eftersom det är den juridiska gränsen för att kalla en dryck alkoholfri"><strong>Alcohol:</strong> above 0.5% by volume — a concentration, because that is the
                         legal line for calling a drink alcohol-free</li>
                 </ul>
-                <p>Every food therefore carries a typical serving in grams. Servings come from the food group,
+                <p data-sv="Varje livsmedel bär därför en typisk portion i gram. Portionerna kommer från livsmedelsgruppen, så att livsmedel som äts på samma sätt får samma siffra: all frukt 100 g, alla bär 50 g, varje styckdetalj av kött, fisk och fågel 125 g, potatis och kokta spannmål 175 g, en brödskiva 40 g, en ostskiva 20 g.">Every food therefore carries a typical serving in grams. Servings come from the food group,
                     so that foods eaten the same way get the same number: every fruit 100g, every berry 50g,
                     every cut of meat, fish and poultry 125g, potato and cooked grains 175g, a slice of bread
                     40g, a slice of cheese 20g.</p>
 
-                <p>That cuts both ways, and it is worth being plain about it. A serving is what a typical
+                <p data-sv="Det skär åt båda hållen, och det är värt att säga rakt ut. En portion är vad en typisk tallrik rymmer, inte vad din tallrik rymmer. Ät en halv och en egenskap som visas här kanske inte når dig; ät två och en egenskap som förblir dold kan göra det. Siffrorna är medvetet inte uppblåsta för att täcka den större portionen — ett livsmedel som flaggas fast de flesta tål det är en egen sorts skada, och det finns inget hederligt sätt att gissa en portion du inte angett.">That cuts both ways, and it is worth being plain about it. A serving is what a typical
                     plate holds, not what your plate holds. Eat half of one and a trait shown here may not
                     reach you; eat two and a trait that stays hidden may. The numbers are deliberately not
                     padded to cover the larger helping — a food flagged that most people tolerate is its own
                     kind of harm, and there is no honest way to guess a portion you did not state.</p>
 
-                <h3>The rest are categorical</h3>
+                <h3 data-sv="Resten är kategoriska">The rest are categorical</h3>
 
-                <p>Allergens, FODMAP subtypes, oral allergy syndrome and the GI irritant mechanisms have no
+                <p data-sv="Allergener, FODMAP-undertyper, oralt allergisyndrom och de GI-irriterande mekanismerna har ingen gramgräns. De följer etablerade klassificeringar: de allergener EU-lagstiftningen kräver ska deklareras på en förpackning, Monash Universitys FODMAP-databas, och pollengrupperna bakom oralt allergisyndrom. Två allergener följs som ingen märkning måste nämna — lök och vitlök, samt svamp — eftersom ingen som reagerar på dem får någon varning, och båda dyker upp tillräckligt ofta i praktiken för att vara värda att utesluta. Lupin, som är deklarationspliktig, är utelämnad: den når knappt en svensk tallrik, och den här livsmedelslistan är svensk först. &lt;strong&gt;Raffinerade kolhydrater&lt;/strong&gt; fungerar likadant — tilldelas efter livsmedelstyp och processning snarare än efter kolhydrathalt, så fullkorn, baljväxter och grönsaker märks aldrig med den hur kolhydratrika de än är.">Allergens, FODMAP subtypes, oral allergy syndrome and the GI irritant mechanisms have no
                     gram cutoff. They follow established classifications: the allergens EU law requires to
                     be declared on a label, the Monash University FODMAP database, and the pollen groups
                     behind oral allergy syndrome. Two allergens are tracked that no label has to mention —
@@ -131,7 +131,7 @@
                     processing rather than by carbohydrate content, so whole grains, legumes and vegetables
                     are never tagged with it however carb-heavy they are.</p>
 
-                <p><strong>Histamine</strong> is categorical, but a food is tagged only where there is
+                <p data-sv="&lt;strong&gt;Histamin&lt;/strong&gt; är kategoriskt, men ett livsmedel märks bara där det finns uppmätt histamin, proteolytisk mognad, lång fermentering med odefinierad flora, en färskhetsberoende mekanism, eller alkohol. Livsmedel som motiveras enbart av idén om &quot;histaminfrisättare&quot; märks inte — en genomgång av tio publicerade histaminfattiga dieter fann att 68 % av de uteslutna livsmedlen inte hade mätbart histamin, och frisättningsmekanismen har aldrig påvisats hos människa. Det är därför yoghurt, kefir, jordgubbe och avokado inte bär någon histamintagg här, trots att de flesta listor tar med dem."><strong>Histamine</strong> is categorical, but a food is tagged only where there is
                     measured histamine, proteolytic ripening, long fermentation with an undefined flora, a
                     freshness-dependent mechanism, or alcohol. Foods justified only by the "histamine
                     liberator" idea are not tagged — a review of ten published low-histamine diets found 68%
@@ -139,42 +139,42 @@
                     been demonstrated in humans. That is why yogurt, kefir, strawberry and avocado carry no
                     histamine tag here, even though most lists include them.</p>
 
-                <p><strong>DAO competitors</strong> is a modifier rather than a trigger. Putrescine and
+                <p data-sv="&lt;strong&gt;DAO-hämmare&lt;/strong&gt; är en modifierare snarare än en utlösare. Putrescin och kadaverin upptar enzymet som bryter ner histamin, så de kan bromsa nedbrytningen — men ett livsmedel som bär dem utan något histamin har inget att konkurrera med. Egenskapen rapporteras bara när urvalet också innehåller histamin."><strong>DAO competitors</strong> is a modifier rather than a trigger. Putrescine and
                     cadaverine occupy the enzyme that breaks histamine down, so they may slow its clearance —
                     but a food carrying them without any histamine has nothing to compete with. The trait is
                     reported only when the selection also contains histamine.</p>
 
-                <h3>FODMAPs: the amount decides whether a food counts</h3>
+                <h3 data-sv="FODMAP: mängden avgör om ett livsmedel räknas">FODMAPs: the amount decides whether a food counts</h3>
 
-                <p>FODMAPs are the one categorical family with a published amount, and it is coarser than a
+                <p data-sv="FODMAP är den enda kategoriska familjen med en publicerad mängd, och den är grövre än en näringssiffra. Monash University testar en angiven portion av ett livsmedel och bedömer den som låg, måttlig eller hög. Det finns ingen gramsiffra för hur mycket fruktan som finns i en brödskiva, så det finns inget att summera.">FODMAPs are the one categorical family with a published amount, and it is coarser than a
                     nutrient figure. Monash University tests a stated serving of a food and rates it low,
                     moderate or high. There is no gram figure for how much fructan is in a slice of bread,
                     so there is nothing to add up.</p>
 
-                <p>What the serving is good for is a threshold. In a meal, a food weighed out at or under
+                <p data-sv="Vad portionen duger till är en tröskel. I en måltid finns ett livsmedel som vägts upp till eller under den portion Monash bedömer som låg med i måltiden utan att räknas som belastning; över den portionen räknas det. FODMAP rapporteras sedan som varje annan kategorisk familj — vilka typer som finns, från hur många ingredienser — där vikten avgör vilka ingredienser som räknas. Tjugofem gram avokado faller bort; femtio gram gör det inte.">What the serving is good for is a threshold. In a meal, a food weighed out at or under
                     the serving Monash rates low is in the meal without being counted as loading it; over
                     that serving, it counts. FODMAPs are then reported like every other categorical family
                     — which types are present, from how many ingredients — with the weight deciding which
                     ingredients count. Twenty-five grams of avocado drops out; fifty grams does not.</p>
 
-                <p>Some foods have no low serving at any amount, onion and garlic being the usual ones, and
+                <p data-sv="Vissa livsmedel har ingen låg portion vid någon mängd — lök och vitlök är de vanliga — och de räknas oavsett vikt. Andra har ingen portion på fil än, och de räknas på taggen ensam. Båda namnges under meningen, så det är alltid tydligt vilka livsmedel tröskeln tillämpades på och vilka den inte tillämpades på.">Some foods have no low serving at any amount, onion and garlic being the usual ones, and
                     they count whatever the weight. Others have no serving on file yet, and those count on
                     the tag alone. Both are named under the sentence, so it is always clear which foods the
                     threshold was applied to and which it was not.</p>
 
-                <p>One thing a threshold cannot show: servings are rated one food at a time, so several
+                <p data-sv="En sak en tröskel inte kan visa: portioner bedöms ett livsmedel i taget, så flera livsmedel som var för sig håller sin portion kan ändå adderas i en måltid. Det sägs i ord snarare än görs om till en siffra, eftersom en siffra skulle kräva gram som källan inte publicerar.">One thing a threshold cannot show: servings are rated one food at a time, so several
                     foods each within their own serving can still add up in one meal. That is said in
                     words rather than turned into a number, because turning it into a number would need
                     grams the source does not publish.</p>
 
-                <h3>A lot at once</h3>
+                <h3 data-sv="Mycket på en gång">A lot at once</h3>
 
-                <p>A meal can be hard on the gut without anything in it being wrong. The meal builder
+                <p data-sv="En måltid kan vara tuff för magen utan att något i den är fel. Måltidsbyggaren säger därför till när en beståndsdel kommer i en mängd, eller i en koncentration, som magen sannolikt märker. Det är inte en näringsbedömning: inget här säger att en måltid är ohälsosam, och inget här är en nivå att hålla sig under.">A meal can be hard on the gut without anything in it being wrong. The meal builder
                     therefore says when one component arrives in an amount, or at a concentration, that
                     the gut is likely to notice. This is not a nutritional assessment: nothing here says a
                     meal is unhealthy, and nothing here is a level to stay under.</p>
 
-                <p>Two different things are measured, because two different mechanisms are involved.
+                <p data-sv="Två olika saker mäts, eftersom två olika mekanismer är inblandade. &lt;strong&gt;En mängd&lt;/strong&gt; spelar roll för fett, protein och fiber — fett och protein lämnar magsäcken långsamt och bromsar den ytterligare, och fiber når tjocktarmen som volym att fermentera. &lt;strong&gt;En koncentration&lt;/strong&gt; spelar roll för socker, som drar vatten in i tarmen genom osmos: femton gram socker i ett glas saft och samma femton gram utspritt över en tallrik mat är inte samma händelse. Fett mäts på båda sätten, eftersom det inte löser sig i måltidens vattniga del — det färdas som en egen fas, och samma gram tunnare utspritt beter sig mildare.">Two different things are measured, because two different mechanisms are involved.
                     <strong>An amount</strong> matters for fat, protein and fiber — fat and protein leave
                     the stomach slowly and slow it further, and fiber arrives in the colon as bulk to
                     ferment. <strong>A concentration</strong> matters for sugar, which draws water into the
@@ -183,76 +183,76 @@
                     because it does not dissolve into the watery part of a meal — it travels as its own
                     phase, and the same grams spread thinner behave more gently.</p>
 
-                <p>Crossing one of these lines is not a fault, and most people cross several at an ordinary
+                <p data-sv="Att passera en av de här gränserna är inget fel, och de flesta passerar flera vid en vanlig middag utan att märka något. De spelar roll i två situationer: när någon äter en bra bit över vad hen är van vid, och när magen redan är känslig eller redan begränsad. Fiber är det tydligaste fallet — ett jämnt högt fiberintag är sällan det som ställer till det, medan en plötslig ökning över det vanliga ofta är det.">Crossing one of these lines is not a fault, and most people cross several at an ordinary
                     dinner without noticing anything. They matter in two situations: when someone is eating
                     well over what they are used to, and when the gut is already sensitive or already
                     restricted. Fiber is the clearest case — a consistently high fiber intake is rarely what
                     causes trouble, while a sudden rise over the usual often is.</p>
 
-                <h3>Too little water is its own event</h3>
+                <h3 data-sv="För lite vatten är en egen händelse">Too little water is its own event</h3>
 
-                <p>One of those lines runs the other way, on too little rather than too much. Sugar draws
+                <p data-sv="En av gränserna går åt andra hållet, på för lite snarare än för mycket. Socker drar vatten in i magsäck och tunntarm tills det som finns där är tillräckligt utspätt för att gå vidare. En måltid som bär med sig lite eget vatten tar det från kroppen i stället, och det är utspänningen som känns — torkad frukt äten utan något att dricka, eller en tät söt deg.">One of those lines runs the other way, on too little rather than too much. Sugar draws
                     water into the stomach and small bowel until what is there is dilute enough to move on.
                     A meal that brings little water of its own takes it from the body instead, and the
                     stretching is what is felt — dried fruit eaten with nothing to drink, or a dense sweet
                     dough.</p>
 
-                <p>A meal is reported as dry below 40g of water per 100g, and only when it also carries at
+                <p data-sv="En måltid rapporteras som torr under 40 g vatten per 100 g, och bara när den också bär minst 20 g socker. Torrhet ensam är inte mekanismen: ren stärkelse är torr och har lite som drar in vatten. Det betyder också att något att dricka vid sidan av löser det, vilket är sakens hederliga form — samma torkade frukt med ett glas mjölk är inte samma måltid.">A meal is reported as dry below 40g of water per 100g, and only when it also carries at
                     least 20g of sugars. Dryness alone is not the mechanism: plain starch is dry and has
                     little that pulls water in. It also means a drink alongside settles it, which is the
                     honest shape of the thing — the same dried fruit with a glass of milk is not the same
                     meal.</p>
 
-                <h3>Helpings, where there is no gram figure</h3>
+                <h3 data-sv="Portioner, där det inte finns någon gramsiffra">Helpings, where there is no gram figure</h3>
 
-                <p>Two traits scale with how much is eaten but have no figure per 100g in this database:
+                <p data-sv="Två egenskaper skalar med hur mycket som äts men har ingen siffra per 100 g i databasen: salicylater, som ingen livsmedelstabell mäter, och laktos, där källan redovisar totalt socker och sockret i ett äpple inte är laktos. En måltid räknar dem i portioner i stället — där en portion är standardportionen för det livsmedel som bär egenskapen.">Two traits scale with how much is eaten but have no figure per 100g in this database:
                     salicylates, which no food table measures, and lactose, where the source reports total
                     sugars and the sugar in an apple is not lactose. A meal counts those in helpings
                     instead — a helping being the standard serving of whichever food carries the trait.</p>
 
-                <p>A helping is not a gram figure and not a multiple of anything. It holds at least the
+                <p data-sv="En portion är ingen gramsiffra och ingen multipel av något. Den rymmer minst den mängd taggen är satt efter, och kan rymma en bra bit mer, så fyra portioner betyder fyra portioner bärande livsmedel snarare än fyra gånger en tröskel. Allt annat som beror på mängd — fett, protein, fiber, alkohol, och den gallstimulerande belastning som följer av fett och protein — redovisas i verkliga gram, eftersom siffrorna finns.">A helping is not a gram figure and not a multiple of anything. It holds at least the
                     amount the tag is set by, and can hold well over it, so four helpings means four
                     servings' worth of carrying food rather than four times a threshold. Everything else
                     that depends on amount — fat, protein, fiber, alcohol, and the bile-stimulating load
                     that follows from fat and protein — is reported in real grams, because the figures are
                     there.</p>
 
-                <h3>How well supported is each trait?</h3>
+                <h3 data-sv="Hur väl belagd är varje egenskap?">How well supported is each trait?</h3>
 
-                <p>Traits are not equally well grounded, and the analysis says so. Every trait carries an
+                <p data-sv="Egenskaper är inte lika väl underbyggda, och analysen säger det. Varje egenskap bär en evidensnivå på ett av tre steg:">Traits are not equally well grounded, and the analysis says so. Every trait carries an
                     evidence level on one of three steps:</p>
 
                 <ul class="evidenceKey">
-                    <li><span class="evidenceBadge evidence--well-established">Well established</span>
+                    <li data-sv="&lt;span class=&quot;evidenceBadge evidence--well-established&quot;&gt;Väl belagt&lt;/span&gt; Humanstudier eller en direkt uppmätt mekanism. Allergener, laktos, FODMAP och histamin ligger här."><span class="evidenceBadge evidence--well-established">Well established</span>
                         Human trials or a directly measured mechanism. Allergens, lactose, FODMAPs and
                         histamine sit here.</li>
-                    <li><span class="evidenceBadge evidence--limited">Limited</span>
+                    <li data-sv="&lt;span class=&quot;evidenceBadge evidence--limited&quot;&gt;Begränsat&lt;/span&gt; Verklig evidens, men tunn, blandad, eller ett steg från symtomet. Gallstimulering och raffinerade kolhydrater ligger här."><span class="evidenceBadge evidence--limited">Limited</span>
                         Real evidence, but thin, mixed, or one step removed from the symptom. Bile
                         stimulation and refined carbohydrates sit here.</li>
-                    <li><span class="evidenceBadge evidence--preliminary">Preliminary</span>
+                    <li data-sv="&lt;span class=&quot;evidenceBadge evidence--preliminary&quot;&gt;Preliminärt&lt;/span&gt; Enbart provrörsstudier, djurmodeller eller klinisk erfarenhet, utan humanstudier. Ättiksyra, skal, och DAO-hämning ligger här."><span class="evidenceBadge evidence--preliminary">Preliminary</span>
                         Test-tube work, animal models or clinical experience only, with no human trials.
                         Acetic acid, peel and skin, and DAO competition sit here.</li>
                 </ul>
 
-                <p>The level says how well the trait itself is grounded — not how strongly you will react to
+                <p data-sv="Nivån säger hur väl underbyggd själva egenskapen är — inte hur starkt du kommer reagera på den. En väl belagd egenskap kan vara irrelevant för dig, och en preliminär kan vara ditt huvudproblem. Varje egenskaps nivå, med en mening om vad den vilar på, visas tillsammans med egenskapen i resultatet.">The level says how well the trait itself is grounded — not how strongly you will react to
                     it. A well-established trait can be irrelevant for you, and a preliminary one can be your
                     main problem. Each trait's level, with a sentence on what it rests on, appears with the
                     trait in the results.</p>
 
-                <p>Fat and protein are tracked passively in the background. They are rarely the direct cause
+                <p data-sv="Fett och protein följs passivt i bakgrunden. De är sällan den direkta orsaken till magsymtom på egen hand, så i stället för att konkurrera om en topplacering i rangordningen dyker de upp som en sidonotis när över 90 % av ditt urval delar en av dem — en signal om att de kan förvärra symtom som drivs av något annat.">Fat and protein are tracked passively in the background. They are rarely the direct cause
                     of GI symptoms on their own, so rather than competing for a top spot in the ranking they
                     appear as a side note when over 90% of your selection shares one — a signal that they may
                     be worsening symptoms driven by something else.</p>
 
-                <p class="readMore"><a href="method.html">The method in detail →</a><br>
-                    <span>Every rule with the reasoning and the numbers behind it: how the portion sizes and
+                <p class="readMore"><a href="method.html" data-sv="Metoden i detalj →">The method in detail →</a><br>
+                    <span data-sv="Varje regel med resonemanget och siffrorna bakom: hur portionsstorlekar och intervallgränser valdes, hur varje dos kom till, och var undantagen finns.">Every rule with the reasoning and the numbers behind it: how the portion sizes and
                     band boundaries were chosen, how each dose was arrived at, and where the exceptions
                     are.</span></p>
             </section>
 
             <section id="sources">
-                <h2>Data sources</h2>
-                <p>FODMAP subtypes are cross-referenced against the Monash University FODMAP database.
+                <h2 data-sv="Datakällor">Data sources</h2>
+                <p data-sv="FODMAP-undertyper stäms av mot Monash Universitys FODMAP-databas. Tröskelbaserade egenskaper (laktos, alkohol, fiber, fett, protein, gallstimulerande) använder standardnäringsdata per 100 g. Raffinerade kolhydrater märks efter livsmedelstyp och processning snarare än efter en databas, löst enligt samma logik som NOVA-klassificeringen av livsmedelsprocessning. Allergener, GI-irriterande ämnen, korsreaktivitet och alfa-gal bygger på klinisk litteratur och praktisk erfarenhet, och granskas för riktighet innan de läggs till.">FODMAP subtypes are cross-referenced against the Monash University FODMAP database.
                     Threshold-based traits (lactose, alcohol, fiber, fat, protein, bile stimulant) use
                     standard nutrition data per 100g. Refined Carbohydrates is tagged by food type and
                     processing rather than a database, loosely following the same logic as the NOVA
@@ -260,7 +260,7 @@
                     draw on clinical literature and practice experience, and are reviewed for accuracy before
                     being added.</p>
 
-                <p>Histamine started from the SIGHI food list but is not taken from it directly. Every entry
+                <p data-sv="Histamin utgick från SIGHI:s livsmedelslista men är inte hämtat direkt därifrån. Varje post kontrollerades mot publicerade mätningar av biogena aminer i livsmedel och mot om en rimlig mekanism faktiskt gäller. Ungefär två tredjedelar av posterna överlevde inte den kontrollen. DAO-hämmare använder samma mätdata och märker bara livsmedel med en publicerad kvantifiering av putrescin eller kadaverin över 10 mg/kg — ingen extrapolering från ett livsmedel till ett liknande. Salicylater använder australiska mätningar på portionsnivå, valda framför ett europeiskt dataset eftersom den rangordningen är den som prövats i en blindad kostprövning.">Histamine started from the SIGHI food list but is not taken from it directly. Every entry
                     was checked against published measurements of biogenic amines in food and against whether
                     a plausible mechanism actually applies. Roughly two thirds of the entries did not survive
                     that check. DAO Competitors uses the same measurement data, tagging only foods with a
@@ -269,11 +269,11 @@
                     chosen over a European dataset because that ranking is the one that has been tested in a
                     blinded dietary trial.</p>
 
-                <p>Sources disagree more than is comfortable, and where they do, this tool says so rather
+                <p data-sv="Källor är oense oftare än vad som är bekvämt, och där de är det säger verktyget det i stället för att välja i tysthet. &lt;a href=&quot;articles.html#uncertainty&quot;&gt;Hur säkert är egentligen något av det här?&lt;/a&gt; redogör för var osäkerheten sitter och hur den hanterats.">Sources disagree more than is comfortable, and where they do, this tool says so rather
                     than picking quietly. <a href="articles.html#uncertainty">How Certain Is Any of This?</a>
                     sets out where the uncertainty sits and how it was handled.</p>
 
-                <p>Fat, protein, fiber, sugar and alcohol figures are checked against
+                <p data-sv="Siffror för fett, protein, fiber, socker och alkohol stäms av mot &lt;strong&gt;Livsmedelsverkets livsmedelsdatabas&lt;/strong&gt;, den nationella livsmedelsdatabasen, livsmedel för livsmedel. Omkring 365 av livsmedlen här har gått igenom den kontrollen. Resten har ingen svensk post — europeiska ostar, importerade såser, de veganska ersättningarna — och tar sina siffror från den danska, amerikanska eller franska nationella tabellen i stället, noterat per livsmedel. &lt;a href=&quot;sources.html&quot;&gt;Datakällor&lt;/a&gt; listar vilket som är vilket, livsmedel för livsmedel.">Fat, protein, fiber, sugar and alcohol figures are checked against
                     <strong>Livsmedelsverket's food database</strong>, the Swedish Food Agency's national
                     food composition data, food by food. Around 365 of the foods here have been through
                     that check. The rest have no Swedish entry — European cheeses, imported sauces, the
@@ -281,13 +281,13 @@
                     tables instead, recorded per food.
                     <a href="sources.html">Data sources</a> lists which is which, food by food.</p>
 
-                <p>The food list is still growing, with new additions prioritizing foods common in European and
+                <p data-sv="Livsmedelslistan växer fortfarande, och nya tillskott prioriterar livsmedel som är vanliga i europeisk och skandinavisk kost.">The food list is still growing, with new additions prioritizing foods common in European and
                     Scandinavian diets.</p>
             </section>
 
             <section id="limitations">
-                <h2>Limitations</h2>
-                <p>This is a triage and pattern-recognition tool, not a diagnostic one. It can't account for an
+                <h2 data-sv="Begränsningar">Limitations</h2>
+                <p data-sv="Det här är ett triage- och mönsterigenkänningsverktyg, inte ett diagnostiskt. Det kan inte ta hänsyn till en individs dostolerans, tillagningsmetoder, livsmedelskombinationer, eller de många andra variabler som påverkar reaktioner i verkligheten. Gemensamma egenskaper pekar mot hypoteser värda att utreda med kvalificerad vårdpersonal — de är ingen diagnos i sig.">This is a triage and pattern-recognition tool, not a diagnostic one. It can't account for an
                     individual's dose tolerance, cooking methods, food combinations, or the many other variables
                     that affect real-world reactions. Shared traits point toward hypotheses worth investigating
                     with a qualified health care professional — they aren't a diagnosis on their own.</p>
@@ -296,11 +296,12 @@
     </div>
 
     <footer>
-        <p>Built by a dietitian, for dietitians (and the curious).</p>
-        <p>Pre-beta v1.75 — updated 15 August 2026</p>
+        <p data-sv="Byggt av en dietist, för dietister (och nyfikna).">Built by a dietitian, for dietitians (and the curious).</p>
+        <p data-sv="Pre-beta v1.77 — uppdaterad 15 augusti 2026">Pre-beta v1.77 — updated 15 August 2026</p>
     </footer>
 
     <script src="i18n.js"></script>
+    <script src="ui-text.js"></script>
     <script src="session.js"></script>
 <script src="nav.js"></script>
     <script src="pwa.js"></script>

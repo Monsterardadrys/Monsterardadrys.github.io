@@ -48,7 +48,7 @@ const NAV_ACTIONS = {
   if (!drawer.querySelector(".navTitle")) {
     const title = document.createElement("p");
     title.className = "navTitle";
-    title.textContent = typeof I18N !== "undefined" && I18N.lang() === "sv" ? "Meny" : "Menu";
+    title.textContent = typeof I18N !== "undefined" ? I18N.t("nav.menu") : "Menu";
     drawer.insertBefore(title, drawer.firstChild);
   }
 

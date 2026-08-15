@@ -66,7 +66,7 @@
   // ---- State -------------------------------------------------------------
   // Kept in this browser between visits, so a trip to the app and back does
   // not cost you the meal — see session.js.
-  let meals = [{ name: "Meal 1", items: [] }];
+  let meals = [{ name: I18N.t("meal.untitled", { n: 1 }), items: [] }];
 
   // A tap in the picker has to land somewhere, so one meal is always the
   // active one. It is the last one touched, and named above the picker.
@@ -106,6 +106,9 @@
     FAMILIES.push({
       title: I18N.pick(section, "title"),
       noun: section.noun || section.title.toLowerCase(),
+      svNoun: section.svNoun || (section.sv || section.title).toLowerCase(),
+      svNounTypes: section.svNounTypes || (section.sv || section.title).toLowerCase(),
+      svGender: section.svGender || "en",
       broad: section.broad || null,
       types: types,
       articleId: withArticle ? TRAITS[withArticle].articleId : null
@@ -142,17 +145,17 @@
      three quarters of the database — so a meal is often part-covered and the
      total has to say so rather than quietly under-reporting. */
   const NUTRIENTS = [
-    { key: "fat", label: "Fat" },
-    { key: "protein", label: "Protein" },
-    { key: "carbs", label: "Carbohydrate" },
-    { key: "sugars", label: "Sugars" },
-    { key: "fiber", label: "Fiber" },
+    { key: "fat", label: "Fat", sv: "Fett" },
+    { key: "protein", label: "Protein", sv: "Protein" },
+    { key: "carbs", label: "Carbohydrate", sv: "Kolhydrat" },
+    { key: "sugars", label: "Sugars", sv: "Socker" },
+    { key: "fiber", label: "Fiber", sv: "Fiber" },
     // Only worth a row when there is any. Most meals have none.
-    { key: "alcohol", label: "Alcohol", whenAbove: 0 },
+    { key: "alcohol", label: "Alcohol", sv: "Alkohol", whenAbove: 0 },
     // Not in the file until the build is re-run against an export carrying
     // the column — see tools/lmv-core.js. Absent until then, and everything
     // reading it copes with that.
-    { key: "water", label: "Water" }
+    { key: "water", label: "Water", sv: "Vatten" }
   ];
 
   /* The bile-stimulating load is not a nutrient anyone measures — it is the
@@ -258,25 +261,49 @@
       key: "fat", kind: "total", line: 25, label: "Fat",
       why: "Fat is the slowest thing to leave the stomach, and it triggers the " +
         "hormones that slow it further. The line is where low-fat advice for fat " +
-        "malabsorption puts a single meal."
+        "malabsorption puts a single meal.",
+      sv: {
+        label: "Fett",
+        why: "Fett är det som lämnar magsäcken långsammast, och det utlöser de " +
+          "hormoner som bromsar den ytterligare. Gränsen ligger där fettsnåla råd " +
+          "vid fettmalabsorption lägger en enskild måltid."
+      }
     },
     {
       key: "fat", kind: "share", line: 15, floor: 15, label: "Fat as a share of the meal",
       why: "Fat does not dissolve into the watery part of a meal — it travels as " +
-        "its own phase. The same grams spread through a larger meal behave more gently."
+        "its own phase. The same grams spread through a larger meal behave more gently.",
+      sv: {
+        label: "Fett som andel av måltiden",
+        why: "Fett löser sig inte i måltidens vattniga del — det färdas som en egen " +
+          "fas. Samma antal gram utspridda i en större måltid beter sig mildare."
+      }
     },
     {
       key: "sugars", kind: "share", line: 10, floor: 15, label: "Sugars as a share of the meal",
       why: "Sugar pulls water into the bowel, and that depends on how concentrated " +
         "it is rather than how much there is. Above roughly this much per 100g a meal " +
         "is hypertonic — the line sports drinks are formulated to stay under. It " +
-        "counts hardest in something drunk, which reaches the small bowel fast."
+        "counts hardest in something drunk, which reaches the small bowel fast.",
+      sv: {
+        label: "Socker som andel av måltiden",
+        why: "Socker drar vatten in i tarmen, och det beror på hur koncentrerat det " +
+          "är snarare än hur mycket det finns. Över ungefär så här mycket per 100 g " +
+          "är en måltid hyperton — gränsen sportdrycker är formulerade att hålla sig " +
+          "under. Det väger tyngst i något man dricker, som når tunntarmen snabbt."
+      }
     },
     {
       key: "fiber", kind: "total", line: 10, label: "Fiber",
       why: "The line is about a third of a day's fiber arriving at once. A " +
         "consistently high fiber intake is rarely what causes trouble; a sudden rise " +
-        "over what someone is used to usually is."
+        "over what someone is used to usually is.",
+      sv: {
+        label: "Fiber",
+        why: "Gränsen motsvarar ungefär en tredjedel av ett dygns fiber på en gång. " +
+          "Ett jämnt högt fiberintag är sällan det som ställer till det; en plötslig " +
+          "ökning över vad någon är van vid är det oftast."
+      }
     },
     /* The one that fires on too little rather than too much, and the only one
        with a precondition. Osmolality is solutes per unit water, so a dry meal
@@ -294,7 +321,14 @@
       why: "Sugar draws water into the stomach and small bowel until what is there " +
         "is dilute enough to pass on. A meal that brings little of its own takes that " +
         "water from the body, and the stretching is what is felt. Dried fruit and " +
-        "dense sweet doughs are the sharpest version of it."
+        "dense sweet doughs are the sharpest version of it.",
+      sv: {
+        label: "Vatten i måltiden",
+        why: "Socker drar vatten in i magsäck och tunntarm tills det som finns där är " +
+          "tillräckligt utspätt för att passera vidare. En måltid som bär med sig lite " +
+          "eget vatten tar det vattnet från kroppen, och det är utspänningen som känns. " +
+          "Torkad frukt och täta söta degar är den skarpaste varianten av det."
+      }
     },
     {
       /* 60g, not 40g. At 40g an ordinary plate of chicken and rice tripped it,
@@ -303,7 +337,13 @@
          be the last one to speak. */
       key: "protein", kind: "total", line: 60, label: "Protein",
       why: "A large protein load also leaves the stomach slowly, and sits there while " +
-        "it is broken down. This is a lot of it — well past a normal main course."
+        "it is broken down. This is a lot of it — well past a normal main course.",
+      sv: {
+        label: "Protein",
+        why: "En stor proteinmängd lämnar också magsäcken långsamt, och ligger kvar " +
+          "medan den bryts ned. Det här är mycket av det — en bra bit över en vanlig " +
+          "huvudrätt."
+      }
     }
   ];
 
@@ -346,18 +386,23 @@
          reads as a stuck number unless the amount it came from is next to
          it, so both are shown. */
       const against = signal.below != null
-        ? "under the " + signal.below + "g per 100g below which a meal counts as dry."
-        : "against " + signal.line + (signal.kind === "share" ? "g per 100g." : "g.");
+        ? I18N.t("signal.againstDry", { below: signal.below })
+        : I18N.t(signal.kind === "share" ? "signal.againstShare" : "signal.againstTotal",
+          { line: signal.line });
       /* On a meal that happens to weigh about 100g the two are the same
          sentence twice — "58g per 100g — 58g in 100g of meal". Say it once. */
       const meal = Math.round(n.coveredGrams);
       const sameTwice = meal === 100;
       const text = signal.kind === "share" && !sameTwice
-        ? fmt(value) + "g per 100g — " + fmt(total) + "g in " + meal + "g of meal — " + against
+        ? I18N.t("signal.shareOfMeal", { value: fmt(value), total: fmt(total), meal: meal, against: against })
         : signal.kind === "share"
-          ? fmt(value) + "g in the meal's 100g — " + against
-          : fmt(value) + "g, " + against;
-      return { label: signal.label, text: text, why: signal.why };
+          ? I18N.t("signal.shareOnly", { value: fmt(value), against: against })
+          : I18N.t("signal.total", { value: fmt(value), against: against });
+      return {
+        label: I18N.pick(signal, "label"),
+        text: text,
+        why: I18N.pick(signal, "why")
+      };
     }).filter(Boolean);
   }
 
@@ -408,8 +453,8 @@
 
       if (!entry) untested.push(item.food);
       else if (!entry.low) noServe.push(item.food);
-      else if (item.grams > entry.low) over.push(item.food + " " + item.grams + "g, low at " + entry.low + "g");
-      else { within.push(item.food + " " + item.grams + "g, low at " + entry.low + "g"); counting = false; }
+      else if (item.grams > entry.low) over.push(fodmapLine(item, entry));
+      else { within.push(fodmapLine(item, entry)); counting = false; }
 
       /* A food over its serving counts towards every subtype it carries. The
          serving was set by whichever one was limiting and the traffic light
@@ -427,6 +472,12 @@
     return { counts: counts, over: over, within: within, noServe: noServe, untested: untested };
   }
 
+  function fodmapLine(item, entry) {
+    return I18N.t("fodmap.overLine", {
+      food: I18N.nameOf(item.food), grams: item.grams, low: entry.low
+    });
+  }
+
   /* Why each food counted or did not. Printed under the FODMAP sentence,
      because "counted at the amount you weighed out" is only useful if you can
      see which amounts were which. */
@@ -434,18 +485,17 @@
     const notes = [];
 
     if (standing.within.length) {
-      notes.push("Not counted, within the serving Monash rates low: " +
-        joinList(standing.within) + ".");
+      notes.push(I18N.t("fodmap.within", { list: joinList(standing.within) }));
     }
     if (standing.noServe.length) {
-      notes.push(joinList(standing.noServe) + (standing.noServe.length === 1 ? " has" : " have") +
-        " no low serving at any amount, so " +
-        (standing.noServe.length === 1 ? "it counts" : "they count") + " whatever the weight.");
+      notes.push(I18N.t("fodmap.noServe", {
+        list: joinList(standing.noServe.map(I18N.nameOf)), n: standing.noServe.length
+      }));
     }
     if (standing.untested.length) {
-      notes.push("No serving on file for " + joinList(standing.untested) + ", so " +
-        (standing.untested.length === 1 ? "it is" : "they are") +
-        " counted on the tag alone, whatever the weight.");
+      notes.push(I18N.t("fodmap.untested", {
+        list: joinList(standing.untested.map(I18N.nameOf)), n: standing.untested.length
+      }));
     }
 
     // What a threshold cannot show, and only worth saying when there is
@@ -453,9 +503,7 @@
     const carrying = standing.over.length + standing.within.length +
       standing.noServe.length + standing.untested.length;
     if (carrying > 1) {
-      notes.push("Each serving is rated low on its own, so several in one meal can still " +
-        "add up — a plate of foods each within its own serving is not the same as one " +
-        "low-FODMAP food.");
+      notes.push(I18N.t("fodmap.stacking"));
     }
 
     return notes;
@@ -482,29 +530,26 @@
      as a sentence with the unit explained rather than printed as a bare
      number, and the wording leans harder as the count climbs. */
   const IN_GRAMS = {
-    over_10g_fat: "Fat", protein: "Protein", fiber: "Fiber",
-    alcohol: "Alcohol", bile_stimulant: "the bile-stimulating load"
+    over_10g_fat: "nutrient.fat", protein: "nutrient.protein",
+    fiber: "nutrient.fiber", alcohol: "nutrient.alcohol",
+    bile_stimulant: "nutrient.bileLoad"
   };
 
   // What one helping of a carrying food holds, at minimum — the dose the tag
   // is set by. See DOSE in tools/lmv-core.js; these must match it.
   const PER_HELPING = {
-    salicylate: "at least 1mg of salicylic acid",
-    over_3g_lactose: "at least 5g of sugars"
+    salicylate: "perHelping.salicylate",
+    over_3g_lactose: "perHelping.lactose"
   };
 
   function helpingPhrase(servings) {
-    if (servings < 1) return "part of one standard helping";
-    if (servings < 2) return "about one standard helping";
-    return fmt(servings) + " standard helpings";
+    return I18N.t("meal.helpingPhrase", { servings: fmt(servings) });
   }
 
   // The emphasis the count earns, as its own clause at the end of the
   // sentence so it never lands mid-phrase.
   function helpingWeight(servings) {
-    if (servings >= 6) return " — several times what one helping carries";
-    if (servings >= 4) return " — a lot in one sitting";
-    return "";
+    return I18N.t("meal.helpingWeight", { servings: servings });
   }
 
   function helpingRows(found) {
@@ -513,35 +558,35 @@
       .map(function (id) {
         return {
           label: I18N.traitLabel(TRAITS[id]),
-          text: (found[id].count === 1
-            ? "one ingredient carries it, " + helpingPhrase(found[id].servings)
-            : countWord(found[id].count) + " ingredients carry it, " +
-              helpingPhrase(found[id].servings) + " between them") +
+          text: I18N.t("meal.helpingRow", {
+            count: found[id].count,
+            countWord: countWord(found[id].count),
+            phrase: helpingPhrase(found[id].servings)
+          }) +
             helpingWeight(found[id].servings) +
-            (PER_HELPING[id] ? ". A helping holds " + PER_HELPING[id] : "") + ".",
+            (PER_HELPING[id]
+              ? I18N.t("meal.aHelpingHolds", { what: I18N.t(PER_HELPING[id]) })
+              : "") + ".",
           servings: found[id].servings
         };
       })
       .sort(function (a, b) { return b.servings - a.servings; });
   }
 
-  // ---- Wording -----------------------------------------------------------
-  const COUNT_WORDS = ["no", "one", "two", "three", "four", "five", "six",
-    "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen"];
+  /* ---- Wording ----------------------------------------------------------
+     The words themselves live in ui-text.js, one whole sentence per language.
+     English builds "one of the five FODMAP types" out of fragments in an
+     order Swedish does not use, so what stays here is the arithmetic — which
+     branch, which count — and each language writes its own sentence around
+     it. "an cross-reaction" was once printable; the article is now the
+     language's problem rather than this file's. */
+  function countWord(n) { return I18N.t("count.word", { n: n }); }
 
-  function countWord(n) { return COUNT_WORDS[n] || String(n); }
-
-  function ingredients(n) { return n + (n === 1 ? " ingredient" : " ingredients"); }
-
-  // "an cross-reaction" was printable. The nouns come from FILTER_SECTIONS,
-  // so this cannot be settled by writing the article into the string.
-  function article(noun) {
-    return /^[aeiou]/i.test(noun) ? "an" : "a";
-  }
+  function ingredients(n) { return I18N.t("count.ingredients", { n: n }); }
 
   function joinList(parts) {
     if (parts.length === 1) return parts[0];
-    return parts.slice(0, -1).join(", ") + " and " + parts[parts.length - 1];
+    return parts.slice(0, -1).join(", ") + I18N.t("count.and") + parts[parts.length - 1];
   }
 
   // Naming ten absent allergens one by one buries the four that are there.
@@ -550,10 +595,9 @@
   function absentSentence(absent) {
     if (!absent.length) return "";
     if (absent.length <= NAME_ABSENT_UP_TO) {
-      return " " + joinList(absent) + (absent.length === 1 ? " is" : " are") +
-        " not in this meal.";
+      return I18N.t("meal.absentListed", { list: joinList(absent), n: absent.length });
     }
-    return " The other " + countWord(absent.length) + " are not in this meal.";
+    return I18N.t("meal.absentCounted", { word: countWord(absent.length) });
   }
 
   /* `counts` overrides how many ingredients count towards each type, and is
@@ -584,32 +628,49 @@
     const total = family.types.length;
     // "Five of the five" is a long way of saying all of them.
     const howMany = present.length === total
-      ? "All " + countWord(total)
-      : countWord(present.length) + " of the " + countWord(total);
+      ? I18N.t("meal.allOfThem", { word: countWord(total) })
+      : I18N.t("meal.someOfThem", {
+        some: countWord(present.length), total: countWord(total)
+      });
     // Nothing "comes from the most ingredients" when they all come from the
     // same number — that read as a ranking of a tie.
     const tied = present.every(function (row) { return row.count === present[0].count; });
+
+    // The words each family answers to, in whichever language is showing.
+    const words = {
+      noun: family.noun,
+      nounTypes: family.svNounTypes,
+      gender: family.svGender,
+      totalWord: countWord(total)
+    };
     let text;
 
     if (broadOnly) {
-      text = "This meal carries " + article(family.noun) + " " + family.noun + " from " +
-        ingredients(found[family.broad].count) + ", by a mechanism with no type of " +
-        "its own. None of the " + countWord(total) + " types tracked here are in it.";
+      text = I18N.t("meal.familyBroadOnly", Object.assign({}, words, {
+        noun: I18N.lang() === "sv" ? family.svNoun : family.noun,
+        from: ingredients(found[family.broad].count)
+      }));
     } else if (present.length === 1) {
-      text = "One of the " + countWord(total) + " " + family.noun +
-        " types tracked here is in this meal: " + present[0].label + ", from " +
-        ingredients(present[0].count) + "." + absentSentence(absent);
+      text = I18N.t("meal.familyOne", Object.assign({}, words, {
+        first: present[0].label,
+        from: ingredients(present[0].count)
+      })) + absentSentence(absent);
     } else if (tied) {
-      text = howMany + " " + family.noun + " types tracked here are in this meal: " +
-        joinList(present.map(function (row) { return row.label; })) + ", each from " +
-        ingredients(present[0].count) + "." + absentSentence(absent);
+      text = I18N.t("meal.familyTied", Object.assign({}, words, {
+        howMany: howMany,
+        list: joinList(present.map(function (row) { return row.label; })),
+        from: ingredients(present[0].count)
+      })) + absentSentence(absent);
     } else {
       const rest = present.slice(1).map(function (row) {
         return row.label + " (" + row.count + ")";
       });
-      text = howMany + " " + family.noun + " types tracked here are in this meal. " +
-        present[0].label + " comes from the most ingredients (" + present[0].count +
-        "), then " + joinList(rest) + "." + absentSentence(absent);
+      text = I18N.t("meal.familyRanked", Object.assign({}, words, {
+        howMany: howMany,
+        first: present[0].label,
+        count: present[0].count,
+        rest: joinList(rest)
+      })) + absentSentence(absent);
     }
 
     // Every branch above builds a sentence; only one of them starts with a
@@ -635,11 +696,11 @@
     if (!found[traitId] || modifierIsIdle(traitId, found)) return null;
     const count = found[traitId].count;
     let where;
-    if (totalItems === 1) where = "in the only ingredient.";
+    if (totalItems === 1) where = I18N.t("meal.onlyIngredient");
     // "in all 2 ingredients" is not how anyone says it.
-    else if (count === totalItems && totalItems === 2) where = "in both ingredients.";
-    else if (count === totalItems) where = "in all " + totalItems + " ingredients.";
-    else where = "in " + count + " of the " + totalItems + " ingredients.";
+    else if (count === totalItems && totalItems === 2) where = I18N.t("meal.bothIngredients");
+    else if (count === totalItems) where = I18N.t("meal.allIngredients", { n: totalItems });
+    else where = I18N.t("meal.someIngredients", { n: count, total: totalItems });
     return {
       title: I18N.traitLabel(TRAITS[traitId]),
       text: where,
@@ -651,14 +712,20 @@
      an analysis under a blank heading belongs to nothing. The stored name
      stays empty, so typing a name back in works; only the display falls back. */
   function mealTitle(meal, index) {
-    return (meal.name || "").trim() || "Meal " + (index + 1);
+    return (meal.name || "").trim() || I18N.t("meal.untitled", { n: index + 1 });
   }
 
   function totalGrams(items) {
     return items.reduce(function (sum, item) { return sum + item.grams; }, 0);
   }
 
-  function fmt(n) { return (Math.round(n * 10) / 10).toString(); }
+  /* One decimal, and the decimal separator the reader uses. Swedish writes
+     25,4 where English writes 25.4, and a page that mixes the two looks like
+     two pages. */
+  function fmt(n) {
+    const rounded = (Math.round(n * 10) / 10).toString();
+    return I18N.lang() === "sv" ? rounded.replace(".", ",") : rounded;
+  }
 
   // ---- The builder -------------------------------------------------------
   function renderBuilder() {
@@ -681,7 +748,7 @@
       nameInput.className = "mealName";
       if (index === activeMeal) card.classList.add("mealCard--active");
       nameInput.value = meal.name;
-      nameInput.setAttribute("aria-label", "Meal name");
+      nameInput.setAttribute("aria-label", I18N.t("meal.mealName"));
       nameInput.addEventListener("input", function () { meal.name = nameInput.value; });
       nameInput.addEventListener("change", render);
       head.appendChild(nameInput);
@@ -692,11 +759,11 @@
       const copyMeal = document.createElement("button");
       copyMeal.type = "button";
       copyMeal.className = "mealRemove";
-      copyMeal.textContent = "Duplicate";
+      copyMeal.textContent = I18N.t("meal.duplicate");
       copyMeal.addEventListener("click", function (e) {
         e.stopPropagation();
         meals.splice(index + 1, 0, {
-          name: meal.name + " (copy)",
+          name: I18N.t("meal.copySuffix", { name: meal.name }),
           items: meal.items.map(function (item) {
             return { food: item.food, grams: item.grams };
           })
@@ -710,7 +777,7 @@
         const removeMeal = document.createElement("button");
         removeMeal.type = "button";
         removeMeal.className = "mealRemove";
-        removeMeal.textContent = "Remove";
+        removeMeal.textContent = I18N.t("meal.remove");
         removeMeal.addEventListener("click", function (e) {
           e.stopPropagation();
           meals.splice(index, 1);
@@ -725,7 +792,7 @@
       if (!meal.items.length) {
         const empty = document.createElement("p");
         empty.className = "mealEmpty";
-        empty.textContent = "No foods yet.";
+        empty.textContent = I18N.t("meal.noFoodsYet");
         card.appendChild(empty);
       } else {
         const list = document.createElement("ul");
@@ -743,7 +810,7 @@
           grams.min = "1";
           grams.className = "mealItemGrams";
           grams.value = item.grams;
-          grams.setAttribute("aria-label", "Grams of " + item.food);
+          grams.setAttribute("aria-label", I18N.t("meal.gramsOf", { food: I18N.nameOf(item.food) }));
           grams.addEventListener("change", function () {
             const value = parseInt(grams.value, 10);
             item.grams = value > 0 ? value : 1;
@@ -764,7 +831,7 @@
           const remove = document.createElement("button");
           remove.type = "button";
           remove.className = "mealItemRemove";
-          remove.setAttribute("aria-label", "Remove " + item.food);
+          remove.setAttribute("aria-label", I18N.t("meal.removeFood", { food: I18N.nameOf(item.food) }));
           remove.textContent = "×";
           remove.addEventListener("click", function () {
             meal.items.splice(itemIndex, 1);
@@ -775,7 +842,9 @@
           const servings = document.createElement("span");
           servings.className = "mealItemServings";
           servings.textContent = food && food.portion
-            ? "(" + fmt(item.grams / food.portion) + " × " + food.portion + "g serving)"
+            ? I18N.t("meal.servingNote", {
+              n: fmt(item.grams / food.portion), portion: food.portion
+            })
             : "";
           li.appendChild(servings);
 
@@ -792,8 +861,7 @@
     const food = FOODS[name];
     if (!food) return;
     if (!hasFigures(name)) {
-      showError('"' + name + '" has no nutrient figures on file, so a meal holding it ' +
-        "could not be totalled. It is still in the main app and in Foods without.");
+      showError(I18N.t("meal.droppedNoFigures", { food: I18N.nameOf(name) }));
       return;
     }
     showError("");
@@ -817,7 +885,7 @@
     if (!items.length) {
       const p = document.createElement("p");
       p.className = "mealEmpty";
-      p.textContent = "No foods in this meal yet.";
+      p.textContent = I18N.t("meal.noFoodsInMeal");
       section.appendChild(p);
       container.appendChild(section);
       return;
@@ -825,8 +893,9 @@
 
     const weight = document.createElement("p");
     weight.className = "mealWeight";
-    weight.textContent = items.length + (items.length === 1 ? " food, " : " foods, ") +
-      totalGrams(items) + "g in total";
+    weight.textContent = I18N.t("meal.weightLine", {
+      items: items.length, grams: totalGrams(items)
+    });
     section.appendChild(weight);
 
     /* What the meal was, in words. Only on paper: on screen the builder above
@@ -835,7 +904,7 @@
     const ingredientLine = document.createElement("p");
     ingredientLine.className = "mealIngredients printOnly";
     ingredientLine.textContent = items.map(function (item) {
-      return I18N.nameOf(item.food) + " " + item.grams + "g";
+      return I18N.nameOf(item.food) + " " + I18N.t("meal.gramsAfter", { n: item.grams });
     }).join(" · ");
     section.appendChild(ingredientLine);
 
@@ -846,20 +915,19 @@
       const n = nutrientTotals(items);
 
       const h3n = document.createElement("h3");
-      h3n.textContent = "In this meal";
+      h3n.textContent = I18N.t("meal.inThisMeal");
       section.appendChild(h3n);
 
       if (!n.covered.length) {
         const p = document.createElement("p");
         p.className = "mealEmpty";
-        p.textContent = "None of these foods has figures on file, so this meal cannot be " +
-          "totalled in grams.";
+        p.textContent = I18N.t("meal.noFiguresAtAll");
         section.appendChild(p);
       } else {
         const table = document.createElement("table");
         table.className = "mealTable";
         const header = document.createElement("tr");
-        ["Nutrient", "Grams"].forEach(function (text) {
+        [I18N.t("meal.colNutrient"), I18N.t("meal.colGrams")].forEach(function (text) {
           const th = document.createElement("th");
           th.textContent = text;
           header.appendChild(th);
@@ -881,7 +949,7 @@
           const grams = n.totals[nutrient.key];
           if (grams == null) return;
           if (nutrient.whenAbove != null && grams <= nutrient.whenAbove) return;
-          gramsRow(nutrient.label, grams);
+          gramsRow(I18N.pick(nutrient, "label"), grams);
         });
 
         const bile = bileLoad(n.totals);
@@ -901,19 +969,17 @@
         const coverage = document.createElement("p");
         coverage.className = "mealCoverage";
         coverage.textContent = n.uncovered.length
-          ? "From " + n.covered.length + " of the " + items.length + " foods. " +
-            joinList(n.uncovered.map(I18N.nameOf)) + (n.uncovered.length === 1 ? " has" : " have") +
-            " no figures on file, so nothing above counts " +
-            (n.uncovered.length === 1 ? "it" : "them") + " — the real totals are higher."
-          : "From all " + items.length + " foods.";
+          ? I18N.t("meal.fromSome", {
+            covered: n.covered.length, total: items.length, n: n.uncovered.length,
+            missing: joinList(n.uncovered.map(I18N.nameOf))
+          })
+          : I18N.t("meal.fromAll", { n: items.length });
         section.appendChild(coverage);
 
         if (showBile) {
           const bileNote = document.createElement("p");
           bileNote.className = "mealCoverage";
-          bileNote.textContent = "The bile-stimulating load is the fat above, counting " +
-            "protein at a fifth of its weight — protein triggers the same hormone far " +
-            "more weakly. It is the rule single foods are tagged by, applied to the meal.";
+          bileNote.textContent = I18N.t("meal.bileNote");
           section.appendChild(bileNote);
         }
 
@@ -923,15 +989,12 @@
         const signals = mealSignals(n);
         if (signals.length) {
           const h3s = document.createElement("h3");
-          h3s.textContent = "A lot at once";
+          h3s.textContent = I18N.t("meal.aLotAtOnce");
           section.appendChild(h3s);
 
           const lead = document.createElement("p");
           lead.className = "mealVerdict";
-          lead.textContent = "Not a judgement about the meal, and not a limit to stay " +
-            "under — most people cross these at an ordinary dinner and notice nothing. " +
-            "It matters when someone is eating well over what they are used to, or when " +
-            "the gut is already sensitive or already restricted.";
+          lead.textContent = I18N.t("signal.lead");
           section.appendChild(lead);
 
           const list = document.createElement("ul");
@@ -953,16 +1016,14 @@
           const basisLink = document.createElement("a");
           basisLink.href = "method.html#a-lot-at-once";
           basisLink.className = "mealFamilyLink";
-          basisLink.textContent = "Where each line comes from →";
+          basisLink.textContent = I18N.t("meal.whereFrom");
           basis.appendChild(basisLink);
           section.appendChild(basis);
 
           if (n.uncovered.length) {
             const p = document.createElement("p");
             p.className = "mealCoverage";
-            p.textContent = "Worked out over the " + n.coveredGrams + "g this meal has " +
-              "figures for, not its full weight. Nothing crossing a line here is in " +
-              "doubt, but nothing staying under one is settled either.";
+            p.textContent = I18N.t("signal.coveredNote", { grams: n.coveredGrams });
             section.appendChild(p);
           }
         }
@@ -974,15 +1035,12 @@
     const helpings = helpingRows(found);
     if (helpings.length) {
       const h3a = document.createElement("h3");
-      h3a.textContent = "Counted in helpings, not grams";
+      h3a.textContent = I18N.t("meal.inHelpings");
       section.appendChild(h3a);
 
       const lead = document.createElement("p");
       lead.className = "mealVerdict";
-      lead.textContent = "These scale with how much is eaten, but this database has no " +
-        "figure per 100g for them — so they are counted in helpings, a helping being the " +
-        "standard serving of whichever food carries it. A helping is at least the amount " +
-        "the tag is set by, and can be well over it.";
+      lead.textContent = I18N.t("meal.helpingsLead");
       section.appendChild(lead);
 
       const list = document.createElement("ul");
@@ -1000,7 +1058,7 @@
 
     // ---- Present in the meal, family by family
     const h3b = document.createElement("h3");
-    h3b.textContent = "Present in the meal";
+    h3b.textContent = I18N.t("meal.presentInMeal");
     section.appendChild(h3b);
 
     // FODMAPs are the one family where the amount decides whether an
@@ -1038,7 +1096,7 @@
     if (!blocks.length) {
       const p = document.createElement("p");
       p.className = "mealEmpty";
-      p.textContent = "Nothing in this meal carries a categorical trait.";
+      p.textContent = I18N.t("meal.nothingCategorical");
       section.appendChild(p);
     } else {
       const list = document.createElement("ul");
@@ -1056,7 +1114,7 @@
           const link = document.createElement("a");
           link.href = "articles.html#" + block.articleId;
           link.className = "mealFamilyLink noPrint";
-          link.textContent = "Read more →";
+          link.textContent = I18N.t("meal.readMore");
           li.appendChild(link);
         }
 
@@ -1074,15 +1132,7 @@
 
     const note = document.createElement("p");
     note.className = "traitFoodsNote";
-    note.textContent = "Grams above are real amounts. A helping is not: it is one standard " +
-      "serving of a food that carries the trait, holding at least the amount the tag is set " +
-      "by and possibly well over it. " +
-      "Under \"present\", how prominent a " +
-      "trait is means how many ingredients carry it, not how much of it is there: those traits " +
-      "have no amount to add up, and a small amount of an allergen is still an amount. FODMAPs " +
-      "are the exception — Monash rates a stated serving low, so a food weighed out within its " +
-      "serving is in the meal without being counted there. To see which food carries what, use " +
-      "the main app.";
+    note.textContent = I18N.t("meal.closingNote", { present: I18N.t("meal.presentInMeal") });
     section.appendChild(note);
 
     container.appendChild(section);
@@ -1130,7 +1180,7 @@
     section.className = "mealAnalysis";
 
     const h2 = document.createElement("h2");
-    h2.textContent = "Side by side";
+    h2.textContent = I18N.t("meal.sideBySide");
     section.appendChild(h2);
 
     const headings = ["", ].concat(filled.map(function (meal) {
@@ -1139,7 +1189,7 @@
     const tallies = filled.map(function (meal) { return tally(meal.items); });
 
     const weights = {
-      label: "Total weight",
+      label: I18N.t("meal.totalWeight"),
       cells: filled.map(function (meal) { return totalGrams(meal.items) + " g"; })
     };
 
@@ -1152,7 +1202,7 @@
           return t.totals[nutrient.key] == null ? "—" : fmt(t.totals[nutrient.key]) + " g";
         });
         if (cells.some(function (c) { return c !== "—"; })) {
-          rows.push({ label: nutrient.label, cells: cells });
+          rows.push({ label: I18N.pick(nutrient, "label"), cells: cells });
         }
       });
       // The derived row, same as in a single meal's analysis.
@@ -1165,7 +1215,7 @@
       }
 
       const h3 = document.createElement("h3");
-      h3.textContent = "Nutrients";
+      h3.textContent = I18N.t("meal.nutrients");
       section.appendChild(h3);
       section.appendChild(comparisonTable(headings, rows));
 
@@ -1173,8 +1223,11 @@
       if (short.length) {
         const note = document.createElement("p");
         note.className = "mealCoverage";
-        note.textContent = "Some foods have no figures on file, so those columns are short: " +
-          joinList(short.reduce(function (all, t) { return all.concat(t.uncovered.map(I18N.nameOf)); }, [])) + ".";
+        note.textContent = I18N.t("meal.shortColumns", {
+          names: joinList(short.reduce(function (all, t) {
+            return all.concat(t.uncovered.map(I18N.nameOf));
+          }, []))
+        });
         section.appendChild(note);
       }
     } else {
@@ -1189,7 +1242,7 @@
     });
     if (helpingIds.length) {
       const h3 = document.createElement("h3");
-      h3.textContent = "In standard helpings";
+      h3.textContent = I18N.t("meal.inStandardHelpings");
       section.appendChild(h3);
       section.appendChild(comparisonTable(headings, helpingIds.map(function (id) {
         return {
@@ -1199,9 +1252,7 @@
       })));
       const note = document.createElement("p");
       note.className = "mealCoverage";
-      note.textContent = "A helping is the standard serving of whichever food carries the " +
-        "trait — these two have no figure per 100g in this database, so helpings are the " +
-        "only quantity there is.";
+      note.textContent = I18N.t("meal.helpingsCompareNote");
       section.appendChild(note);
     }
 
@@ -1228,7 +1279,7 @@
     });
     if (presentIds.length) {
       const h3 = document.createElement("h3");
-      h3.textContent = "Present in the meal";
+      h3.textContent = I18N.t("meal.presentInMeal");
       section.appendChild(h3);
       section.appendChild(comparisonTable(headings, presentIds.map(function (id) {
         return {
@@ -1243,8 +1294,7 @@
 
     const note = document.createElement("p");
     note.className = "traitFoodsNote";
-    note.textContent = "The meals are compared, not added together: two meals side by side " +
-      "answer what changed, which a total would hide.";
+    note.textContent = I18N.t("meal.compareNote");
     section.appendChild(note);
 
     container.appendChild(section);
@@ -1274,7 +1324,7 @@
 
   // ---- Buttons -----------------------------------------------------------
   document.getElementById("addMealButton").addEventListener("click", function () {
-    meals.push({ name: "Meal " + (meals.length + 1), items: [] });
+    meals.push({ name: I18N.t("meal.untitled", { n: meals.length + 1 }), items: [] });
     activeMeal = meals.length - 1;
     render();
   });
@@ -1299,7 +1349,7 @@
     SaveLoad.load("session", function (data) {
       Session.restore(data);
       if (!Array.isArray(data.meals) || !data.meals.length) {
-        showError("That file holds no meals. Anything else in it has been restored.");
+        showError(I18N.t("meal.noMealsInFile"));
         return;
       }
       // Keep only what this tool understands, and only foods it still has.
@@ -1312,7 +1362,7 @@
         }).map(function (item) {
           return { food: item.food, grams: Math.round(item.grams) };
         });
-        return { name: meal.name || "Meal " + (index + 1), items: items };
+        return { name: meal.name || I18N.t("meal.untitled", { n: index + 1 }), items: items };
       });
       showError(dropped.length
         ? "Loaded, but " + dropped.length + " food(s) were left out — no longer in the " +

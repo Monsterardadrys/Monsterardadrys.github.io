@@ -32,13 +32,13 @@
 <body>
     <header>
         <div class="headerBar">
-            <h1>Food intolerance guide</h1>
-            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+            <h1 data-sv="Guide till matintolerans">Food intolerance guide</h1>
+            <button class="hamburgerBtn" id="hamburgerBtn" aria-label="Open menu" data-sv-aria-label="Öppna menyn" aria-expanded="false" aria-controls="navDrawer">
                 <span></span><span></span><span></span>
             </button>
         </div>
         <nav class="navDrawer" id="navDrawer" aria-hidden="true">
-            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu">&times;</button>
+            <button class="navDrawerClose" id="navDrawerClose" aria-label="Close menu" data-sv-aria-label="Stäng menyn">&times;</button>
             <!-- Built by nav.js from NAV_LINKS, so no page can carry a
                  different menu from its neighbours. -->
             <ul></ul>
@@ -47,86 +47,87 @@
     </header>
 
     <section class="hero">
-        <h2>Some foods don't just taste different. They react differently in you.</h2>
-        <p>A triage tool for exploring possible GI reactions to foods — built for dietitians and other health
+        <h2 data-sv="Vissa livsmedel smakar inte bara annorlunda. De reagerar annorlunda i dig.">Some foods don't just taste different. They react differently in you.</h2>
+        <p data-sv="Ett triageverktyg för att utforska möjliga magreaktioner på livsmedel — byggt för dietister och annan vårdpersonal, och öppet för alla som är nyfikna på sina egna symtom.">A triage tool for exploring possible GI reactions to foods — built for dietitians and other health
             professionals, and open to anyone curious about their own symptoms.</p>
-        <p>Pick a handful of foods someone reacts to, and the tool finds what they share — a FODMAP subtype,
+        <p data-sv="Välj en handfull livsmedel som någon reagerar på, så hittar verktyget vad de har gemensamt — en FODMAP-undertyp, en histaminbelastning, ett dolt allergen — mönster som är lätta att missa måltid för måltid, men uppenbara när de läggs bredvid varandra.">Pick a handful of foods someone reacts to, and the tool finds what they share — a FODMAP subtype,
             a histamine load, a hidden allergen — patterns easy to miss meal by meal, but obvious once laid out.</p>
     </section>
 
     <!-- The three tools. Each answers a different question; the wording of
          each card is what tells someone which one they want. -->
     <section class="toolChooser">
-        <h2>Three ways in</h2>
+        <h2 data-sv="Tre vägar in">Three ways in</h2>
         <div class="toolCards">
             <a class="toolCard" href="app.html">
-                <h3>Find the shared thread</h3>
-                <p>Tick the foods someone reacts to. The tool ranks what they have in common.</p>
-                <span class="toolCardGo">Shared traits →</span>
+                <h3 data-sv="Hitta den gemensamma tråden">Find the shared thread</h3>
+                <p data-sv="Kryssa i de livsmedel någon reagerar på. Verktyget rangordnar vad de har gemensamt.">Tick the foods someone reacts to. The tool ranks what they have in common.</p>
+                <span class="toolCardGo" data-sv="Gemensamma egenskaper →">Shared traits →</span>
             </a>
             <a class="toolCard" href="meal.html">
-                <h3>Weigh up a meal</h3>
-                <p>Build a meal from weighed amounts and see what it is loaded with, and what is simply in it.</p>
-                <span class="toolCardGo">Meal builder →</span>
+                <h3 data-sv="Väg en måltid">Weigh up a meal</h3>
+                <p data-sv="Bygg en måltid av vägda mängder och se vad den är tungt lastad med, och vad som bara finns i den.">Build a meal from weighed amounts and see what it is loaded with, and what is simply in it.</p>
+                <span class="toolCardGo" data-sv="Måltidsbyggare →">Meal builder →</span>
             </a>
             <a class="toolCard" href="without.html">
-                <h3>Look it up the other way</h3>
-                <p>Pick traits and see which foods in the database carry none of them. A lookup, not a diet.</p>
-                <span class="toolCardGo">Foods without →</span>
+                <h3 data-sv="Slå upp det från andra hållet">Look it up the other way</h3>
+                <p data-sv="Välj egenskaper och se vilka livsmedel i databasen som saknar dem alla. En uppslagning, inte en diet.">Pick traits and see which foods in the database carry none of them. A lookup, not a diet.</p>
+                <span class="toolCardGo" data-sv="Livsmedel utan →">Foods without →</span>
             </a>
         </div>
     </section>
 
     <section class="demo">
-        <h2>Try it — pick a few foods</h2>
-        <p>Six common foods with FODMAPs, salicylates or allergens — pick at least two to see their top
+        <h2 data-sv="Prova — välj några livsmedel">Try it — pick a few foods</h2>
+        <p data-sv="Sex vanliga livsmedel med FODMAP, salicylater eller allergener — välj minst två för att se deras främsta gemensamma egenskaper. Hela verktyget följer 40+ egenskaper över 470+ livsmedel.">Six common foods with FODMAPs, salicylates or allergens — pick at least two to see their top
             shared traits. The full app tracks 40+ traits across 470+ foods.</p>
 
         <div id="demoFoods" class="demoFoods"></div>
 
         <div id="demoResult" class="demoResult">
-            <p id="demoResultText">Select at least two foods to see what they share.</p>
+            <p id="demoResultText" data-sv="Välj minst två livsmedel för att se vad de har gemensamt.">Select at least two foods to see what they share.</p>
             <ul id="demoTraitList" class="demoTraitList"></ul>
-            <p class="demoHint" id="demoHint" hidden>Click a trait to read more</p>
+            <p class="demoHint" id="demoHint" hidden data-sv="Klicka på en egenskap för att läsa mer">Click a trait to read more</p>
         </div>
 
-        <p class="demoDisclaimer">This mini-demo is for illustration only, not medical advice.
+        <p class="demoDisclaimer" data-sv="Den här minidemon är enbart en illustration, inte medicinsk rådgivning. &lt;a href=&quot;app.html&quot;&gt;Läs hela ansvarsfriskrivningen&lt;/a&gt; i verktyget.">This mini-demo is for illustration only, not medical advice.
             <a href="app.html">Read the full disclaimer</a> in the app.</p>
 
         <div class="demoPopupOverlay" id="demoPopupOverlay">
             <div class="demoPopupBox" role="dialog" aria-modal="true" aria-labelledby="demoPopupTitle">
-                <button class="demoPopupClose" id="demoPopupClose" aria-label="Close">&times;</button>
+                <button class="demoPopupClose" id="demoPopupClose" aria-label="Close" data-sv-aria-label="Stäng">&times;</button>
                 <h3 id="demoPopupTitle"></h3>
                 <p id="demoPopupText"></p>
-                <a class="demoPopupLink" href="app.html">See the full analysis in the app →</a>
+                <a class="demoPopupLink" href="app.html" data-sv="Se hela analysen i verktyget →">See the full analysis in the app →</a>
             </div>
         </div>
     </section>
 
     <section class="linksOut">
         <div class="linkCard">
-            <h3>Explore the articles</h3>
-            <p>Deep dives into FODMAPs, histamine, allergens, and more — what they are and why they cause symptoms.</p>
-            <a href="articles.html">Read the articles →</a>
+            <h3 data-sv="Utforska artiklarna">Explore the articles</h3>
+            <p data-sv="Fördjupningar i FODMAP, histamin, allergener och mer — vad de är och varför de ger symtom.">Deep dives into FODMAPs, histamine, allergens, and more — what they are and why they cause symptoms.</p>
+            <a href="articles.html" data-sv="Läs artiklarna →">Read the articles →</a>
         </div>
         <div class="linkCard">
-            <h3>About this tool</h3>
-            <p>The clinical reasoning behind it, and how the trait analysis actually works.</p>
-            <a href="about.html">Learn more →</a>
+            <h3 data-sv="Om verktyget">About this tool</h3>
+            <p data-sv="Det kliniska resonemanget bakom det, och hur egenskapsanalysen faktiskt fungerar.">The clinical reasoning behind it, and how the trait analysis actually works.</p>
+            <a href="about.html" data-sv="Läs mer →">Learn more →</a>
         </div>
         <div class="linkCard">
-            <h3>Get in touch</h3>
-            <p>Found an error, have a suggestion, or want to support the project?</p>
-            <a href="contact.html">Contact →</a>
+            <h3 data-sv="Hör av dig">Get in touch</h3>
+            <p data-sv="Hittat ett fel, har ett förslag, eller vill stötta projektet?">Found an error, have a suggestion, or want to support the project?</p>
+            <a href="contact.html" data-sv="Kontakt →">Contact →</a>
         </div>
     </section>
 
     <footer>
-        <p>Built by a dietitian, for dietitians (and the curious).</p>
-        <p>Pre-beta v1.75 — updated 15 August 2026</p>
+        <p data-sv="Byggt av en dietist, för dietister (och nyfikna).">Built by a dietitian, for dietitians (and the curious).</p>
+        <p data-sv="Pre-beta v1.77 — uppdaterad 15 augusti 2026">Pre-beta v1.77 — updated 15 August 2026</p>
     </footer>
 
     <script src="i18n.js"></script>
+    <script src="ui-text.js"></script>
     <script src="foods-data.js"></script>
     <script src="session.js"></script>
     <script src="nav.js"></script>
