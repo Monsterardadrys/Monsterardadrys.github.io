@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
      level so a shopper can tell two versions of it apart on the shelf; here
      there is only ever one of each, so the parenthesis is noise. Stripped for
      display only — the value behind the checkbox stays the real name. */
-  function demoLabel(name) { return name.replace(/\s*\([^)]*\)$/, ""); }
+  function demoLabel(name) { return I18N.nameOf(name).replace(/\s*\([^)]*\)$/, ""); }
 
   const demoFoodsContainer = document.getElementById("demoFoods");
   const demoResultText = document.getElementById("demoResultText");
@@ -25,8 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function openDemoPopup(traitId) {
     const trait = TRAITS[traitId];
     if (!trait) return;
-    demoPopupTitle.textContent = trait.label;
-    demoPopupText.textContent = trait.analysis[0];
+    demoPopupTitle.textContent = I18N.traitLabel(trait);
+    demoPopupText.textContent = I18N.pickList(trait, "analysis")[0];
     demoPopupOverlay.classList.add("show");
   }
 
@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
     demoResultText.textContent = "Top shared traits among these " + checked.length + " foods:";
     topTraits.forEach(function (t) {
       const li = document.createElement("li");
-      const label = TRAITS[t.traitId] ? TRAITS[t.traitId].label : t.traitId;
+      const label = TRAITS[t.traitId] ? I18N.traitLabel(TRAITS[t.traitId]) : t.traitId;
       li.textContent = t.percent + "% — " + label;
       if (TRAITS[t.traitId]) {
         li.tabIndex = 0;

@@ -21,7 +21,7 @@ const TraitFoods = (function () {
       const names = category.foods
         .filter(function (food) { return food.traits.indexOf(traitId) !== -1; })
         .map(function (food) { return food.name; });
-      if (names.length) groups.push({ label: category.label, names: names });
+      if (names.length) groups.push({ label: I18N.pick(category, "label"), names: names });
     });
     return groups;
   }
@@ -58,7 +58,10 @@ const TraitFoods = (function () {
     return ids;
   }
 
-  function plural(n) { return n === 1 ? "1 food" : n + " foods"; }
+  function plural(n) {
+    if (I18N.lang() === "sv") return n === 1 ? "1 livsmedel" : n + " livsmedel";
+    return n === 1 ? "1 food" : n + " foods";
+  }
 
   // One trait's lists, as a <details> so a long article stays scannable.
   function buildTraitBlock(traitId, openByDefault) {
@@ -70,7 +73,7 @@ const TraitFoods = (function () {
     if (openByDefault) details.open = true;
 
     const summary = document.createElement("summary");
-    summary.textContent = TRAITS[traitId].label + " — " + plural(countFor(traitId));
+    summary.textContent = I18N.traitLabel(TRAITS[traitId]) + " — " + plural(countFor(traitId));
     details.appendChild(summary);
 
     groups.forEach(function (group) {
@@ -83,7 +86,7 @@ const TraitFoods = (function () {
       ul.className = "traitFoodsList";
       group.names.forEach(function (name) {
         const li = document.createElement("li");
-        li.textContent = name;
+        li.textContent = I18N.nameOf(name);
         ul.appendChild(li);
       });
       details.appendChild(ul);
@@ -147,7 +150,7 @@ const TraitFoods = (function () {
     traitIds.forEach(function (traitId) {
       const h3 = document.createElement("h3");
       // The label verbatim — lowercasing it would wreck DAO, GOS and FODMAPs.
-      h3.textContent = "Foods tagged " + TRAITS[traitId].label +
+      h3.textContent = "Foods tagged " + I18N.traitLabel(TRAITS[traitId]) +
         " (" + plural(countFor(traitId)) + ")";
       container.appendChild(h3);
 
@@ -156,7 +159,7 @@ const TraitFoods = (function () {
       byCategory(traitId).forEach(function (group) {
         group.names.forEach(function (name) {
           const li = document.createElement("li");
-          li.textContent = name;
+          li.textContent = I18N.nameOf(name);
           ul.appendChild(li);
         });
       });
@@ -185,7 +188,7 @@ const TraitFoods = (function () {
       input.value = traitId;
       if (onChange) input.addEventListener("change", onChange);
       label.appendChild(input);
-      label.appendChild(document.createTextNode(TRAITS[traitId].label));
+      label.appendChild(document.createTextNode(I18N.traitLabel(TRAITS[traitId])));
       parent.appendChild(label);
     }
 
@@ -201,7 +204,7 @@ const TraitFoods = (function () {
 
       const title = document.createElement("p");
       title.className = "filterCardTitle";
-      title.textContent = section.title;
+      title.textContent = I18N.pick(section, "title");
       card.appendChild(title);
 
       if (section.broad) checkbox(card, section.broad, "broad");
@@ -235,7 +238,7 @@ const TraitFoods = (function () {
       const names = category.foods.filter(function (food) {
         return !traitIds.some(function (id) { return food.traits.indexOf(id) !== -1; });
       }).map(function (food) { return food.name; });
-      if (names.length) groups.push({ label: category.label, names: names });
+      if (names.length) groups.push({ label: I18N.pick(category, "label"), names: names });
     });
     return groups;
   }

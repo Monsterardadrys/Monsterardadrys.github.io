@@ -76,12 +76,12 @@
     checkboxes.forEach(function (checkbox) {
       const chip = document.createElement("span");
       chip.className = "chosenFoodChip";
-      chip.appendChild(document.createTextNode(checkbox.value));
+      chip.appendChild(document.createTextNode(I18N.nameOf(checkbox.value)));
 
       const removeBtn = document.createElement("button");
       removeBtn.type = "button";
       removeBtn.className = "chosenFoodRemove";
-      removeBtn.setAttribute("aria-label", "Remove " + checkbox.value);
+      removeBtn.setAttribute("aria-label", "Remove " + I18N.nameOf(checkbox.value));
       removeBtn.textContent = "×";
       removeBtn.addEventListener("click", function () {
         checkbox.checked = false;
@@ -172,14 +172,14 @@
   }
 
   function rowLabel(item) {
-    return item.untracked ? item.label : TRAITS[item.traitId].label;
+    return item.untracked ? item.label : I18N.traitLabel(TRAITS[item.traitId]);
   }
 
   function getMacroNotes(counts, totalSelected) {
     if (totalSelected === 0) return [];
     return MACRO_TRAIT_IDS
       .filter(function (id) { return ((counts[id] || 0) / totalSelected) * 100 > 90; })
-      .map(function (id) { return TRAITS[id].label; });
+      .map(function (id) { return I18N.traitLabel(TRAITS[id]); });
   }
 
   // ---- Main recompute — runs on every food or filter checkbox change ---
@@ -331,7 +331,7 @@
       const chip = document.createElement("button");
       chip.type = "button";
       chip.className = isExcluded ? "popupFoodChip excluded" : "popupFoodChip";
-      chip.textContent = food.name;
+      chip.textContent = I18N.nameOf(food.name);
       chip.setAttribute("aria-pressed", String(!isExcluded));
       chip.addEventListener("click", function (e) {
         e.stopPropagation();
@@ -406,14 +406,14 @@
 
       const heading = document.createElement("p");
       heading.className = "popupTraitHeading";
-      heading.textContent = item.percent + "% — " + trait.label;
+      heading.textContent = item.percent + "% — " + I18N.traitLabel(trait);
       headingRow.appendChild(heading);
 
       const removeBtn = document.createElement("button");
       removeBtn.type = "button";
       removeBtn.className = "popupTraitRemove noPrint";
       removeBtn.textContent = "Exclude";
-      removeBtn.setAttribute("aria-label", "Exclude " + trait.label + " from the analysis");
+      removeBtn.setAttribute("aria-label", "Exclude " + I18N.traitLabel(trait) + " from the analysis");
       removeBtn.addEventListener("click", function (e) {
         e.stopPropagation();
         const filterCheckbox = filterContainer.querySelector('input[value="' + item.traitId + '"]');
@@ -427,9 +427,10 @@
 
       popupTextContainer.appendChild(headingRow);
 
-      const paragraphs = (trait.analysis && trait.analysis.length)
-        ? trait.analysis
-        : ["The most common shared trait among these foods is " + trait.label + "."];
+      const analysis = I18N.pickList(trait, "analysis");
+      const paragraphs = analysis.length
+        ? analysis
+        : ["The most common shared trait among these foods is " + I18N.traitLabel(trait) + "."];
       paragraphs.forEach(function (text, i) {
         const p = document.createElement("p");
         if (i === 0) p.className = "popupText";
@@ -439,7 +440,9 @@
 
       // How well-grounded the trait is, under its own heading and below the
       // explanation — what the trait is comes first, how sure we are second.
-      if (trait.evidence) {
+      const evidence = I18N.lang() === "sv" && trait.sv && trait.sv.evidence
+        ? trait.sv.evidence : trait.evidence;
+      if (evidence) {
         const evHeading = document.createElement("p");
         evHeading.className = "evidenceHeading";
         evHeading.textContent = "How well supported is this?";
@@ -448,11 +451,13 @@
         const ev = document.createElement("p");
         ev.className = "evidenceLine";
         const badge = document.createElement("span");
+        /* The class comes off the English level so the colour does not
+           depend on the language; the text comes off the shown one. */
         badge.className = "evidenceBadge evidence--" +
           trait.evidence.level.toLowerCase().replace(/[^a-z]+/g, "-");
-        badge.textContent = trait.evidence.level;
+        badge.textContent = evidence.level;
         ev.appendChild(badge);
-        ev.appendChild(document.createTextNode(" " + trait.evidence.detail));
+        ev.appendChild(document.createTextNode(" " + evidence.detail));
         popupTextContainer.appendChild(ev);
       }
       if (trait.articleId) {
@@ -470,7 +475,7 @@
         const printNote = document.createElement("p");
         printNote.className = "printOnly";
         const articleTitle = (typeof ARTICLES !== "undefined" && ARTICLES[trait.articleId])
-          ? ARTICLES[trait.articleId].title : trait.label;
+          ? ARTICLES[trait.articleId].title : I18N.traitLabel(trait);
         printNote.textContent = "See \"" + articleTitle + "\" below.";
         popupTextContainer.appendChild(printNote);
       }
@@ -534,7 +539,8 @@
   document.getElementById("printAnalysisButton").addEventListener("click", function (e) {
     e.stopPropagation();
 
-    const foods = popupActiveFoods.map(function (f) { return f.name; }).sort();
+    const foods = popupActiveFoods.map(function (f) { return I18N.nameOf(f.name); })
+      .sort(function (a, b) { return a.localeCompare(b, I18N.lang()); });
     const foodsList = document.getElementById("printFoodsList");
     foodsList.innerHTML = "<h2>Foods in this analysis (" + foods.length + ")</h2>";
     const ul = document.createElement("ul");

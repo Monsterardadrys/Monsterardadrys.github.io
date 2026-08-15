@@ -18,15 +18,15 @@
 const NAV_LINKS = [
   // The three tools first: they are what the site is for, and someone
   // holding a phone should reach any of them from any of them.
-  { href: "app.html", label: "Shared traits" },
-  { href: "meal.html", label: "Meal builder" },
-  { href: "without.html", label: "Foods without" },
-  { href: "articles.html", label: "Articles" },
-  { href: "about.html", label: "About" },
-  { href: "sources.html", label: "Data sources" },
-  { href: "contact.html", label: "Contact" },
+  { href: "app.html", label: "Shared traits", sv: "Gemensamma egenskaper" },
+  { href: "meal.html", label: "Meal builder", sv: "Måltidsbyggare" },
+  { href: "without.html", label: "Foods without", sv: "Livsmedel utan" },
+  { href: "articles.html", label: "Articles", sv: "Artiklar" },
+  { href: "about.html", label: "About", sv: "Om" },
+  { href: "sources.html", label: "Data sources", sv: "Datakällor" },
+  { href: "contact.html", label: "Contact", sv: "Kontakt" },
   // Not a page. Every page stores something, so it has to be on every page.
-  { action: "clearData", label: "Clear local data" }
+  { action: "clearData", label: "Clear local data", sv: "Rensa lokal data" }
 ];
 
 const NAV_ACTIONS = {
@@ -48,8 +48,42 @@ const NAV_ACTIONS = {
   if (!drawer.querySelector(".navTitle")) {
     const title = document.createElement("p");
     title.className = "navTitle";
-    title.textContent = "Menu";
+    title.textContent = typeof I18N !== "undefined" && I18N.lang() === "sv" ? "Meny" : "Menu";
     drawer.insertBefore(title, drawer.firstChild);
+  }
+
+  /* The language switch, built here for the same reason the menu is: one
+     copy, on every page, that no page can be missing. Switching reloads —
+     the food names, trait labels and analysis text are all read at render
+     time, and a reload re-renders all of them without every page needing
+     to know how to redraw itself. */
+  if (typeof I18N !== "undefined" && !drawer.querySelector(".langSwitch")) {
+    const FLAGS = { en: { flag: "🇬🇧", label: "English" }, sv: { flag: "🇸🇪", label: "Svenska" } };
+    const box = document.createElement("div");
+    box.className = "langSwitch";
+    box.setAttribute("role", "group");
+    box.setAttribute("aria-label", "Language / Språk");
+
+    I18N.LANGUAGES.forEach(function (code) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "langBtn" + (I18N.lang() === code ? " langBtn--on" : "");
+      btn.lang = code;
+      btn.setAttribute("aria-pressed", I18N.lang() === code ? "true" : "false");
+      btn.innerHTML = "<span class=\"langFlag\" aria-hidden=\"true\">" + FLAGS[code].flag +
+        "</span><span class=\"langName\">" + FLAGS[code].label + "</span>";
+      btn.addEventListener("click", function () {
+        if (I18N.lang() === code) return;
+        I18N.set(code);
+        // ?lang= in the address bar would outrank the choice just stored.
+        const url = new URL(window.location.href);
+        url.searchParams.delete("lang");
+        window.location.replace(url.toString());
+      });
+      box.appendChild(btn);
+    });
+
+    drawer.insertBefore(box, drawer.querySelector(".navTitle").nextSibling);
   }
 
   // Home sits above the list, as its own link, on every page but the front one.
@@ -59,12 +93,13 @@ const NAV_ACTIONS = {
   list.innerHTML = "";
   NAV_LINKS.forEach(function (item) {
     const li = document.createElement("li");
+    const text = typeof I18N !== "undefined" ? I18N.pick(item, "label") : item.label;
 
     if (item.action) {
       const button = document.createElement("a");
       button.href = "#";
       button.className = "navClearData";
-      button.textContent = item.label;
+      button.textContent = text;
       button.addEventListener("click", function (e) {
         e.preventDefault();
         NAV_ACTIONS[item.action]();
@@ -75,12 +110,12 @@ const NAV_ACTIONS = {
       const here = document.createElement("span");
       here.className = "navHere";
       here.setAttribute("aria-current", "page");
-      here.textContent = item.label;
+      here.textContent = text;
       li.appendChild(here);
     } else {
       const link = document.createElement("a");
       link.href = item.href;
-      link.textContent = item.label;
+      link.textContent = text;
       li.appendChild(link);
     }
 

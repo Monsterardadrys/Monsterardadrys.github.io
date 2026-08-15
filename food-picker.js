@@ -41,13 +41,13 @@ const FoodPicker = (function () {
       const button = document.createElement("button");
       button.type = "button";
       button.className = "button";
-      button.textContent = category.label;
+      button.textContent = I18N.pick(category, "label");
 
       const group = document.createElement("div");
       group.className = "foodGroup";
 
       foods.slice().sort(function (a, b) {
-        return a.name.localeCompare(b.name);
+        return I18N.compareNames(a.name, b.name);
       }).forEach(function (food) {
         if (mode === "pick") {
           // One tap adds the food, so it is a button rather than a checkbox:
@@ -56,7 +56,7 @@ const FoodPicker = (function () {
           pick.type = "button";
           pick.className = "foodPick";
           pick.dataset.food = food.name;
-          pick.textContent = food.name;
+          pick.textContent = I18N.foodName(food);
           pick.addEventListener("click", function () {
             if (options.onPick) options.onPick(food.name);
           });
@@ -74,7 +74,7 @@ const FoodPicker = (function () {
         if (options.onChange) checkbox.addEventListener("change", options.onChange);
 
         label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(food.name));
+        label.appendChild(document.createTextNode(I18N.foodName(food)));
         group.appendChild(label);
       });
 
@@ -116,13 +116,15 @@ const FoodPicker = (function () {
           .filter(Boolean);
         if (!categories.length) return;
         categories.forEach(function (c) { placed.add(c.id); });
-        renderGroupSection(group.title, categories);
+        renderGroupSection(I18N.pick(group, "title"), categories);
       });
 
       // Any category not named in CATEGORY_GROUPS still shows, under "Other",
       // so adding one to foods-data.js is never a silent disappearance.
       const leftover = CATEGORIES.filter(function (c) { return !placed.has(c.id); });
-      if (leftover.length) renderGroupSection("Other", leftover);
+      if (leftover.length) {
+        renderGroupSection(I18N.lang() === "sv" ? "Övrigt" : "Other", leftover);
+      }
     }
 
     function entries() {
@@ -152,8 +154,9 @@ const FoodPicker = (function () {
        only because of where the brackets fall. Splitting the query and asking
        for each word separately removes the guessing, and costs nothing — a
        single word behaves exactly as it did. */
+    // The haystack is both languages at once — see I18N.bothNames.
     function matchesWords(name, words) {
-      const hay = name.toUpperCase();
+      const hay = I18N.bothNames(name).toUpperCase();
       return words.every(function (w) { return hay.indexOf(w) > -1; });
     }
 
