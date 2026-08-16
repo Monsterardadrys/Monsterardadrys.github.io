@@ -624,6 +624,17 @@
     picker.showAll();
   });
 
+  /* Closing every category, which used to need one tap per open box. Both
+     buttons clear the search first: leaving a filter running while the
+     boxes shut means reopening one shows a fraction of its foods with
+     nothing on screen saying why. Ticks are untouched — this folds the
+     list away, it does not clear a selection. */
+  document.getElementById("hideAllButton").addEventListener("click", function () {
+    searchField.value = "";
+    picker.clearSearch();
+    picker.hideAll();
+  });
+
   // ---- Clear selection (Foods / Filter / All) -----------------------------
   document.getElementById("clearFoodsButton").addEventListener("click", function () {
     if (!window.confirm("Clear all selected foods?")) return;

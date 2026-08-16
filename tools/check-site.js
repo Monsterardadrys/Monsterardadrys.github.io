@@ -231,6 +231,63 @@ const foodCount = CATEGORIES.reduce(function (sum, c) { return sum + c.foods.len
   });
 });
 
+/* The source ladder, counted rather than remembered.
+
+   method.html names how many foods each table answers for, in both
+   languages. Those five numbers were written once and then left: the page
+   claimed 375 from Livsmedelsverket and 6 from Ciqual long after a harvest
+   had made them 401 and 83, and nothing said so, because prose does not
+   fail a build. It does now — every one of them is read back out of
+   nutrition-data.js, which is generated and cannot be wrong about its own
+   contents. A round that changes the counts has to change the sentence. */
+const { NUTRITION } = new Function(read("nutrition-data.js") + "; return { NUTRITION };")();
+const bySource = {};
+Object.keys(NUTRITION).forEach(function (name) {
+  const s = NUTRITION[name].src;
+  bySource[s] = (bySource[s] || 0) + 1;
+});
+
+const LADDER = [
+  [/Livsmedelsverket[\s\S]{0,220}?by hand — (\d+) of the/, "lmv", "from Livsmedelsverket"],
+  [/A further (\d+) come from <strong>Frida<\/strong>/, "frida", "from Frida"],
+  [/(\d+) from\s+the French <strong>Ciqual<\/strong>/, "ciqual", "from Ciqual"],
+  [/(\d+) from the American/, "usda", "from SR Legacy"],
+  // Swedish, same five numbers in the same order.
+  [/bekräftade för hand (?:—|&mdash;) (\d+) av de/, "lmv", "from Livsmedelsverket (sv)"],
+  [/Ytterligare (\d+) kommer från/, "frida", "from Frida (sv)"],
+  [/(\d+) från den franska/, "ciqual", "from Ciqual (sv)"],
+  [/(\d+) från det amerikanska/, "usda", "from SR Legacy (sv)"]
+];
+
+const methodHtml = read("method.html");
+LADDER.forEach(function (rule) {
+  const m = rule[0].exec(methodHtml);
+  if (!m || m[1] === undefined) {
+    faults.push("method.html no longer states how many foods come " + rule[2] +
+      " — the sentence moved and this check cannot hold it to the data");
+    return;
+  }
+  const said = Number(m[1]);
+  const real = bySource[rule[1]] || 0;
+  if (said !== real) {
+    faults.push('method.html says ' + said + " foods come " + rule[2] +
+      ", nutrition-data.js holds " + real);
+  }
+});
+
+const withFigures = Object.keys(NUTRITION).length;
+[
+  [/which brings it to (\d+)\s*\n?\s*with figures/, "which brings it to N with figures"],
+  [/vilket ger (\d+) med siffror/, "vilket ger N med siffror"]
+].forEach(function (rule) {
+  const m = rule[0].exec(methodHtml);
+  if (!m) { faults.push('method.html no longer says "' + rule[1] + '"'); return; }
+  if (Number(m[1]) !== withFigures) {
+    faults.push('method.html says ' + m[1] + " foods have figures, nutrition-data.js holds " +
+      withFigures);
+  }
+});
+
 // The doses quoted in prose, checked against tools/lmv-core.js.
 const coreSource = read("tools/lmv-core.js");
 const DOSE = {};
