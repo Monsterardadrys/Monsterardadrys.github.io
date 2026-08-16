@@ -28,6 +28,7 @@ const path = require("path");
 
 const ROOT = path.join(__dirname, "..");
 const faults = [];
+const warnings = [];
 const notes = [];
 
 function read(f) { return fs.readFileSync(path.join(ROOT, f), "utf8"); }
@@ -241,11 +242,26 @@ const foodCount = CATEGORIES.reduce(function (sum, c) { return sum + c.foods.len
    nutrition-data.js, which is generated and cannot be wrong about its own
    contents. A round that changes the counts has to change the sentence. */
 const { NUTRITION } = new Function(read("nutrition-data.js") + "; return { NUTRITION };")();
+
+/* Only entries that still belong to a food are counted. A rename leaves the
+   old name behind in the generated file until the next build, and counting
+   it would have the page claim a figure for a food that no longer exists —
+   which is how these numbers went wrong in the first place. */
+const listed = new Set();
+CATEGORIES.forEach(function (c) { c.foods.forEach(function (f) { listed.add(f.name); }); });
+
 const bySource = {};
+const orphans = [];
 Object.keys(NUTRITION).forEach(function (name) {
+  if (!listed.has(name)) { orphans.push(name); return; }
   const s = NUTRITION[name].src;
   bySource[s] = (bySource[s] || 0) + 1;
 });
+if (orphans.length) {
+  warnings.push("nutrition-data.js holds " + orphans.length + " figure(s) for food(s) no longer " +
+    "in the list — rebuild to drop them: " + orphans.slice(0, 6).join(", ") +
+    (orphans.length > 6 ? " and " + (orphans.length - 6) + " more" : ""));
+}
 
 const LADDER = [
   [/Livsmedelsverket[\s\S]{0,220}?by hand — (\d+) of the/, "lmv", "from Livsmedelsverket"],
@@ -275,7 +291,9 @@ LADDER.forEach(function (rule) {
   }
 });
 
-const withFigures = Object.keys(NUTRITION).length;
+// Same rule as the per-source counts: orphans left over from a rename are
+// not foods with figures, whatever the generated file still holds.
+const withFigures = Object.keys(NUTRITION).filter(function (n) { return listed.has(n); }).length;
 [
   [/which brings it to (\d+)\s*\n?\s*with figures/, "which brings it to N with figures"],
   [/vilket ger (\d+) med siffror/, "vilket ger N med siffror"]
@@ -334,6 +352,11 @@ if (aboutClaim) {
 // ---- Report --------------------------------------------------------------
 console.log(pages.length + " pages, " + scripts.length + " scripts, version " + swVersion);
 notes.forEach(function (n) { console.log("  " + n); });
+
+if (warnings.length) {
+  console.log("\nWarnings (" + warnings.length + ")");
+  warnings.forEach(function (w) { console.log("  - " + w); });
+}
 
 if (faults.length) {
   console.log("\nFaults (" + faults.length + ")");

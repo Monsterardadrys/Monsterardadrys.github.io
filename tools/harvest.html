@@ -642,7 +642,13 @@
                 });
                 const all = document.createElement("button");
                 all.className = "chip" + (activeAxis || showOrdinary ? "" : " on");
-                all.textContent = "everything (" + ranked.candidates.length + ")";
+                /* "everything" was true when the ordinary records were being
+                   thrown away and this really was the whole list. It is not
+                   any more, and a chip that says everything beside a chip
+                   holding several hundred records it excludes is a lie in
+                   one word. The counts row already calls this set "worth a
+                   look"; the chip now says the same thing. */
+                all.textContent = "worth a look (" + ranked.candidates.length + ")";
                 all.addEventListener("click", function () {
                     activeAxis = null;
                     showOrdinary = false;
