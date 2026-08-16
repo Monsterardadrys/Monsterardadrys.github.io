@@ -314,13 +314,46 @@
         </section>
     </main>
 
-    <script src="lmv-core.js"></script>
-    <script src="frida-core.js"></script>
-    <script src="ciqual-core.js"></script>
-    <script src="harvest-core.js"></script>
+    <!-- Loaded with a stamp rather than as plain tags, because a stale one is
+         invisible. A harvest run came back with the old matcher's answers —
+         Punsch offered Provolone, Svagdricka offered Rice — from a browser
+         that had foods-data.js fresh (it is fetched with no-store) and
+         harvest-core.js from cache. Half the scoring was new and half was old,
+         and nothing on the page said so. These files change often and are
+         opened by hand a few times a month; there is no caching worth having
+         here. -->
+    <script>
+        (function () {
+            const stamp = "?t=" + Date.now();
+            ["lmv-core.js", "frida-core.js", "ciqual-core.js", "harvest-core.js"]
+                .forEach(function (src) {
+                    document.write('<script src="' + src + stamp + '"><\/script>');
+                });
+        })();
+    </script>
     <script>
         (function () {
             "use strict";
+
+            /* If a core did load stale, say so rather than quietly scoring
+               differently. Each of these arrived with a change to how the
+               nearest-food column is worked out, so their absence is exactly
+               the state that produced a wrong column last time. */
+            const stale = [];
+            if (typeof Harvest.LETTERS_FLOOR !== "number") stale.push("harvest-core.js");
+            if (typeof LMV.sameWord !== "function" || typeof LMV.isWeakWord !== "function") {
+                stale.push("lmv-core.js");
+            }
+            if (stale.length) {
+                document.addEventListener("DOMContentLoaded", function () {
+                    const bar = document.createElement("p");
+                    bar.className = "status show bad";
+                    bar.textContent = "Your browser is running an old " + stale.join(" and ") +
+                        ". Reload with a hard refresh (Ctrl-Shift-R) — the nearest-food " +
+                        "column will be wrong until you do.";
+                    document.querySelector("main").insertBefore(bar, document.querySelector("main").firstChild);
+                });
+            }
 
             const STORE = "harvest-picks";
 

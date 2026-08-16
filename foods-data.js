@@ -1577,7 +1577,8 @@ const CATEGORIES = [
       { name: "Pine Nuts", sv: "Pinjenötter", portion: 15, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "allergen_treenut"] },
       { name: "Hemp Seeds", sv: "Hampafrön", lmv: "Hampafrö u. skal", portion: 15, traits: ["over_10g_fat"] },
       { name: "Poppy Seeds", sv: "Vallmofrön", lmv: "Vallmofrö", portion: 5, traits: [] },
-      { name: "Sunflower Seed Butter", sv: "Solrosfröpasta", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "cross_reactive", "cross_mugwort"] }
+      { name: "Sunflower Seed Butter", sv: "Solrosfröpasta", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "cross_reactive", "cross_mugwort"] },
+      { name: "Cocoa Beans", sv: "Kakaobönor", lmv: "Kakaobönor", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fiber", "caffeine", "irritant"] },
     ]
   },
   {
@@ -1633,7 +1634,8 @@ const CATEGORIES = [
       { name: "Wheat Bran", sv: "Vetekli", form: "dry", lmv: "Vetekli", portion: 20, traits: ["fiber", "fodmaps", "fructans", "allergen_wheat"] },
       { name: "Rice Flour", sv: "Rismjöl", form: "dry", lmv: "Rismjöl vitt", portion: 40, traits: ["refined_carbs"] },
       { name: "Potato Flour", sv: "Potatismjöl", form: "dry", lmv: "Potatismjöl", portion: 20, traits: ["refined_carbs"] },
-      { name: "Almond Flour", sv: "Mandelmjöl", form: "dry", lmv: "Mandelmjöl", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "salicylate", "allergen_treenut", "cross_reactive", "cross_birch"] }
+      { name: "Almond Flour", sv: "Mandelmjöl", form: "dry", lmv: "Mandelmjöl", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "salicylate", "allergen_treenut", "cross_reactive", "cross_birch"] },
+      { name: "Rusks (whole grain)", sv: "Skorpor (fullkorn)", lmv: "Skorpor fullkorn osötade", portion: 20, traits: ["allergen_wheat"] },
     ]
   },
   {
@@ -1741,7 +1743,16 @@ const CATEGORIES = [
       { name: "Goat Meat", sv: "Getkött", portion: 125, traits: ["bile_stimulant", "protein", "alpha_gal"] },
       { name: "Ostrich", sv: "Struts", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein"] },
       { name: "Quail", sv: "Vaktel", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein"] },
-      { name: "Rabbit", sv: "Kanin", portion: 125, traits: ["bile_stimulant", "protein", "alpha_gal"] }
+      { name: "Rabbit", sv: "Kanin", portion: 125, traits: ["bile_stimulant", "protein", "alpha_gal"] },
+      { name: "Pheasant", sv: "Fasan", lmv: "Fasan stekt m. skinn", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein"] },
+      { name: "Ptarmigan", sv: "Ripa", lmv: "Ripa stekt", portion: 125, traits: ["bile_stimulant", "protein"] },
+      { name: "Hare", sv: "Hare", lmv: "Hare stek stekt", portion: 125, traits: ["bile_stimulant", "protein", "alpha_gal"] },
+      { name: "Roe Deer", sv: "Rådjur", lmv: "Rådjur kött ugnsstekt", portion: 125, traits: ["protein", "alpha_gal"] },
+      { name: "Horse Meat (smoked)", sv: "Hästkött (rökt)", lmv: "Häst hamburgerkött rökt", portion: 20, traits: ["alpha_gal", "histamine", "dao_competitor"] },
+      { name: "Kassler", sv: "Kassler", lmv: "Gris kassler kotlettrad rökt", portion: 125, traits: ["protein", "alpha_gal", "histamine", "dao_competitor"] },
+      { name: "Smoked Ham (~6% fat)", sv: "Rökt skinka (~6 % fett)", lmv: "Gris skinka rökt fett 6%", portion: 20, traits: ["alpha_gal", "histamine", "dao_competitor"] },
+      { name: "Lamb Liver", sv: "Lammlever", lmv: "Lammlever stekt m. salt", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein", "alpha_gal"] },
+      { name: "Reindeer Liver", sv: "Renlever", lmv: "Renlever stekt m. salt", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein", "alpha_gal"] },
     ]
   },
   {
@@ -1767,7 +1778,14 @@ const CATEGORIES = [
       { name: "Pickled Herring", sv: "Inlagd sill", lmv: "Sill inlagd u. lag", portion: 20, traits: ["refined_carbs", "histamine", "dao_competitor", "irritant", "aceticAcid", "allergen_fish"] },
       { name: "Surimi / Crab Sticks", sv: "Surimi / krabbstickor", lmv: "Surimi fisk", portion: 20, traits: ["refined_carbs", "allergen_fish", "allergen_wheat"] },
       { name: "Squid", sv: "Bläckfisk", portion: 80, traits: ["protein", "allergen_mollusc"] },
-      { name: "Cod Liver (canned)", sv: "Torsklever (konserv)", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_fish"] }
+      { name: "Cod Liver (canned)", sv: "Torsklever (konserv)", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "allergen_fish"] },
+      { name: "Perch", sv: "Abborre", lmv: "Abborre kokt m. salt", portion: 125, traits: ["protein", "allergen_fish", "histamine"] },
+      { name: "Pike", sv: "Gädda", lmv: "Gädda kokt m. salt", portion: 125, traits: ["protein", "allergen_fish", "histamine"] },
+      { name: "Haddock", sv: "Kolja", lmv: "Kolja kokt m. salt", portion: 125, traits: ["protein", "allergen_fish", "histamine"] },
+      { name: "Turbot", sv: "Piggvar", lmv: "Piggvar kokt m. salt", portion: 125, traits: ["bile_stimulant", "protein", "allergen_fish", "histamine"] },
+      { name: "Whitefish", sv: "Sik", lmv: "Sik kokt m. salt", portion: 125, traits: ["bile_stimulant", "protein", "allergen_fish", "histamine"] },
+      { name: "Smoked Herring", sv: "Böckling", lmv: "Böckling varmrökt", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen_fish", "histamine", "dao_competitor"] },
+      { name: "Fish Roe", sv: "Fiskrom", lmv: "Fiskrom torsk sill rå", portion: 20, traits: ["allergen_fish", "histamine"] },
     ]
   },
   {
@@ -1955,7 +1973,9 @@ const CATEGORIES = [
       { name: "Sweet Wine", sv: "Sött vin", portion: 150, traits: ["alcohol", "histamine", "irritant", "refined_carbs", "allergen_sulphite"] },
       { name: "Sangria", sv: "Sangria", portion: 150, traits: ["alcohol", "histamine", "irritant", "refined_carbs", "allergen_sulphite"] },
       { name: "Sake", sv: "Sake", portion: 150, traits: ["alcohol", "histamine", "irritant"] },
-      { name: "Liqueur", sv: "Likör", portion: 40, traits: ["alcohol", "irritant", "histamine", "refined_carbs"] }
+      { name: "Liqueur", sv: "Likör", portion: 40, traits: ["alcohol", "irritant", "histamine", "refined_carbs"] },
+      { name: "Gl\u00f6gg", sv: "Glögg", lmv: "Glögg vin vol. % 10", portion: 100, traits: ["alcohol", "irritant", "histamine", "refined_carbs", "allergen_sulphite"] },
+      { name: "Punsch", sv: "Punsch", lmv: "Punsch vol. % 26", portion: 40, traits: ["alcohol", "irritant", "histamine", "refined_carbs"] },
     ]
   },
   {
@@ -2171,7 +2191,13 @@ const CATEGORIES = [
       { name: "Wafer Biscuit", sv: "Rån", portion: 30, traits: ["refined_carbs", "allergen_wheat"] },
       { name: "Filled Wafer Biscuit", sv: "Fyllt rån", portion: 30, traits: ["over_10g_fat", "refined_carbs", "allergen_wheat", "allergen_milk"] },
       { name: "Ice Cream Cone", sv: "Glasstrut", portion: 100, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "irritant", "alcohol", "allergen_milk", "allergen_wheat"] },
-      { name: "Panna Cotta", sv: "Panna cotta", portion: 100, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "irritant", "alcohol", "allergen_milk"] }
+      { name: "Panna Cotta", sv: "Panna cotta", portion: 100, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "irritant", "alcohol", "allergen_milk"] },
+      { name: "Digestive Biscuit", sv: "Digestivekex", lmv: "Kex digestive fullkorn 23%", portion: 30, traits: ["refined_carbs", "allergen_wheat"] },
+      { name: "Savoury Crackers", sv: "Salta kex", lmv: "Kex salta", portion: 20, traits: ["refined_carbs", "allergen_wheat"] },
+      { name: "Sesame Crackers", sv: "Sesamkex", lmv: "Sesamkakor sesamkex", portion: 20, traits: ["over_10g_fat", "refined_carbs", "allergen_sesame", "allergen_wheat"] },
+      { name: "Spettekaka", sv: "Spettekaka", lmv: "Spettekaka", portion: 25, traits: ["refined_carbs", "allergen_egg"] },
+      { name: "Sorbet", sv: "Sorbet", lmv: "Glass sorbet", portion: 100, traits: ["refined_carbs"] },
+      { name: "Tiramisu", sv: "Tiramisu", lmv: "Tiramisu", portion: 100, traits: ["over_10g_fat", "bile_stimulant", "alcohol", "refined_carbs", "caffeine", "irritant", "allergen_milk", "allergen_egg", "allergen_wheat"] },
     ]
   },
   {

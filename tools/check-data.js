@@ -29,8 +29,8 @@ const source = fs.readFileSync(path.join(root, "foods-data.js"), "utf8");
 const { TRAITS, CATEGORIES, FILTER_SECTIONS, CATEGORY_GROUPS } =
   new Function(source + "; return { TRAITS, CATEGORIES, FILTER_SECTIONS, CATEGORY_GROUPS };")();
 
-const { NUTRITION } = new Function(
-  fs.readFileSync(path.join(root, "nutrition-data.js"), "utf8") + "; return { NUTRITION };")();
+const nutritionSource = fs.readFileSync(path.join(root, "nutrition-data.js"), "utf8");
+const { NUTRITION } = new Function(nutritionSource + "; return { NUTRITION };")();
 
 // Read straight out of lmv-core.js so there is one place a dose is set.
 const coreSource = fs.readFileSync(path.join(__dirname, "lmv-core.js"), "utf8");
@@ -129,6 +129,33 @@ CATEGORIES.forEach(function (category) {
     foods.push(Object.assign({ category: category.label }, food));
   });
 });
+
+/* Was nutrition-data.js built from this food list, or an older one?
+
+   The generated header records how many foods there were when it ran. A
+   build done against an out-of-date checkout looks completely normal —
+   valid file, sensible figures, every existing food answered — and the only
+   sign is that the foods added since are quietly missing. It has happened:
+   a build came back with 539 in the header while the list held 565, and the
+   26 foods harvested that morning had no figures for a reason nothing on
+   screen explained.
+
+   So the header is compared with the list. This is a warning rather than a
+   fault, because adding a food legitimately puts the two out of step until
+   the next build — which is exactly what the "no figures yet" line below
+   already says. What this adds is the other case: a build that ran and
+   still left them out. */
+const builtFor = /(\d+) of (\d+) foods have figures/.exec(nutritionSource);
+if (builtFor) {
+  const total = Number(builtFor[2]);
+  let count = 0;
+  CATEGORIES.forEach(function (c) { count += c.foods.length; });
+  if (total !== count) {
+    warnings.push("nutrition-data.js was built against " + total + " foods and the list now holds " +
+      count + " — if you have just run a build, it ran against an older copy of foods-data.js " +
+      "and the newest foods will have no figures however long you wait");
+  }
+}
 
 // ---- Basics --------------------------------------------------------------
 const names = new Set();
