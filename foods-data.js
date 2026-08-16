@@ -1613,8 +1613,7 @@ const CATEGORIES = [
       { name: "Sunflower Seed Butter", sv: "Solrosfröpasta", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "cross_reactive", "cross_mugwort"] },
       { name: "Cocoa Beans", sv: "Kakaobönor", lmv: "Kakaobönor", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fiber", "caffeine", "irritant"] },
       { name: "Almond Flour", sv: "Mandelmjöl", form: "dry", lmv: "Mandelmjöl", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "salicylate", "allergen_treenut", "cross_reactive", "cross_birch"] },
-      { name: "Peanut Butter", sv: "Jordnötssmör", lmv: "Jordnötssmör", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen_peanut", "cross_reactive", "cross_grass"] },
-      { name: "Mixed Nuts (salted)", sv: "Blandade nötter (saltade)", lmv: "Nötter blandade rostade m. salt", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "galactans", "allergen_treenut", "allergen_peanut", "cross_reactive", "cross_birch", "cross_grass"] }
+      { name: "Peanut Butter", sv: "Jordnötssmör", lmv: "Jordnötssmör", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen_peanut", "cross_reactive", "cross_grass"] }
     ]
   },
   {
@@ -1831,7 +1830,13 @@ const CATEGORIES = [
       { name: "Salami", sv: "Salami", lmv: "Påläggskorv salami rökt", portion: 20, traits: ["over_10g_fat", "histamine", "dao_competitor", "alpha_gal"] },
       { name: "Dry-Cured Ham (~12%)", sv: "Lufttorkad skinka (~12 %)", lmv: "Gris skinka lufttorkad italiensk", portion: 20, traits: ["histamine", "dao_competitor", "alpha_gal"] },
       { name: "Chicken Sausage", sv: "Kycklingkorv", lmv: "Korv kycklingkorv mager", portion: 100, traits: ["over_10g_fat", "bile_stimulant", "histamine"] },
-      { name: "Sausages (regular)", sv: "Korv (vanlig)", lmv: "Korv frukostkorv stekt", portion: 100, traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal"] },
+      /* Was "Sausages (regular)" / "Korv (vanlig)", beside a Hot Dog
+         Sausage — two rows that named the same thing to most readers, since
+         varmkorv is what "vanlig korv" means to plenty of people. The record
+         behind this one settles it: Korv frukostkorv stekt. It is a fried
+         breakfast sausage, so it says so, and the ambiguity goes with the
+         old name. */
+      { name: "Breakfast Sausage (fried)", sv: "Frukostkorv (stekt)", lmv: "Korv frukostkorv stekt", portion: 100, traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal"] },
       { name: "Frozen Meatballs", sv: "Frysta köttbullar", lmv: "Köttbullar frysvara", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "alpha_gal"] },
       { name: "Hot Dog Sausage", sv: "Varmkorv", lmv: "Korv varmkorv kokt", portion: 100, traits: ["over_10g_fat", "bile_stimulant", "histamine", "alpha_gal"] },
       { name: "Chicken Nuggets", sv: "Kycklingnuggets", lmv: "Kyckling nugget friterad tillagad på restaurang", portion: 125, traits: ["over_10g_fat", "bile_stimulant", "protein", "allergen_wheat"] },
@@ -2135,13 +2140,36 @@ const CATEGORIES = [
       { name: "Microwave Popcorn", sv: "Mikropopcorn", lmv: "Popcorn mikropopcorn poppade fett ca 22%", portion: 25, traits: [] },
       { name: "Savoury Crackers", sv: "Salta kex", lmv: "Kex salta", portion: 20, traits: ["refined_carbs", "allergen_wheat"] },
       { name: "Sesame Crackers", sv: "Sesamkex", lmv: "Sesamkakor sesamkex", portion: 20, traits: ["over_10g_fat", "refined_carbs", "allergen_sesame", "allergen_wheat"] },
-      { name: "Flavoured Potato Crisps", sv: "Smaksatta potatischips", lmv: "Chips potatis smaksatta fett ca 33%", lmvNote: "the seasoned bag, listed apart from plain because the seasoning is where the onion is", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "allergen_onion"] },
+      /* Three bags of potato crisps, which is two more than it looks. The
+         light bag is the reason: someone reaching for it wants to know
+         whether it changes anything, and the only way this site can answer
+         is to carry all three and let the doses fall where they fall. In a
+         30g bag: light 7.3g of fat, plain 8.4g, flavoured 9.8g. Only the
+         flavoured one reaches the bile dose, and the light bag lands nearer
+         plain than the label suggests. */
+      { name: "Potato chips (light, ~25% fat)", sv: "Potatischips (light, ~25 % fett)", lmv: "Chips potatis light fett 25%", portion: 30, traits: ["over_10g_fat"] },
+      { name: "Potato chips (flavoured)", sv: "Potatischips (smaksatta)", lmv: "Chips potatis smaksatta fett ca 33%", lmvNote: "the seasoned bag, listed apart from plain because the seasoning is where the onion and the cheese are", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "allergen_onion", "allergen_milk"] },
       { name: "Tortilla Chips", sv: "Tortillachips", lmv: "Chips majs tortilla ", portion: 30, traits: ["refined_carbs"] },
       { name: "Peanut Puffs", sv: "Jordnötsbågar", lmv: "Jordnötsbågar jordnötsringar", portion: 25, traits: ["over_10g_fat", "refined_carbs", "allergen_peanut", "cross_reactive", "cross_grass"] },
+      /* Not the same shelf as the cheese puffs above, whatever the shape
+         says: majskrokar are sold for toddlers — no cheese, few additives,
+         little salt. Which makes them one of the few things in this
+         category that carries nothing at all, and that is worth being able
+         to find. */
+      { name: "Corn Puffs (toddler snack)", sv: "Majskrokar (barnsnacks)", lmv: "Majskrokar", portion: 25, traits: ["refined_carbs"] },
       { name: "Chilli Nuts", sv: "Chilinötter", lmv: "Chilinötter", portion: 25, traits: ["over_10g_fat", "refined_carbs", "irritant", "capsaicin", "allergen_peanut", "allergen_wheat", "cross_reactive", "cross_grass"] },
       { name: "Lentil Puffs", sv: "Linsbågar", lmv: "Linsbågar fett 28%", portion: 25, traits: ["over_10g_fat", "refined_carbs"] },
       { name: "Roasted Chickpeas", sv: "Rostade kikärtor", form: "dry", lmv: "Kikärtor snacks torkade m. salt", portion: 30, traits: ["fodmaps", "galactans"] },
-      { name: "Japanese Rice Cracker Mix", sv: "Japanmix", lmv: "Japanmix blandade snacks m. inbakade nötter riscracker", portion: 25, traits: ["refined_carbs", "allergen_peanut", "allergen_soy", "allergen_wheat"] }
+      { name: "Japanese Rice Cracker Mix", sv: "Japanmix", lmv: "Japanmix blandade snacks m. inbakade nötter riscracker", portion: 25, traits: ["refined_carbs", "allergen_peanut", "allergen_soy", "allergen_wheat"] },
+      /* The roasted salted nuts sit here rather than under Nuts & seeds.
+         They are a snack you buy in a bag, not an ingredient you buy in a
+         bag, and the difference shows in what they reach: 25g of either
+         clears the bile dose where the same 25g of the plain nut is what
+         someone puts in a salad. Their unsalted counterparts stay where
+         they are — this is a second shelf, not a replacement. */
+      { name: "Salted Roasted Peanuts", sv: "Saltade rostade jordnötter", lmv: "Jordnötter rostade saltade", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen_peanut", "cross_reactive", "cross_grass"] },
+      { name: "Salted Roasted Cashews", sv: "Saltade rostade cashewnötter", lmv: "Cashewnötter rostade m. salt", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "galactans", "allergen_treenut"] },
+      { name: "Mixed Nuts (salted)", sv: "Blandade nötter (saltade)", lmv: "Nötter blandade rostade m. salt", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "galactans", "allergen_treenut", "allergen_peanut", "cross_reactive", "cross_birch", "cross_grass"] }
     ]
   },
   {
