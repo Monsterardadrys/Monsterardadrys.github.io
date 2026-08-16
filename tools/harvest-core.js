@@ -368,15 +368,42 @@
                 best: signals.length ? signals[0].at : 0,
                 nearest: nearest
             };
-        }).filter(function (c) { return !ranked || c.signals.length; });
-
-        candidates.sort(function (a, b) {
-            if (b.best !== a.best) return b.best - a.best;
-            return b.signals.length - a.signals.length;
         });
 
+        /* THE UNREMARKABLE ONES ARE KEPT, NOT DISCARDED. Notability is
+           measured on six macros, and there is one kind of food it is
+           structurally blind to: a cooked dish. A ready meal is a plate of
+           food thinned with water — mid-range fat, mid-range protein, little
+           fibre — so it is remarkable on nothing and never reaches the
+           cutoff. Measured against our own list, not one of the ready meals
+           we already carry would have been offered by this filter, while
+           every oil, sweetener and spirit would.
+
+           No percentile trick fixes that, because the reason a ready meal is
+           worth listing here is its ingredients — wheat, milk, onion,
+           sulphite — and the macros do not carry ingredients. So rather than
+           guess at a dish from its figures, the ordinary records come back in
+           their own list, and a person reading the names can see in a second
+           what no threshold can work out. */
+        const notable = ranked
+            ? candidates.filter(function (c) { return c.signals.length; })
+            : candidates;
+        const plain = ranked
+            ? candidates.filter(function (c) { return !c.signals.length; })
+            : [];
+
+        const byBest = function (a, b) {
+            if (b.best !== a.best) return b.best - a.best;
+            return b.signals.length - a.signals.length;
+        };
+        notable.sort(byBest);
+        // No signals to sort these by, so alphabetical: the only order that
+        // helps when you are scanning names for a dish you recognise.
+        plain.sort(function (a, b) { return a.record.name.localeCompare(b.record.name); });
+
         return {
-            candidates: candidates,
+            candidates: notable,
+            plain: plain,
             ranked: ranked,
             counts: {
                 read: records.length,
@@ -384,7 +411,8 @@
                 incomplete: incomplete.length,
                 junk: junk.length,
                 usable: usable.length,
-                notable: candidates.length
+                notable: notable.length,
+                ordinary: plain.length
             },
             known: known,
             incomplete: incomplete

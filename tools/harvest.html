@@ -255,6 +255,16 @@
             <p class="dropped">It does not decide. It cannot tell a food from a prepared dish, and it
                 has no idea whether anyone buys the thing. Both of those are yours. What it does is
                 make three thousand rows into a list you can actually read.</p>
+            <p class="dropped"><strong>Where the ready meals are.</strong> "Unremarkable" is measured
+                on six macros, and a cooked dish is unremarkable on all of them by construction — a
+                plate of food thinned with water, mid-range fat, mid-range protein, little fibre.
+                Measured against the foods this site already lists, <em>not one</em> of the ready
+                meals would have made the shortlist, while every oil, sweetener and spirit would.
+                And no threshold can fix it, because what makes a ready meal worth listing here is
+                its ingredients — wheat, milk, onion, sulphite — which the figures do not carry. So
+                the ordinary records are kept rather than thrown away: the <em>ordinary</em> chip
+                below the shortlist shows them, A to Z, for the one job a person does better than a
+                percentile — recognising a dish by its name.</p>
             <p class="dropped"><strong>The ladder does not apply here.</strong> Livsmedelsverket,
                 Frida and Ciqual are all laboratory analyses, and the ladder does not claim otherwise —
                 it exists to settle which figure to take when two tables answer for the <em>same</em>
@@ -437,6 +447,9 @@
             let ranked = null;
             let sourceName = "";
             let activeAxis = null;
+            // "ordinary" is a list rather than an axis — the records that
+            // cleared every filter but were extreme on nothing. See rank().
+            let showOrdinary = false;
 
             function show(el, kind, msg) {
                 el.className = "status show " + kind;
@@ -541,11 +554,17 @@
                 const list = document.getElementById("list");
                 list.innerHTML = "";
 
-                const shown = ranked.candidates.filter(function (c) { return matches(c, q); });
+                const pool = showOrdinary ? ranked.plain : ranked.candidates;
+                const shown = pool.filter(function (c) { return matches(c, q); });
                 document.getElementById("showing").textContent =
-                    shown.length === ranked.candidates.length
-                        ? shown.length + " on the shortlist, most extreme first."
-                        : shown.length + " of " + ranked.candidates.length + " shown.";
+                    showOrdinary
+                        ? (shown.length === pool.length
+                            ? pool.length + " ordinary records, A to Z — extreme on nothing, " +
+                              "which is what a cooked dish looks like from the figures alone."
+                            : shown.length + " of " + pool.length + " ordinary records shown.")
+                        : (shown.length === pool.length
+                            ? shown.length + " on the shortlist, most extreme first."
+                            : shown.length + " of " + pool.length + " shown.");
 
                 // A phone will not thank you for four thousand buttons.
                 shown.slice(0, 300).forEach(function (c) {
@@ -574,7 +593,9 @@
                             record: c.record.name,
                             id: c.record.id || null,
                             values: c.record.nutrients,
-                            why: c.signals.map(function (s) { return s.axis + " " + s.value; }).join(", "),
+                            why: c.signals.length
+                                ? c.signals.map(function (s) { return s.axis + " " + s.value; }).join(", ")
+                                : "ordinary on every axis — taken by hand from the name",
                             nearest: c.nearest && c.nearest.score >= 0.2 ? c.nearest.name : null
                         };
                         remember();
@@ -620,23 +641,49 @@
                     c.signals.forEach(function (s) { counts[s.key] = (counts[s.key] || 0) + 1; });
                 });
                 const all = document.createElement("button");
-                all.className = "chip" + (activeAxis ? "" : " on");
+                all.className = "chip" + (activeAxis || showOrdinary ? "" : " on");
                 all.textContent = "everything (" + ranked.candidates.length + ")";
-                all.addEventListener("click", function () { activeAxis = null; renderAxes(); renderList(); });
+                all.addEventListener("click", function () {
+                    activeAxis = null;
+                    showOrdinary = false;
+                    renderAxes();
+                    renderList();
+                });
                 chips.appendChild(all);
 
                 Harvest.AXES.forEach(function (a) {
                     if (!counts[a.key]) return;
                     const b = document.createElement("button");
-                    b.className = "chip" + (activeAxis === a.key ? " on" : "");
+                    b.className = "chip" + (!showOrdinary && activeAxis === a.key ? " on" : "");
                     b.textContent = a.label + " (" + counts[a.key] + ")";
                     b.addEventListener("click", function () {
-                        activeAxis = activeAxis === a.key ? null : a.key;
+                        activeAxis = (!showOrdinary && activeAxis === a.key) ? null : a.key;
+                        showOrdinary = false;
                         renderAxes();
                         renderList();
                     });
                     chips.appendChild(b);
                 });
+
+                /* The other list. An axis chip narrows the shortlist; this one
+                   swaps it for the records the shortlist left out, so it
+                   clears any axis rather than combining with one — an
+                   ordinary record is by definition extreme on no axis, and a
+                   chip that could only ever show nothing is a trap. */
+                if (ranked.plain && ranked.plain.length) {
+                    const b = document.createElement("button");
+                    b.className = "chip" + (showOrdinary ? " on" : "");
+                    b.textContent = "ordinary (" + ranked.plain.length + ")";
+                    b.title = "Complete, unclaimed, and extreme on nothing — where the " +
+                        "prepared dishes are.";
+                    b.addEventListener("click", function () {
+                        showOrdinary = !showOrdinary;
+                        activeAxis = null;
+                        renderAxes();
+                        renderList();
+                    });
+                    chips.appendChild(b);
+                }
             }
 
             function renderCounts() {
@@ -647,7 +694,8 @@
                     [ranked.counts.known, "already ours"],
                     [ranked.counts.incomplete, "short of a figure"],
                     [ranked.counts.usable, "complete and new"],
-                    [ranked.counts.notable, "worth a look"]
+                    [ranked.counts.notable, "worth a look"],
+                    [ranked.counts.ordinary || 0, "ordinary"]
                 ].forEach(function (pair) {
                     const d = document.createElement("div");
                     d.className = "count";

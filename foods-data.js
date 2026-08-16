@@ -1613,7 +1613,8 @@ const CATEGORIES = [
       { name: "Sunflower Seed Butter", sv: "Solrosfröpasta", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "cross_reactive", "cross_mugwort"] },
       { name: "Cocoa Beans", sv: "Kakaobönor", lmv: "Kakaobönor", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fiber", "caffeine", "irritant"] },
       { name: "Almond Flour", sv: "Mandelmjöl", form: "dry", lmv: "Mandelmjöl", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "salicylate", "allergen_treenut", "cross_reactive", "cross_birch"] },
-      { name: "Peanut Butter", sv: "Jordnötssmör", lmv: "Jordnötssmör", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen_peanut", "cross_reactive", "cross_grass"] }
+      { name: "Peanut Butter", sv: "Jordnötssmör", lmv: "Jordnötssmör", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen_peanut", "cross_reactive", "cross_grass"] },
+      { name: "Mixed Nuts (salted)", sv: "Blandade nötter (saltade)", lmv: "Nötter blandade rostade m. salt", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "galactans", "allergen_treenut", "allergen_peanut", "cross_reactive", "cross_birch", "cross_grass"] }
     ]
   },
   {
@@ -2133,7 +2134,14 @@ const CATEGORIES = [
       { name: "Cheese Puffs / Snacks", sv: "Ostbågar", lmv: "Ostbågar", portion: 25, traits: ["over_10g_fat", "allergen_milk"] },
       { name: "Microwave Popcorn", sv: "Mikropopcorn", lmv: "Popcorn mikropopcorn poppade fett ca 22%", portion: 25, traits: [] },
       { name: "Savoury Crackers", sv: "Salta kex", lmv: "Kex salta", portion: 20, traits: ["refined_carbs", "allergen_wheat"] },
-      { name: "Sesame Crackers", sv: "Sesamkex", lmv: "Sesamkakor sesamkex", portion: 20, traits: ["over_10g_fat", "refined_carbs", "allergen_sesame", "allergen_wheat"] }
+      { name: "Sesame Crackers", sv: "Sesamkex", lmv: "Sesamkakor sesamkex", portion: 20, traits: ["over_10g_fat", "refined_carbs", "allergen_sesame", "allergen_wheat"] },
+      { name: "Flavoured Potato Crisps", sv: "Smaksatta potatischips", lmv: "Chips potatis smaksatta fett ca 33%", lmvNote: "the seasoned bag, listed apart from plain because the seasoning is where the onion is", portion: 30, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "fructans", "allergen_onion"] },
+      { name: "Tortilla Chips", sv: "Tortillachips", lmv: "Chips majs tortilla ", portion: 30, traits: ["refined_carbs"] },
+      { name: "Peanut Puffs", sv: "Jordnötsbågar", lmv: "Jordnötsbågar jordnötsringar", portion: 25, traits: ["over_10g_fat", "refined_carbs", "allergen_peanut", "cross_reactive", "cross_grass"] },
+      { name: "Chilli Nuts", sv: "Chilinötter", lmv: "Chilinötter", portion: 25, traits: ["over_10g_fat", "refined_carbs", "irritant", "capsaicin", "allergen_peanut", "allergen_wheat", "cross_reactive", "cross_grass"] },
+      { name: "Lentil Puffs", sv: "Linsbågar", lmv: "Linsbågar fett 28%", portion: 25, traits: ["over_10g_fat", "refined_carbs"] },
+      { name: "Roasted Chickpeas", sv: "Rostade kikärtor", form: "dry", lmv: "Kikärtor snacks torkade m. salt", portion: 30, traits: ["fodmaps", "galactans"] },
+      { name: "Japanese Rice Cracker Mix", sv: "Japanmix", lmv: "Japanmix blandade snacks m. inbakade nötter riscracker", portion: 25, traits: ["refined_carbs", "allergen_peanut", "allergen_soy", "allergen_wheat"] }
     ]
   },
   {
@@ -2146,7 +2154,12 @@ const CATEGORIES = [
       { name: "French Fries (oven-baked)", sv: "Pommes frites (ugnsbakade)", lmv: "Pommes frites friterad potatis värmd i ugn fett ca 7% frysvara", portion: 150, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs"] },
       { name: "Instant Soup / Bouillon Cubes", sv: "Snabbsoppa / buljongtärningar", form: "cooked", lmv: "Köttbuljong tärning ätf.", lmvNote: "ready-to-eat broth, not the dry cube", portion: 200, traits: ["fodmaps", "fructans", "allergen_celery"] },
       { name: "Instant Mashed Potato", sv: "Potatismospulver", lmv: "Potatismos hemlagad", portion: 175, traits: ["refined_carbs"] },
-      { name: "Dumplings", sv: "Dumplings", portion: 100, traits: ["allergen_wheat", "over_10g_fat", "bile_stimulant"] }
+      { name: "Dumplings", sv: "Dumplings", portion: 100, traits: ["allergen_wheat", "over_10g_fat", "bile_stimulant"] },
+      { name: "Yellow Pea Soup with Pork", sv: "Ärtsoppa med fläsk", form: "cooked", lmv: "Ärtsoppa fläsk tillagad konserv. m. vatten", portion: 200, traits: ["fiber", "fodmaps", "galactans", "fructans", "allergen_onion"] },
+      { name: "Green Pea Soup", sv: "Ärtpurésoppa", form: "cooked", lmv: "Ärtpurésoppa gröna ärtor tillagad veg. ", portion: 200, traits: ["alcohol", "irritant", "fodmaps", "fructans"] },
+      { name: "Fish Soup (bouillabaisse)", sv: "Fisksoppa (bouillabaisse)", form: "cooked", lmv: "Fisksoppa bouillabaisse", portion: 200, traits: ["over_10g_fat", "bile_stimulant", "protein", "histamine", "fodmaps", "fructans", "allergen_fish", "allergen_crustacean", "allergen_celery", "allergen_onion"] },
+      { name: "Shrimp Soup", sv: "Räksoppa", form: "cooked", lmv: "Räksoppa ätf.", portion: 200, traits: ["over_10g_fat", "bile_stimulant", "histamine", "fodmaps", "fructans", "allergen_crustacean", "allergen_milk", "allergen_onion"] },
+      { name: "Spring Roll", sv: "Vårrulle", lmv: "Vårrulle värmd tillagad på restaurang", portion: 100, traits: ["over_10g_fat", "bile_stimulant", "refined_carbs", "fodmaps", "fructans", "allergen_wheat", "allergen_soy", "allergen_onion"] }
     ]
   }
 ];
