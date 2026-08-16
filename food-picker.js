@@ -158,6 +158,34 @@ const FoodPicker = (function () {
       return words.every(function (w) { return hay.indexOf(w) > -1; });
     }
 
+    /* A category whose foods have all been hidden, and a group whose
+       categories have all been hidden, come away too.
+
+       Hiding only the foods left the headings behind, so a search for
+       something in Snacks meant scrolling past twenty empty category boxes
+       and five empty group titles to reach it. The result was there; the
+       page just did not look like it. Emptiness is worked out from what is
+       actually showing rather than tracked alongside, so nothing can drift
+       out of step with what the search did. */
+    function hideEmptyContainers() {
+      container.querySelectorAll(".foodBox").forEach(function (box) {
+        const shown = Array.from(box.querySelectorAll(mode === "pick" ? ".foodPick" : ".checkboxStyle"))
+          .some(function (e) { return e.style.display !== "none"; });
+        box.style.display = shown ? "" : "none";
+      });
+      container.querySelectorAll(".categoryGroup").forEach(function (section) {
+        const shown = Array.from(section.querySelectorAll(".foodBox"))
+          .some(function (b) { return b.style.display !== "none"; });
+        section.style.display = shown ? "" : "none";
+      });
+    }
+
+    function showEveryContainer() {
+      container.querySelectorAll(".foodBox, .categoryGroup").forEach(function (el) {
+        el.style.display = "";
+      });
+    }
+
     function search(term) {
       const words = String(term || "").toUpperCase().split(/\s+/)
         .filter(function (w) { return w.length; });
@@ -171,12 +199,21 @@ const FoodPicker = (function () {
         entry.style.display = matches ? "" : "none";
       });
 
-      if (!found) all.forEach(function (entry) { entry.style.display = ""; });
+      /* A search that matches nothing puts everything back rather than
+         leaving a blank page — a typo should not look like an empty
+         database. That has to put the headings back too. */
+      if (!found || !words.length) {
+        all.forEach(function (entry) { entry.style.display = ""; });
+        showEveryContainer();
+      } else {
+        hideEmptyContainers();
+      }
       return found;
     }
 
     function clearSearch() {
       entries().forEach(function (entry) { entry.style.display = ""; });
+      showEveryContainer();
     }
 
     // "check" only: which foods are ticked, and setting them.
