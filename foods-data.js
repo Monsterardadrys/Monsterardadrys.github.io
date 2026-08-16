@@ -1899,7 +1899,7 @@ const CATEGORIES = [
       { name: "Guacamole", sv: "Guacamole", lmv: "Guacamole", portion: 50, traits: ["over_10g_fat", "cross_reactive", "cross_latex"] },
       { name: "Mango Chutney", sv: "Mangochutney", lmv: "Mango chutney", portion: 25, traits: ["refined_carbs"] },
       { name: "Cranberry Sauce", sv: "Tranbärssås", portion: 25, traits: ["fodmaps", "refined_carbs", "fructose"] },
-      { name: "Fish Roe Spread", sv: "Kaviar (romröra)", lmv: "Påläggskaviar original", portion: 20, traits: ["over_10g_fat", "histamine", "allergen_fish"] },
+      { name: "Fish Roe Spread", sv: "Kaviar (pålägg)", lmv: "Påläggskaviar original", portion: 20, traits: ["over_10g_fat", "histamine", "allergen_fish"] },
       { name: "Yeast Extract (Marmite type)", sv: "Jästextrakt (Marmite-typ)", portion: 5, traits: ["histamine"] },
       { name: "Ajvar", sv: "Ajvar", lmv: "Ajvar relish", portion: 25, traits: ["irritant"] },
       { name: "Harissa", sv: "Harissa", portion: 5, traits: ["irritant", "capsaicin"] },
