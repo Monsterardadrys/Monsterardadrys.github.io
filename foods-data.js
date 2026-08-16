@@ -1885,29 +1885,48 @@ const CATEGORIES = [
     ]
   },
   {
+  /* THREE GROUPS, ONE QUESTION EACH. Condiments, Sauces and Dips used to
+     be two groups with no rule between them: aioli and tzatziki were
+     condiments, teriyaki was a sauce, soy sauce was not. Nothing predicted
+     which, so nothing found them.
+
+       Condiments  — goes INTO the cooking, or is shaken on a few grams at
+                     a time. Soy sauce, fish sauce, vinegar, harissa.
+       Sauces      — pourable, and served WITH the food. Ketchup, ranch,
+                     tzatziki, hollandaise.
+       Dips        — thick enough to need a spoon or a knife, and almost
+                     only an accompaniment or something spread on bread.
+                     Hummus, guacamole, ajvar, kaviar.
+
+     The line between the last two is consistency, not the utensil: both
+     are spooned, but tzatziki is thin and smooth and hummus is a dense
+     paste. That is what puts ranch and tzatziki together and hummus and
+     guacamole together.
+
+     Two deliberate departures. Bechamel and tomato pasta sauce are
+     components of a dish rather than accompaniments, so the second rule
+     does not quite fit them — but they are sold in a jar on the sauce
+     shelf, which is what a category is for, and calling either a
+     condiment would be worse. And they stay separate foods rather than
+     being folded into "lasagne": bechamel IS the milk and the wheat on
+     that plate and the tomato sauce IS the FODMAPs, which a single row
+     for the finished dish would hide. */
     id: "condiments",
     label: "Condiments",
     sv: "Smaksättare",
     foods: [
-      { name: "Soy Sauce", sv: "Soja", lmv: "Sojasås", portion: 5, traits: ["histamine", "allergen_soy", "allergen_wheat", "dao_competitor"] },
+      { name: "Salt", sv: "Salt", lmv: "Salt m. jod", portion: 5, traits: [] },
       { name: "Vinegar", sv: "Ättika", portion: 5, traits: ["aceticAcid", "irritant"] },
       { name: "Balsamic Vinegar", sv: "Balsamvinäger", lmv: "Vinäger ättiksyra 7%", portion: 5, traits: ["aceticAcid", "irritant", "histamine", "allergen_sulphite"] },
-      { name: "Aioli", sv: "Aioli", lmv: "Aioli", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_egg", "irritant", "allyl_compounds"] },
-      { name: "Pesto", sv: "Pesto", lmv: "Pesto hemlagad", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_treenut", "allergen_milk", "fodmaps", "fructans"] },
-      { name: "Tzatziki", sv: "Tzatziki", lmv: "Tzatziki", portion: 50, traits: ["allergen_milk"] },
-      { name: "Hummus", sv: "Hummus", lmv: "Hummus kikärtsröra", portion: 50, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen_sesame"] },
-      { name: "Guacamole", sv: "Guacamole", lmv: "Guacamole", portion: 50, traits: ["over_10g_fat", "cross_reactive", "cross_latex"] },
-      { name: "Mango Chutney", sv: "Mangochutney", lmv: "Mango chutney", portion: 25, traits: ["refined_carbs"] },
-      { name: "Cranberry Sauce", sv: "Tranbärssås", portion: 25, traits: ["fodmaps", "refined_carbs", "fructose"] },
-      { name: "Fish Roe Spread", sv: "Kaviar (romröra)", lmv: "Påläggskaviar original", portion: 20, traits: ["over_10g_fat", "histamine", "allergen_fish"] },
-      { name: "Yeast Extract (Marmite type)", sv: "Jästextrakt (Marmite-typ)", portion: 5, traits: ["histamine"] },
-      { name: "Ajvar", sv: "Ajvar", lmv: "Ajvar relish", portion: 25, traits: ["irritant"] },
+      { name: "Soy Sauce", sv: "Soja", lmv: "Sojasås", portion: 5, traits: ["histamine", "allergen_soy", "allergen_wheat", "dao_competitor"] },
+      { name: "Fish Sauce", sv: "Fisksås", lmv: "Fisksås", portion: 5, traits: ["histamine", "allergen_fish"] },
+      { name: "Teriyaki Sauce", sv: "Teriyakisås", portion: 25, traits: ["histamine", "allergen_soy", "allergen_wheat", "refined_carbs"] },
+      { name: "Hot Sauce", sv: "Hetsås", portion: 5, traits: ["histamine", "irritant", "capsaicin"] },
       { name: "Harissa", sv: "Harissa", portion: 5, traits: ["irritant", "capsaicin"] },
-      { name: "Tahini", sv: "Tahini", lmv: "Tahini", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_sesame"] },
-      { name: "Baba Ganoush", sv: "Baba ganoush", portion: 50, traits: ["histamine"] },
-      { name: "Preserved Lemon", sv: "Saltkonserverad citron", portion: 5, traits: ["irritant", "histamine", "aceticAcid"] },
       { name: "Tamarind", sv: "Tamarind", portion: 5, traits: ["irritant", "aceticAcid"] },
-      { name: "Salt", sv: "Salt", lmv: "Salt m. jod", portion: 5, traits: [] },
+      { name: "Preserved Lemon", sv: "Saltkonserverad citron", portion: 5, traits: ["irritant", "histamine", "aceticAcid"] },
+      { name: "Pesto", sv: "Pesto", lmv: "Pesto hemlagad", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_treenut", "allergen_milk", "fodmaps", "fructans"] },
+      { name: "Yeast Extract (Marmite type)", sv: "Jästextrakt (Marmite-typ)", portion: 5, traits: ["histamine"] },
       { name: "Nutritional Yeast", sv: "Näringsjäst", lmv: "Näringsjäst", portion: 5, traits: [] }
     ]
   },
@@ -1918,22 +1937,36 @@ const CATEGORIES = [
     foods: [
       { name: "Ketchup", sv: "Ketchup", lmv: "Ketchup", portion: 25, traits: ["aceticAcid", "irritant", "dao_competitor"] },
       { name: "Mayonnaise", sv: "Majonnäs", lmv: "Majonnäs fett 80%", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_egg"] },
-      { name: "Barbecue Sauce", sv: "Barbecuesås", portion: 25, traits: ["aceticAcid", "irritant", "refined_carbs"] },
-      { name: "Hot Sauce", sv: "Hetsås", portion: 5, traits: ["histamine", "irritant", "capsaicin"] },
-      { name: "Horseradish Sauce", sv: "Pepparrotssås", portion: 25, traits: ["irritant", "over_10g_fat", "bile_stimulant"] },
+      { name: "Vegan Mayonnaise", sv: "Vegansk majonnäs", portion: 25, traits: ["over_10g_fat", "bile_stimulant"] },
+      { name: "Aioli", sv: "Aioli", lmv: "Aioli", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_egg", "irritant", "allyl_compounds"] },
+      { name: "Remoulade", sv: "Remoulad", lmv: "Remouladsås", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_egg", "irritant", "allergen_mustard"] },
       { name: "Tartar Sauce", sv: "Tartarsås", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_egg"] },
-      { name: "Salsa", sv: "Salsa", lmv: "Tomatsalsa kall", portion: 25, traits: ["irritant"] },
       { name: "Ranch Dressing", sv: "Ranchdressing", lmv: "Dressing konserv. fett ca 25%", portion: 25, traits: ["over_10g_fat", "allergen_milk", "allergen_egg"] },
       { name: "Thousand Island Dressing", sv: "Rhode Island-dressing", lmv: "Dressing konserv. fett ca 25%", portion: 25, traits: ["over_10g_fat", "allergen_egg"] },
-      { name: "Teriyaki Sauce", sv: "Teriyakisås", portion: 25, traits: ["histamine", "allergen_soy", "allergen_wheat", "refined_carbs"] },
-      { name: "Fish Sauce", sv: "Fisksås", lmv: "Fisksås", portion: 5, traits: ["histamine", "allergen_fish"] },
+      { name: "Tzatziki", sv: "Tzatziki", lmv: "Tzatziki", portion: 50, traits: ["allergen_milk"] },
+      { name: "Barbecue Sauce", sv: "Barbecuesås", portion: 25, traits: ["aceticAcid", "irritant", "refined_carbs"] },
+      { name: "Horseradish Sauce", sv: "Pepparrotssås", portion: 25, traits: ["irritant", "over_10g_fat", "bile_stimulant"] },
+      { name: "Salsa", sv: "Salsa", lmv: "Tomatsalsa kall", portion: 25, traits: ["irritant"] },
+      { name: "Satay / Peanut Sauce", sv: "Satay- / jordnötssås", lmv: "Jordnötssås", portion: 25, traits: ["refined_carbs", "fodmaps", "fructans", "allergen_peanut"] },
       { name: "Béarnaise Sauce", sv: "Bearnaisesås", lmv: "Bearnaisesås hemlagad", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_egg", "allergen_milk"] },
       { name: "Hollandaise Sauce", sv: "Hollandaisesås", lmv: "Hollandaisesås hemlagad", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_egg", "allergen_milk"] },
-      { name: "Remoulade", sv: "Remoulad", lmv: "Remouladsås", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_egg", "irritant", "allergen_mustard"] },
-      { name: "Tomato Pasta Sauce", sv: "Tomatsås till pasta", lmv: "Pastasås m. tomat örtkryddor", portion: 60, traits: ["fodmaps", "fructans", "refined_carbs"] },
       { name: "Bechamel Sauce", sv: "Bechamelsås", lmv: "Béchamelsås", portion: 60, traits: ["allergen_milk", "allergen_wheat"] },
-      { name: "Satay / Peanut Sauce", sv: "Satay- / jordnötssås", lmv: "Jordnötssås", portion: 25, traits: ["refined_carbs", "fodmaps", "fructans", "allergen_peanut"] },
-      { name: "Vegan Mayonnaise", sv: "Vegansk majonnäs", portion: 25, traits: ["over_10g_fat", "bile_stimulant"] }
+      { name: "Tomato Pasta Sauce", sv: "Tomatsås till pasta", lmv: "Pastasås m. tomat örtkryddor", portion: 60, traits: ["fodmaps", "fructans", "refined_carbs"] }
+    ]
+  },
+  {
+    id: "dips",
+    label: "Dips & Spreads",
+    sv: "Röror",
+    foods: [
+      { name: "Hummus", sv: "Hummus", lmv: "Hummus kikärtsröra", portion: 50, traits: ["over_10g_fat", "bile_stimulant", "fodmaps", "galactans", "allergen_sesame"] },
+      { name: "Guacamole", sv: "Guacamole", lmv: "Guacamole", portion: 50, traits: ["over_10g_fat", "cross_reactive", "cross_latex"] },
+      { name: "Baba Ganoush", sv: "Baba ganoush", portion: 50, traits: ["histamine"] },
+      { name: "Tahini", sv: "Tahini", lmv: "Tahini", portion: 25, traits: ["over_10g_fat", "bile_stimulant", "allergen_sesame"] },
+      { name: "Ajvar", sv: "Ajvar", lmv: "Ajvar relish", portion: 25, traits: ["irritant"] },
+      { name: "Mango Chutney", sv: "Mangochutney", lmv: "Mango chutney", portion: 25, traits: ["refined_carbs"] },
+      { name: "Cranberry Sauce", sv: "Tranbärssås", portion: 25, traits: ["fodmaps", "refined_carbs", "fructose"] },
+      { name: "Fish Roe Spread", sv: "Kaviar (pålägg)", lmv: "Påläggskaviar original", portion: 20, traits: ["over_10g_fat", "histamine", "allergen_fish"] }
     ]
   },
   {
@@ -2210,8 +2243,10 @@ const CATEGORY_GROUPS = [
     categories: ["cheese", "seafood", "meat", "milkFermented", "offal", "charcuterie"]
   },
   {
-    title: "Flavour & Extras", sv: "Smaksättare & tillbehör",
-    categories: ["spices", "condiments", "sauces", "sweetSpreads", "picklesFerments", "fats", "sweeteners"]
+    // "Smaksättare" is a category inside this group now, so the group cannot
+    // also be called that — the same word at two levels reads as a mistake.
+    title: "Flavour & Extras", sv: "Smak & tillbehör",
+    categories: ["spices", "condiments", "sauces", "dips", "sweetSpreads", "picklesFerments", "fats", "sweeteners"]
   },
   {
     title: "Processed & Drinks", sv: "Processat & drycker",

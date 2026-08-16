@@ -627,21 +627,41 @@ header.header--hidden {
     padding: 5px 0 15px;
 }
 
+/* A row in the flow, not a float.
+
+   This was `float: right`, which takes the row out of the flow entirely —
+   so the first category heading under it ("Produce") had nothing holding it
+   down and rode up underneath the buttons. It looked fine for as long as
+   the row happened to be short; adding a third button was enough to bring
+   the overlap back. A flex row occupies the height it needs and the heading
+   starts below it, at any width and with any number of buttons. */
 .searchContainer {
-    float: right;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0 16px;
 }
 
+/* Grows into whatever is left and gives way first, so a phone gets the
+   field on one line and the buttons together on the next, rather than two
+   buttons up beside the field and a third stranded on its own. */
 .searchContainer input {
+    flex: 1 1 260px;
+    min-width: 0;
     padding: 5px;
-    margin-top: 10px;
     font-size: 20px;
     border-radius: 10px;
     border: 1px solid var(--border);
 }
 
 .searchContainer button {
+    flex: 0 0 auto;
+}
+
+.searchContainer button {
     padding: 5px 10px;
-    margin-right: 10px;
     font-size: 20px;
     background-color: var(--paper);
     border: 1px solid var(--border);
@@ -709,6 +729,40 @@ header.header--hidden {
     line-height: 1.1;
     display: grid;
     grid-template-columns: 2rem auto;
+}
+
+/* THE BOX IS THE SIZE OF ONE LINE, WHATEVER THE NAME DOES.
+
+   A grid item stretches to its row by default, and the row is as tall as
+   the label — so "Jordgubbssylt (sockerreducerad)", which wraps onto two
+   lines, was drawing a checkbox twice the height of every other one on the
+   page. The longer the name the bigger the box, which reads as a different
+   kind of control rather than the same one with more words.
+
+   Sized in em rather than px so it still tracks the font: the two mobile
+   breakpoints below set .checkboxStyle in vw, and a pixel size here would
+   come out tiny on a phone and lost on a wall. 1.1em is the line-height
+   above, which is what these boxes have measured all along — this pins the
+   single-line size rather than changing it. */
+/* Sized in em against the label, which needs the font-size line: em on a
+   form control resolves against the control's own font, and browsers give
+   that a fixed ~13px which does not inherit. Without it the box comes out
+   13px at every screen size, including the 3800px breakpoint where the
+   label beside it is 156px.
+
+   Why size it at all rather than just stop the stretch: the old behaviour
+   was not one rule. A grid item stretches to its row, so at ordinary sizes
+   the browser capped the box at 16px and at the wall breakpoint it grew to
+   166px — and a row whose name wrapped onto two lines got a box twice as
+   tall as its neighbours, which is what this started as. One em is one
+   rule: the box is the size of the word beside it, at any screen width and
+   whatever the name does. */
+.checkboxStyle input[type="checkbox"] {
+    align-self: start;
+    font-size: inherit;
+    width: 1em;
+    height: 1em;
+    margin: 0;
 }
 
 .checkboxStyle:hover {
@@ -1551,8 +1605,11 @@ footer p { color: var(--linen); }
     .disclaimerText { height: fit-content; }
     .disclaimerText p, .disclaimerText li { font-size: 4vw; }
 
-    .searchContainer { display: flex; }
-    .searchContainer input { font-size: 3vw; margin: 0 2vw 0 0; }
+    /* display:flex and the spacing are unconditional now — see .searchContainer
+       above. Here the field takes a row of its own so the buttons stay
+       together on the next one instead of one of them being left behind,
+       and the type sizes come down. */
+    .searchContainer input { flex-basis: 100%; font-size: 3vw; }
     .searchContainer button { font-size: 2.5vw; }
 
     .topSection { margin: 6vw; padding: 2vw; margin-bottom: -2vw; }
