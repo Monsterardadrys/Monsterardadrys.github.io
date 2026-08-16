@@ -612,26 +612,18 @@
         "Milk chocolate|over_3g_lactose": "Monash gives a 20g low-FODMAP serving, under the 30g portion",
         "Ice Cream|over_3g_lactose": "Monash gives this food no low-FODMAP serving at all",
 
-        /* Foods where the check is reading total sugars because no lactose
-           column exists, and the sugar is plainly not lactose. Sweden
-           publishes no lactose column at all, so for a Swedish record this is
-           the only figure there is — and on a sorbet or a punsch it is the
-           wrong one by a wide margin.
+        /* Tiramisu contains dairy and still does not reach the dose:
+           mascarpone puts roughly 1-2g of lactose in a 100g serving, while
+           the 16g the check is testing is the sucrose in the sponge and the
+           syrup.
 
-           Sorbet is the clearest: it is fruit, sugar and water, with no dairy
-           in it at all. A tag reading 26g of "lactose" on the one frozen
-           dessert someone with lactose intolerance can actually eat would be
-           worse than saying nothing. */
-        "Sorbet|over_3g_lactose": "no dairy in it at all — the figure is fruit sugar",
-        "Spettekaka|over_3g_lactose": "egg, sugar and potato flour; the sugar is sucrose",
-        "Digestive Biscuit|over_3g_lactose": "the sugar is sucrose, not lactose",
-        "Sesame Crackers|over_3g_lactose": "the sugar is sucrose, not lactose",
-        "Glögg|over_3g_lactose": "mulled wine — the sugar is added sucrose",
-        "Punsch|over_3g_lactose": "arrack and sugar; there is no milk in it",
-        /* This one does contain dairy, and still does not reach the dose:
-           mascarpone puts roughly 1-2g of lactose in a 100g serving, while the
-           16g the check is testing is the sucrose in the sponge and the
-           syrup. */
+           Six more were written here at the same time — sorbet, spettekaka,
+           two biscuits, glögg and punsch, all of them high-sugar and none of
+           them dairy. Every one was dead on arrival: the lactose rule is
+           gated on allergen_milk, so a food with no milk in it never reaches
+           the check and never needed an exception. They were removed, and
+           the unused-exception warning below exists so the next six say so
+           rather than sitting here looking like reasoning. */
         "Tiramisu|over_3g_lactose": "mascarpone puts 1-2g of lactose in a serving; the rest of the sugar is sucrose"
     };
 

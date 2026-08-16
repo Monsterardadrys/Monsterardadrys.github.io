@@ -52,6 +52,16 @@ const ALLOWED_BROAD_ONLY = {
    are intended. Each is argued in tools/worklist.md and on the method page. */
 const DOSE_EXCEPTIONS = require("./lmv-core.js").DELIBERATE;
 
+/* Which of them the run actually reached. An exception that never fires is
+   not harmless: it reads as a considered judgement about a food, and it is
+   the one kind of comment nobody ever re-reads because it looks settled.
+
+   Six were written in one sitting for high-sugar foods with no dairy —
+   sorbet, spettekaka, two biscuits, glögg, punsch — none of which the
+   lactose rule can ever reach, because that rule is gated on allergen_milk.
+   They looked like reasoning and were noise. */
+const exceptionsUsed = {};
+
 /* Denmark's confirmed matches, if a round has been run. Read here rather than
    where the rule sits, because the madeUp check needs it too — a recipe can
    now be applied to figures from either table. */
@@ -256,7 +266,9 @@ foods.forEach(function (food) {
     const qualifies = inPortion >= rule.dose;
     if (tagged === qualifies) return;
 
-    const why = DOSE_EXCEPTIONS[food.name + "|" + rule.trait];
+    const key = food.name + "|" + rule.trait;
+    const why = DOSE_EXCEPTIONS[key];
+    if (why) exceptionsUsed[key] = true;
     const line = food.name + " " + (tagged ? "carries" : "does not carry") + " " +
       rule.trait + " — " + inPortion + "g in a " + food.portion + "g portion, dose " + rule.dose;
 
@@ -266,6 +278,14 @@ foods.forEach(function (food) {
     }
     else faults.push(line);
   });
+});
+
+Object.keys(DOSE_EXCEPTIONS).forEach(function (key) {
+  if (exceptionsUsed[key]) return;
+  const parts = key.split("|");
+  warnings.push('the deliberate exception for ' + parts[0] + " / " + parts[1] +
+    " never fired — either the food or the figure changed and the exception is " +
+    "now describing nothing, or the rule cannot reach that food at all");
 });
 
 /* ---- Dry figures against a wet portion -------------------------------------
