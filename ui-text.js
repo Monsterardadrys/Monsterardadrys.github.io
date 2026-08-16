@@ -688,6 +688,14 @@ const UI = {
   "category.other": { en: "Other", sv: "Övrigt" },
   "nav.menu": { en: "Menu", sv: "Meny" },
 
+  /* The tooltip on a greyed-out food in the free build. Present in both
+     builds: the full one has no locked foods, so nothing ever asks for it,
+     and one key in two places is cheaper than two versions of a file. */
+  "locked.hint": {
+    en: "Not in the free version — this food's traits and figures are in the full one.",
+    sv: "Ingår inte i gratisversionen — livsmedlets egenskaper och siffror finns i fullversionen."
+  },
+
   /* ---- Articles ---------------------------------------------------------- */
 
   "articles.title": { en: "Articles", sv: "Artiklar" },
