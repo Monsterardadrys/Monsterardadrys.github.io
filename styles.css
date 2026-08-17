@@ -1867,6 +1867,20 @@ footer p { color: var(--linen); }
     text-align: center;
 }
 
+/* What this build is, under the tool cards. Deliberately not a banner and
+   not a colour: someone who has just arrived is deciding whether the tool
+   is worth their attention, and a sales badge at that moment answers a
+   question they have not asked yet. */
+.toolChooserNote {
+    max-width: 680px;
+    margin: 26px auto 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink);
+    opacity: 0.72;
+    text-align: left;
+}
+
 .toolCards {
     display: flex;
     flex-wrap: wrap;

@@ -1,4 +1,0 @@
-{
-  "_comment": "French matches confirmed by hand and then declined, with the reason. The counterpart of lmv-absent.json: a decision recorded so it is not made again. A name here is NOT in ciqual-aliases.json or ciqual-extras.json — the match itself is what is being rejected. Foods whose match is right but whose figures are too thin stay in the alias file; the tool refuses those on its own, see REQUIRED in ciqual-core.js.",
-  "Cheese Puffs / Snacks": "Picked as extras, for lactose. Ciqual's Cheese puff pastry, prepacked, cooked is a butter-and-cheese feuilleté; this food is Ostbågar, an extruded corn snack dusted with cheese powder. Different food, and the 1.61g it offered would never reach the dose in a 25g portion either way, so there is nothing to weigh against the mismatch."
-}
