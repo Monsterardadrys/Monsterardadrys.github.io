@@ -1336,41 +1336,6 @@
     render();
   });
 
-  document.getElementById("printMealsButton").addEventListener("click", function () {
-    window.print();
-  });
-
-  document.getElementById("saveMealsButton").addEventListener("click", function () {
-    showError("");
-    SaveLoad.save("session", Session.snapshot(), "food-intolerance-guide");
-  });
-
-  document.getElementById("loadMealsButton").addEventListener("click", function () {
-    SaveLoad.load("session", function (data) {
-      Session.restore(data);
-      if (!Array.isArray(data.meals) || !data.meals.length) {
-        showError(I18N.t("meal.noMealsInFile"));
-        return;
-      }
-      // Keep only what this tool understands, and only foods it still has.
-      const dropped = [];
-      meals = data.meals.map(function (meal, index) {
-        const items = (meal.items || []).filter(function (item) {
-          if (FOODS[item.food] && hasFigures(item.food) && item.grams > 0) return true;
-          dropped.push(item.food);
-          return false;
-        }).map(function (item) {
-          return { food: item.food, grams: Math.round(item.grams) };
-        });
-        return { name: meal.name || I18N.t("meal.untitled", { n: index + 1 }), items: items };
-      });
-      showError(dropped.length
-        ? "Loaded, but " + dropped.length + " food(s) were left out — no longer in the " +
-          "database, or with no nutrient figures on file: " + dropped.join(", ")
-        : "");
-      render();
-    }, showError);
-  });
 
   /* Only foods with figures are offered: a meal is reported in grams, and a
      food with no numbers would sit in the list looking like it counted. */

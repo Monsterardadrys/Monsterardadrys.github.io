@@ -530,111 +530,6 @@
     closePopup();
   });
 
-  document.getElementById("printAnalysisButton").addEventListener("click", function (e) {
-    e.stopPropagation();
-
-    const foods = popupActiveFoods.map(function (f) { return I18N.nameOf(f.name); })
-      .sort(function (a, b) { return a.localeCompare(b, I18N.lang()); });
-    const foodsList = document.getElementById("printFoodsList");
-    foodsList.innerHTML = "";
-    const foodsHeading = document.createElement("h2");
-    foodsHeading.textContent = I18N.t("app.printFoodsHeading", { n: foods.length });
-    foodsList.appendChild(foodsHeading);
-    const ul = document.createElement("ul");
-    ul.className = "printFoodsUl";
-    foods.forEach(function (name) {
-      const li = document.createElement("li");
-      li.textContent = name;
-      ul.appendChild(li);
-    });
-    foodsList.appendChild(ul);
-
-    const articlesBox = document.getElementById("printArticlesList");
-    articlesBox.innerHTML = "";
-    const depth = document.getElementById("articleDepth").value;
-    if (typeof ARTICLES !== "undefined" && depth !== "none") {
-      // Several traits can share one article — all fifteen allergens do. The
-      // article prints once, listing the foods for the traits this analysis
-      // actually found rather than all fifteen.
-      const traitsByArticle = {};
-      popupActiveTraits.forEach(function (item) {
-        const articleId = TRAITS[item.traitId].articleId;
-        if (!articleId) return;
-        (traitsByArticle[articleId] = traitsByArticle[articleId] || []).push(item.traitId);
-      });
-
-      const seen = new Set();
-      popupActiveTraits.forEach(function (item) {
-        const trait = TRAITS[item.traitId];
-        if (!trait.articleId || seen.has(trait.articleId)) return;
-        const article = ARTICLES[trait.articleId];
-        if (!article) return;
-        seen.add(trait.articleId);
-
-        const section = document.createElement("div");
-        section.id = "print-article-" + trait.articleId;
-        const h2 = document.createElement("h2");
-        h2.textContent = article.title;
-        section.appendChild(h2);
-
-        // "short" is the first section — every article opens with what the
-        // trait is, which is the part a patient needs on paper.
-        const sections = depth === "short" ? article.sections.slice(0, 1) : article.sections;
-        sections.forEach(function (sec) {
-          if (sec.heading) {
-            const h3 = document.createElement("h3");
-            h3.textContent = sec.heading;
-            section.appendChild(h3);
-          }
-          sec.blocks.forEach(function (block) {
-            if (block.type === "list") {
-              const ul2 = document.createElement("ul");
-              block.items.forEach(function (i) {
-                const li = document.createElement("li");
-                li.textContent = i.replace(/\*\*/g, "");
-                ul2.appendChild(li);
-              });
-              section.appendChild(ul2);
-            } else {
-              const p = document.createElement("p");
-              p.textContent = (block.text || "").replace(/\*\*/g, "");
-              section.appendChild(p);
-            }
-          });
-        });
-
-        // Every food carrying the trait, so the printout stands on its own
-        // away from the app — see trait-foods.js.
-        if (typeof TraitFoods !== "undefined" && depth === "full") {
-          TraitFoods.renderForPrint(section, traitsByArticle[trait.articleId] || []);
-        }
-
-        articlesBox.appendChild(section);
-      });
-    }
-
-    window.print();
-  });
-
-  searchButton.addEventListener("click", function () { picker.search(searchField.value); });
-
-  showAllButton.addEventListener("click", function () {
-    searchField.value = "";
-    picker.clearSearch();
-    picker.showAll();
-  });
-
-  /* Closing every category, which used to need one tap per open box. Both
-     buttons clear the search first: leaving a filter running while the
-     boxes shut means reopening one shows a fraction of its foods with
-     nothing on screen saying why. Ticks are untouched — this folds the
-     list away, it does not clear a selection. */
-  document.getElementById("hideAllButton").addEventListener("click", function () {
-    searchField.value = "";
-    picker.clearSearch();
-    picker.hideAll();
-  });
-
   // ---- Clear selection (Foods / Filter / All) -----------------------------
   document.getElementById("clearFoodsButton").addEventListener("click", function () {
     if (!window.confirm("Clear all selected foods?")) return;
@@ -659,16 +554,9 @@
     document.getElementById("chosenFoods").scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
-  // ---- Save / load ---------------------------------------------------------
-  // The selection lives in this browser between visits (session.js) and a
-  // file is a snapshot of every tool at once — see save-load.js.
-  const saveError = document.getElementById("saveError");
-
-  function showSaveError(message) {
-    saveError.textContent = message;
-    saveError.hidden = !message;
-  }
-
+  // ---- Reading and restoring the selection ---------------------------------
+  // The selection lives in this browser between visits — see session.js.
+  // Saving it to a file is in the full version, along with printing.
   function checkedValues(container) {
     return Array.from(container.querySelectorAll("input[type='checkbox']:checked"))
       .map(function (cb) { return cb.value; });
@@ -683,30 +571,6 @@
     });
     return Array.from(missing);
   }
-
-  document.getElementById("saveSelectionButton").addEventListener("click", function () {
-    showSaveError("");
-    SaveLoad.save("session", Session.snapshot(), "food-intolerance-guide");
-  });
-
-  document.getElementById("loadSelectionButton").addEventListener("click", function () {
-    SaveLoad.load("session", function (data) {
-      Session.restore(data);
-      const app = data.app || {};
-      const missingFoods = applyValues(topSection, app.foods || []);
-      applyValues(filterContainer, app.filters || []);
-
-      // A saved food that has since been renamed or removed would otherwise
-      // vanish without a word.
-      showSaveError(missingFoods.length
-        ? "Loaded, but " + missingFoods.length + " food(s) are no longer in the database: " +
-          missingFoods.join(", ")
-        : "");
-
-      picker.revealChecked();
-      recompute();
-    }, showSaveError);
-  });
 
   // ---- Boot ----------------------------------------------------------------
   renderFilters();

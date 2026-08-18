@@ -133,17 +133,6 @@
         </div>
     </div>
 
-    <div id="printHeader" class="printOnly">
-        <h1 data-sv="Guide till matintolerans — Måltidsanalys">Food Intolerance Guide — Meal analysis</h1>
-        <p data-sv="Genererad från foodintoleranceguide (Uppsala, Sverige) — en databas över livsmedelsegenskaper som kan ge obehag, avsedd som fortbildningsmaterial för dietister och annan hälsopersonal.">Generated from foodintoleranceguide (Uppsala, Sweden) — a database of food properties
-            that can cause discomfort, intended as continuing-education material for dietitians
-            and other health professions.</p>
-        <p data-sv="&lt;em&gt;Det här är INTE ett diagnostiskt verktyg och ersätter inte en vårdpersons diagnos och råd. Upphovspersonen kan inte hållas ansvarig för hälsoproblem som uppstår av användningen av denna information.&lt;/em&gt;"><em>This is NOT a diagnostic tool and does not replace the diagnostics and advice of a health care
-            professional. The author cannot be held responsible for any health issues arising from use of
-            this information.</em></p>
-        <p class="printStamp" id="printStamp"></p>
-    </div>
-
     <div id="mealBuilder" class="noPrint"></div>
 
     <!-- The same category boxes and search the app uses — see food-picker.js.
@@ -161,11 +150,12 @@
 
     <div class="mealActions noPrint" id="mealActions">
         <button class="button2" id="addMealButton" type="button" data-sv="Lägg till måltid">Add meal</button>
-        <button class="button2" id="saveMealsButton" type="button" data-sv="Spara till fil">Save to file</button>
-        <button class="button2" id="loadMealsButton" type="button" data-sv="Läs in från fil">Load from file</button>
-        <button class="button2" id="printMealsButton" type="button" data-sv="Skriv ut analysen">Print analysis</button>
         <button class="button2" id="clearMealsButton" type="button" data-sv="Rensa allt">Clear all</button>
     </div>
+
+    <!-- See app.html: named rather than silently absent. -->
+    <p class="paidNote noPrint" data-sv="&lt;strong&gt;Skriva ut analysen&lt;/strong&gt; och &lt;strong&gt;spara måltider till fil&lt;/strong&gt; finns i fullversionen. Måltiderna ligger kvar i webbläsaren mellan besöken."><strong>Printing the analysis</strong> and <strong>saving meals to a file</strong> are in the full
+        version. Meals stay in the browser between visits.</p>
 
     <p class="mealError" id="mealError" hidden></p>
 
@@ -177,7 +167,6 @@
     <!-- Closes the printout. It used to be fixed, to repeat on every sheet,
          but browsers do not repeat a fixed element per page — it landed on
          top of the text instead. See the note in styles.css. -->
-    <p class="printRunningFooter printOnly" id="printRunningFooter"></p>
 </body>
 
 <footer>
@@ -185,7 +174,7 @@
     <p data-sv="Hittade du fel eller har du idéer på förbättringar?">Did you find any errors or have ideas for improvement?</p>
     <p data-sv="E-post: Monsterardadrys@duck.com">Email: Monsterardadrys@duck.com</p>
     <p data-sv="Uppsala, Sverige, 2026">Uppsala, Sweden, 2026</p>
-    <p data-sv="Pre-beta v1.81 — uppdaterad 18 augusti 2026">Pre-beta v1.81 — updated 18 August 2026</p>
+    <p data-sv="Pre-beta v1.82 — uppdaterad 18 augusti 2026">Pre-beta v1.82 — updated 18 August 2026</p>
 </footer>
 
 <script src="i18n.js"></script>
@@ -194,12 +183,10 @@
 <script src="nutrition-data.js"></script>
 <script src="fodmap-data.js"></script>
 <script src="food-picker.js"></script>
-<script src="save-load.js"></script>
 <script src="disclaimer.js"></script>
 <script src="session.js"></script>
 <script src="nav.js"></script>
 <script src="pwa.js"></script>
-<script src="print.js"></script>
 <script src="meal.js"></script>
 
 </html>

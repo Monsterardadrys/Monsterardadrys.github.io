@@ -155,37 +155,16 @@
             <p data-sv="Mer information finns i menyn längst upp.">Find more info in the menu at the top.</p>
         </div>
 
-        <div id="printHeader" class="printOnly">
-            <h1 data-sv="Guide till matintolerans — Gemensamma egenskaper">Food Intolerance Guide — Shared traits</h1>
-            <p data-sv="Genererad från foodintoleranceguide (Uppsala, Sverige) — en databas över livsmedelsegenskaper som kan ge obehag, avsedd som fortbildningsmaterial för dietister och annan hälsopersonal.">Generated from foodintoleranceguide (Uppsala, Sweden) — a database of food properties
-            that can cause discomfort, intended as continuing-education material for dietitians
-            and other health professions.</p>
-            <p data-sv="&lt;em&gt;Det här är INTE ett diagnostiskt verktyg och ersätter inte en vårdpersons diagnos och råd. Upphovspersonen kan inte hållas ansvarig för hälsoproblem som uppstår av användningen av denna information.&lt;/em&gt;"><em>This is NOT a diagnostic tool and does not replace the diagnostics and advice of a health care professional. The author cannot be held responsible for any health issues arising from use of this information.</em></p>
-        </div>
-
         <div class="analysisPopup">
             <div class="popupContainer" id="popupContainer">
                 <button class="popupClose noPrint" id="popupCloseBtn" aria-label="Close analysis" data-sv-aria-label="Stäng analysen">&times;</button>
                 <div id="popupTextContainer">
                     <!-- analysis paragraphs are added by script.js -->
                 </div>
-                <!-- Six traits used to mean six full articles on the paper,
-                     which is fifteen pages nobody asked for. -->
-                <label class="printDepth noPrint" for="articleDepth">
-                    <span data-sv="Artiklar i utskriften">Articles in the printout</span>
-                    <select id="articleDepth">
-                        <option value="short" selected data-sv="Första avsnittet av varje">First section of each</option>
-                        <option value="none" data-sv="Inga — bara analysen">None — analysis only</option>
-                        <option value="full" data-sv="Allt">Everything</option>
-                    </select>
-                </label>
-                <button class="button2 noPrint" id="printAnalysisButton" data-sv="Skriv ut analysen">Print analysis</button>
                 <button class="button2 noPrint" id="popupCloseBottomBtn" data-sv="Stäng">Close</button>
             </div>
         </div>
 
-        <div id="printFoodsList" class="printOnly"></div>
-        <div id="printArticlesList" class="printOnly"></div>
 
         <button class="button2 noPrint" id="showAnalysisButton" name="Show Analysis Popup" data-sv="Visa analys">Show Analysis</button>
 
@@ -198,16 +177,12 @@
             </div>
         </div>
 
-        <!-- Nothing is stored anywhere, so a file is the only way a selection
-             survives closing the tab. See save-load.js. -->
-        <div class="clearSelectionBox noPrint" id="saveSelectionBox">
-            <h2 data-sv="Behåll det här urvalet">Keep this selection</h2>
-            <div class="clearButtonRow">
-                <button class="button2" id="saveSelectionButton" type="button" data-sv="Spara till fil">Save to file</button>
-                <button class="button2" id="loadSelectionButton" type="button" data-sv="Läs in från fil">Load from file</button>
-            </div>
-            <p class="mealError" id="saveError" hidden></p>
-        </div>
+        <!-- Print and save-to-file are in the full version. Named rather
+             than silently absent: a missing button is a feature nobody knows
+             they are missing, and this is the one place a reader is holding
+             a finished analysis and would reach for both. -->
+        <p class="paidNote noPrint" data-sv="&lt;strong&gt;Skriva ut analysen&lt;/strong&gt; och &lt;strong&gt;spara urvalet till fil&lt;/strong&gt; finns i fullversionen. Det här urvalet ligger kvar i webbläsaren mellan besöken."><strong>Printing the analysis</strong> and <strong>saving the selection to a file</strong> are in
+            the full version. This selection stays in the browser between visits.</p>
 
         <h2 class="noPrint" data-sv="Filtrera analysen">Filter Analysis</h2>
         <p class="noPrint" data-sv="Välj en eller flera faktorer att utesluta ur analysen. Filtren uppdaterar analysen direkt, även efter att livsmedel redan valts.">Select one or more factors to exclude from the analysis. Filters update the analysis immediately, even
@@ -221,7 +196,6 @@
     <!-- Closes the printout. It used to be fixed, to repeat on every sheet,
          but browsers do not repeat a fixed element per page — it landed on
          top of the text instead. See the note in styles.css. -->
-    <p class="printRunningFooter printOnly" id="printRunningFooter"></p>
 </body>
 
 <footer>
@@ -229,7 +203,7 @@
     <p data-sv="Hittade du fel eller har du idéer på förbättringar?">Did you find any errors or have ideas for improvement?</p>
     <p data-sv="E-post: Monsterardadrys@duck.com">Email: Monsterardadrys@duck.com</p>
     <p data-sv="Uppsala, Sverige, 2026">Uppsala, Sweden, 2026</p>
-    <p data-sv="Pre-beta v1.81 — uppdaterad 18 augusti 2026">Pre-beta v1.81 — updated 18 August 2026</p>
+    <p data-sv="Pre-beta v1.82 — uppdaterad 18 augusti 2026">Pre-beta v1.82 — updated 18 August 2026</p>
 </footer>
 
 <script src="i18n.js"></script>
@@ -238,12 +212,10 @@
 <script src="articles-data.js"></script>
 <script src="trait-foods.js"></script>
 <script src="food-picker.js"></script>
-<script src="save-load.js"></script>
 <script src="disclaimer.js"></script>
 <script src="session.js"></script>
 <script src="nav.js"></script>
 <script src="pwa.js"></script>
-<script src="print.js"></script>
 <script src="script.js"></script>
 
 </html>

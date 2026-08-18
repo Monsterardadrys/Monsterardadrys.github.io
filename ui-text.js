@@ -42,6 +42,13 @@
 
 const UI = {
 
+  /* SOME KEYS BELOW HAVE NO CALLER IN THE FREE BUILD, and are kept anyway:
+     file.*, print.*, app.printFoodsHeading and meal.noMealsInFile belong to
+     saving and printing, and without.* to the third tool. This file is
+     copied between the two builds rather than generated, so a key deleted
+     here is a key missing there. Fourteen unused strings cost less than two
+     versions of a file that would drift. */
+
   /* ---- Landing page ---------------------------------------------------- */
 
   "demo.pickTwo": {
