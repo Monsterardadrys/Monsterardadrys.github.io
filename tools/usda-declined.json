@@ -1,3 +1,0 @@
-{
-  "_comment": "Matches confirmed by hand and then declined, with the reason. The counterpart of lmv-absent.json: a decision recorded so it is not made again. A name here is NOT in usda-aliases.json — the match itself is the thing being rejected. Foods whose match is right but whose figures are too thin to import stay in the alias file; the tool refuses those on its own, see REQUIRED in usda-core.js."
-}

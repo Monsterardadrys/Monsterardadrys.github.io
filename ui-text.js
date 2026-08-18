@@ -539,10 +539,12 @@ const UI = {
     sv: "Filen innehåller inga måltider. Allt annat i den har återställts."
   },
   "meal.droppedNoFigures": {
+    /* Names no tool. The free build has two and the full one three, and a
+       string that lists them is a string that has to be built twice. */
     en: "\"{food}\" has no nutrient figures on file, so a meal holding it could " +
-      "not be totalled. It is still in the main app and in Foods without.",
+      "not be totalled. Its traits are still tracked everywhere else.",
     sv: "\"{food}\" har inga näringssiffror på fil, så en måltid med det gick inte " +
-      "att summera. Det finns fortfarande i huvudverktyget och i Livsmedel utan."
+      "att summera. Dess egenskaper följs fortfarande överallt annars."
   },
 
   /* ---- FODMAPs: why each food counted or did not ------------------------- */
@@ -614,11 +616,11 @@ const UI = {
     sv: "Det finns inget sparat på den här enheten."
   },
   "session.confirmClear": {
-    en: "Clear everything this browser has kept — the app's selection, every " +
-      "meal, and the traits picked in Foods without?\n\nThis cannot be undone, " +
+    en: "Clear everything this browser has kept — every selection, every " +
+      "meal, every filter?\n\nThis cannot be undone, " +
       "and it does not touch any file you have saved.",
-    sv: "Rensa allt den här webbläsaren har sparat — verktygets urval, alla " +
-      "måltider, och egenskaperna valda i Livsmedel utan?\n\nDet går inte att " +
+    sv: "Rensa allt den här webbläsaren har sparat — alla urval, alla " +
+      "måltider, alla filter?\n\nDet går inte att " +
       "ångra, och det rör ingen fil du har sparat."
   },
 
@@ -687,6 +689,14 @@ const UI = {
   },
   "category.other": { en: "Other", sv: "Övrigt" },
   "nav.menu": { en: "Menu", sv: "Meny" },
+
+  /* The tooltip on a greyed-out food in the free build. Present in both
+     builds: the full one has no locked foods, so nothing ever asks for it,
+     and one key in two places is cheaper than two versions of a file. */
+  "locked.hint": {
+    en: "Not in the free version — this food's traits and figures are in the full one.",
+    sv: "Ingår inte i gratisversionen — livsmedlets egenskaper och siffror finns i fullversionen."
+  },
 
   /* ---- Articles ---------------------------------------------------------- */
 

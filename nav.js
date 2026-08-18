@@ -20,7 +20,6 @@ const NAV_LINKS = [
   // holding a phone should reach any of them from any of them.
   { href: "app.html", label: "Shared traits", sv: "Gemensamma egenskaper" },
   { href: "meal.html", label: "Meal builder", sv: "Måltidsbyggare" },
-  { href: "without.html", label: "Foods without", sv: "Livsmedel utan" },
   { href: "articles.html", label: "Articles", sv: "Artiklar" },
   { href: "about.html", label: "About", sv: "Om" },
   { href: "sources.html", label: "Data sources", sv: "Datakällor" },

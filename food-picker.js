@@ -49,6 +49,29 @@ const FoodPicker = (function () {
       foods.slice().sort(function (a, b) {
         return I18N.compareNames(a.name, b.name);
       }).forEach(function (food) {
+        /* SHOWN, NOT HIDDEN. In the free build most foods arrive as a name
+           and nothing else — see tools/build-free.js. They are rendered
+           anyway, greyed and inert, because the two ways of being absent
+           read completely differently: a food that is missing says the
+           database is thin, and a food that is there but dimmed says this
+           version is. The first loses trust, the second explains itself.
+
+           Nothing else in the app has to know about them. They carry no
+           traits, so the analysis, the filters and the article food lists
+           pass over them without a special case; they carry no figures, so
+           the meal builder would refuse them even if one were tapped. This
+           is the only place the word `locked` appears. */
+        if (food.locked) {
+          const row = document.createElement("span");
+          row.className = "foodLocked";
+          row.dataset.food = food.name;
+          row.setAttribute("aria-disabled", "true");
+          row.title = I18N.t("locked.hint");
+          row.textContent = I18N.foodName(food);
+          group.appendChild(row);
+          return;
+        }
+
         if (mode === "pick") {
           // One tap adds the food, so it is a button rather than a checkbox:
           // a meal holds an amount of a food, not a yes or no.
@@ -125,12 +148,22 @@ const FoodPicker = (function () {
       if (leftover.length) renderGroupSection(I18N.t("category.other"), leftover);
     }
 
+    /* Every row the search can hide, locked ones included. Leaving them out
+       was a bug worth naming: a search would filter the pickable foods and
+       leave every greyed one showing, so "lax" returned Salmon buried in
+       four hundred names it did not match. And a search that matches only
+       locked foods has to show them — that is the one moment the free build
+       has something to say. */
+    const ROW = (mode === "pick" ? ".foodPick" : ".checkboxStyle") + ", .foodLocked";
+
     function entries() {
-      return container.querySelectorAll(mode === "pick" ? ".foodPick" : ".checkboxStyle");
+      return container.querySelectorAll(ROW);
     }
 
     function nameOf(entry) {
-      return mode === "pick" ? entry.dataset.food : entry.querySelector("input").value;
+      if (entry.dataset.food) return entry.dataset.food;
+      const input = entry.querySelector("input");
+      return input ? input.value : entry.textContent.trim();
     }
 
     function showAll() {
@@ -169,7 +202,7 @@ const FoodPicker = (function () {
        out of step with what the search did. */
     function hideEmptyContainers() {
       container.querySelectorAll(".foodBox").forEach(function (box) {
-        const shown = Array.from(box.querySelectorAll(mode === "pick" ? ".foodPick" : ".checkboxStyle"))
+        const shown = Array.from(box.querySelectorAll(ROW))
           .some(function (e) { return e.style.display !== "none"; });
         box.style.display = shown ? "" : "none";
       });

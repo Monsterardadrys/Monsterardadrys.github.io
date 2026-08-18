@@ -765,6 +765,31 @@ header.header--hidden {
     margin: 0;
 }
 
+/* A food the free build knows the name of and nothing else. Laid out on the
+   same grid as a tickable row so the two line up in one column — a greyed
+   row that sat a few pixels left of its neighbours would read as a
+   rendering fault rather than as a deliberate state. The padlock stands
+   where the checkbox would be. */
+.foodLocked {
+    font-size: 20px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    line-height: 1.1;
+    display: grid;
+    grid-template-columns: 2rem auto;
+    color: var(--ink);
+    opacity: 0.42;
+    cursor: default;
+    user-select: none;
+}
+
+.foodLocked::before {
+    content: "\1F512";           /* 🔒 */
+    font-size: 0.8em;
+    align-self: start;
+    line-height: 1.4;
+}
+
 .checkboxStyle:hover {
     background-color: rgba(126, 155, 122, 0.15);
     cursor: pointer;
@@ -1840,6 +1865,20 @@ footer p { color: var(--linen); }
     margin: 40px auto 10px;
     padding: 0 30px;
     text-align: center;
+}
+
+/* What this build is, under the tool cards. Deliberately not a banner and
+   not a colour: someone who has just arrived is deciding whether the tool
+   is worth their attention, and a sales badge at that moment answers a
+   question they have not asked yet. */
+.toolChooserNote {
+    max-width: 680px;
+    margin: 26px auto 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink);
+    opacity: 0.72;
+    text-align: left;
 }
 
 .toolCards {
