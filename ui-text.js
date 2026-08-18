@@ -628,8 +628,8 @@ const UI = {
 
   "print.stamp": { en: "Printed {date}", sv: "Utskriven {date}" },
   "print.footer": {
-    en: "Food Intolerance Guide — {page} — a triage aid, not a diagnosis. {host}",
-    sv: "Guide till matintolerans — {page} — ett triagestöd, inte en diagnos. {host}"
+    en: "Food Intolerance Guide — {page} — a food property database, not a diagnosis. {host}",
+    sv: "Guide till matintolerans — {page} — en databas över livsmedelsegenskaper, inte en diagnos. {host}"
   },
 
   /* ---- Foods without ---------------------------------------------------- */

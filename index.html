@@ -47,40 +47,21 @@
     </header>
 
     <section class="hero">
-        <h2 data-sv="Vissa livsmedel smakar inte bara annorlunda. De reagerar annorlunda i dig.">Some foods don't just taste different. They react differently in you.</h2>
-        <p data-sv="Ett triageverktyg för att utforska möjliga magreaktioner på livsmedel — byggt för dietister och annan vårdpersonal, och öppet för alla som är nyfikna på sina egna symtom.">A triage tool for exploring possible GI reactions to foods — built for dietitians and other health
-            professionals, and open to anyone curious about their own symptoms.</p>
-        <p data-sv="Välj en handfull livsmedel som någon reagerar på, så hittar verktyget vad de har gemensamt — en FODMAP-undertyp, en histaminbelastning, ett dolt allergen — mönster som är lätta att missa måltid för måltid, men uppenbara när de läggs bredvid varandra.">Pick a handful of foods someone reacts to, and the tool finds what they share — a FODMAP subtype,
-            a histamine load, a hidden allergen — patterns easy to miss meal by meal, but obvious once laid out.</p>
+        <h2 data-sv="En databas över de egenskaper hos livsmedel som kan ge obehag.">A database of the food properties that can cause discomfort.</h2>
+        <p data-sv="FODMAP, histamin, de fjorton deklarationspliktiga allergenerna, salicylater, gallstimulerare — vilka livsmedel som bär dem, i vilken mängd, och på vilket underlag. Byggt av en dietist för dietister och annan hälsopersonal, som fortbildningsmaterial.">FODMAPs, histamine, the fourteen declarable allergens, salicylates, bile stimulants — which
+            foods carry them, in what amount, and on what evidence. Built by a dietitian for dietitians
+            and other health professions, as continuing-education material.</p>
+        <p data-sv="Markera flera livsmedel så listar verktyget vad de har gemensamt. Det är en uppslagning: den beskriver livsmedel, inte människor, och den ställer inga diagnoser.">Mark several foods and the tool lists what they have in common. It is a lookup: it describes
+            foods, not people, and it diagnoses nothing.</p>
     </section>
 
-    <!-- The two tools in the free version. Each answers a different question; the wording of
-         each card is what tells someone which one they want. -->
-    <section class="toolChooser">
-        <h2 data-sv="Två vägar in">Two ways in</h2>
-        <div class="toolCards">
-            <a class="toolCard" href="app.html">
-                <h3 data-sv="Hitta den gemensamma tråden">Find the shared thread</h3>
-                <p data-sv="Kryssa i de livsmedel någon reagerar på. Verktyget rangordnar vad de har gemensamt.">Tick the foods someone reacts to. The tool ranks what they have in common.</p>
-                <span class="toolCardGo" data-sv="Gemensamma egenskaper →">Shared traits →</span>
-            </a>
-            <a class="toolCard" href="meal.html">
-                <h3 data-sv="Väg en måltid">Weigh up a meal</h3>
-                <p data-sv="Bygg en måltid av vägda mängder och se vad den är tungt lastad med, och vad som bara finns i den.">Build a meal from weighed amounts and see what it is loaded with, and what is simply in it.</p>
-                <span class="toolCardGo" data-sv="Måltidsbyggare →">Meal builder →</span>
-            </a>
-        </div>
-        <p class="toolChooserNote" data-sv="Det här är gratisversionen: 100 livsmedel och 30 egenskaper, utan tidsgräns och utan konto. Övriga livsmedel syns i listorna men är gråmarkerade. Fullversionen har 582 livsmedel, 43 egenskaper — FODMAP-undertyperna, pollenkorsreaktionerna och irritantmekanismerna var för sig — och ett tredje verktyg som svarar på frågan från andra hållet: vilka livsmedel saknar de här egenskaperna?">This is the free version: 100 foods and 30 traits, with no time limit and no account.
-            The other foods appear in the lists, greyed out. The full version has 582 foods, 43 traits
-            &mdash; the FODMAP subtypes, the pollen cross-reactions and the irritant mechanisms each on
-            their own &mdash; and a third tool that asks the question the other way round: which foods
-            carry none of these?</p>
-    </section>
-
-    <section class="demo">
-        <h2 data-sv="Prova — välj några livsmedel">Try it — pick a few foods</h2>
-        <p data-sv="Sex vanliga livsmedel med FODMAP, salicylater eller allergener — välj minst två för att se deras främsta gemensamma egenskaper. Gratisversionen följer 30 egenskaper över 100 livsmedel.">Six common foods with FODMAPs, salicylates or allergens — pick at least two to see their top
-            shared traits. The free version tracks 30 traits across 100 foods.</p>
+    <!-- The demo sits directly under the pitch and stays deliberately small.
+         Its job is to make the idea legible in one interaction and hand the
+         reader on — to the tools, to the articles, to the list. It reads real
+         data from foods-data.js, so it cannot drift out of step with the app. -->
+    <section class="demo demo--compact">
+        <h2 data-sv="Principen, på tio sekunder">The idea, in ten seconds</h2>
+        <p class="demoLead" data-sv="Markera minst två av de här sex livsmedlen.">Mark at least two of these six foods.</p>
 
         <div id="demoFoods" class="demoFoods"></div>
 
@@ -90,8 +71,8 @@
             <p class="demoHint" id="demoHint" hidden data-sv="Klicka på en egenskap för att läsa mer">Click a trait to read more</p>
         </div>
 
-        <p class="demoDisclaimer" data-sv="Den här minidemon är enbart en illustration, inte medicinsk rådgivning. &lt;a href=&quot;app.html&quot;&gt;Läs hela ansvarsfriskrivningen&lt;/a&gt; i verktyget.">This mini-demo is for illustration only, not medical advice.
-            <a href="app.html">Read the full disclaimer</a> in the app.</p>
+        <p class="demoDisclaimer" data-sv="Demon är en illustration, inte rådgivning. &lt;a href=&quot;app.html&quot;&gt;Hela ansvarsfriskrivningen&lt;/a&gt; finns i verktyget.">The demo is an illustration, not advice.
+            <a href="app.html">The full disclaimer</a> is in the tool.</p>
 
         <div class="demoPopupOverlay" id="demoPopupOverlay">
             <div class="demoPopupBox" role="dialog" aria-modal="true" aria-labelledby="demoPopupTitle">
@@ -103,16 +84,68 @@
         </div>
     </section>
 
+    <!-- The two tools in the free version. Each answers a different question;
+         the wording of each card is what tells someone which one they want. -->
+    <section class="toolChooser">
+        <h2 data-sv="Två vägar in">Two ways in</h2>
+        <div class="toolCards">
+            <a class="toolCard" href="app.html">
+                <h3 data-sv="Hitta den gemensamma tråden">Find the shared thread</h3>
+                <p data-sv="Markera flera livsmedel. Verktyget rangordnar de egenskaper de har gemensamt.">Mark several foods. The tool ranks the properties they have in common.</p>
+                <span class="toolCardGo" data-sv="Gemensamma egenskaper →">Shared traits →</span>
+            </a>
+            <a class="toolCard" href="meal.html">
+                <h3 data-sv="Väg en måltid">Weigh up a meal</h3>
+                <p data-sv="Bygg en måltid av vägda mängder och se vad den är tungt lastad med, och vad som bara finns i den.">Build a meal from weighed amounts and see what it is loaded with, and what is simply in it.</p>
+                <span class="toolCardGo" data-sv="Måltidsbyggare →">Meal builder →</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- What this build is and when the real one arrives. Stated plainly and
+         in one place: a reader who has just tried the demo is deciding
+         whether to spend more time here, and that decision needs the size of
+         the sample and the date, not a sales pitch. -->
+    <section class="sample">
+        <h2 data-sv="Det här är ett gratis prov">This is a free sample</h2>
+        <p data-sv="Provet har ingen tidsgräns, kräver inget konto och skickar ingenting någonstans. Det är avgränsat i storlek, inte i tid.">The sample has no time limit, needs no account and sends nothing anywhere. It is limited in
+            size, not in time.</p>
+        <ul class="sampleList">
+            <li data-sv="&lt;strong&gt;100 av 582 livsmedel&lt;/strong&gt; med egenskaper och näringssiffror. Övriga syns i listorna, gråmarkerade."><strong>100 of 582 foods</strong> with properties and nutrition figures. The rest appear in
+                the lists, greyed out.</li>
+            <li data-sv="&lt;strong&gt;30 av 43 egenskaper.&lt;/strong&gt; Alla fjorton deklarationspliktiga allergener finns med. Det som saknas är undergrupperna: FODMAP-typerna var för sig, pollenkorsreaktionerna och de enskilda irritantmekanismerna."><strong>30 of 43 properties.</strong> All fourteen declarable allergens are here. What is missing
+                is the detail below them: the FODMAP types separately, the pollen cross-reactions, and the
+                individual irritant mechanisms.</li>
+            <li data-sv="&lt;strong&gt;Två av tre verktyg.&lt;/strong&gt; Det tredje svarar på frågan från andra hållet: vilka livsmedel saknar en uppsättning egenskaper?"><strong>Two of three tools.</strong> The third asks the question the other way round: which foods
+                carry none of a given set of properties?</li>
+            <li data-sv="&lt;strong&gt;Oavkortat:&lt;/strong&gt; båda språken, alla artiklar, metodsidan och källorna."><strong>Whole:</strong> both languages, every article, the method page and the sources.</li>
+        </ul>
+        <p class="sampleWhen" data-sv="&lt;strong&gt;Den färdiga appen släpps 2027.&lt;/strong&gt; Fram till dess byggs den vidare, och den här sidan följer med.">
+            <strong>The finished app arrives in 2027.</strong> Until then it keeps being built, and this
+            site keeps up with it.</p>
+
+        <!-- PLACEHOLDER. A proper list (Buttondown, MailerLite or similar)
+             replaces this block; until then the button opens a prefilled
+             email, which works today and promises nothing that does not. -->
+        <div class="signup">
+            <h3 data-sv="Få veta när den släpps">Hear when it lands</h3>
+            <p data-sv="Ett brev när något större är klart — inte oftare. Listan är inte uppsatt än, så anmälan går via e-post så länge.">One letter when something substantial is finished, no more often than that. The list is not
+                set up yet, so sign-up goes by email for now.</p>
+            <a class="signupBtn" href="mailto:Monsterardadrys@duck.com?subject=Nyhetsbrev" data-sv="Skriv upp mig →">Add me to the list →</a>
+        </div>
+    </section>
+
     <section class="linksOut">
         <div class="linkCard">
-            <h3 data-sv="Utforska artiklarna">Explore the articles</h3>
-            <p data-sv="Fördjupningar i FODMAP, histamin, allergener och mer — vad de är och varför de ger symtom.">Deep dives into FODMAPs, histamine, allergens, and more — what they are and why they cause symptoms.</p>
-            <a href="articles.html" data-sv="Läs artiklarna →">Read the articles →</a>
+            <h3 data-sv="Läs artiklarna">Read the articles</h3>
+            <p data-sv="Fördjupningar i FODMAP, histamin, allergener och mer — vad de är och vilket underlag som finns.">Deep dives into FODMAPs, histamine, allergens and more — what they are and what the evidence
+                behind them looks like.</p>
+            <a href="articles.html" data-sv="Till artiklarna →">To the articles →</a>
         </div>
         <div class="linkCard">
-            <h3 data-sv="Om verktyget">About this tool</h3>
-            <p data-sv="Det kliniska resonemanget bakom det, och hur egenskapsanalysen faktiskt fungerar.">The clinical reasoning behind it, and how the trait analysis actually works.</p>
-            <a href="about.html" data-sv="Läs mer →">Learn more →</a>
+            <h3 data-sv="Så är den byggd">How it is built</h3>
+            <p data-sv="Varje tröskel, var siffrorna kommer ifrån, och vad verktyget inte gör.">Every threshold, where the figures come from, and what the tool does not do.</p>
+            <a href="method.html" data-sv="Metoden i detalj →">The method in detail →</a>
         </div>
         <div class="linkCard">
             <h3 data-sv="Hör av dig">Get in touch</h3>
@@ -123,7 +156,7 @@
 
     <footer>
         <p data-sv="Byggt av en dietist, för dietister (och nyfikna).">Built by a dietitian, for dietitians (and the curious).</p>
-        <p data-sv="Pre-beta v1.80 — uppdaterad 17 augusti 2026">Pre-beta v1.80 — updated 17 August 2026</p>
+        <p data-sv="Pre-beta v1.81 — uppdaterad 18 augusti 2026">Pre-beta v1.81 — updated 18 August 2026</p>
     </footer>
 
     <script src="i18n.js"></script>

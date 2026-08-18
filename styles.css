@@ -1736,6 +1736,30 @@ footer p { color: var(--linen); }
     font-size: 28px;
 }
 
+/* The demo moved up under the pitch, where it is the first thing that
+   answers "what does this actually do". That only works if it is quick to
+   take in, so it loses the paragraph it used to carry and tightens up: at
+   full size it pushed the tools and the sample below the fold on a phone,
+   and a demo nobody scrolls past is a demo that sold nothing. */
+.demo--compact {
+    margin: 26px auto 40px;
+    padding: 22px 20px;
+}
+
+.demo--compact h2 {
+    font-size: 22px;
+    margin: 0 0 6px;
+}
+
+.demoLead {
+    font-size: 16px;
+    margin: 0;
+    opacity: 0.75;
+}
+
+.demo--compact .demoFoods { margin: 14px 0; }
+.demo--compact .demoResult { margin: 14px 0; padding: 12px 16px; }
+
 .demoFoods {
     display: flex;
     flex-wrap: wrap;
@@ -1918,6 +1942,63 @@ footer p { color: var(--linen); }
 .toolCard p { margin: 0 0 12px; font-size: 17px; }
 
 .toolCardGo { font-weight: 600; color: var(--clay-dark); }
+
+/* What the free build is, and when the finished one arrives. Set on paper
+   rather than in a colour: this is information the reader needs in order to
+   decide, and a banner styled like an advertisement is the one form in
+   which people have learned not to read it. */
+.sample {
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 28px 30px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+
+.sample h2 { margin: 0 0 10px; font-size: 26px; }
+.sample p { font-size: 17px; }
+
+.sampleList {
+    margin: 16px 0;
+    padding-left: 22px;
+}
+
+.sampleList li {
+    font-size: 17px;
+    line-height: 1.5;
+    margin-bottom: 9px;
+    color: var(--ink);
+}
+
+.sampleWhen {
+    margin: 18px 0 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.signup {
+    margin-top: 22px;
+    padding: 18px 20px;
+    background: var(--linen);
+    border-radius: 12px;
+}
+
+.signup h3 { margin: 0 0 6px; font-size: 20px; color: var(--primary); }
+.signup p { margin: 0 0 14px; font-size: 16px; }
+
+.signupBtn {
+    display: inline-block;
+    background: linear-gradient(160deg, var(--clay), var(--clay-dark));
+    color: white;
+    font-weight: 600;
+    font-size: 17px;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.signupBtn:hover { background: var(--clay-dark); }
 
 .linksOut {
     max-width: 900px;
@@ -2226,3 +2307,34 @@ footer p { color: var(--linen); }
 
 .foodPick:hover,
 .foodPick:focus { background: rgba(126, 155, 122, 0.16); }
+
+/* ---- Sources page ------------------------------------------------------
+   The page used to print every food and what it was checked against, which
+   is a fact about the work rather than about the sources, and ran to
+   several screens of names nobody reads. What is left is the sources
+   themselves: what each one is, and what it answers for. */
+.sourceLadder {
+    margin: 16px 0;
+    padding-left: 24px;
+}
+
+.sourceLadder li {
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.sourceLadder strong {
+    display: block;
+    color: var(--primary);
+    font-size: 18px;
+}
+
+.sourceFacts {
+    margin: 12px 0;
+    padding-left: 22px;
+}
+
+.sourceFacts li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}

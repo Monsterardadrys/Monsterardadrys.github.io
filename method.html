@@ -50,11 +50,28 @@
     </header>
 
     <div class="articleLayout">
+        <div class="articleIndex">
+            <h2 data-sv="På den här sidan">On this page</h2>
+            <ul>
+                <li><a href="#thresholds" data-sv="Trösklar och portioner">Thresholds and portions</a></li>
+                <li><a href="#figures" data-sv="Vilken siffra som tas">Which figure is taken</a></li>
+                <li><a href="#portions" data-sv="Portionsstorlek">Portion size</a></li>
+                <li><a href="#fodmaps" data-sv="FODMAP">FODMAPs</a></li>
+                <li><a href="#meal" data-sv="Måltiden">The meal</a></li>
+                <li><a href="#allergens" data-sv="Allergener">Allergens</a></li>
+                <li><a href="#categorical" data-sv="Egenskaper utan gramgräns">Properties with no gram threshold</a></li>
+                <li><a href="#evidence" data-sv="Hur väl belagt">How well established</a></li>
+                <li><a href="sources.html" data-sv="Källor">Sources</a></li>
+            </ul>
+        </div>
         <div class="articleContent">
-            <section>
+            <section id="thresholds">
+                <h2 data-sv="Trösklar och portioner">Thresholds and portions</h2>
                 <p data-sv="Den här sidan är den långa versionen: varje regel med resonemanget och siffrorna bakom. För den korta redogörelsen av vad verktyget gör, se &lt;a href=&quot;about.html#methodology&quot;&gt;Hur analysen fungerar&lt;/a&gt;.">This page is the long version: every rule with the reasoning and the numbers behind it.
                     For the short account of what the tool does, see
                     <a href="about.html#methodology">How the analysis works</a>.</p>
+
+                <h3 data-sv="Två sorters egenskap">Two kinds of property</h3>
 
                 <p data-sv="Varje livsmedel i verktyget är märkt med de egenskaper det bär — FODMAP-undertyper, histaminhalt, allergener, GI-irriterande mekanismer och mer. När du väljer en grupp livsmedel räknar verktyget hur många av dem som delar varje egenskap och rangordnar egenskaperna efter hur vanliga de är i ditt urval.">Every food in the tool is tagged with the traits it carries — FODMAP subtypes, histamine
                     content, allergens, GI irritant mechanisms, and more. When you select a group of foods, the
@@ -74,15 +91,18 @@
                 <p data-sv="Alkohol är undantaget och förblir en koncentration. 0,5 % är den juridiska gränsen för att kalla en dryck alkoholfri, och en juridisk gräns skalar inte med hur mycket du häller upp.">Alcohol is the exception and stays a concentration. 0.5% is the legal line for calling a
                     drink alcohol-free, and a legal line does not scale with how much you pour.</p>
 
-                <h3 data-sv="Var siffrorna kommer ifrån">Where the numbers come from</h3>
+            </section>
 
-                <p data-sv="Varje tröskel ovan är gram av något, så varje livsmedel behöver en siffra att mätas mot. De kommer från &lt;strong&gt;Livsmedelsverket&lt;/strong&gt;, den svenska nationella livsmedelsdatabasen, matchade livsmedel för livsmedel och bekräftade för hand — 418 av de 582 livsmedlen här. Ytterligare 30 kommer från &lt;strong&gt;Frida&lt;/strong&gt;, den danska nationella tabellen, 83 från den franska &lt;strong&gt;Ciqual&lt;/strong&gt;-tabellen och 33 från det amerikanska &lt;strong&gt;SR Legacy&lt;/strong&gt;-materialet, alla matchade på samma sätt, vilket ger 564 med siffror.">Every threshold above is grams of something, so every food needs a figure to be
-                    measured against. Those come from <strong>Livsmedelsverket</strong>, the Swedish national
-                    food database, matched food by food and confirmed by hand — 418 of the 582 foods here.
-                    A further 30 come from <strong>Frida</strong>, the Danish national table, 83 from
-                    the French <strong>Ciqual</strong> table and 33 from the American
-                    <strong>SR Legacy</strong> set, all matched the same way, which brings it to 564
-                    with figures.</p>
+            <section id="figures">
+                <h2 data-sv="Vilken siffra som tas">Which figure is taken</h2>
+
+
+                <p data-sv="Varje tröskel ovan är gram av något, så varje livsmedel behöver en siffra att mätas mot. Vilka tabeller siffrorna kommer från, och i vilken ordning, står på &lt;a href=&quot;sources.html&quot;&gt;Källor&lt;/a&gt;. Den här sidan handlar om vad som händer när en siffra väl finns — vilken som tas, och när ingen tas alls.">Every threshold above is grams of something, so every food needs a figure to be measured
+                    against. Which tables those come from, and in what order, is on
+                    <a href="sources.html">Sources</a>. This page is about what happens once a figure exists:
+                    which one is taken, and when none is.</p>
+
+                <h3 data-sv="Vad en siffra måste komma med">What a figure has to arrive with</h3>
 
                 <p data-sv="Ett livsmedel måste komma med fett, protein, kolhydrat och vatten för att tas med alls, även när resten överlever. Det är inte ordningssinne: ett livsmedel utan siffror lämnas helt utanför en måltid, medan ett livsmedel med &lt;em&gt;vissa&lt;/em&gt; siffror lägger hela sin vikt i nämnaren för varje koncentration och inget i täljaren, så måltiden läses som magrare och torrare än den är. Där en siffra ändå saknas avgränsar måltidsbyggaren den i stället för att anta den — ett livsmedel kan inte hålla mer av ett näringsämne än det väger — och rapporterar en rad bara när båda ändarna av den avgränsningen är överens. Där de inte är det säger den ingenting, vilket är det hederliga svaret.">A food has to arrive with fat, protein, carbohydrate and water to be taken at all,
                     even when the rest survives. That is not tidiness: a food with no figures is set
@@ -93,12 +113,8 @@
                     nutrient than it weighs — and reports a line only when both ends of that bound
                     agree. Where they do not, it says nothing, which is the honest answer.</p>
 
-                <p data-sv="Resten har ingen svensk post: europeiska ostar, importerade såser, de veganska ersättningarna. För dem är ordningen kort och medveten — den danska nationella tabellen först, eftersom den beskriver mat från samma hylla; sedan &lt;strong&gt;Ciqual&lt;/strong&gt;, den franska tabellen, eftersom den är en europeisk tabell för en europeisk kost och bär den medelhavssvans ingen av de andra har; sedan det amerikanska SR Legacy-materialet. Varje livsmedel noterar vilken dess siffra kom ifrån.">The rest have no Swedish entry: European cheeses, imported sauces, the vegan
-                    substitutes. For those the order of preference is short and deliberate — the Danish
-                    national table first, because it describes food off the same shelf; then
-                    <strong>Ciqual</strong>, the French table, because it is a European table for a
-                    European diet and carries the Mediterranean tail none of the others do; then the
-                    American SR Legacy set. Each food records which one its figure came from.</p>
+
+                <h3 data-sv="Fiber är två olika mätningar">Fibre is two different measurements</h3>
 
                 <p data-sv="En kolumn är värd att lyfta fram. Ciqual publicerar INFOODS-tagnamn för sina kolumner, och den mot fiber är &lt;code&gt;FIB-&lt;/code&gt;: i det systemet namnger suffixet metoden — &lt;code&gt;FIBTG&lt;/code&gt; för gravimetrisk AOAC, &lt;code&gt;FIBTS&lt;/code&gt; för summan av uppmätta komponenter — och en naken tagg betyder att den är ospecificerad. Så om resistent stärkelse räknas in i en fransk fibersiffra går inte att veta ur tabellen. Med tanke på att de två metoderna skiljer sig med en tredjedel av fiberdosen och att glappet faller på stärkelse är det den enda kolumn där Frankrike är den svagaste av de fyra källorna, och ytterligare ett skäl till att den ligger där den ligger.">One column is worth singling out. Ciqual publishes INFOODS tagnames for its
                     columns, and the one against fibre is <code>FIB-</code>: in that system the suffix
@@ -117,12 +133,12 @@
                     can be checked more closely is not automatically better — but between two tables of
                     equal standing, the one describing the food you actually buy wins.</p>
 
-                <p data-sv="Den här sidan kallade tidigare SR Legacy &quot;laboratorieanalyserad&quot;. Det stämmer för mycket av materialet och är falskt för resten, och skillnaden står skriven i filen. Varje siffra i USDA:s data noterar hur den kommit till, och SR Legacys inledande poster är Pillsbury-kex och en Kraft-panering vars siffror är märkta &lt;em&gt;manufacturer supplied&lt;/em&gt; eller &lt;em&gt;back-calculated from the label&lt;/em&gt; — vilket är precis det Branded Foods-materialet förkastas för, sittande inuti ett material vi var på väg att lita på i sin helhet.">This page used to call SR Legacy "laboratory-analysed". That is true of much of it and
-                    false of the rest, and the difference is written into the file. Every figure in USDA's
-                    data records how it was arrived at, and SR Legacy's opening entries are Pillsbury
-                    biscuits and a Kraft coating mix whose figures are marked <em>manufacturer
-                    supplied</em> or <em>back-calculated from the label</em> — which is exactly what the
-                    Branded Foods set is rejected for, sitting inside a set we were about to trust whole.</p>
+                <h3 data-sv="Per siffra, inte per källa">Per figure, not per source</h3>
+
+                <p data-sv="SR Legacy är inte enhetligt laboratorieanalyserat, och skillnaden står i filen. Varje siffra i USDA:s data redovisar hur den togs fram, och bland SR Legacys första poster finns kex och en panering vars siffror är märkta som tillverkaruppgift eller bakräknade från förpackningen — precis det som Branded Foods-materialet avvisas för.">SR Legacy is not uniformly laboratory-analysed, and the difference is written into the file.
+                    Every figure in USDA's data records how it was arrived at, and SR Legacy's opening entries
+                    include biscuits and a coating mix whose figures are marked manufacturer-supplied or
+                    back-calculated from the label — exactly what the Branded Foods set is rejected for.</p>
 
                 <p data-sv="Så regeln tillämpas per siffra i stället för per källa. Ett tal tas med om det uppmätts; om det är en av de två beräkningar varje nationell tabell gör per definition — kolhydrat som differens, protein från kväve; eller om tabellen själv anger näringsämnet som inte naturligt förekommande, vilket är ett faktum om livsmedlet snarare än en lucka. Ett tal som lämnats av en tillverkare, avläst från en förpackning, uppskattat från en ingredienslista eller ett recept, eller &lt;em&gt;överfört från en annan form av samma livsmedel&lt;/em&gt; förkastas, och livsmedlet behåller det som överlever. Det sista betyder mer här än det låter: varje felmatchning det här projektet någonsin haft var en formförväxling, så en siffra som själv är en formersättning är det sista man ska släppa in i tysthet. Inget medelvärdesberäknas och inget fylls i. På Pillsburys kanelbullar lämnar det inga siffror alls, vilket är rätt svar; på en våffla uppmätt i laboratorium lämnar det alla.">So the rule is applied per figure instead of per source. A number is taken if it was
                     measured; if it is one of the two calculations every national table performs by
@@ -136,6 +152,8 @@
                     quietly. Nothing is averaged and nothing is filled in. On the Pillsbury cinnamon rolls
                     that leaves no figures at all, which is the right answer; on a waffle measured in a
                     laboratory it leaves all of them.</p>
+
+                <h3 data-sv="Varför bara fyra tabeller">Why only four tables</h3>
 
                 <p data-sv="Kort med flit. Varje källa som läggs till blandar in ännu en uppsättning laboratoriemetoder i samma kolumn, och fiber överlever inte det obemärkt: två standardmetoder som används idag kan skilja sig med ett par gram på samma livsmedel, vilket är en tredjedel av fiberdosen.">Short on purpose. Every source added mixes another set of laboratory methods into the
                     same column, and fiber does not survive that unnoticed: two standard methods in current
@@ -158,7 +176,11 @@
                     with no figure from any of these gets none: the meal builder will not accept it, rather
                     than counting it as a zero.</p>
 
-                <h3 data-sv="Portionsstorlek">Portion size</h3>
+            </section>
+
+            <section id="portions">
+                <h2 data-sv="Portionsstorlek">Portion size</h2>
+
 
                 <p data-sv="En tröskel per 100 g betyder något först när man vet hur mycket av livsmedlet som hamnar på tallriken. 17,5 g fett per 100 g är ungefär 4 g i en ostskiva och ungefär 22 g i en portion köttfärs — samma siffra, fem gånger effekten. Så varje livsmedel bär en typisk portion i gram, och hamnar i ett av sex portionsintervall:">A threshold per 100g only means something once you know how much of the food goes on a
                     plate. 17.5g of fat per 100g is about 4g in a slice of cheese and about 22g in a portion
@@ -177,7 +199,7 @@
                     poultry 125g, potato and cooked grains 175g, root vegetables 80g, a slice of bread 40g.
                     Seventeen sizes cover all 582 foods. Where one departs from its group there is a reason
                     — half an avocado, one egg, a wine glass rather than a tumbler.</p>
-                <h4 data-sv="Vad standardportionen inte kan veta">What the standard serving cannot know</h4>
+                <h3 data-sv="Vad standardportionen inte kan veta">What the standard serving cannot know</h3>
 
                 <p data-sv="En standardportion är vad en typisk tallrik rymmer, och en verklig tallrik rymmer ofta något annat. Allt som mäts som en mängd ärver det: ät en halv portion och en egenskap som visas här kanske inte når dig, ät två och en som förblir dold kan göra det. Verktyget underskattar systematiskt den som äter mer än genomsnittet, och det är ingen liten grupp.">A standard serving is what a typical plate holds, and a real plate often holds something
                     else. Everything measured as an amount inherits that: eat half a portion and a trait
@@ -197,7 +219,7 @@
                 <p data-sv="Så doserna stannar där evidensen lägger dem, och begränsningen sägs ut i stället för att döljas — i själva analysen, inte bara här.">So the doses stay where the evidence puts them, and the limitation is stated instead of
                     hidden — in the analysis itself, not only here.</p>
 
-                <h4 data-sv="Var gränserna ligger">Where the boundaries sit</h4>
+                <h3 data-sv="Var gränserna ligger">Where the boundaries sit</h3>
 
                 <p data-sv="Gränserna är 7, 17, 35, 69 och 112 g snarare än runda tal, och det är medvetet. Portionsstorlekar klumpar ihop sig på hushållsmått — väldigt många livsmedel landar på exakt 25, 30, 100 eller 125 g — så en gräns lagd på en av dem skulle dela livsmedel som är lika stora som varandra. Varje snitt ligger på den bredaste punkten i ett glapp: inget livsmedel ligger inom 11 % från någon av dem.">The boundaries are 7, 17, 35, 69 and 112g rather than round numbers, and that is
                     deliberate. Portion sizes bunch up on household measures — a great many foods land on
@@ -256,61 +278,11 @@
                     classifications rather than a gram cutoff: allergens, oral allergy syndrome, GI irritants,
                     and FODMAPs (Monash University classifications).</p>
 
-                <h4 data-sv="För lite vatten, inte för mycket av något">Too little water, not too much of something</h4>
+            </section>
 
-                <p data-sv="En gräns går åt andra hållet. Osmolalitet är lösta ämnen per mängd vatten, så en torr måltid och en söt måltid är samma händelse sedd från två håll: ät 400 g russin utan något att dricka och magsäcken måste utsöndra det vatten måltiden inte bar med sig innan något kan gå vidare. Det vattnet kommer från kroppen, och det är utspänningen som känns. En tät söt deg är samma sak i en värre form.">One line runs the other way. Osmolality is solutes per unit water, so a dry meal and a
-                    sweet meal are the same event seen from two sides: eat 400g of raisins with nothing to
-                    drink and the stomach has to secrete the water the meal did not bring before anything
-                    can move on. That water comes from the body, and the distension is what is felt. A
-                    dense sweet dough is the same thing in a worse form.</p>
+            <section id="fodmaps">
+                <h2 data-sv="FODMAP">FODMAPs</h2>
 
-                <p data-sv="Så måltidsbyggaren rapporterar en måltid under &lt;strong&gt;40 g vatten per 100 g&lt;/strong&gt; — men bara när den också bär minst &lt;strong&gt;20 g socker&lt;/strong&gt;. Torrhet ensam är inte mekanismen: en tallrik ren stärkelse är torr och har lite som är osmotiskt aktivt innan den bryts ned, och utan det andra villkoret skulle gränsen bara säga att bröd är torrt. Det betyder också att något att dricka vid sidan av löser det, vilket är poängen — 100 g russin på egen hand flaggas och samma russin med ett glas mjölk gör det inte.">So the meal builder reports a meal below <strong>40g of water per 100g</strong> — but
-                    only when it also carries at least <strong>20g of sugars</strong>. Dryness on its own is
-                    not the mechanism: a plate of plain starch is dry and has little that is osmotically
-                    active until it is digested, and without the second condition the line would only be
-                    saying that bread is dry. It also means a drink alongside clears it, which is the point
-                    — 100g of raisins on their own is flagged and the same raisins with a glass of milk are
-                    not.</p>
-
-                <p data-sv="Den behöver en vattensiffra för varje livsmedel i måltiden, annars förblir den tyst. Ett livsmedel kort och måltiden ser torrare ut än den är: det saknade livsmedlet lägger vikt i nämnaren och inget vatten i täljaren, vilket är den riktning som ger falsklarm. Vatten härleddes en kort tid som 100 minus allt annat i stället — det landar inom ett par gram på de flesta livsmedel och &lt;em&gt;tolv fel på russin&lt;/em&gt;, vilket är precis det livsmedel det skulle ha använts på. Kolumnen läses från källan nu.">It needs a water figure for every food in the meal, or it stays quiet. One food short and
-                    the meal looks drier than it is: the missing food puts weight in the denominator and no
-                    water in the numerator, which is the direction that raises a false alarm. Water was
-                    briefly derived as 100 minus everything else instead — that lands within a couple of
-                    grams on most foods and <em>twelve out on raisins</em>, which is precisely the food it
-                    would have been used on. The column is read from the source now.</p>
-
-                <h4 data-sv="Vad de här gränserna vilar på, en i taget">What these lines rest on, one at a time</h4>
-
-                <p data-sv="De är inte lika väl underbyggda, och att klumpa ihop dem skulle dölja det.">They are not equally well founded, and lumping them together would hide that.</p>
-
-                <ul>
-                    <li data-sv="&lt;strong&gt;Osmolalitet bromsar magsäckstömningen, och vatten dras in i lumen för att späda en hyperton belastning.&lt;/strong&gt; Läroboksfysiologi, från arbetet om duodenala osmoreceptorer på 1970-talet och framåt. Inte ifrågasatt."><strong>Osmolality slows gastric emptying, and water is drawn into the lumen to
-                        dilute a hypertonic load.</strong> Textbook physiology, from the duodenal
-                        osmoreceptor work of the 1970s onward. Not in doubt.</li>
-                    <li data-sv="&lt;strong&gt;Kolhydrat över ungefär 8–10 viktprocent fördröjer magsäckstömningen och framkallar magsymtom.&lt;/strong&gt; Upprepat många gånger inom idrottsfysiologi, varifrån sockergränsen kommer — det är därför sportdrycker är formulerade där de är."><strong>Carbohydrate above roughly 8&ndash;10% by weight delays gastric emptying and
-                        provokes GI symptoms.</strong> Replicated many times in exercise physiology, which
-                        is where the sugar line comes from — it is why sports drinks are formulated where
-                        they are.</li>
-                    <li data-sv="&lt;strong&gt;Fett fördröjer magsäckstömningen och frisätter CCK.&lt;/strong&gt; Väl belagt. Gränsen på 25 g kommer inte från en studie; det är där fettsnåla råd vid fettmalabsorption lägger en enskild måltid."><strong>Fat delays gastric emptying and releases CCK.</strong> Well established. The
-                        25g line is not from a trial; it is where low-fat advice for fat malabsorption puts
-                        a single meal.</li>
-                    <li data-sv="&lt;strong&gt;En torr måltid som egen symtomutlösare.&lt;/strong&gt; Mekanismen följer av den första punkten, men ingen har prövat måltidens vatteninnehåll som oberoende variabel. Den här gränsen är fysiologiskt resonemang plus klinisk erfarenhet, och bör läsas så."><strong>A dry meal as a symptom trigger in its own right.</strong> The mechanism
-                        follows from the first point, but nobody has run meal water content as an
-                        independent variable. This line is physiological reasoning plus clinical
-                        experience, and it should be read that way.</li>
-                    <li data-sv="&lt;strong&gt;Gränserna för fiber och protein är praktiska, inte härledda.&lt;/strong&gt; En tredjedel av ett dygns fiber på en gång, och en proteinmängd bortom en vanlig huvudrätt."><strong>The fiber and protein lines are practical, not derived.</strong> A third of
-                        a day's fiber at once, and a protein load past a normal main course.</li>
-                </ul>
-
-                <p data-sv="En varning som hör hemma här snarare än på sidan, eftersom den går emot den självklara läsningen. Vid dumpingsyndrom är det stående rådet att &lt;em&gt;separera&lt;/em&gt; dryck från fast föda, eftersom vätska snabbar på en hyperosmolär belastnings väg ut ur magsäcken och in i jejunum, varifrån de symtomen kommer. &quot;Drick något till&quot; är alltså rätt för ett problem och fel för ett annat. Det är därför varje gräns i det här avsnittet anger en mekanism och stannar där: ingen av dem är ett råd, och ingen av dem talar om för någon vad hen ska göra åt det.">One caution that belongs here rather than on the page, because it cuts against the
-                    obvious reading. In dumping syndrome the standing advice is to <em>separate</em> fluids
-                    from solids, since fluid speeds a hyperosmolar load out of the stomach and into the
-                    jejunum, which is where those symptoms come from. "Drink something with it" is
-                    therefore right for one problem and wrong for another. That is why every line in this
-                    section states a mechanism and stops: none of them is advice, and none of them tells
-                    anyone what to do about it.</p>
-
-                <h3 data-sv="FODMAP: en tröskel, efter att en summa prövats och förkastats">FODMAPs: a threshold, after a sum was tried and dropped</h3>
 
                 <p data-sv="Uppdelningen ovan — en dos där en dos finns, ren närvaro där den inte gör det — lade FODMAP på den kategoriska sidan, och där stannar de. Men de är den enda kategoriska familjen med en publicerad mängd, så det är värt att vara exakt med vad den mängden är. Monash testar en angiven portion av ett livsmedel och bedömer den som låg, måttlig eller hög. De publicerar inte gram fruktan per 100 g. Ett trafikljus mot en portionsstorlek är vad som finns.">The split above — a dose where a dose exists, plain presence where it does not — put
                     FODMAPs on the categorical side, and that is where they stay. But they are the one
@@ -360,13 +332,19 @@
                     corrected against the app in the same sitting — it is tagged for excess fructose now,
                     not fructans.</p>
 
-                <h3 id="a-lot-at-once" data-sv="Mycket på en gång: måltiden, inte livsmedlet">A lot at once: the meal, not the food</h3>
+            </section>
+
+            <section id="meal">
+                <h2 data-sv="Måltiden, inte livsmedlet">The meal, not the food</h2>
+
 
                 <p data-sv="Varje tröskel ovan är en egenskap hos ett livsmedel i en portion. En måltid är en annan enhet, och doserna för enskilda livsmedel går inte att återanvända på den — en vanlig blandad middag rymmer 20–30 g fett, så de 6,1 g som flaggar ett livsmedel skulle flagga varje måltid som någonsin byggts. Det är inget argument för ett mildare tal; det är ett argument för att mäta något annat.">Every threshold above is a property of one food in one portion. A meal is a different
                     unit, and the single-food doses cannot be reused on it — a normal mixed dinner holds
                     20&ndash;30g of fat, so the 6.1g that flags a food would flag every meal ever built.
                     That is not a case for a more lenient number; it is a case for measuring something
                     else.</p>
+
+                <h3 data-sv="Vad en måltid mäts på">What a meal is measured on</h3>
 
                 <p data-sv="Vad som är värt att mäta är smalare än det först ser ut. Det här är ingen näringsbedömning och får inte bli en — frågan är inte om en måltid är bra, utan om en beståndsdel kommer i en mängd, eller i en koncentration, som magen sannolikt märker. Det är olika frågor och bara den andra är vår.">What is worth measuring is narrower than it first looks. This is not a nutritional
                     assessment and must not become one — the question is not whether a meal is good, but
@@ -413,6 +391,60 @@
                     still crossed &mdash; the real figure is higher &mdash; but a line not crossed settles
                     nothing, and the page says so.</p>
 
+                <h3 data-sv="För lite vatten, inte för mycket av något">Too little water, not too much of something</h3>
+
+                <p data-sv="En gräns går åt andra hållet. Osmolalitet är lösta ämnen per mängd vatten, så en torr måltid och en söt måltid är samma händelse sedd från två håll: ät 400 g russin utan något att dricka och magsäcken måste utsöndra det vatten måltiden inte bar med sig innan något kan gå vidare. Det vattnet kommer från kroppen, och det är utspänningen som känns. En tät söt deg är samma sak i en värre form.">One line runs the other way. Osmolality is solutes per unit water, so a dry meal and a
+                    sweet meal are the same event seen from two sides: eat 400g of raisins with nothing to
+                    drink and the stomach has to secrete the water the meal did not bring before anything
+                    can move on. That water comes from the body, and the distension is what is felt. A
+                    dense sweet dough is the same thing in a worse form.</p>
+
+                <p data-sv="Så måltidsbyggaren rapporterar en måltid under &lt;strong&gt;40 g vatten per 100 g&lt;/strong&gt; — men bara när den också bär minst &lt;strong&gt;20 g socker&lt;/strong&gt;. Torrhet ensam är inte mekanismen: en tallrik ren stärkelse är torr och har lite som är osmotiskt aktivt innan den bryts ned, och utan det andra villkoret skulle gränsen bara säga att bröd är torrt. Det betyder också att något att dricka vid sidan av löser det, vilket är poängen — 100 g russin på egen hand flaggas och samma russin med ett glas mjölk gör det inte.">So the meal builder reports a meal below <strong>40g of water per 100g</strong> — but
+                    only when it also carries at least <strong>20g of sugars</strong>. Dryness on its own is
+                    not the mechanism: a plate of plain starch is dry and has little that is osmotically
+                    active until it is digested, and without the second condition the line would only be
+                    saying that bread is dry. It also means a drink alongside clears it, which is the point
+                    — 100g of raisins on their own is flagged and the same raisins with a glass of milk are
+                    not.</p>
+
+                <p data-sv="Den behöver en vattensiffra för varje livsmedel i måltiden, annars förblir den tyst. Ett livsmedel kort och måltiden ser torrare ut än den är: det saknade livsmedlet lägger vikt i nämnaren och inget vatten i täljaren, vilket är den riktning som ger falsklarm. Vatten härleddes en kort tid som 100 minus allt annat i stället — det landar inom ett par gram på de flesta livsmedel och &lt;em&gt;tolv fel på russin&lt;/em&gt;, vilket är precis det livsmedel det skulle ha använts på. Kolumnen läses från källan nu.">It needs a water figure for every food in the meal, or it stays quiet. One food short and
+                    the meal looks drier than it is: the missing food puts weight in the denominator and no
+                    water in the numerator, which is the direction that raises a false alarm. Water was
+                    briefly derived as 100 minus everything else instead — that lands within a couple of
+                    grams on most foods and <em>twelve out on raisins</em>, which is precisely the food it
+                    would have been used on. The column is read from the source now.</p>
+
+                <h3 data-sv="Vad de här gränserna vilar på, en i taget">What these lines rest on, one at a time</h3>
+
+                <p data-sv="De är inte lika väl underbyggda, och att klumpa ihop dem skulle dölja det.">They are not equally well founded, and lumping them together would hide that.</p>
+
+                <ul>
+                    <li data-sv="&lt;strong&gt;Osmolalitet bromsar magsäckstömningen, och vatten dras in i lumen för att späda en hyperton belastning.&lt;/strong&gt; Läroboksfysiologi, från arbetet om duodenala osmoreceptorer på 1970-talet och framåt. Inte ifrågasatt."><strong>Osmolality slows gastric emptying, and water is drawn into the lumen to
+                        dilute a hypertonic load.</strong> Textbook physiology, from the duodenal
+                        osmoreceptor work of the 1970s onward. Not in doubt.</li>
+                    <li data-sv="&lt;strong&gt;Kolhydrat över ungefär 8–10 viktprocent fördröjer magsäckstömningen och framkallar magsymtom.&lt;/strong&gt; Upprepat många gånger inom idrottsfysiologi, varifrån sockergränsen kommer — det är därför sportdrycker är formulerade där de är."><strong>Carbohydrate above roughly 8&ndash;10% by weight delays gastric emptying and
+                        provokes GI symptoms.</strong> Replicated many times in exercise physiology, which
+                        is where the sugar line comes from — it is why sports drinks are formulated where
+                        they are.</li>
+                    <li data-sv="&lt;strong&gt;Fett fördröjer magsäckstömningen och frisätter CCK.&lt;/strong&gt; Väl belagt. Gränsen på 25 g kommer inte från en studie; det är där fettsnåla råd vid fettmalabsorption lägger en enskild måltid."><strong>Fat delays gastric emptying and releases CCK.</strong> Well established. The
+                        25g line is not from a trial; it is where low-fat advice for fat malabsorption puts
+                        a single meal.</li>
+                    <li data-sv="&lt;strong&gt;En torr måltid som egen symtomutlösare.&lt;/strong&gt; Mekanismen följer av den första punkten, men ingen har prövat måltidens vatteninnehåll som oberoende variabel. Den här gränsen är fysiologiskt resonemang plus klinisk erfarenhet, och bör läsas så."><strong>A dry meal as a symptom trigger in its own right.</strong> The mechanism
+                        follows from the first point, but nobody has run meal water content as an
+                        independent variable. This line is physiological reasoning plus clinical
+                        experience, and it should be read that way.</li>
+                    <li data-sv="&lt;strong&gt;Gränserna för fiber och protein är praktiska, inte härledda.&lt;/strong&gt; En tredjedel av ett dygns fiber på en gång, och en proteinmängd bortom en vanlig huvudrätt."><strong>The fiber and protein lines are practical, not derived.</strong> A third of
+                        a day's fiber at once, and a protein load past a normal main course.</li>
+                </ul>
+
+                <p data-sv="En varning som hör hemma här snarare än på sidan, eftersom den går emot den självklara läsningen. Vid dumpingsyndrom är det stående rådet att &lt;em&gt;separera&lt;/em&gt; dryck från fast föda, eftersom vätska snabbar på en hyperosmolär belastnings väg ut ur magsäcken och in i jejunum, varifrån de symtomen kommer. &quot;Drick något till&quot; är alltså rätt för ett problem och fel för ett annat. Det är därför varje gräns i det här avsnittet anger en mekanism och stannar där: ingen av dem är ett råd, och ingen av dem talar om för någon vad hen ska göra åt det.">One caution that belongs here rather than on the page, because it cuts against the
+                    obvious reading. In dumping syndrome the standing advice is to <em>separate</em> fluids
+                    from solids, since fluid speeds a hyperosmolar load out of the stomach and into the
+                    jejunum, which is where those symptoms come from. "Drink something with it" is
+                    therefore right for one problem and wrong for another. That is why every line in this
+                    section states a mechanism and stops: none of them is advice, and none of them tells
+                    anyone what to do about it.</p>
+
                 <h3 data-sv="Portioner: behållna för två egenskaper, slopade för resten">Helpings: kept for two traits, dropped for the rest</h3>
 
                 <p data-sv="Innan näringssiffrorna fanns rapporterade en måltid varje mängdbaserad egenskap som ett antal standardportioner av märkt livsmedel, i en tabell: &lt;em&gt;Fett — 2 — 2 ingredienser&lt;/em&gt;. Den gick inte att läsa utan stycket som förklarade den, och siffran inbjöd till precis fel läsning. &lt;em&gt;2&lt;/em&gt; ser ut som två gånger tröskeln. Det är det inte: det betyder att tallriken rymmer två standardportioner fettmärkt livsmedel, som var och en är &lt;em&gt;minst&lt;/em&gt; dosen och kan vara långt över den. Två portioner kan vara 13 g fett eller 80 g, och tabellen kunde inte skilja dem åt.">Before the nutrient figures existed, a meal reported every amount-based trait as a count
@@ -443,7 +475,11 @@
                 <p data-sv="Tabellen ska inte tillbaka. Om en egenskap får en gramsiffra flyttar den upp bland grammen; om en ny kommer utan får den en mening.">The table is not to come back. If a trait gains a gram figure, it moves up into the
                     grams; if a new one arrives without, it gets a sentence.</p>
 
-                <h3 data-sv="Allergener: EU-listan, minus en, plus två">Allergens: the EU list, minus one, plus two</h3>
+            </section>
+
+            <section id="allergens">
+                <h2 data-sv="Allergener">Allergens</h2>
+
 
                 <p data-sv="Allergenlistan följer EU:s märkningslagstiftning: spannmål som innehåller gluten, mjölk, ägg, fisk, kräftdjur, blötdjur, jordnöt, nöt, soja, sesam, selleri och senap. Den ersatte den amerikanska &quot;Big 9&quot;, som är fel lista för en svensk mottagning — den har varken selleri eller senap, och den slår ihop kräftdjur och blötdjur till ett enda &quot;shellfish&quot; som EU medvetet delar, eftersom de två tropomyosinerna skiljer sig tillräckligt för att den ena gruppen ofta tolereras när den andra inte gör det.">The allergen list follows EU labelling law: cereals containing gluten, milk, egg, fish,
                     crustaceans, molluscs, peanut, tree nut, soy, sesame, celery and mustard. It
@@ -466,6 +502,8 @@
                     genuinely hard to separate, the mushroom one because most of what is documented concerns
                     spore inhalation rather than eating them.</p>
 
+                <h3 data-sv="Ingen paraplyegenskap ovanför de sexton">No umbrella above the sixteen</h3>
+
                 <p data-sv="Det finns inget brett &quot;allergen&quot;-paraply ovanför de sexton. Det fanns tidigare, från innan de specifika allergenerna existerade; när var och en av dem hade sin egen tagg tog paraplyet bara en topplacering i rangordningen utan att säga något de specifika taggarna inte redan sa. Ett urval av mjölk-, ägg- och veteprodukter rangordnar nu de tre, i stället för att rangordna &quot;allergen&quot; först och begrava dem under.">There is no broad "allergen" umbrella above the sixteen. There used to be, from before the
                     specific allergens existed; once every one of them had its own tag the umbrella only took
                     a top slot in the ranking without saying anything the specific tags did not already say.
@@ -476,7 +514,7 @@
                     the EU list, so oats, rye and barley products carry it alongside wheat — a rye crispbread
                     is tagged where before it was not.</p>
 
-                <h4 data-sv="Sulfiter finns inte i allergenkortet">Sulphites are not in the allergen card</h4>
+                <h3 data-sv="Sulfiter finns inte i allergenkortet">Sulphites are not in the allergen card</h3>
 
                 <p data-sv="Sulfiter är den fjortonde posten på EU-listan och följs, men de ligger bland de övriga matsmältningsfaktorerna snarare än bland allergenerna. De är ett konserveringsmedel, inte ett protein: inget i reaktionen är immunmedierat, och den bäst dokumenterade effekten är bronkkonstriktion hos personer med astma. Att sortera dem bredvid mjölk och jordnöt hade sagt något om mekanismen som inte är sant. De behåller allergenartikeln för sin genomgång, eftersom det är där märkningsregeln förklaras.">Sulphites are the fourteenth item on the EU list and are tracked, but they sit with the
                     other digestive factors rather than among the allergens. They are a preservative, not a
@@ -489,6 +527,13 @@
                     this database means wine, cider, balsamic vinegar and the light-coloured dried fruits that
                     keep their colour.</p>
 
+            </section>
+
+            <section id="categorical">
+                <h2 data-sv="Egenskaper utan gramgräns">Properties with no gram threshold</h2>
+                <p data-sv="Histamin, DAO-hämmare, salicylater, pollenkorsreaktivitet och alfa-gal har ingen mängd att mätas mot. De märks utifrån livsmedelstyp och etablerade klassificeringar, inte utifrån en siffra.">Histamine, DAO competitors, salicylates, pollen cross-reactivity and alpha-gal have no
+                    amount to be measured against. They are tagged from food type and established
+                    classifications rather than from a figure.</p>
                 <p data-sv="&lt;strong&gt;Histamin&lt;/strong&gt; är kategoriskt men inte bara ärvt från en publicerad lista. Ett livsmedel märks bara där det finns uppmätt histamin, proteolytisk mognad, lång fermentering med odefinierad flora, en färskhetsberoende mekanism, eller alkohol. Livsmedel som motiveras enbart av idén om &quot;histaminfrisättare&quot; märks inte: en genomgång av tio publicerade histaminfattiga dieter fann att 68 % av de uteslutna livsmedlen inte hade mätbart histamin, och frisättningsmekanismen har aldrig påvisats hos människa. Det är därför yoghurt, kefir, jordgubbe och avokado inte bär någon histamintagg här trots att de flesta listor tar med dem."><strong>Histamine</strong> is categorical but not simply inherited from a published list.
                     A food is tagged only where there is measured histamine, proteolytic ripening, long
                     fermentation with an undefined flora, a freshness-dependent mechanism, or alcohol. Foods
@@ -502,7 +547,11 @@
                     clearance — but a food carrying them without any histamine has nothing to compete with.
                     The trait is therefore only reported when the selection also contains histamine.</p>
 
-                <h3 data-sv="Hur väl belagd är varje egenskap?">How well supported is each trait?</h3>
+            </section>
+
+            <section id="evidence">
+                <h2 data-sv="Hur väl belagd är varje egenskap?">How well established is each property?</h2>
+
 
                 <p data-sv="Egenskaper är inte lika väl underbyggda, och analysen säger det. Varje egenskap bär en evidensnivå på ett av tre steg:">Traits are not equally well grounded, and the analysis says so. Every trait carries an
                     evidence level on one of three steps:</p>
@@ -539,7 +588,7 @@
 
     <footer>
         <p data-sv="Livsmedelsdata från Livsmedelsverket, använd under CC BY 4.0.">Food composition data from Livsmedelsverket, used under CC BY 4.0.</p>
-        <p data-sv="Pre-beta v1.80 — uppdaterad 17 augusti 2026">Pre-beta v1.80 — updated 17 August 2026</p>
+        <p data-sv="Pre-beta v1.81 — uppdaterad 18 augusti 2026">Pre-beta v1.81 — updated 18 August 2026</p>
     </footer>
 
     <script src="i18n.js"></script>
