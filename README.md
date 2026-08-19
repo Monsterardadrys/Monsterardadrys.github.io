@@ -4,8 +4,7 @@ Live at [monsterardadrys.github.io](https://monsterardadrys.github.io).
 
 Pick a handful of foods someone reacts to and the tool ranks what they have
 in common — a FODMAP, a histamine load, a hidden allergen. Two tools:
-**Shared traits** and the **Meal builder**. Everything runs in the browser,
-works offline once loaded, and stores nothing anywhere but the device.
+**Shared traits** and the **Meal builder**. Everything runs in the browser and stores nothing anywhere but the device.
 
 ## Nothing here is authored here
 
@@ -29,8 +28,11 @@ were shipped. A flag that hides data ships the data it is hiding.
 | Irritant detail | one trait, plus alcohol and caffeine | capsaicin, peel, allyl compounds, carbonation, acetic acid |
 | Cross-reaction detail | one trait | birch, grass, mugwort, latex |
 | Allergens | all 14 declarable | all 14 declarable |
+| Articles | 4 of 21, the rest by title | 21 |
 | Tools | Shared traits, Meal builder | and Foods without |
-| Languages, articles, method, sources | whole | whole |
+| Print, save to file | — | yes |
+| Install as an app, offline | — | yes |
+| Languages, method, sources | whole | whole |
 
 Both builds share every script and every page. The cut is in the data, and
 in one place in `food-picker.js` that draws a locked food.

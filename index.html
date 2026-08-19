@@ -20,13 +20,11 @@
 
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Installable + offline: see manifest.webmanifest, sw.js and pwa.js -->
+    <!-- Installing to a home screen and running offline are in the full
+         version. pwa.js now only unregisters the worker earlier releases
+         left behind — see the file. -->
     <link rel="icon" href="favicon.ico" sizes="any">
-    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#15414c">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Intolerance">
 </head>
 
 <body>
@@ -118,7 +116,12 @@
                 individual irritant mechanisms.</li>
             <li data-sv="&lt;strong&gt;Två av tre verktyg.&lt;/strong&gt; Det tredje svarar på frågan från andra hållet: vilka livsmedel saknar en uppsättning egenskaper?"><strong>Two of three tools.</strong> The third asks the question the other way round: which foods
                 carry none of a given set of properties?</li>
-            <li data-sv="&lt;strong&gt;Oavkortat:&lt;/strong&gt; båda språken, alla artiklar, metodsidan och källorna."><strong>Whole:</strong> both languages, every article, the method page and the sources.</li>
+            <li data-sv="&lt;strong&gt;4 av 21 artiklar.&lt;/strong&gt; De fyra som förklarar vad databasen gör — makronäringsämnen, fiber, FODMAP, och hur säkert något av det här är. Övrigas titlar syns, med lås."><strong>4 of 21 articles.</strong> The four that explain what the database is doing —
+                macronutrients, fibre, FODMAPs, and how certain any of this is. The rest show their
+                titles, locked.</li>
+            <li data-sv="&lt;strong&gt;Oavkortat:&lt;/strong&gt; båda språken, metodsidan och källorna."><strong>Whole:</strong> both languages, the method page and the sources.</li>
+            <li data-sv="&lt;strong&gt;Finns i fullversionen:&lt;/strong&gt; skriva ut analysen, spara till fil, och att installera sidan som app och använda den utan uppkoppling."><strong>In the full version:</strong> printing the analysis, saving to a file, and installing
+                the site as an app to use with no connection.</li>
         </ul>
         <p class="sampleWhen" data-sv="&lt;strong&gt;Den färdiga appen släpps 2027.&lt;/strong&gt; Fram till dess byggs den vidare, och den här sidan följer med.">
             <strong>The finished app arrives in 2027.</strong> Until then it keeps being built, and this
@@ -156,7 +159,7 @@
 
     <footer>
         <p data-sv="Byggt av en dietist, för dietister (och nyfikna).">Built by a dietitian, for dietitians (and the curious).</p>
-        <p data-sv="Pre-beta v1.82 — uppdaterad 18 augusti 2026">Pre-beta v1.82 — updated 18 August 2026</p>
+        <p data-sv="Pre-beta v1.83 — uppdaterad 18 augusti 2026">Pre-beta v1.83 — updated 18 August 2026</p>
     </footer>
 
     <script src="i18n.js"></script>

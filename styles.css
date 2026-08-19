@@ -2229,3 +2229,23 @@ footer p { color: var(--linen); }
     text-align: left;
     color: var(--ink);
 }
+
+/* An article the free build carries only the title of. The index keeps the
+   link — it goes to a page that explains itself, which is the whole reason
+   to list it — but says at a glance which way it leads. */
+.articleIndex a.articleLocked::before {
+    content: "\1F512";           /* 🔒 */
+    font-size: 0.8em;
+    margin-right: 6px;
+    opacity: 0.6;
+}
+
+.articlePaidNote {
+    margin: 20px 0 30px;
+    padding: 16px 18px;
+    background: var(--linen);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 17px;
+    line-height: 1.55;
+}

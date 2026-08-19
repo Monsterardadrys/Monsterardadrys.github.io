@@ -16,13 +16,11 @@
 
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Installable + offline: see manifest.webmanifest, sw.js and pwa.js -->
+    <!-- Installing to a home screen and running offline are in the full
+         version. pwa.js now only unregisters the worker earlier releases
+         left behind — see the file. -->
     <link rel="icon" href="favicon.ico" sizes="any">
-    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#15414c">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Intolerance">
 </head>
 
 <body>
@@ -61,7 +59,7 @@
 
     <footer>
         <p data-sv="Byggt av en dietist, för dietister (och nyfikna).">Built by a dietitian, for dietitians (and the curious).</p>
-        <p data-sv="Pre-beta v1.82 — uppdaterad 18 augusti 2026">Pre-beta v1.82 — updated 18 August 2026</p>
+        <p data-sv="Pre-beta v1.83 — uppdaterad 18 augusti 2026">Pre-beta v1.83 — updated 18 August 2026</p>
     </footer>
 
     <script src="i18n.js"></script>

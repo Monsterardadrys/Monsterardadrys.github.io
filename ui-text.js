@@ -700,6 +700,16 @@ const UI = {
   /* The tooltip on a greyed-out food in the free build. Present in both
      builds: the full one has no locked foods, so nothing ever asks for it,
      and one key in two places is cheaper than two versions of a file. */
+  /* Shown in place of an article the free build does not carry. */
+  "article.locked": {
+    en: "This article is in the full version. The four here — macronutrients, fibre, " +
+      "FODMAPs and how certain any of this is — are the ones that explain what the " +
+      "database is doing; the rest go into a single property in depth.",
+    sv: "Den här artikeln finns i fullversionen. De fyra som ligger här — makronäringsämnen, " +
+      "fiber, FODMAP och hur säkert något av det här är — är de som förklarar vad databasen " +
+      "gör; övriga går på djupet i en enskild egenskap."
+  },
+
   "locked.hint": {
     en: "Not in the free version — this food's traits and figures are in the full one.",
     sv: "Ingår inte i gratisversionen — livsmedlets egenskaper och siffror finns i fullversionen."

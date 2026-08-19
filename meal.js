@@ -43,7 +43,11 @@
   const FOODS = {};
   CATEGORIES.forEach(function (category) {
     category.foods.forEach(function (food) {
-      FOODS[food.name] = { name: food.name, sv: food.sv, portion: food.portion, traits: food.traits, category: I18N.pick(category, "label") };
+      /* `traits || []` rather than a guard at each of the three places that
+         read it: a locked food in the free build has none, and while the
+         picker will not offer one, a session restored from an older visit
+         can still name a food that has since been locked. */
+      FOODS[food.name] = { name: food.name, sv: food.sv, portion: food.portion, traits: food.traits || [], category: I18N.pick(category, "label") };
     });
   });
 

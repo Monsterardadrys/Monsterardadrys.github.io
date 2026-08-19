@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function findFoodTraits(name) {
     for (const category of CATEGORIES) {
       const food = category.foods.find(function (f) { return f.name === name; });
-      if (food) return food.traits;
+      if (food) return food.traits || [];
     }
     return [];
   }
