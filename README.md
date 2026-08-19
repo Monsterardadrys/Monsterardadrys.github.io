@@ -22,7 +22,13 @@ The data here started as a cut of the full database — 100 of its foods,
 30 of its 43 properties, 7 of its 21 articles — but that was a decision
 taken once, not a pipeline. When the full database gains a round of foods,
 this one gets a considered copy of whatever is worth putting in the sample,
-or it gets nothing. It is not expected to keep up.
+or it gets nothing.
+
+**It is not expected to keep up, and falling behind is not a fault.** A
+sample is meant to show what the tool does and what its data looks like,
+which does not change when a hundred and first food is added somewhere
+else. Treating it as a mirror would mean every round of work in the full
+database owing this repository a release; it does not.
 
 An earlier version of this file said nothing was authored here. That was
 never how it worked: every release since the split has edited these pages
