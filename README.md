@@ -28,7 +28,7 @@ were shipped. A flag that hides data ships the data it is hiding.
 | Irritant detail | one trait, plus alcohol and caffeine | capsaicin, peel, allyl compounds, carbonation, acetic acid |
 | Cross-reaction detail | one trait | birch, grass, mugwort, latex |
 | Allergens | all 14 declarable | all 14 declarable |
-| Articles | 4 of 21, the rest by title | 21 |
+| Articles | 7 of 21, the rest by title | 21 |
 | Tools | Shared traits, Meal builder | and Foods without |
 | Print, save to file | — | yes |
 | Install as an app, offline | — | yes |

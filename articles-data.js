@@ -35,7 +35,7 @@
    on the checklist.
    ========================================================================= */
 
-/* GENERATED for the free build — 4 articles whole, 17 by title only.
+/* GENERATED for the free build — 7 articles whole, 14 by title only.
    Edit articles-data.js in the private repository and rebuild. */
 
 const ARTICLES = {
@@ -124,19 +124,294 @@ const ARTICLES = {
   fat: {
     title: "Fat",
     sv: "Fett",
-    locked: true
+    sections: [
+      {
+        heading: "Why fat can trigger symptoms",
+        sv: "Varför fett kan utlösa symtom",
+        blocks: [
+          {
+            type: "p",
+            text: "Fat doesn't mix with water, so it needs bile as an emulsifier to break it " +
+              "into digestible droplets. Without enough bile, fat passes through poorly " +
+              "digested.",
+            sv: "Fett blandar sig inte med vatten, så det behöver galla som " +
+              "emulgeringsmedel för att brytas ned till smältbara droppar. Utan " +
+              "tillräckligt med galla passerar fettet dåligt smält."
+          },
+          {
+            type: "p",
+            text: "Fat is the slowest macronutrient to digest. A high-fat meal stays in the " +
+              "stomach and small intestine longer, and it strongly stimulates the " +
+              "gallbladder and pancreas to release bile and digestive enzymes.",
+            sv: "Fett är det makronäringsämne som smälts långsammast. En fettrik måltid " +
+              "stannar längre i magsäck och tunntarm, och den stimulerar gallblåsa och " +
+              "bukspottkörtel kraftigt att frisätta galla och matsmältningsenzymer."
+          },
+          {
+            type: "p",
+            text: "For most people this is no problem. For people with GERD, IBS, gallbladder " +
+              "disease, or pancreatic insufficiency (EPI), it can trigger reflux, " +
+              "cramping, or diarrhea.",
+            sv: "För de flesta är det inget problem. För personer med GERD, IBS, " +
+              "gallsjukdom eller exokrin pankreasinsufficiens (EPI) kan det utlösa " +
+              "reflux, kramper eller diarré."
+          }
+        ]
+      },
+      {
+        heading: "Who is more sensitive?",
+        sv: "Vilka är känsligare?",
+        blocks: [
+          {
+            type: "list",
+            items: [
+              "**GERD, IBS, IBD:** fat most often worsens symptoms already caused by " +
+                "these conditions rather than causing them directly.",
+              "**Gallstones / biliary colic:** fat triggers gallbladder contraction, " +
+                "which can cause pain in a diseased gallbladder — a case of fat causing " +
+                "symptoms directly.",
+              "**EPI / pancreatitis:** without enough pancreatic enzymes, fat isn't " +
+                "broken down properly, causing oily stools and urgent diarrhea — also a " +
+                "direct cause.",
+            ],
+            sv: [
+              "**GERD, IBS, IBD:** fett förvärrar oftast symtom som redan orsakas av " +
+                "dessa tillstånd snarare än att orsaka dem direkt.",
+              "**Gallsten / gallstensanfall:** fett utlöser gallblåsesammandragning, " +
+                "vilket kan ge smärta i en sjuk gallblåsa — ett fall där fett orsakar " +
+                "symtom direkt.",
+              "**EPI / pankreatit:** utan tillräckligt med bukspottkörtelenzymer bryts " +
+                "fettet inte ned ordentligt, vilket ger fettglänsande avföring och akut " +
+                "diarré — också en direkt orsak.",
+            ]
+          }
+        ]
+      },
+      {
+        heading: "Warning signs of fat malabsorption",
+        sv: "Varningstecken på fettmalabsorption",
+        blocks: [
+          {
+            type: "p",
+            text: "Acute diarrhea within 1-2 hours of a fatty meal, pale or yellow stool, and " +
+              "oily residue in the toilet can indicate a malabsorption disorder and " +
+              "deserve medical follow-up rather than self-managed avoidance.",
+            sv: "Akut diarré inom 1–2 timmar efter en fet måltid, blek eller gul avföring, " +
+              "och oljerester i toaletten kan tyda på en malabsorptionsstörning och " +
+              "förtjänar medicinsk uppföljning snarare än självstyrt undvikande."
+          }
+        ]
+      },
+      {
+        heading: null,
+        blocks: [
+          {
+            type: "note",
+            text: "Loss of appetite from unrelated medical conditions (e.g. heart failure) " +
+              "can shift food preference toward carbs and away from fat- and protein-rich " +
+              "foods — worth distinguishing from a true food intolerance.",
+            sv: "Aptitlöshet av orelaterade medicinska tillstånd (t.ex. hjärtsvikt) kan " +
+              "förskjuta matpreferensen mot kolhydrater och bort från fett- och " +
+              "proteinrika livsmedel — värt att skilja från en verklig matintolerans."
+          },
+          {
+            type: "note",
+            text: "Dumping syndrome — rapid gastric emptying causing cramping, diarrhea, and " +
+              "sometimes low blood sugar — is common after GI surgery (bariatric, " +
+              "oncologic, or IBD-related resections), typically triggered by fat-rich or " +
+              "carb-rich meals.",
+            sv: "Dumpingsyndrom — snabb magsäckstömning som ger kramper, diarré och ibland " +
+              "lågt blodsocker — är vanligt efter magtarmkirurgi (obesitas-, cancer- " +
+              "eller IBD-relaterade resektioner), och utlöses typiskt av fettrika eller " +
+              "kolhydratrika måltider."
+          }
+        ]
+      }
+    ]
   },
 
   protein: {
     title: "Protein",
     sv: "Protein",
-    locked: true
+    sections: [
+      {
+        heading: "Why protein can trigger symptoms",
+        sv: "Varför protein kan utlösa symtom",
+        blocks: [
+          {
+            type: "p",
+            text: "Protein itself is well tolerated by most people, but it's a moderate " +
+              "stimulant of bile release (weaker than fat) and a large protein load can " +
+              "slow digestion.",
+            sv: "Protein i sig tolereras väl av de flesta, men det är en måttlig " +
+              "stimulerare av gallutsöndring (svagare än fett) och en stor proteinmängd " +
+              "kan bromsa matsmältningen."
+          },
+          {
+            type: "p",
+            text: "Symptoms usually come from something protein-rich foods carry alongside " +
+              "the protein: dairy protein is often paired with lactose, some proteins " +
+              "overlap with declarable allergens, and fermented or aged proteins (cured " +
+              "meat, aged cheese) can be high in histamine.",
+            sv: "Symtom kommer oftast från något proteinrika livsmedel bär vid sidan av " +
+              "proteinet: mjölkprotein följs ofta av laktos, vissa proteiner sammanfaller " +
+              "med deklarationspliktiga allergener, och fermenterade eller lagrade " +
+              "proteiner (charkuterier, lagrad ost) kan vara histaminrika."
+          }
+        ]
+      },
+      {
+        heading: "Who is more sensitive?",
+        sv: "Vilka är känsligare?",
+        blocks: [
+          {
+            type: "list",
+            items: [
+              "**Gallbladder disease:** protein adds to the bile-release load alongside " +
+                "fat.",
+              "**Pancreatitis / pancreatic tumors:** among the most specific causes of " +
+                "true protein malabsorption.",
+              "**True food allergy:** milk, egg, fish, shellfish, peanut, tree nut, " +
+                "soy, and sesame proteins can trigger immune reactions unrelated to " +
+                "digestion.",
+              "**Histamine intolerance:** aged, cured, or fermented protein sources " +
+                "tend to be high in histamine.",
+            ],
+            sv: [
+              "**Gallsjukdom:** protein lägger till gallutsöndringsbelastningen vid " +
+                "sidan av fett.",
+              "**Pankreatit / bukspottkörteltumörer:** bland de mest specifika " +
+                "orsakerna till verklig proteinmalabsorption.",
+              "**Verklig matallergi:** protein från mjölk, ägg, fisk, skaldjur, " +
+                "jordnöt, nöt, soja och sesam kan utlösa immunreaktioner som inte har med " +
+                "matsmältningen att göra.",
+              "**Histaminintolerans:** lagrade, rimmade eller fermenterade " +
+                "proteinkällor tenderar att vara histaminrika.",
+            ]
+          }
+        ]
+      },
+      {
+        heading: "A note on quantity",
+        sv: "En anmärkning om mängd",
+        blocks: [
+          {
+            type: "p",
+            text: "Very high single-meal protein intakes (common in high-protein diets) can " +
+              "occasionally cause bloating or discomfort simply from the digestive " +
+              "workload, independent of any allergy or intolerance.",
+            sv: "Mycket höga proteinintag i en enskild måltid (vanligt i proteinrika " +
+              "dieter) kan ibland ge uppblåsthet eller obehag enbart av " +
+              "matsmältningsarbetet, oberoende av allergi eller intolerans."
+          }
+        ]
+      },
+      {
+        heading: null,
+        blocks: [
+          {
+            type: "note",
+            text: "Some amino acid metabolism disorders are congenital and almost never first " +
+              "appear in adulthood.",
+            sv: "Vissa störningar i aminosyraomsättningen är medfödda och visar sig nästan " +
+              "aldrig först i vuxen ålder."
+          },
+          {
+            type: "note",
+            text: "Loss of appetite from unrelated medical conditions (e.g. heart failure) " +
+              "can shift food preference toward carbs and away from fat- and protein-rich " +
+              "foods — worth distinguishing from a true food intolerance.",
+            sv: "Aptitlöshet av orelaterade medicinska tillstånd (t.ex. hjärtsvikt) kan " +
+              "förskjuta matpreferensen mot kolhydrater och bort från fett- och " +
+              "proteinrika livsmedel — värt att skilja från en verklig matintolerans."
+          }
+        ]
+      }
+    ]
   },
 
   carbs: {
     title: "Carbohydrates",
     sv: "Kolhydrater",
-    locked: true
+    sections: [
+      {
+        heading: "Why carbohydrates can trigger symptoms",
+        sv: "Varför kolhydrater kan utlösa symtom",
+        blocks: [
+          {
+            type: "p",
+            text: "Most digestive symptoms blamed on \"carbs\" actually come from specific " +
+              "subtypes: FODMAPs (see the FODMAPs article), lactose, or excess fructose, " +
+              "rather than starch or sugar in general.",
+            sv: "De flesta matsmältningssymtom som skylls på \"kolhydrater\" kommer i själva " +
+              "verket från specifika undertyper: FODMAP (se FODMAP-artikeln), laktos, " +
+              "eller överskott av fruktos, snarare än från stärkelse eller socker i " +
+              "allmänhet."
+          },
+          {
+            type: "p",
+            text: "Refined carbohydrates can also raise blood sugar quickly, which is a " +
+              "separate concern from GI symptoms but often gets grouped in with them.",
+            sv: "Raffinerade kolhydrater kan också höja blodsockret snabbt, vilket är en " +
+              "annan fråga än magsymtom men ofta klumpas ihop med dem."
+          }
+        ]
+      },
+      {
+        heading: "Who is more sensitive?",
+        sv: "Vilka är känsligare?",
+        blocks: [
+          {
+            type: "list",
+            items: [
+              "**IBS / SIBO:** fermentable carbohydrate subtypes (FODMAPs) are the main " +
+                "driver of bloating and gas.",
+              "**Lactose intolerance:** lactose specifically, not carbohydrates broadly.",
+              "**Diabetes / insulin resistance:** carbohydrate load affects blood sugar " +
+                "regardless of GI tolerance.",
+            ],
+            sv: [
+              "**IBS / SIBO:** fermenterbara kolhydratundertyper (FODMAP) är den " +
+                "främsta drivkraften bakom uppblåsthet och gaser.",
+              "**Laktosintolerans:** specifikt laktos, inte kolhydrater i stort.",
+              "**Diabetes / insulinresistens:** kolhydratmängden påverkar blodsockret " +
+                "oavsett magtolerans.",
+            ]
+          }
+        ]
+      },
+      {
+        heading: "Practical takeaway",
+        sv: "Praktisk slutsats",
+        blocks: [
+          {
+            type: "p",
+            text: "If carbohydrate-containing foods are a suspected trigger, checking which " +
+              "specific subtype (FODMAPs, lactose, fructose) they share is usually more " +
+              "useful than avoiding carbohydrates as a whole.",
+            sv: "Om kolhydratinnehållande livsmedel misstänks som utlösare är det oftast " +
+              "mer användbart att kontrollera vilken specifik undertyp (FODMAP, laktos, " +
+              "fruktos) de delar än att undvika kolhydrater som helhet."
+          }
+        ]
+      },
+      {
+        heading: null,
+        blocks: [
+          {
+            type: "note",
+            text: "Dumping syndrome — rapid gastric emptying causing cramping, diarrhea, and " +
+              "sometimes low blood sugar — is common after GI surgery (bariatric, " +
+              "oncologic, or IBD-related resections), typically triggered by carb-rich or " +
+              "fat-rich meals.",
+            sv: "Dumpingsyndrom — snabb magsäckstömning som ger kramper, diarré och ibland " +
+              "lågt blodsocker — är vanligt efter magtarmkirurgi (obesitas-, cancer- " +
+              "eller IBD-relaterade resektioner), och utlöses typiskt av kolhydratrika " +
+              "eller fettrika måltider."
+          }
+        ]
+      }
+    ]
   },
 
   fiber: {
