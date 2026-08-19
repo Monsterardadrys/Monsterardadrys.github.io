@@ -9,7 +9,9 @@
        { version, app: {...}, meals: [...], without: {...} }
 
    Saving to a file saves that whole record, so one file is a snapshot of
-   everything, and loading one restores every tool at once.
+   everything, and loading one restores every tool at once. That is a full
+   version feature: snapshot() and restore() below have no caller in the
+   free build and are kept so the file is the same in both.
 
    WHERE THIS LIVES. The browser's local storage, on this device, and
    nowhere else. It is not sent anywhere and no account holds it. But it is

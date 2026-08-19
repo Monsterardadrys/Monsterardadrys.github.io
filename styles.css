@@ -1568,29 +1568,8 @@ footer p { color: var(--linen); }
     }
     .mealAnalysis h2, .withoutResults h2 { break-after: avoid; }
 
-    .printStamp { font-size: 14px; font-style: italic; }
 
-    /* This was a fixed element, on the belief that a fixed element repeats on
-       every printed page. It does not — measured, not assumed: rendered to
-       PDF, page two either had no footer at all or had it stranded at the top
-       of the sheet, on top of the text. That is the overlap it caused.
-
-       It is in the flow now, and prints once at the end. A footer that really
-       repeats needs the whole document wrapped in a table with a <tfoot>,
-       which browsers do repeat; that is the route if per-sheet identification
-       becomes worth the layout it would cost. Page numbers remain impossible
-       either way — a stylesheet is given no page counter. */
-    .printRunningFooter {
-        display: block !important;
-        margin: 24px 0 0;
-        padding: 6px 0 0;
-        font-size: 12px;
-        color: #5a5f5b;
-        border-top: 1px solid #ccc;
-        break-inside: avoid;
-    }
-
-    /* A collapsed list must still reach the paper. */
+        /* A collapsed list must still reach the paper. */
     .traitFoods > *:not(summary) { display: block !important; }
     .traitFoodsList { columns: 3; }
     header, .disclaimerBar, .neck, .topSection, footer, .noPrint { display: none !important; }
@@ -1605,11 +1584,6 @@ footer p { color: var(--linen); }
     }
     .printOnly { display: block; margin: 0 0 30px; text-align: left; }
     #printFoodsList { margin-top: 30px; }
-    .printFoodsUl {
-        columns: 3;
-        column-gap: 20px;
-        padding-left: 20px;
-    }
     #printArticlesList h2 { margin-top: 30px; border-top: 1px solid #ccc; padding-top: 15px; }
 }
 
@@ -1735,6 +1709,30 @@ footer p { color: var(--linen); }
 .demo h2 {
     font-size: 28px;
 }
+
+/* The demo moved up under the pitch, where it is the first thing that
+   answers "what does this actually do". That only works if it is quick to
+   take in, so it loses the paragraph it used to carry and tightens up: at
+   full size it pushed the tools and the sample below the fold on a phone,
+   and a demo nobody scrolls past is a demo that sold nothing. */
+.demo--compact {
+    margin: 26px auto 40px;
+    padding: 22px 20px;
+}
+
+.demo--compact h2 {
+    font-size: 22px;
+    margin: 0 0 6px;
+}
+
+.demoLead {
+    font-size: 16px;
+    margin: 0;
+    opacity: 0.75;
+}
+
+.demo--compact .demoFoods { margin: 14px 0; }
+.demo--compact .demoResult { margin: 14px 0; padding: 12px 16px; }
 
 .demoFoods {
     display: flex;
@@ -1871,15 +1869,6 @@ footer p { color: var(--linen); }
    not a colour: someone who has just arrived is deciding whether the tool
    is worth their attention, and a sales badge at that moment answers a
    question they have not asked yet. */
-.toolChooserNote {
-    max-width: 680px;
-    margin: 26px auto 0;
-    font-size: 16px;
-    line-height: 1.5;
-    color: var(--ink);
-    opacity: 0.72;
-    text-align: left;
-}
 
 .toolCards {
     display: flex;
@@ -1918,6 +1907,63 @@ footer p { color: var(--linen); }
 .toolCard p { margin: 0 0 12px; font-size: 17px; }
 
 .toolCardGo { font-weight: 600; color: var(--clay-dark); }
+
+/* What the free build is, and when the finished one arrives. Set on paper
+   rather than in a colour: this is information the reader needs in order to
+   decide, and a banner styled like an advertisement is the one form in
+   which people have learned not to read it. */
+.sample {
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 28px 30px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+
+.sample h2 { margin: 0 0 10px; font-size: 26px; }
+.sample p { font-size: 17px; }
+
+.sampleList {
+    margin: 16px 0;
+    padding-left: 22px;
+}
+
+.sampleList li {
+    font-size: 17px;
+    line-height: 1.5;
+    margin-bottom: 9px;
+    color: var(--ink);
+}
+
+.sampleWhen {
+    margin: 18px 0 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.signup {
+    margin-top: 22px;
+    padding: 18px 20px;
+    background: var(--linen);
+    border-radius: 12px;
+}
+
+.signup h3 { margin: 0 0 6px; font-size: 20px; color: var(--primary); }
+.signup p { margin: 0 0 14px; font-size: 16px; }
+
+.signupBtn {
+    display: inline-block;
+    background: linear-gradient(160deg, var(--clay), var(--clay-dark));
+    color: white;
+    font-weight: 600;
+    font-size: 17px;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.signupBtn:hover { background: var(--clay-dark); }
 
 .linksOut {
     max-width: 900px;
@@ -1967,73 +2013,18 @@ footer p { color: var(--linen); }
 
 /* ---- Data sources page ---- */
 
-.sourceCounts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    margin: 1.4rem 0 0.5rem;
-}
 
-.sourceCount {
-    flex: 1 1 8rem;
-    background: var(--linen);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 0.75rem 0.5rem;
-    text-align: center;
-}
 
-.sourceCount b {
-    display: block;
-    font-family: 'Lora', serif;
-    font-size: 1.6rem;
-    color: var(--primary);
-}
 
-.sourceCount span {
-    font-size: 0.85rem;
-    line-height: 1.3;
-    display: block;
-}
 
-.sourceCategory { margin-bottom: 1.8rem; }
 
-.sourceCategory h3 {
-    font-family: 'Lora', serif;
-    color: var(--primary);
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 0.3rem;
-    margin-bottom: 0.6rem;
-}
 
-.sourceItems {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
 
-.sourceItems li {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.2rem 0.6rem;
-    padding: 0.45rem 0;
-    border-bottom: 1px solid rgba(221, 214, 198, 0.5);
-}
 
-.sourceName { font-weight: 600; }
 
 /* the check mark carries the meaning, so it needs a text label for screen
    readers — the detail text next to it already says which source was used */
-.sourceItems li.isVerified .sourceName::before {
-    content: "✓ ";
-    color: var(--sage-dark);
-    font-weight: 700;
-}
 
-.sourceDetail {
-    color: #5a615c;
-    font-size: 0.9rem;
-}
 
 .formula {
     font-family: 'Lora', serif;
@@ -2079,26 +2070,12 @@ footer p { color: var(--linen); }
 .thresholdTable th:first-child { text-align: left; }
 .thresholdTable tr:first-child th { background: var(--linen); font-weight: 600; }
 
-.sourceMissing { font-style: italic; }
 
 /* The portion the thresholds are applied to. Sits next to the name rather
    than with the source text — it says something about the food, not about
    where the numbers came from. */
-.sourcePortion {
-    font-size: 0.8rem;
-    color: var(--primary);
-    background: var(--linen);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 0 0.45rem;
-    white-space: nowrap;
-    align-self: center;
-}
 
 @media (min-width: 40rem) {
-    .sourceItems li { justify-content: space-between; }
-    .sourceDetail { text-align: right; margin-left: auto; }
-    .sourcePortion { order: 3; }
 }
 
 /* The file picker input is only in the DOM so the browser will open it. */
@@ -2159,27 +2136,6 @@ footer p { color: var(--linen); }
     line-height: 1.5;
 }
 
-/* Sits at the foot of every printed page. Hidden on screen by .printOnly. */
-.printRunningFooter {
-    display: none;
-}
-
-.printDepth {
-    display: block;
-    margin: 10px 5% 4px;
-    font-size: 16px;
-}
-
-.printDepth select {
-    font-family: inherit;
-    font-size: 16px;
-    margin-left: 6px;
-    padding: 4px 6px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: var(--paper);
-}
-
 .mealCompare th:first-child { min-width: 9rem; }
 .mealCompare td { white-space: nowrap; }
 .mealCompareAbsent { color: #8a908b; }
@@ -2226,3 +2182,70 @@ footer p { color: var(--linen); }
 
 .foodPick:hover,
 .foodPick:focus { background: rgba(126, 155, 122, 0.16); }
+
+/* ---- Sources page ------------------------------------------------------
+   The page used to print every food and what it was checked against, which
+   is a fact about the work rather than about the sources, and ran to
+   several screens of names nobody reads. What is left is the sources
+   themselves: what each one is, and what it answers for. */
+.sourceLadder {
+    margin: 16px 0;
+    padding-left: 24px;
+}
+
+.sourceLadder li {
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.sourceLadder strong {
+    display: block;
+    color: var(--primary);
+    font-size: 18px;
+}
+
+.sourceFacts {
+    margin: 12px 0;
+    padding-left: 22px;
+}
+
+.sourceFacts li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+/* Says which of the things a reader is reaching for is in the full version.
+   Set as a note rather than a button: it is not a control, and styling it
+   like one would have people tapping it to find out it does nothing. */
+.paidNote {
+    max-width: 640px;
+    margin: 18px auto 26px;
+    padding: 12px 16px;
+    background: var(--linen);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: left;
+    color: var(--ink);
+}
+
+/* An article the free build carries only the title of. The index keeps the
+   link — it goes to a page that explains itself, which is the whole reason
+   to list it — but says at a glance which way it leads. */
+.articleIndex a.articleLocked::before {
+    content: "\1F512";           /* 🔒 */
+    font-size: 0.8em;
+    margin-right: 6px;
+    opacity: 0.6;
+}
+
+.articlePaidNote {
+    margin: 20px 0 30px;
+    padding: 16px 18px;
+    background: var(--linen);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 17px;
+    line-height: 1.55;
+}

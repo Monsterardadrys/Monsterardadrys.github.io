@@ -13,13 +13,23 @@
 const TraitFoods = (function () {
   "use strict";
 
-  // Foods carrying `traitId`, grouped by the category they live in and
-  // keeping the category order from foods-data.js.
+  /* Foods carrying `traitId`, grouped by the category they live in and
+     keeping the category order from foods-data.js.
+
+     A locked food has no `traits` at all — the free build ships it as a
+     name and nothing else — so every loop over foods here has to say so.
+     Missing that threw on every article page for three releases: the
+     landing list renders no article, so loading articles.html without a
+     hash looked clean while every article on it was broken. */
+  function hasTraits(food) {
+    return Array.isArray(food.traits);
+  }
+
   function byCategory(traitId) {
     const groups = [];
     CATEGORIES.forEach(function (category) {
       const names = category.foods
-        .filter(function (food) { return food.traits.indexOf(traitId) !== -1; })
+        .filter(function (food) { return hasTraits(food) && food.traits.indexOf(traitId) !== -1; })
         .map(function (food) { return food.name; });
       if (names.length) groups.push({ label: I18N.pick(category, "label"), names: names });
     });
@@ -234,6 +244,10 @@ const TraitFoods = (function () {
     const groups = [];
     CATEGORIES.forEach(function (category) {
       const names = category.foods.filter(function (food) {
+        // A locked food is not "a food without these traits" — it is a food
+        // whose traits this build does not know. Leaving it out is the only
+        // honest answer, and the only safe one.
+        if (!hasTraits(food)) return false;
         return !traitIds.some(function (id) { return food.traits.indexOf(id) !== -1; });
       }).map(function (food) { return food.name; });
       if (names.length) groups.push({ label: I18N.pick(category, "label"), names: names });

@@ -64,6 +64,9 @@
       const a = document.createElement("a");
       a.href = "#" + id;
       a.textContent = I18N.pick(ARTICLES[id], "title");
+      // A locked article is still a link. It goes somewhere that says what
+      // it is, which is the only reason to list it at all.
+      if (ARTICLES[id].locked) a.className = "articleLocked";
       li.appendChild(a);
       indexList.appendChild(li);
     });
@@ -109,6 +112,23 @@
     const h1 = document.createElement("h1");
     h1.textContent = I18N.pick(article, "title");
     content.appendChild(h1);
+
+    /* In the free build most articles arrive as a title and nothing else —
+       the text is not in the file rather than hidden in it. The title is
+       still routed to, and still linked from the analysis popup, because a
+       reader who followed "read the full article" is owed an answer about
+       where it went rather than a page that looks broken. */
+    if (article.locked) {
+      const p = document.createElement("p");
+      p.className = "articlePaidNote";
+      p.textContent = I18N.t("article.locked");
+      content.appendChild(p);
+      // The foods carrying this trait are still listed: they come from the
+      // food data, not from the article, and they are part of the sample.
+      if (typeof TraitFoods !== "undefined") TraitFoods.render(content, id);
+      highlightActive(id);
+      return;
+    }
 
     article.sections.forEach(function (section) {
       if (section.heading) {
