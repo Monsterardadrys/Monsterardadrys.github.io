@@ -2,22 +2,45 @@
 
 Live at [monsterardadrys.github.io](https://monsterardadrys.github.io).
 
-Pick a handful of foods someone reacts to and the tool ranks what they have
-in common — a FODMAP, a histamine load, a hidden allergen. Two tools:
-**Shared traits** and the **Meal builder**. Everything runs in the browser and stores nothing anywhere but the device.
+A database of the food properties that can cause discomfort — FODMAPs,
+histamine, the fourteen declarable allergens, salicylates, bile stimulants.
+Mark several foods and it lists what they have in common. Two tools:
+**Shared traits** and the **Meal builder**. Everything runs in the browser
+and stores nothing anywhere but the device.
 
-## Nothing here is authored here
+Built by a dietitian for dietitians and other health professions, as
+continuing-education material. It describes foods, not people.
 
-**This repository is output.** The data files are generated, the pages are
-copies, and an edit made here is an edit that the next build overwrites
-without noticing. The source — the full food database, the tools that read
-the national food tables, and the checks that hold the two languages level —
-lives in a private repository, and so does every change.
+## Two repositories, handled separately
 
-That is not tidiness. It is the only arrangement that works for a static
-site: a browser is handed the JavaScript it runs, so the difference between
-the free version and the full one has to be a difference in which bytes
-were shipped. A flag that hides data ships the data it is hiding.
+This one is the free version and owns itself: its pages, its scripts, its
+styles and its data. The full database lives in a private repository and
+owns itself too. Neither is generated from the other, and neither has to be
+checked out to work on the other.
+
+The data here started as a cut of the full database — 100 of its foods,
+30 of its 43 properties, 7 of its 21 articles — but that was a decision
+taken once, not a pipeline. When the full database gains a round of foods,
+this one gets a considered copy of whatever is worth putting in the sample,
+or it gets nothing. It is not expected to keep up.
+
+An earlier version of this file said nothing was authored here. That was
+never how it worked: every release since the split has edited these pages
+directly, which is right, and the claim only made the repository harder to
+work on.
+
+What does have to hold is that **nothing paid ships here** — and that is
+checked in this repository rather than promised by the other one, because
+this is where the risk is:
+
+    node tools/check-free.js
+
+It fails if a locked food carries anything but its two names, if a locked
+article carries its text, if a property the sample excludes reappears, or
+if text from a locked article turns up anywhere in the shipped bytes. It
+also runs the release checks the site used to have: every link resolves,
+every visible string has a Swedish one carrying the same markup, and all
+eight footers agree on one version and one date.
 
 | | Free (here) | Full |
 |---|---|---|
@@ -34,8 +57,10 @@ were shipped. A flag that hides data ships the data it is hiding.
 | Install as an app, offline | — | yes |
 | Languages, method, sources | whole | whole |
 
-Both builds share every script and every page. The cut is in the data, and
-in one place in `food-picker.js` that draws a locked food.
+The two share most of their scripts and pages by having been copied from
+one another, not by a build step. The visible difference is in the data,
+plus one place in `food-picker.js` that draws a locked food and one in
+`articles.js` that draws a locked article.
 
 **What is never cut:** the disclaimer, the method page, the data sources,
 and the second language. A tool that puts its own provenance behind a
@@ -44,9 +69,10 @@ allergens is not a smaller version of itself.
 
 ## Running it
 
-Any static server. There is no build step here and no dependency to install:
+Any static server. There is no build step and no dependency to install:
 
     python3 -m http.server 8000
+    node tools/check-free.js
 
 ## What this is not
 
