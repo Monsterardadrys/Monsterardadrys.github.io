@@ -635,8 +635,8 @@ const UI = {
 
   "print.stamp": { en: "Printed {date}", sv: "Utskriven {date}" },
   "print.footer": {
-    en: "Food Trait Database — {page} — a lookup of food properties, not a diagnosis. {host}",
-    sv: "Matdata — {page} — en databas över livsmedelsegenskaper, inte en diagnos. {host}"
+    en: "Food Trait Database — {page} — a lookup of food properties. {host}",
+    sv: "Matdata — {page} — en databas över livsmedelsegenskaper. {host}"
   },
 
   /* ---- Foods without ---------------------------------------------------- */
