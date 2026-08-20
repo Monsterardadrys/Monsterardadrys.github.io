@@ -1,5 +1,5 @@
 /* =========================================================================
-   articles-data.js — deep-dive articles for the Food Intolerance Guide
+   articles-data.js — deep-dive articles for the Food Trait Database
    =========================================================================
 
    Add a new article without touching articles.html, styles.css, or any

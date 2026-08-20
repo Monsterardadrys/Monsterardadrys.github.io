@@ -1,5 +1,5 @@
 /* =========================================================================
-   script.js — Food Intolerance Guide interactivity
+   script.js — Food Trait Database interactivity
 
    This file is fully generic: it builds the category boxes and filter
    checkboxes from CATEGORIES and TRAITS (see foods-data.js), and never

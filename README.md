@@ -1,4 +1,4 @@
-# Food Intolerance Guide — the free version
+# Food Trait Database — the free version
 
 Live at [monsterardadrys.github.io](https://monsterardadrys.github.io).
 
